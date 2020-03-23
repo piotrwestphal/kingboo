@@ -1,0 +1,48 @@
+{
+  "collection": "@nestjs/schematics",
+  "sourceRoot": "apps/search-manager/src",
+  "monorepo": true,
+  "root": "apps/search-manager",
+  "compilerOptions": {
+    "webpack": true,
+    "tsConfigPath": "apps/search-manager/tsconfig.app.json"
+  },
+  "projects": {
+    "search-manager": {
+      "type": "application",
+      "root": "apps/search-manager",
+      "entryFile": "main",
+      "sourceRoot": "apps/search-manager/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/search-manager/tsconfig.app.json"
+      }
+    },
+    "data-collector": {
+      "type": "application",
+      "root": "apps/data-collector",
+      "entryFile": "main",
+      "sourceRoot": "apps/data-collector/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/data-collector/tsconfig.app.json"
+      }
+    },
+    "search-result-calculator": {
+      "type": "application",
+      "root": "apps/search-result-calculator",
+      "entryFile": "main",
+      "sourceRoot": "apps/search-result-calculator/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/search-result-calculator/tsconfig.app.json"
+      }
+    },
+    "model": {
+      "type": "library",
+      "root": "libs/model",
+      "entryFile": "index",
+      "sourceRoot": "libs/model/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/model/tsconfig.lib.json"
+      }
+    }
+  }
+}

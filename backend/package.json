@@ -1,0 +1,82 @@
+{
+  "name": "kb-backend",
+  "version": "0.0.1",
+  "description": "",
+  "author": "",
+  "private": true,
+  "license": "UNLICENSED",
+  "scripts": {
+    "prebuild": "rimraf dist",
+    "build:sm": "nest build",
+    "build:dc": "nest build data-collector",
+    "build:src": "nest build search-result-calculator",
+    "format": "prettier --write \"apps/**/*.ts\" \"libs/**/*.ts\"",
+    "start:sm": "nest start",
+    "start:dc": "nest start data-collector",
+    "start:dev:sm": "nest start --watch",
+    "start:dev:dc": "nest start data-collector --watch",
+    "start:debug:sm": "nest start --debug --watch",
+    "start:debug:dc": "nest start data-collector --debug --watch",
+    "start:prod": "node dist/main",
+    "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:cov": "jest --coverage",
+    "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
+    "test:e2e": "jest --config ./apps/search-manager/test/jest-e2e.json"
+  },
+  "dependencies": {
+    "@nestjs/common": "7.0.3",
+    "@nestjs/core": "7.0.3",
+    "@nestjs/platform-express": "7.0.3",
+    "puppeteer": "2.1.1",
+    "reflect-metadata": "0.1.13",
+    "rimraf": "3.0.2",
+    "rxjs": "6.5.4"
+  },
+  "devDependencies": {
+    "@nestjs/cli": "7.0.2",
+    "@nestjs/schematics": "7.0.0",
+    "@nestjs/testing": "7.0.3",
+    "@types/express": "4.17.3",
+    "@types/jest": "25.1.4",
+    "@types/puppeteer": "2.0.1",
+    "@types/node": "13.9.2",
+    "@types/supertest": "2.0.8",
+    "@typescript-eslint/eslint-plugin": "2.24.0",
+    "@typescript-eslint/parser": "2.24.0",
+    "eslint": "6.8.0",
+    "eslint-config-prettier": "6.10.0",
+    "eslint-plugin-import": "2.20.1",
+    "jest": "25.1.0",
+    "prettier": "1.19.1",
+    "supertest": "4.0.2",
+    "ts-jest": "25.2.1",
+    "ts-loader": "6.2.1",
+    "ts-node": "8.7.0",
+    "tsconfig-paths": "3.9.0",
+    "typescript": "3.8.3"
+  },
+  "jest": {
+    "moduleFileExtensions": [
+      "js",
+      "json",
+      "ts"
+    ],
+    "rootDir": ".",
+    "testRegex": ".spec.ts$",
+    "transform": {
+      "^.+\\.(t|j)s$": "ts-jest"
+    },
+    "coverageDirectory": "./coverage",
+    "testEnvironment": "node",
+    "roots": [
+      "<rootDir>/apps/",
+      "<rootDir>/libs/"
+    ],
+    "moduleNameMapper": {
+      "@kb/model/(.*)": "<rootDir>/libs/model/src/$1",
+      "@kb/model": "<rootDir>/libs/model/src"
+    }
+  }
+}

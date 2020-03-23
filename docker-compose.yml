@@ -1,0 +1,16 @@
+version: "3.7"
+services:
+  data-collector:
+    build:
+      context: ./backend
+      dockerfile: data-collector.Dockerfile
+    image: data-collector
+    environment:
+      NODE_ENV: dev
+      PUPPETEER_HEADLESS_SCRAPING: "true"
+      PUPPETEER_EXECUTABLE_PATH: google-chrome-unstable
+      SAVE_RESULTS_AS_JSON_AND_TAKE_SCREENSHOTS_ON_ERROR: "true"
+    volumes:
+      - ./scraping-results:/usr/src/app/results
+    ports:
+      - 38080:8080
