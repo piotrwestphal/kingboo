@@ -1,10 +1,3 @@
-FROM nestjs/cli:latest as BASE
-WORKDIR /usr/src/app
-COPY package*.json ./
-RUN npm install
-COPY . .
-RUN nest build data-collector
-
 FROM node:12-slim
 RUN apt-get update \
     && apt-get install -y wget gnupg \
@@ -22,10 +15,12 @@ ENTRYPOINT ["dumb-init", "--"]
 RUN npm i puppeteer
 
 WORKDIR /usr/src/app
-#COPY tools/wait-for-it.sh wait-for-it.sh
-#RUN chmod +x wait-for-it.sh
-COPY --from=BASE /usr/src/app/dist/apps/data-collector .
-EXPOSE 8080
-CMD ["node", "main"]
+COPY package*.json ./
+# skip puppeteer installation
+RUN npm install  --ignore-scripts
+COPY . .
+RUN npm run build:dc
 
-#TODO: install puppeteer and pass the arg as executable path / try to exclude '--no-sandbox' arg
+EXPOSE 8080
+WORKDIR ./dist/apps/data-collector
+CMD ["node", "main"]

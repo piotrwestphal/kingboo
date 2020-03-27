@@ -4,7 +4,7 @@
   "monorepo": true,
   "root": "apps/search-manager",
   "compilerOptions": {
-    "webpack": true,
+    "webpack": false,
     "tsConfigPath": "apps/search-manager/tsconfig.app.json"
   },
   "projects": {
@@ -42,6 +42,15 @@
       "sourceRoot": "libs/model/src",
       "compilerOptions": {
         "tsConfigPath": "libs/model/tsconfig.lib.json"
+      }
+    },
+    "request-distributor": {
+      "type": "application",
+      "root": "apps/request-distributor",
+      "entryFile": "main",
+      "sourceRoot": "apps/request-distributor/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/request-distributor/tsconfig.app.json"
       }
     }
   }
