@@ -3,8 +3,8 @@ services:
   data-collector:
     build:
       context: ./backend
-      dockerfile: data-collector.Dockerfile
-    image: data-collector
+      dockerfile: docker/data-collector.Dockerfile
+    image: kb-data-collector
     environment:
       NODE_ENV: dev
       PUPPETEER_HEADLESS_SCRAPING: "true"
@@ -16,22 +16,22 @@ services:
     ports:
       - 38080:8080
 
-  request-distributor:
+  search-request-manager:
     build:
       context: ./backend
-      dockerfile: request-distributor.Dockerfile
-    image: request-distributor
+      dockerfile: docker/search-request-manager.Dockerfile
+    image: kb-search-request-manager
     volumes:
       - ./tools/wait-for-it.sh:/wait-for-it.sh
     ports:
-    - 38081:3001
+    - 38081:8080
     command: ["/wait-for-it.sh", "rabbitmq:5672", "-t", "60", "--", "node", "main"]
 
-  search-manager:
+  user-service:
     build:
       context: ./backend
-      dockerfile: search-manager.Dockerfile
-    image: search-manager
+      dockerfile: docker/user-service.Dockerfile
+    image: kb-user-service
     volumes:
       - ./tools/wait-for-it.sh:/wait-for-it.sh
     ports:
@@ -44,7 +44,7 @@ services:
       RABBITMQ_DEFAULT_USER: dev
       RABBITMQ_DEFAULT_PASS: dev
     volumes:
-    - ./mq/definitions.json:/etc/rabbitmq/definitions.json
+    - ./backend/config/rmq-definitions.json:/etc/rabbitmq/definitions.json
     ports:
       - 15672:15672
       - 5672:5672

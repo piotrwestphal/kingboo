@@ -17,6 +17,18 @@
       ],
       "@kb/model/*": [
         "libs/model/src/*"
+      ],
+      "@kb/config": [
+        "libs/config/src"
+      ],
+      "@kb/config/*": [
+        "libs/config/src/*"
+      ],
+      "@kb/fauna-client": [
+        "libs/fauna-client/src"
+      ],
+      "@kb/fauna-client/*": [
+        "libs/fauna-client/src/*"
       ]
     }
   },
