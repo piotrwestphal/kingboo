@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { SearchRequestSender } from '../core/interface/search-request.sender';
 import { ClientProxy, ClientProxyFactory, RmqOptions, Transport } from '@nestjs/microservices';
 import { RMQSearchRequestSender } from './rmq.search-request.sender';
-import { ConfigService } from '@kb/config';
+import { CommonConfigService } from '@kb/config';
 
 const RMQ_CLIENT_PROXY_TOKEN = 'RMQ_CLIENT_PROXY';
 
@@ -10,13 +10,13 @@ const RMQ_CLIENT_PROXY_TOKEN = 'RMQ_CLIENT_PROXY';
   providers: [
     {
       provide: RMQ_CLIENT_PROXY_TOKEN,
-      useFactory: (config: ConfigService) => {
+      useFactory: (config: CommonConfigService) => {
         return ClientProxyFactory.create({
           transport: Transport.RMQ,
           options:  config.rmqClientOptions,
         } as RmqOptions);
       },
-      inject: [ConfigService],
+      inject: [CommonConfigService],
     },
     {
       provide: SearchRequestSender,

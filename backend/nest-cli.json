@@ -70,6 +70,15 @@
       "compilerOptions": {
         "tsConfigPath": "libs/fauna-client/tsconfig.lib.json"
       }
+    },
+    "rabbit": {
+      "type": "library",
+      "root": "libs/rabbit",
+      "entryFile": "index",
+      "sourceRoot": "libs/rabbit/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/rabbit/tsconfig.lib.json"
+      }
     }
   }
 }

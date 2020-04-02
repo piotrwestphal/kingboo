@@ -1,23 +1,20 @@
-import { config as localConfig } from '../../../config/config';
-import { config as devConfig } from '../../../config/config.dev';
-import { config as ciConfig } from '../../../config/config.ci';
-import { config as prodConfig } from '../../../config/config.prod';
-import { ConfigOptions } from '@kb/config/model/config-options';
+import { Environments } from '@kb/config/model/environments';
 
 export type NodeEnv = 'dev' | 'prod' | 'ci' | 'local';
 
-export const retrieveConfig = (processEnv: NodeJS.ProcessEnv): ConfigOptions => {
+export const getConfigBasedOnEnv = <T>(processEnv: NodeJS.ProcessEnv,
+                                       envs: Environments<T>): T => {
   const nodeEnv = processEnv.NODE_ENV;
   switch (nodeEnv) {
     case 'dev':
-      return devConfig(processEnv);
+      return envs.dev(processEnv);
     case 'ci':
-      return ciConfig(processEnv);
+      return envs.ci(processEnv);
     case 'prod':
-      return prodConfig(processEnv);
+      return envs.prod(processEnv);
     default: {
       console.log('Retrieving local configuration.');
-      return localConfig;
+      return envs.local;
     }
   }
 };

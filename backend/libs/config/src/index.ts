@@ -1,11 +1,6 @@
 export * from './config.module';
-export * from './config.service';
+export * from './common-config.service';
 export * from './config.retriever';
-export { ConfigOptions } from '@kb/config/model/config-options';
-export { MqOptions } from '@kb/config/model/mq-options';
-export { RMQQueueDefinition } from '@kb/config/model/rmq-definition';
-export { RMQQueueArguments } from '@kb/config/model/rmq-definition';
-export { RMQQueueOptions } from '@kb/config/model/rmq-definition';
-export { DbOptions } from '@kb/config/model/db-options';
-export { FaunaDbSecrets } from '@kb/config/model/faunadb-definition';
-export { FaunaAdminDbOptions } from '@kb/config/model/faunadb-definition';
+export { CommonConfig } from '@kb/config/model/common-config';
+export { FaunaDbSecrets } from '@kb/fauna-client/model/fauna-admin-db-options';
+export { FaunaAdminDbOptions } from '@kb/fauna-client/model/fauna-admin-db-options';

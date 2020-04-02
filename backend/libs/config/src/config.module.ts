@@ -1,20 +1,28 @@
-import { Global, Module } from '@nestjs/common';
-import { ConfigService } from './config.service';
-import { retrieveConfig } from '@kb/config/config.retriever';
+import { DynamicModule, Global, Module } from '@nestjs/common';
+import { CommonConfigService } from './common-config.service';
+import { getConfigBasedOnEnv } from '@kb/config/config.retriever';
+import { Environments } from '@kb/config/model/environments';
+import { CommonConfig } from '@kb/config/model/common-config';
+import { ConfigType } from '@kb/config/config.type';
 
 @Global()
-@Module({
-  providers: [
-    {
-      provide: ConfigService,
-      useFactory: (): ConfigService => {
-        const configOptions = retrieveConfig(process.env);
-        return new ConfigService(configOptions);
-      },
-    },
-  ],
-  exports: [ConfigService],
-})
+@Module({})
 export class ConfigModule {
-  // TODO: add possibility to add config specific to app
+  static register<T extends CommonConfig, K extends CommonConfigService>(
+    envs: Environments<T>,
+    configServiceType: ConfigType<K>): DynamicModule {
+    return {
+      module: ConfigModule,
+      providers: [
+        {
+          provide: configServiceType,
+          useFactory: (): K => {
+            const configOptions = getConfigBasedOnEnv(process.env, envs);
+            return new configServiceType(configOptions);
+          },
+        },
+      ],
+      exports: [configServiceType],
+    };
+  }
 }

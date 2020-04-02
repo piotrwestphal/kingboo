@@ -1,5 +1,5 @@
-import * as rmqDefinitions from './rmq-definitions.json';
-import { RMQQueueOptions } from '@kb/config';
+import * as rmqDefinitions from '../../../mq/rmq-definitions.json';
+import { RabbitQueueOptions } from '@kb/rabbit';
 
 interface QueueDefinition {
   name: string;
@@ -42,9 +42,7 @@ const mapJsonQueueDefinition = (): Map<string, QueueOptions> => {
 };
 
 const queueOptionsMap: Map<string, QueueOptions> = mapJsonQueueDefinition();
-console.log({queueOptionsMap});
+console.log({ queueOptionsMap });
 
-export const retrieveRMQQueueOptions = (queueName: string): RMQQueueOptions | undefined => {
-  console.log('Retrieved RMQ config: ', queueOptionsMap.get(queueName));
-  return queueOptionsMap.get(queueName);
-};
+export const retrieveRMQQueueOptions = (queueName: string): RabbitQueueOptions | undefined =>
+  queueOptionsMap.get(queueName);

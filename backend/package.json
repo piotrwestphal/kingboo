@@ -90,7 +90,9 @@
       "@kb/config/(.*)": "<rootDir>/libs/config/src/$1",
       "@kb/config": "<rootDir>/libs/config/src",
       "@kb/fauna-client/(.*)": "<rootDir>/libs/fauna-client/src/$1",
-      "@kb/fauna-client": "<rootDir>/libs/fauna-client/src"
+      "@kb/fauna-client": "<rootDir>/libs/fauna-client/src",
+      "@kb/rabbit/(.*)": "<rootDir>/libs/rabbit/src/$1",
+      "@kb/rabbit": "<rootDir>/libs/rabbit/src"
     }
   }
 }
