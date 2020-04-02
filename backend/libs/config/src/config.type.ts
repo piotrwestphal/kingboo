@@ -1,6 +1,6 @@
 import { CommonConfig } from '@kb/config/model/common-config';
-import { CommonConfigService } from '@kb/config/common-config.service';
+import { ConfigService } from '@kb/config/config.service';
 
-export interface ConfigType<T extends CommonConfigService> {
-  new(commonConfig: CommonConfig): T;
+export interface ConfigType<T extends CommonConfig, K extends ConfigService<T>> {
+  new(config: T): K;
 }

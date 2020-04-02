@@ -37,6 +37,6 @@ export async function createClientForDevPurposes(faunaDbOptions: FaunaAdminDbOpt
   ).toPromise();
 }
 
-export async function createClient(secret: string): Promise<Client> {
+export function createClient(secret: string): Client {
   return new Client({ secret });
 }

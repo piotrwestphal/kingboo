@@ -11,6 +11,7 @@ export const devConfig = (env: NodeJS.ProcessEnv): MainConfig =>
     port: env.PORT ? parseInt(env.PORT, 10) : 8080,
     corsOrigins: env.CORS_ORIGINS,
     db: {
+      dbName: env.FAUNA_DB_NAME,
       faunaAdminDb: {
         domain: env.FAUNA_ADMIN_DB_DOMAIN,
         scheme: env.FAUNA_ADMIN_DB_SCHEME as 'http' | 'https',

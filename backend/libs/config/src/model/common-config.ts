@@ -1,4 +1,4 @@
-import { NodeEnv } from '@kb/config/config.retriever';
+import { NodeEnv } from '@kb/config/config.provider';
 import { RabbitOptions } from '@kb/rabbit';
 
 export interface CommonConfig {

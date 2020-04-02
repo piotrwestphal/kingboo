@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
-import { RabbitService } from './rabbit.service';
+import { RabbitClient } from './rabbit.client';
 
 @Module({
-  providers: [RabbitService],
-  exports: [RabbitService],
+  providers: [RabbitClient],
+  exports: [RabbitClient],
 })
 export class RabbitModule {}

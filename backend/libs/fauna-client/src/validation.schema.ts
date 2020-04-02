@@ -1,8 +1,9 @@
 import * as Joi from '@hapi/joi';
-import { FaunaOptions } from '@kb/fauna-client';
-import { FaunaAdminDbOptions } from '@kb/fauna-client';
+import { SchemaMap } from '@hapi/joi';
+import { FaunaAdminDbOptions, FaunaOptions } from '@kb/fauna-client';
 
-export const getFaunaValidationSchema: Joi.ObjectSchema = Joi.object<FaunaOptions>({
+export const getFaunaValidationSchemaMap: SchemaMap<FaunaOptions> = {
+  dbName: Joi.string().required(),
   secret: Joi.string().optional(),
   faunaAdminDb: Joi.object<FaunaAdminDbOptions>({
     domain: Joi.string().required(),
@@ -10,4 +11,4 @@ export const getFaunaValidationSchema: Joi.ObjectSchema = Joi.object<FaunaOption
     port: Joi.number().required(),
     secret: Joi.string().required(),
   }).optional(),
-}).optional();
+};

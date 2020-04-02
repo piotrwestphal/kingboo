@@ -1,11 +1,10 @@
-import { CommonConfig } from '@kb/config/model/common-config';
-import { rabbitValidationSchema } from '@kb/rabbit/validation.schema';
-import { ObjectSchema } from '@hapi/joi';
+import { rabbitValidationSchemaMap } from '@kb/rabbit/validation.schema';
 import * as Joi from '@hapi/joi';
+import { SchemaMap } from '@hapi/joi';
 
-export const commonConfigValidationSchema: ObjectSchema = Joi.object<CommonConfig>({
+export const commonConfigValidationSchemaMap: SchemaMap = {
   nodeEnv: Joi.string().valid('dev', 'prod', 'ci', 'local').required(),
   port: Joi.number().required(),
   corsOrigins: Joi.string().required(),
-  mqConsumer: rabbitValidationSchema,
-});
+  mqConsumer: rabbitValidationSchemaMap,
+};

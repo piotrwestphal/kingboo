@@ -1,8 +1,7 @@
 import { CommonConfig } from '@kb/config';
 import { RabbitOptions } from '@kb/rabbit';
-import { FaunaOptions } from '@kb/fauna-client';
+import { FaunaClientConfig } from '@kb/fauna-client/fauna-client.config';
 
-export interface MainConfig extends CommonConfig {
+export interface MainConfig extends CommonConfig, FaunaClientConfig {
   readonly mqClient: RabbitOptions;
-  readonly db: FaunaOptions;
 }

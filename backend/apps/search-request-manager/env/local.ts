@@ -10,6 +10,7 @@ export const localConfig: MainConfig = {
   port: 8080,
   corsOrigins: 'http://localhost', // separate multiple origins by comma
   db: {
+    dbName: 'temp',
     faunaAdminDb: {
       domain: 'localhost',
       scheme: 'http',

@@ -6,6 +6,7 @@ export const prodConfig = (env: NodeJS.ProcessEnv): MainConfig =>
     port: env.PORT ? parseInt(env.PORT, 10) : 8080,
     corsOrigins: env.CORS_ORIGINS,
     db: {
+      dbName: env.FAUNA_DB_NAME,
       secret: env.FAUNA_KINGBOO_DB_SECRET,
     },
     mqConsumer: {

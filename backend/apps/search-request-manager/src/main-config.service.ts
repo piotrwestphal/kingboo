@@ -1,19 +1,22 @@
-import { CommonConfigService, FaunaAdminDbOptions } from '@kb/config';
+import { ConfigService, FaunaAdminDbOptions } from '@kb/config';
 import { MainConfig } from './main.config';
 import { RmqOptions } from '@nestjs/microservices';
 import { buildRmqOptions } from '@kb/rabbit';
+import { FaunaClientConfigService } from '@kb/fauna-client';
+import { mainConfigValidationSchemaMap } from './validation.schema';
 
-export class MainConfigService extends CommonConfigService {
-
-  private readonly mainConfig: MainConfig;
+export class MainConfigService extends ConfigService<MainConfig> implements FaunaClientConfigService {
 
   constructor(mainConfig: MainConfig) {
-    super(mainConfig);
-    this.mainConfig = this.validate(null, mainConfig);
+    super(mainConfig, mainConfigValidationSchemaMap);
+  }
+
+  get faunaDbName(): string {
+    return this.config.db.dbName;
   }
 
   get faunaSecret(): string {
-    const secret = this.mainConfig.db.secret;
+    const secret = this.config.db.secret;
     if (!secret) {
       throw new Error('Fauna secret not found.');
     }
@@ -21,7 +24,7 @@ export class MainConfigService extends CommonConfigService {
   }
 
   get faunaAdminDbOptions(): FaunaAdminDbOptions {
-    const options = this.mainConfig.db.faunaAdminDb;
+    const options = this.config.db.faunaAdminDb;
     if (!options) {
       throw new Error(`Options for fauna admin db not found.`);
     }
@@ -29,6 +32,6 @@ export class MainConfigService extends CommonConfigService {
   }
 
   get mqClient(): RmqOptions {
-    return buildRmqOptions(this.mainConfig.mqClient);
+    return buildRmqOptions(this.config.mqClient);
   }
 }
