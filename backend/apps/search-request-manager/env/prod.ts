@@ -15,17 +15,16 @@ export const prodConfig = (env: NodeJS.ProcessEnv): MainConfig =>
         queue: env.MQ_CONSUMER_QUEUE,
       },
     },
-    mqClient: {
+    dataCollectorMqClient: {
       address: env.MQ_ADDRESS,
       queueDefinition: {
-        queue: env.MQ_CLIENT_QUEUE,
-        prefetchCount: 1,
-        noAck: false,
-        queueOptions: {
-          arguments: {
-            'x-message-ttl': parseInt(env.RMQ_CLIENT_TTL_MS, 10),
-          },
-        },
+        queue: env.MQ_DATA_COLLECTOR_CLIENT_QUEUE,
+      },
+    },
+    userServiceMqClient: {
+      address: env.MQ_ADDRESS,
+      queueDefinition: {
+        queue: env.MQ_USER_SERVICE_CLIENT_QUEUE,
       },
     },
   });

@@ -31,7 +31,11 @@ export class MainConfigService extends ConfigService<MainConfig> implements Faun
     return options;
   }
 
-  get mqClient(): RmqOptions {
-    return buildRmqOptions(this.config.mqClient);
+  get dataCollectorMqClient(): RmqOptions {
+    return buildRmqOptions(this.config.dataCollectorMqClient);
+  }
+
+  get userServiceMqClient(): RmqOptions {
+    return buildRmqOptions(this.config.userServiceMqClient);
   }
 }

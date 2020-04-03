@@ -25,12 +25,17 @@ export const localConfig: MainConfig = {
       queueOptions: retrieveRMQQueueOptions(consumerQueueName),
     },
   },
-  mqClient: {
+  dataCollectorMqClient: {
     address: mqAddress,
     queueDefinition: {
       queue: clientQueueName,
-      prefetchCount: 1,
-      noAck: false,
+      queueOptions: retrieveRMQQueueOptions(clientQueueName),
+    },
+  },
+  userServiceMqClient: {
+    address: mqAddress,
+    queueDefinition: {
+      queue: clientQueueName,
       queueOptions: retrieveRMQQueueOptions(clientQueueName),
     },
   },

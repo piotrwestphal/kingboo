@@ -6,5 +6,6 @@ import { RabbitOptions, rabbitValidationSchemaMap } from '@kb/rabbit';
 
 export const mainConfigValidationSchemaMap: SchemaMap<MainConfig> = {
   db: Joi.object<FaunaOptions>(getFaunaValidationSchemaMap).required(),
-  mqClient: Joi.object<RabbitOptions>(rabbitValidationSchemaMap).required(),
+  dataCollectorMqClient: Joi.object<RabbitOptions>(rabbitValidationSchemaMap).required(),
+  userServiceMqClient: Joi.object<RabbitOptions>(rabbitValidationSchemaMap).required(),
 };

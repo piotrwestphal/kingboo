@@ -1,13 +1,15 @@
 import { ClientProxy } from '@nestjs/microservices';
+import { SearchRequestSender } from '../core/interface/search-request.sender';
 
-export class RMQSearchRequestSender {
+export class RMQSearchRequestSender extends SearchRequestSender {
 
   constructor(
     private readonly client: ClientProxy,
   ) {
+    super();
   }
 
-  sendNotification(payload): void {
+  send(payload): void {
     this.client.emit<any>('notifications', payload);
   }
 }

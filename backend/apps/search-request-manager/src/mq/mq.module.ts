@@ -1,26 +1,28 @@
 import { Module } from '@nestjs/common';
 import { SearchRequestSender } from '../core/interface/search-request.sender';
-import { ClientProxy, ClientProxyFactory } from '@nestjs/microservices';
+import { ClientProxyFactory } from '@nestjs/microservices';
 import { RMQSearchRequestSender } from './rmq.search-request.sender';
 import { MainConfigService } from '../main-config.service';
-
-const RMQ_CLIENT_PROXY_TOKEN = 'RMQ_CLIENT_PROXY';
+import { CollectingScenarioSender } from '../core/interface/collecting-scenario.sender';
+import { RmqCollectingScenarioSender } from './rmq.collecting-scenario.sender';
 
 @Module({
   providers: [
     {
-      provide: RMQ_CLIENT_PROXY_TOKEN,
+      provide: CollectingScenarioSender,
       useFactory: (config: MainConfigService) => {
-        return ClientProxyFactory.create(config.mqClient);
+        const clientProxy = ClientProxyFactory.create(config.dataCollectorMqClient);
+        return new RmqCollectingScenarioSender(clientProxy);
       },
       inject: [MainConfigService],
     },
     {
       provide: SearchRequestSender,
-      useFactory: (clientProxy: ClientProxy) => {
+      useFactory: (config: MainConfigService) => {
+        const clientProxy = ClientProxyFactory.create(config.userServiceMqClient);
         return new RMQSearchRequestSender(clientProxy);
       },
-      inject: [RMQ_CLIENT_PROXY_TOKEN],
+      inject: [MainConfigService],
     },
   ],
   exports: [SearchRequestSender],

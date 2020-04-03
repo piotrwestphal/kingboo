@@ -42,7 +42,6 @@ const mapJsonQueueDefinition = (): Map<string, QueueOptions> => {
 };
 
 const queueOptionsMap: Map<string, QueueOptions> = mapJsonQueueDefinition();
-console.log({ queueOptionsMap });
 
 export const retrieveRMQQueueOptions = (queueName: string): RabbitQueueOptions | undefined =>
   queueOptionsMap.get(queueName);
