@@ -44,13 +44,13 @@
         "tsConfigPath": "libs/model/tsconfig.lib.json"
       }
     },
-    "search-request-manager": {
+    "search-queue-manager": {
       "type": "application",
-      "root": "apps/search-request-manager",
+      "root": "apps/search-queue-manager",
       "entryFile": "main",
-      "sourceRoot": "apps/search-request-manager/src",
+      "sourceRoot": "apps/search-queue-manager/src",
       "compilerOptions": {
-        "tsConfigPath": "apps/search-request-manager/tsconfig.app.json"
+        "tsConfigPath": "apps/search-queue-manager/tsconfig.app.json"
       }
     },
     "config": {

@@ -1,9 +1,9 @@
 import { retrieveRMQQueueOptions } from '@kb/rabbit';
 import { MainConfig } from '../src/main.config';
 
-const mqAddress = 'amqp://dev:dev@rabbitmq:5672';
-const clientQueueName = 'client-queue-name';
-const consumerQueueName = 'consumer-queue-name';
+const mqAddress = 'amqp://dev:dev@localhost:5672';
+const clientQueueName = 'collecting-scenario';
+const consumerQueueName = 'collecting-scenario-progress';
 
 export const localConfig: MainConfig = {
   nodeEnv: 'local',
@@ -21,8 +21,8 @@ export const localConfig: MainConfig = {
   mqConsumer: {
     address: mqAddress,
     queueDefinition: {
-      queue: consumerQueueName,
-      queueOptions: retrieveRMQQueueOptions(consumerQueueName),
+      queue: clientQueueName,
+      queueOptions: retrieveRMQQueueOptions(clientQueueName),
     },
   },
   dataCollectorMqClient: {
