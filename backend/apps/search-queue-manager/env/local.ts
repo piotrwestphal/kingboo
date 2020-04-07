@@ -1,42 +1,46 @@
 import { retrieveRMQQueueOptions } from '@kb/rabbit';
-import { MainConfig } from '../src/main.config';
+import { AppConfig } from '../src/config/app.config';
 
 const mqAddress = 'amqp://dev:dev@localhost:5672';
-const clientQueueName = 'collecting-scenario';
-const consumerQueueName = 'collecting-scenario-progress';
+const consumerQueueName = 'data-collection-notifications';
+const dataCollectionNotificationsQueue = 'data-collection-notifications';
+const userNotificationsQueue = 'user-notifications';
 
-export const localConfig: MainConfig = {
+export const localConfig: AppConfig = {
   nodeEnv: 'local',
   port: 8080,
   corsOrigins: 'http://localhost', // separate multiple origins by comma
-  db: {
+  fauna: {
     dbName: 'temp',
-    faunaAdminDb: {
+    adminDb: {
       domain: 'localhost',
       scheme: 'http',
       port: 38443,
       secret: 'secret',
     },
   },
+  mongo: {
+    address: 'mongodb://127.0.0.1:27017/dev',
+  },
   mqConsumer: {
     address: mqAddress,
     queueDefinition: {
-      queue: clientQueueName,
-      queueOptions: retrieveRMQQueueOptions(clientQueueName),
+      queue: consumerQueueName,
+      queueOptions: retrieveRMQQueueOptions(consumerQueueName),
     },
   },
-  dataCollectorMqClient: {
+  dataCollectionNotificationsMqClient: {
     address: mqAddress,
     queueDefinition: {
-      queue: clientQueueName,
-      queueOptions: retrieveRMQQueueOptions(clientQueueName),
+      queue: dataCollectionNotificationsQueue,
+      queueOptions: retrieveRMQQueueOptions(dataCollectionNotificationsQueue),
     },
   },
-  userServiceMqClient: {
+  userNotificationsMqClient: {
     address: mqAddress,
     queueDefinition: {
-      queue: clientQueueName,
-      queueOptions: retrieveRMQQueueOptions(clientQueueName),
+      queue: userNotificationsQueue,
+      queueOptions: retrieveRMQQueueOptions(userNotificationsQueue),
     },
   },
 };

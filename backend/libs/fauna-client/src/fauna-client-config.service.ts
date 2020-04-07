@@ -1,4 +1,4 @@
-import { FaunaAdminDbOptions } from './model/fauna-admin-db-options';
+import { FaunaAdminDbOptions } from './interface/fauna-admin-db-options';
 import { NodeEnv } from '@kb/config';
 
 export interface FaunaClientConfigService {

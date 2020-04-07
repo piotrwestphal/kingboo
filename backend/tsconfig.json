@@ -35,6 +35,12 @@
       ],
       "@kb/rabbit/*": [
         "libs/rabbit/src/*"
+      ],
+      "@kb/mongo": [
+        "libs/mongo/src"
+      ],
+      "@kb/mongo/*": [
+        "libs/mongo/src/*"
       ]
     }
   },

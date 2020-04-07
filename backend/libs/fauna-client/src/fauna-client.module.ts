@@ -8,7 +8,7 @@ import { FaunaClientConfigService, FaunaClientConfigType } from '@kb/fauna-clien
   exports: [FaunaClient],
 })
 export class FaunaClientModule {
-  static register<T extends FaunaClientConfigService>(configServiceType: FaunaClientConfigType<T>): DynamicModule {
+  static register<T extends FaunaClientConfigService>({configClass}: {configClass: FaunaClientConfigType<T>}): DynamicModule {
     const faunaClientProvider = {
       provide: FaunaClient,
       useFactory: async (config: T): Promise<FaunaClient> => {
@@ -17,7 +17,7 @@ export class FaunaClientModule {
           : await createClientForDevPurposes(config.faunaAdminDbOptions, config.faunaDbName);
         return new FaunaClient(nativeClient);
       },
-      inject: [configServiceType],
+      inject: [configClass],
     };
     return {
       module: FaunaClientModule,

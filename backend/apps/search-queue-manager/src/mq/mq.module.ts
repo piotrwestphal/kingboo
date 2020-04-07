@@ -1,31 +1,33 @@
 import { Module } from '@nestjs/common';
-import { SearchRequestSender } from '../core/interface/search-request.sender';
+import { UserNotificationsSender } from '../core/abstract/user-notifications.sender';
 import { ClientProxyFactory } from '@nestjs/microservices';
-import { RMQSearchRequestSender } from './rmq.search-request.sender';
-import { MainConfigService } from '../main-config.service';
-import { CollectingScenarioSender } from '../core/interface/collecting-scenario.sender';
-import { RmqCollectingScenarioSender } from './rmq.collecting-scenario.sender';
+import { RmqUserNotificationsSender } from './rmq-user-notifications.sender';
+import { AppConfigService } from '../config/app-config.service';
+import { CollectingScenarioSender } from '../core/abstract/collecting-scenario.sender';
+import { RmqCollectingScenarioSender } from './rmq-collecting-scenario.sender';
+import { DataCollectionStatusConsumer } from './data-collection-status.consumer';
 
 @Module({
   providers: [
     {
       provide: CollectingScenarioSender,
-      useFactory: (config: MainConfigService) => {
-        const clientProxy = ClientProxyFactory.create(config.dataCollectorMqClient);
+      useFactory: (config: AppConfigService) => {
+        const clientProxy = ClientProxyFactory.create(config.dataCollectionNotificationsMqClient);
         return new RmqCollectingScenarioSender(clientProxy);
       },
-      inject: [MainConfigService],
+      inject: [AppConfigService],
     },
     {
-      provide: SearchRequestSender,
-      useFactory: (config: MainConfigService) => {
-        const clientProxy = ClientProxyFactory.create(config.userServiceMqClient);
-        return new RMQSearchRequestSender(clientProxy);
+      provide: UserNotificationsSender,
+      useFactory: (config: AppConfigService) => {
+        const clientProxy = ClientProxyFactory.create(config.userNotificationsMqClient);
+        return new RmqUserNotificationsSender(clientProxy);
       },
-      inject: [MainConfigService],
+      inject: [AppConfigService],
     },
   ],
-  exports: [SearchRequestSender],
+  controllers: [DataCollectionStatusConsumer],
+  exports: [UserNotificationsSender, CollectingScenarioSender],
 })
 export class MqModule {
 }
