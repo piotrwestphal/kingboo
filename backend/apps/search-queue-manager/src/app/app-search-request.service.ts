@@ -19,12 +19,12 @@ export class AppSearchRequestService extends SearchRequestService {
     super();
   }
 
-  async createSearchRequest(createSearchRequest: CreateSearchRequest): Promise<SearchRequest> {
+  async createSearchRequest(userId: string, createSearchRequest: CreateSearchRequest): Promise<SearchRequest> {
     const created = this.searchRequestFactory.createNew(createSearchRequest);
     const saved = await this.searchRequestRepository.create(created);
     console.log(`Successfully created search request with search id [${saved.searchId}]`);
     this.collectingScenarioSender.sendScenario(saved);
-    this.userNotificationsSender.notifyAboutCreatedSearchRequest('userId', saved.searchId);
+    this.userNotificationsSender.notifyAboutCreatedSearchRequest(userId, saved.searchId);
     return saved;
   }
 
