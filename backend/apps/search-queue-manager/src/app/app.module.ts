@@ -10,6 +10,7 @@ import { AppConfigService } from '../config/app-config.service';
 import { SearchRequestController } from './search-request.controller';
 import { SearchRequestFactory } from './search-request.factory';
 import { SearchIdentifierBuilder } from '../core/search-identifier.builder';
+import { DataCollectionNotificationConsumer } from './data-collection-notification.consumer';
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { SearchIdentifierBuilder } from '../core/search-identifier.builder';
     },
   ],
   controllers: [
+    DataCollectionNotificationConsumer,
     SearchRequestController,
   ],
   exports: [

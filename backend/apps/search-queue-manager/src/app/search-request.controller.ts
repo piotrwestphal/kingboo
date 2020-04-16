@@ -14,7 +14,7 @@ export class SearchRequestController {
   @Post()
   async send(@Body() createSearchRequest: CreateSearchRequest): Promise<SearchRequest> {
     console.log({createSearchRequest});
-    const created = await this.searchRequestService.createSearchRequest(createSearchRequest);
+    const created = await this.searchRequestService.createSearchRequest('userId', createSearchRequest);
     console.log('CREATED: ', { created });
     return created;
   }

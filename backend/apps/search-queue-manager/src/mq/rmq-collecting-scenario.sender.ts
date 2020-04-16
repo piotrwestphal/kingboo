@@ -1,17 +1,20 @@
 import { CollectingScenarioSender } from '../core/abstract/collecting-scenario.sender';
-import { DataCollectionNotificationsMessagePattern } from '@kb/rabbit/message-pattern/DataCollectionNotificationsMessagePattern';
-import { RmqClientProxy } from '@kb/rabbit/rmq.client.proxy';
 import { SearchRequest } from '../core/model/SearchRequest';
+import { CollectHotelsScenarioMessage } from '@kb/model/mqmessage/collect-hotels-scenario.message';
+import { CollectHotelsScenarioMapper } from './mapper/collect-hotels-scenario.mapper';
+import { CollectingScenarioMessagePattern } from '@kb/rabbit/message-pattern/CollectingScenarioMessagePattern';
+import { ClientProxy } from '@nestjs/microservices';
 
 export class RmqCollectingScenarioSender extends CollectingScenarioSender {
 
   constructor(
-    private readonly client: RmqClientProxy<DataCollectionNotificationsMessagePattern, SearchRequest>,
+    private readonly client: ClientProxy,
   ) {
     super();
   }
 
   sendScenario(searchRequest: SearchRequest): void {
-    this.client.emit(DataCollectionNotificationsMessagePattern.NEW_SCENARIO, searchRequest);
+    const scenarioMsg = CollectHotelsScenarioMapper.fromSearchRequest(searchRequest);
+    this.client.emit<void, CollectHotelsScenarioMessage>(CollectingScenarioMessagePattern.NEW_SCENARIO, scenarioMsg);
   }
 }

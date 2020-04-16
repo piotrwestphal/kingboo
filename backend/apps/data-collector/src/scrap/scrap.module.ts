@@ -1,25 +1,41 @@
 import { Module } from '@nestjs/common';
+import { ScraperFacade } from './scraper.facade';
 import { BrowserService } from './browser.service';
-import { MainPageService } from './main-page/main-page.service';
-import { ScrapingRunnerService } from './scraping-runner.service';
-import { FileManagerService } from './file-manager.service';
-import { SearchResultPageService } from './search-result-page/search-result-page.service';
-import { HotelsCollectorService } from './search-result-page/hotels-collector.service';
-import { ScrapHotelsScenarioService } from './scrap-hotels-scenario.service';
+import { ResultListPage } from './page/results-list/result-list.page';
+import { ResultPage } from './page/result/result.page';
+import { MainPage } from './page/main/main.page';
+import { ResultPageUrlBuilder } from './result-page-url.builder';
+import { AppConfigService } from '../config/app-config.service';
+import { HotelsScraper } from './hotels.scraper';
+import { SearchPlaceScraper } from './search-place.scraper';
 
 @Module({
-    providers: [
-        BrowserService,
-        FileManagerService,
-        MainPageService,
-        HotelsCollectorService,
-        SearchResultPageService,
-        ScrapingRunnerService,
-        ScrapHotelsScenarioService,
-    ],
-    exports: [
-        ScrapingRunnerService,
-    ],
+  imports: [],
+  providers: [
+    {
+      provide: ScraperFacade,
+      useFactory: (appConfigService: AppConfigService) => {
+        const browserService = new BrowserService();
+        const mainPage = new MainPage(browserService);
+        const resultListPage = new ResultListPage(browserService);
+        const resultPage = new ResultPage(browserService);
+        const resultPageUrlBuilder = new ResultPageUrlBuilder();
+        const hotelsScraper = new HotelsScraper(browserService, resultListPage, resultPage);
+        const searchPlaceScraper = new SearchPlaceScraper(browserService, mainPage);
+        return new ScraperFacade(
+          appConfigService,
+          browserService,
+          hotelsScraper,
+          resultPageUrlBuilder,
+          searchPlaceScraper,
+        );
+      },
+      inject: [AppConfigService],
+    },
+  ],
+  exports: [
+    ScraperFacade,
+  ],
 })
 export class ScrapModule {
 }

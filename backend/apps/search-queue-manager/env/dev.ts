@@ -30,7 +30,7 @@ export const devConfig = (env: NodeJS.ProcessEnv): AppConfig =>
         queueOptions: retrieveRMQQueueOptions(consumerQueueName(env)),
       },
     },
-    dataCollectionNotificationsMqClient: {
+    collectingScenarioMqClient: {
       address: mqAddress(env),
       queueDefinition: {
         queue: dataCollectionNotificationsQueue(env),

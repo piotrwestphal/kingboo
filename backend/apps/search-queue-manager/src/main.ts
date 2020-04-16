@@ -9,6 +9,7 @@ async function bootstrap() {
     origin: config.corsOrigins,
   });
   app.connectMicroservice(config.mqConsumer);
+  await app.startAllMicroservicesAsync();
   await app.listen(config.port);
 }
 

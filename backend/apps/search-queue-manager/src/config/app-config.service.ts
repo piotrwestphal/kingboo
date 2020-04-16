@@ -37,7 +37,7 @@ export class AppConfigService extends ConfigService<AppConfig> implements FaunaC
   }
 
   get dataCollectionNotificationsMqClient(): RmqOptions {
-    return buildRmqOptions(this.config.dataCollectionNotificationsMqClient);
+    return buildRmqOptions(this.config.collectingScenarioMqClient);
   }
 
   get userNotificationsMqClient(): RmqOptions {

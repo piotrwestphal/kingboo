@@ -3,10 +3,7 @@ import { FaunaClient } from './fauna.client';
 import { createClient, createClientForDevPurposes } from '@kb/fauna-client/utils/create-client';
 import { FaunaClientConfigService, FaunaClientConfigType } from '@kb/fauna-client';
 
-@Module({
-  providers: [FaunaClient],
-  exports: [FaunaClient],
-})
+@Module({})
 export class FaunaClientModule {
   static register<T extends FaunaClientConfigService>({configClass}: {configClass: FaunaClientConfigType<T>}): DynamicModule {
     const faunaClientProvider = {

@@ -3,7 +3,7 @@ import { AppConfig } from '../src/config/app.config';
 
 const mqAddress = 'amqp://dev:dev@localhost:5672';
 const consumerQueueName = 'data-collection-notifications';
-const dataCollectionNotificationsQueue = 'data-collection-notifications';
+const collectingScenarioQueue = 'collecting-scenario';
 const userNotificationsQueue = 'user-notifications';
 
 export const localConfig: AppConfig = {
@@ -29,11 +29,11 @@ export const localConfig: AppConfig = {
       queueOptions: retrieveRMQQueueOptions(consumerQueueName),
     },
   },
-  dataCollectionNotificationsMqClient: {
+  collectingScenarioMqClient: {
     address: mqAddress,
     queueDefinition: {
-      queue: dataCollectionNotificationsQueue,
-      queueOptions: retrieveRMQQueueOptions(dataCollectionNotificationsQueue),
+      queue: collectingScenarioQueue,
+      queueOptions: retrieveRMQQueueOptions(collectingScenarioQueue),
     },
   },
   userNotificationsMqClient: {

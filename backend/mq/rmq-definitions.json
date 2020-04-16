@@ -48,6 +48,15 @@
       }
     },
     {
+      "name": "data-to-process",
+      "vhost": "/",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {
+        "x-queue-type": "classic"
+      }
+    },
+    {
       "name": "data-collection-notifications",
       "vhost": "/",
       "durable": true,
@@ -57,7 +66,7 @@
       }
     },
     {
-      "name": "data-to-process",
+      "name": "collecting-scenario",
       "vhost": "/",
       "durable": true,
       "auto_delete": false,
@@ -66,5 +75,6 @@
       }
     }
   ],
+  "exchanges": [],
   "bindings": []
 }

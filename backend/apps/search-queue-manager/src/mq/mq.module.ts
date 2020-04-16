@@ -5,7 +5,6 @@ import { RmqUserNotificationsSender } from './rmq-user-notifications.sender';
 import { AppConfigService } from '../config/app-config.service';
 import { CollectingScenarioSender } from '../core/abstract/collecting-scenario.sender';
 import { RmqCollectingScenarioSender } from './rmq-collecting-scenario.sender';
-import { DataCollectionStatusConsumer } from './data-collection-status.consumer';
 
 @Module({
   providers: [
@@ -26,7 +25,6 @@ import { DataCollectionStatusConsumer } from './data-collection-status.consumer'
       inject: [AppConfigService],
     },
   ],
-  controllers: [DataCollectionStatusConsumer],
   exports: [UserNotificationsSender, CollectingScenarioSender],
 })
 export class MqModule {

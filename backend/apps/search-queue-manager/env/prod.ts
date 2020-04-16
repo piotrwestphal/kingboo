@@ -18,7 +18,7 @@ export const prodConfig = (env: NodeJS.ProcessEnv): AppConfig =>
         queue: env.MQ_CONSUMER_QUEUE_NAME,
       },
     },
-    dataCollectionNotificationsMqClient: {
+    collectingScenarioMqClient: {
       address: env.MQ_ADDRESS,
       queueDefinition: {
         queue: env.MQ_DATA_COLLECTION_NOTIFICATIONS_QUEUE_NAME,
