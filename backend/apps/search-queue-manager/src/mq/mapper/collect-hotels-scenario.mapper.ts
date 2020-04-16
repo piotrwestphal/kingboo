@@ -15,14 +15,16 @@ export class CollectHotelsScenarioMapper {
                            }: SearchRequest): CollectHotelsScenarioMessage {
     return {
       searchId,
-      resultsLimit,
-      searchPlace,
-      checkInDate,
-      checkOutDate,
-      numberOfRooms,
-      numberOfAdults,
-      childrenAgeAtCheckout,
-      searchPlaceIdentifier,
+      scenario: {
+        resultsLimit,
+        searchPlace,
+        checkInDate,
+        checkOutDate,
+        numberOfRooms,
+        numberOfAdults,
+        childrenAgeAtCheckout,
+        searchPlaceIdentifier,
+      },
       timestamp: Date.now(),
     };
   }

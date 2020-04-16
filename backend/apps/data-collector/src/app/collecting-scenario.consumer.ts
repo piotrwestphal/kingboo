@@ -1,5 +1,5 @@
 import { Controller } from '@nestjs/common';
-import { MessagePattern, Payload } from '@nestjs/microservices';
+import { Ctx, MessagePattern, Payload, RmqContext } from '@nestjs/microservices';
 import { CollectingScenarioMessagePattern } from '@kb/rabbit/message-pattern/CollectingScenarioMessagePattern';
 import { CollectHotelsScenarioMessage } from '@kb/model/mqmessage/collect-hotels-scenario.message';
 import { DataCollectorService } from '../core/abstract/data-collector.service';
@@ -14,8 +14,13 @@ export class CollectingScenarioConsumer {
   }
 
   @MessagePattern(CollectingScenarioMessagePattern.NEW_SCENARIO)
-  async handleHotelsCollectionCompleted(@Payload() collectHotelsScenarioMsg: CollectHotelsScenarioMessage) {
+  async handleHotelsCollectionCompleted(@Payload() collectHotelsScenarioMsg: CollectHotelsScenarioMessage,
+                                        @Ctx() context: RmqContext) {
     const collectHotelsScenario = CollectHotelsScenarioMapper.fromMessage(collectHotelsScenarioMsg);
-    await this.dataCollectorService.collectData(collectHotelsScenario)
+    await this.dataCollectorService.collectData(collectHotelsScenario);
+
+    const channel = context.getChannelRef();
+    const originalMsg = context.getMessage();
+    channel.ack(originalMsg);
   }
 }

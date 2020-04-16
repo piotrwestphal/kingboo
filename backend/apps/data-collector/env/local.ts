@@ -34,6 +34,7 @@ export const localConfig: AppConfig = {
     address: mqAddress,
     queueDefinition: {
       queue: consumerQueueName,
+      noAck: false,
       queueOptions: retrieveRMQQueueOptions(consumerQueueName),
     },
   },

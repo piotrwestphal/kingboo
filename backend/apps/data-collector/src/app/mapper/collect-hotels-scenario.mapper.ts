@@ -4,14 +4,16 @@ import { CollectHotelsScenario } from '../../core/interface/collect-hotels-scena
 export class CollectHotelsScenarioMapper {
   static fromMessage({
                                    searchId,
-                                   resultsLimit,
-                                   searchPlace,
-                                   checkInDate,
-                                   checkOutDate,
-                                   numberOfRooms,
-                                   numberOfAdults,
-                                   childrenAgeAtCheckout,
-                                   searchPlaceIdentifier,
+                                   scenario: {
+                                     resultsLimit,
+                                     searchPlace,
+                                     checkInDate,
+                                     checkOutDate,
+                                     numberOfRooms,
+                                     numberOfAdults,
+                                     childrenAgeAtCheckout,
+                                     searchPlaceIdentifier,
+                                   },
                                  }: CollectHotelsScenarioMessage): CollectHotelsScenario {
     return {
       searchId,
