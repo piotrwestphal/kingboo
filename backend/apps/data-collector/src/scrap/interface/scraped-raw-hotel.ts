@@ -19,4 +19,5 @@ export interface ScrapedRawHotel {
   newlyAdded: string | null;
   bonuses: string[];
   rooms: ScrapedRawRoom[];
+  debug: object;
 }

@@ -13,6 +13,7 @@ export class MongoRawSearchResultRepository extends RawSearchResultRepository {
 
   // This method is in a prevent form - because sometimes it takes very long to throw an error when a save to cloud db process failed
   public async create(rawSearchResult: RawSearchResult): Promise<void> {
+    // TODO: remove null values before save
     return new Promise<void>(async (resolve, reject) => {
       const thresholdMs = 15000;
       const timeout = setTimeout(() =>

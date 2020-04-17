@@ -22,16 +22,8 @@ export class ResultListPage {
    * 2.   When the search request is for 2 persons with child or more than 2 persons or more than 1 room. 'rooms' will be collected.
    */
   // TODO: clean up with google cloud logs
-  public collectHotelsFromSearchResultList(): Promise<{
-    hotels: ScrapedRawHotel[],
-    addressContainerType: string[],
-    priceContainerType: string[],
-  }> {
-    return this.browserService.evaluate<{
-      hotels: ScrapedRawHotel[],
-      addressContainerType: string[],
-      priceContainerType: string[],
-    }>(() => {
+  public collectHotelsFromSearchResultList(): Promise<ScrapedRawHotel[]> {
+    return this.browserService.evaluate<ScrapedRawHotel[]>(() => {
       // helper functions
       const getFirstElementByClass = (element: Element, classNames: string): HTMLElement | null =>
         element ? element.getElementsByClassName(classNames)[0] as HTMLElement || null : null;
@@ -130,17 +122,14 @@ export class ResultListPage {
       };
 
       const hotels: ScrapedRawHotel[] = [];
-      const addressContainerType: Set<string> = new Set(); // for debug purposes
-      const priceContainerType: Set<string> = new Set(); // for debug purposes
 
       const searchResultsContainers = document.getElementsByClassName('sr_item sr_item_default');
       for (const searchResultContainer of searchResultsContainers) {
         // Sometimes other containers also appears like: Car Rental - they don't have name of hotel
         const name = getTextFromElement(searchResultContainer, 'sr-hotel__name');
         if (name) {
-          const { coords, districtName, distanceFromCenter, addressContainerType: addressType }
+          const { coords, districtName, distanceFromCenter, addressContainerType }
             = extractFromAddressContainer(searchResultContainer);
-          addressContainerType.add(addressType);
           const hotelLink = getHotelLink(searchResultContainer);
           const rate = getTextFromElement(searchResultContainer, 'bui-review-score__badge');
           const secondaryRateType = getTextFromElementIfContainerExist(
@@ -153,8 +142,7 @@ export class ResultListPage {
           const hotelNewlyAdded = getTextFromElement(searchResultContainer, 'new_hotel__badge');
 
           // Price
-          const { price, priceContainerType: priceType } = getPrice(searchResultContainer);
-          priceContainerType.add(priceType);
+          const { price, priceContainerType } = getPrice(searchResultContainer);
           const tax = getTextFromElement(searchResultContainer, 'prd-taxes-and-fees-under-price');
 
           // Bonuses
@@ -211,14 +199,14 @@ export class ResultListPage {
             newlyAdded: hotelNewlyAdded,
             bonuses: hotelBonuses.length ? hotelBonuses : null,
             rooms: rooms.length ? rooms : null,
+            debug: {
+              addressContainerType,
+              priceContainerType,
+            }
           });
         }
       }
-      return {
-        hotels,
-        addressContainerType: Array.from(addressContainerType),
-        priceContainerType: Array.from(priceContainerType),
-      };
+      return hotels;
     });
   }
 

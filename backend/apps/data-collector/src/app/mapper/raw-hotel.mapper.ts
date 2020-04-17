@@ -20,6 +20,7 @@ export class RawHotelMapper {
                                newlyAdded,
                                bonuses,
                                rooms,
+                               debug
                              }: ScrapedRawHotel): RawHotel {
     return new RawHotel(
       name,
@@ -38,6 +39,7 @@ export class RawHotelMapper {
       newlyAdded,
       bonuses,
       rooms,
+      debug,
     );
   }
 

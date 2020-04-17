@@ -39,20 +39,8 @@ export class HotelsScraper {
     return totalPagesCount;
   }
 
-  async collectHotelsFromCurrentPage(): Promise<{
-    addressContainerType: string[],
-    priceContainerType: string[],
-    scrapedRawHotels: ScrapedRawHotel[],
-    nextPageButtonAvailable: boolean
-  }> {
-    const { addressContainerType, priceContainerType, hotels } = await this.resultListPage.collectHotelsFromSearchResultList();
-    if (addressContainerType) {
-      console.debug(`There were [${addressContainerType}] address containers`);
-    } else {
-      console.warn('Not found known address containers');
-    }
-    console.debug(`There were [${priceContainerType}] price containers`);
-
+  async collectHotelsFromCurrentPage(): Promise<{ scrapedRawHotels: ScrapedRawHotel[], nextPageButtonAvailable: boolean }> {
+    const scrapedRawHotels = await this.resultListPage.collectHotelsFromSearchResultList();
     await this.browserService.wait(1000);
     const nextPageButtonAvailable = await this.resultPage.clickNextPageButtonIfAvailable();
     if (nextPageButtonAvailable) {
@@ -64,9 +52,7 @@ export class HotelsScraper {
       }
     }
     return {
-      addressContainerType,
-      priceContainerType,
-      scrapedRawHotels: hotels,
+      scrapedRawHotels,
       nextPageButtonAvailable,
     };
   }

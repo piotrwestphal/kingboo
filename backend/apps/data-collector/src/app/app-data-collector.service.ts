@@ -68,7 +68,6 @@ export class AppDataCollectorService extends DataCollectorService {
     let currentHotelsCount = 0;
     let isNextPageButtonAvailable = totalPagesCount > 0;
     while (isNextPageButtonAvailable && resultsLimit > currentHotelsCount) {
-      // TODO: collect debug info to RawSearchResult
       const { scrapedRawHotels, nextPageButtonAvailable } = await this.scraperFacade.collectHotelsFromCurrentPage();
       const mappedRawHotels = scrapedRawHotels.map(h => RawHotelMapper.fromScrapedRawHotel(h));
       rawHotels.push(...mappedRawHotels);
