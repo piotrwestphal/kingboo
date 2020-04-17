@@ -15,7 +15,7 @@ services:
       MQ_DATA_COLLECTION_NOTIFICATIONS_QUEUE_NAME: data-collection-notifications
       MQ_USER_NOTIFICATIONS_QUEUE_NAME: data-to-process
     volumes:
-      - ./scraping-results:/usr/src/app/results
+      - ./scraping-results:/usr/src/app/dist/apps/data-collector/results
       - ./tools/wait-for-it.sh:/wait-for-it.sh
     ports:
       - 38080:8080

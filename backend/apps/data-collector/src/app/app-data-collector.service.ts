@@ -47,7 +47,7 @@ export class AppDataCollectorService extends DataCollectorService {
       await this.scraperFacade.performCleaningAfterScraping();
     }
     const collectingTimeSec = TimeHelper.getDiffTimeInSeconds(startCollectingHotelsTimeMs);
-    console.info(`Collecting data finish. Collecting last [${collectingTimeSec}]`);
+    console.info(`Collecting data finish. Collecting last [${collectingTimeSec}] sec`);
     rawSearchResult.setCollectingTime(collectingTimeSec);
 
     console.debug(`Saving raw search result with id [${rawSearchResult.searchId}] to db,`);
@@ -57,7 +57,7 @@ export class AppDataCollectorService extends DataCollectorService {
     if (this.appConfigService.saveRawResultInJson) {
       const pathToResult = await this.fileManagerService.saveDataAsJSON(rawSearchResult,
         `${collectHotelsScenario.searchPlace}_${collectHotelsScenario.searchId}`);
-      console.info(`Raw search result was saved locally to [${pathToResult}]`);
+      console.debug(`Raw search result was saved locally to [${pathToResult}]`);
     }
   }
 
@@ -92,7 +92,7 @@ export class AppDataCollectorService extends DataCollectorService {
       return searchPlaceIdentifier;
     }
     const collectedSearchPlaceIdentifier = await this.scraperFacade.collectSearchPlaceIdentifier(searchPlace);
-    this.dataCollectionNotificationSender.sendSearchPlaceIdentifier(searchId, searchPlaceIdentifier);
+    this.dataCollectionNotificationSender.sendSearchPlaceIdentifier(searchId, collectedSearchPlaceIdentifier);
     return collectedSearchPlaceIdentifier;
   }
 }

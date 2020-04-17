@@ -34,7 +34,7 @@ export class AppSearchRequestService extends SearchRequestService {
       const updated = found.updateSearchPlaceIdentifier(searchPlaceIdentifier);
       const saved = await this.searchRequestRepository.update(updated);
       console.log(`Successfully updated search place identifier [${saved.searchPlaceIdentifier}] for given search id [${searchId}]`);
-      console.debug(`Updated search request: [${saved}]`);
+      console.debug(`Updated search request: [${JSON.stringify(saved)}]`);
     } else {
       console.warn(`Unable to update search place identifier. Search request for given search id [${searchId}] not found`);
     }

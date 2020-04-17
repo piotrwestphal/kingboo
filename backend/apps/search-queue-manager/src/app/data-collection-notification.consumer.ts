@@ -20,6 +20,7 @@ export class DataCollectionNotificationConsumer {
 
   @MessagePattern(DataCollectionNotificationsMessagePattern.SEARCH_PLACE_COLLECTION_COMPLETED)
   async handleSearchPlaceCollectionCompleted(@Payload() { searchId, searchPlaceIdentifier }: SearchPlaceCollectionCompletedMessage) {
+    console.log('handleSearchPlaceCollectionCompleted: ', {searchId, searchPlaceIdentifier});
     await this.searchRequestService.updateSearchPlaceIdentifier(searchId, searchPlaceIdentifier);
   }
 }

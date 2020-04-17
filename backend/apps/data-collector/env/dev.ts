@@ -33,6 +33,7 @@ export const devConfig = (env: NodeJS.ProcessEnv): AppConfig =>
       queueDefinition: {
         queue: consumerQueueName(env),
         noAck: false,
+        prefetchCount: 1,
         queueOptions: retrieveRMQQueueOptions(consumerQueueName(env)),
       },
     },

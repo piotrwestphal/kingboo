@@ -10,7 +10,6 @@ export interface SearchRequestDocument extends Document, TimestampsDocument {
   readonly priority: number;
   readonly updateFrequencyMinutes: number;
   readonly resultsLimit: number;
-
   // Scenario parameters
   readonly searchPlace: string;
   readonly checkInDate: CheckDateDocument;

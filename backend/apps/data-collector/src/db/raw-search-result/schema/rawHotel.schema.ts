@@ -22,6 +22,7 @@ export const RawHotelSchema = new Schema<RawHotelDocument>({
     newlyAdded: String,
     bonuses: [String],
     rooms: [RawRoomSchema],
+    debug: Object,
   },
   {
     _id: false,

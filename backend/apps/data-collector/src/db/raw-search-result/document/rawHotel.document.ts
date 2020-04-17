@@ -21,4 +21,5 @@ export interface RawHotelDocument extends Document {
     readonly newlyAdded: string | null;
     readonly bonuses: string[] | null;
     readonly rooms: RawRoomDocument[] | null;
+    readonly debug: object;
 }

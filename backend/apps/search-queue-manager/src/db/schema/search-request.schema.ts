@@ -9,9 +9,6 @@ export const SearchRequestSchema = new Schema<SearchRequestDocument>({
     priority: Number,
     updateFrequencyMinutes: Number,
     resultsLimit: Number,
-    occupancyStatus: String,
-    occupancyUpdatedAt: Date,
-    owner: String,
     // Scenario parameters
     searchPlace: String,
     checkInDate: CheckDateSchema,
@@ -19,8 +16,10 @@ export const SearchRequestSchema = new Schema<SearchRequestDocument>({
     numberOfRooms: Number,
     numberOfAdults: Number,
     childrenAgeAtCheckout: [Number],
-    currency: String,
-    language: String,
+
+    searchPlaceIdentifier: String,
+    occupancyStatus: String,
+    occupancyUpdatedAt: Date,
   },
   {
     versionKey: false,
