@@ -50,7 +50,7 @@ export class AppDataCollectorService extends DataCollectorService {
     console.info(`Collecting data finish. Collecting last [${collectingTimeSec}]`);
     rawSearchResult.setCollectingTime(collectingTimeSec);
 
-    console.debug(`Saving raw search result with id [${rawSearchResult.searchId}] to db,`)
+    console.debug(`Saving raw search result with id [${rawSearchResult.searchId}] to db,`);
     await this.rawSearchResultRepository.create(rawSearchResult);
     this.dataCollectionNotificationSender.sendHotelsCollectionCompleted(searchId, collectingTimeSec);
 
@@ -68,6 +68,7 @@ export class AppDataCollectorService extends DataCollectorService {
     let currentHotelsCount = 0;
     let isNextPageButtonAvailable = totalPagesCount > 0;
     while (isNextPageButtonAvailable && resultsLimit > currentHotelsCount) {
+      // TODO: collect debug info to RawSearchResult
       const { scrapedRawHotels, nextPageButtonAvailable } = await this.scraperFacade.collectHotelsFromCurrentPage();
       const mappedRawHotels = scrapedRawHotels.map(h => RawHotelMapper.fromScrapedRawHotel(h));
       rawHotels.push(...mappedRawHotels);

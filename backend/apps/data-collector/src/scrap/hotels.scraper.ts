@@ -40,6 +40,8 @@ export class HotelsScraper {
   }
 
   async collectHotelsFromCurrentPage(): Promise<{
+    addressContainerType: string[],
+    priceContainerType: string[],
     scrapedRawHotels: ScrapedRawHotel[],
     nextPageButtonAvailable: boolean
   }> {
@@ -62,6 +64,8 @@ export class HotelsScraper {
       }
     }
     return {
+      addressContainerType,
+      priceContainerType,
       scrapedRawHotels: hotels,
       nextPageButtonAvailable,
     };
