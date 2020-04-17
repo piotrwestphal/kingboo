@@ -10,15 +10,6 @@ export const localConfig: AppConfig = {
   nodeEnv: 'local',
   port: 8080,
   corsOrigins: 'http://localhost', // separate multiple origins by comma
-  fauna: {
-    dbName: 'temp',
-    adminDb: {
-      domain: 'localhost',
-      scheme: 'http',
-      port: 38443,
-      secret: 'secret',
-    },
-  },
   mongo: {
     address: 'mongodb://127.0.0.1:27017/dev',
   },

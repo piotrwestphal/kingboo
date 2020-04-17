@@ -10,10 +10,10 @@ export const prodConfig = (env: NodeJS.ProcessEnv): AppConfig =>
     puppeteer: {
       headlessModeOff: env.PUPPETEER_HEADLESS === 'true',
     },
-    fauna: {
+    /*fauna: {
       dbName: env.FAUNA_DB_NAME,
       secret: env.FAUNA_DB_SECRET,
-    },
+    },*/
     mongo: {
       address: env.MONGO_ADDRESS,
     },

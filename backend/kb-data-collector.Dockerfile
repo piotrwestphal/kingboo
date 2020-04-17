@@ -16,9 +16,9 @@ RUN npm i puppeteer
 
 WORKDIR /usr/src/app
 COPY package*.json ./
-# skip puppeteer installation
-RUN npm install  --ignore-scripts
-COPY docker .
+# skip puppeteer installation | npm install --ignore-scripts
+RUN npm install
+COPY . .
 RUN npm run build:dc
 
 EXPOSE 8080

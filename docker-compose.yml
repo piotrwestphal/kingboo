@@ -1,31 +1,45 @@
 version: "3.7"
 services:
-#  data-collector:
-#    build:
-#      context: ./backend
-#      dockerfile: backend/kb-data-collector.Dockerfile
-#    image: kb-data-collector
-#    environment:
-#      NODE_ENV: dev
-#      PUPPETEER_HEADLESS_SCRAPING: "true"
-#      PUPPETEER_EXECUTABLE_PATH: google-chrome-unstable
-#      SAVE_RESULTS_AS_JSON_AND_TAKE_SCREENSHOTS_ON_ERROR: "true"
-#    volumes:
-#      - ./scraping-results:/usr/src/app/results
-#      - ./tools/wait-for-it.sh:/wait-for-it.sh
-#    ports:
-#      - 38080:8080
-#
-#  search-request-manager:
-#    build:
-#      context: ./backend
-#      dockerfile: backend/kb-search-request-manager.Dockerfile
-#    image: kb-search-request-manager
-#    volumes:
-#      - ./tools/wait-for-it.sh:/wait-for-it.sh
-#    ports:
-#    - 38081:8080
-#    command: ["/wait-for-it.sh", "rabbitmq:5672", "-t", "60", "--", "node", "main"]
+  data-collector:
+    build:
+      context: ./backend
+      dockerfile: kb-data-collector.Dockerfile
+    image: kb-data-collector
+    environment:
+      PORT: 8080
+      NODE_ENV: dev
+      CORS_ORIGINS: localhost
+      MONGO_ADDRESS: mongodb://mongo:27017/dev
+      MQ_ADDRESS: amqp://dev:dev@rabbitmq:5672
+      MQ_CONSUMER_QUEUE_NAME: collecting-scenario
+      MQ_DATA_COLLECTION_NOTIFICATIONS_QUEUE_NAME: data-collection-notifications
+      MQ_USER_NOTIFICATIONS_QUEUE_NAME: data-to-process
+    volumes:
+      - ./scraping-results:/usr/src/app/results
+      - ./tools/wait-for-it.sh:/wait-for-it.sh
+    ports:
+      - 38080:8080
+    command: ["/wait-for-it.sh", "rabbitmq:5672", "-t", "60", "--", "node", "main"]
+
+  search-queue-manager:
+    build:
+      context: ./backend
+      dockerfile: kb-search-queue-manager.Dockerfile
+    image: kb-search-queue-manager
+    environment:
+      PORT: 8080
+      NODE_ENV: dev
+      CORS_ORIGINS: localhost
+      MONGO_ADDRESS: mongodb://mongo:27017/dev
+      MQ_ADDRESS: amqp://dev:dev@rabbitmq:5672
+      MQ_CONSUMER_QUEUE_NAME: data-collection-notifications
+      COLLECTING_SCENARIO_QUEUE_NAME: collecting-scenario
+      MQ_USER_NOTIFICATIONS_QUEUE_NAME: user-notifications
+    volumes:
+      - ./tools/wait-for-it.sh:/wait-for-it.sh
+    ports:
+    - 38081:8080
+    command: ["/wait-for-it.sh", "rabbitmq:5672", "-t", "60", "--", "node", "main"]
 #
 #  user-service:
 #    build:

@@ -18,7 +18,7 @@ export const localConfig: AppConfig = {
     slowMoMs: 0,
     devtoolsTurnedOn: false,
   },
-  fauna: {
+  /*fauna: {
     dbName: 'temp',
     adminDb: {
       domain: 'localhost',
@@ -26,7 +26,7 @@ export const localConfig: AppConfig = {
       port: 38443,
       secret: 'secret',
     },
-  },
+  },*/
   mongo: {
     address: 'mongodb://127.0.0.1:27017/dev',
   },
