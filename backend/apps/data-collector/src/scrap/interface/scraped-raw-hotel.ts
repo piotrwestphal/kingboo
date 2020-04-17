@@ -13,7 +13,6 @@ export interface ScrapedRawHotel {
   rate: string | null;
   secondaryRate: string | null;
   secondaryRateType: string | null;
-  priceWithoutDiscount: string | null;
   numberOfReviews: string | null;
   propertyType: string | null;
   starRating: string | null;

@@ -13,7 +13,6 @@ export interface RawHotelDto {
   readonly rate: string | null;
   readonly secondaryRate: string | null;
   readonly secondaryRateType: string | null;
-  readonly priceWithoutDiscount: string | null;
   readonly numberOfReviews: string | null;
   readonly propertyType: string | null;
   readonly starRating: string | null;

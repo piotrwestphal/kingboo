@@ -6,9 +6,8 @@ export const RawSearchResultSchemaKey = 'rawSearchResult';
 
 export const RawSearchResultSchema = new Schema<RawSearchResultDocument>({
     searchId: String,
-    searchPerformedForPlace: String,
     scrapingTimeSeconds: Number,
-    searchProcessTimeSeconds: Number,
+    collectingTimeSec: Number,
     hotelsCount: Number,
     hotels: [RawHotelSchema],
   },

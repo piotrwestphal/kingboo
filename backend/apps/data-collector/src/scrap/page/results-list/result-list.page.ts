@@ -1,7 +1,6 @@
 import { BrowserService } from '../../browser.service';
-import { HotelRaw } from '../../../search-result/interface/hotel.raw';
-import { Room } from '../../../search-result/interface/room';
-import { RawHotel } from '../../../core/model/RawHotel';
+import { ScrapedRawHotel } from '../../interface/scraped-raw-hotel';
+import { ScrapedRawRoom } from '../../interface/scraped-raw-room';
 
 interface AddressContainerData {
   distanceFromCenter: string;
@@ -24,12 +23,12 @@ export class ResultListPage {
    */
   // TODO: clean up with google cloud logs
   public collectHotelsFromSearchResultList(): Promise<{
-    hotels: RawHotel[],
+    hotels: ScrapedRawHotel[],
     addressContainerType: string[],
     priceContainerType: string[],
   }> {
     return this.browserService.evaluate<{
-      hotels: RawHotel[],
+      hotels: ScrapedRawHotel[],
       addressContainerType: string[],
       priceContainerType: string[],
     }>(() => {
@@ -93,10 +92,13 @@ export class ResultListPage {
         const addressContainer = getFirstElementByClass(searchResultContainer, 'sr_card_address_line');
         if (addressContainer) {
           const districtLink = getFirstElementByClass(addressContainer, 'bui-link') as HTMLLinkElement;
-          // distance from center span has no class as the only span element in address container
-          const distanceFromCenterSpan = addressContainer.querySelector('span:not([class])') as HTMLSpanElement;
+          // distance from center span has no class and there are couple [3] spans without classes in address container
+          // as well distance don't have unique attributes
+          const spansWithoutClass = addressContainer.querySelectorAll<HTMLSpanElement>('span:not([class])');
+          const textFromSpans = Array.from(spansWithoutClass).map(v => v.innerText);
+          const concatText = textFromSpans.length ? textFromSpans.reduce((c, p) => c + p) : null;
           return {
-            distanceFromCenter: distanceFromCenterSpan ? distanceFromCenterSpan.innerText : null,
+            distanceFromCenter: concatText,
             districtName: districtLink.innerText,
             coords: districtLink.getAttribute('data-coords'),
             addressContainerType: 'NEW',
@@ -127,7 +129,7 @@ export class ResultListPage {
           : null;
       };
 
-      const hotels: HotelRaw[] = [];
+      const hotels: ScrapedRawHotel[] = [];
       const addressContainerType: Set<string> = new Set(); // for debug purposes
       const priceContainerType: Set<string> = new Set(); // for debug purposes
 
@@ -145,9 +147,8 @@ export class ResultListPage {
             searchResultContainer, 'review-score-widget__14', 'review-score-widget__text');
           const secondaryRate = getTextFromElementIfContainerExist(searchResultContainer,
             'review-score-widget__14', 'review-score-badge');
-          const priceWithoutDiscount = getTextFromElement(searchResultContainer, 'toggle_price_per_night_or_stay');
           const numberOfReviews = getTextFromElement(searchResultContainer, 'bui-review-score__text');
-          const propertyType = getTextFromElement(searchResultContainer, 'sr-hotel__type');
+          const propertyType = getTextFromElement(searchResultContainer, 'bh-property-type');
           const starRating = getTextFromElementIfContainerExist(searchResultContainer, 'bk-icon-stars', 'invisible_spoken');
           const hotelNewlyAdded = getTextFromElement(searchResultContainer, 'new_hotel__badge');
 
@@ -159,7 +160,7 @@ export class ResultListPage {
           // Bonuses
           const groupRoomsContainer = getFirstElementByClass(searchResultContainer, 'sr_gr sr-group_recommendation');
           const hotelBonuses: string[] = [];
-          const rooms: Room[] = [];
+          const rooms: ScrapedRawRoom[] = [];
           if (groupRoomsContainer) {
             // in case of the search request different than the standard search criteria
             const roomsContainers = searchResultContainer.getElementsByClassName('roomrow entire_row_clickable');
@@ -204,7 +205,6 @@ export class ResultListPage {
             rate,
             secondaryRateType,
             secondaryRate,
-            priceWithoutDiscount,
             numberOfReviews,
             propertyType,
             starRating,

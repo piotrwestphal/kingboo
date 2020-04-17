@@ -16,7 +16,6 @@ export const RawHotelSchema = new Schema<RawHotelDocument>({
     rate: String,
     secondaryRateType: String,
     secondaryRate: String,
-    priceWithoutDiscount: String,
     numberOfReviews: String,
     propertyType: String,
     starRating: String,

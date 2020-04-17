@@ -12,11 +12,13 @@ import { AppConfigService } from '../config/app-config.service';
 import { DataCollectorService } from '../core/abstract/data-collector.service';
 import { AppDataCollectorService } from './app-data-collector.service';
 import { FileManagerService } from './file-manager.service';
+import { DbModule } from '../db/db.module';
 
 @Module({
   imports: [
     ConfigModule.register(getEnvironments(), AppConfigService),
     CoreModule,
+    DbModule,
     MqModule,
     ScrapModule,
   ],

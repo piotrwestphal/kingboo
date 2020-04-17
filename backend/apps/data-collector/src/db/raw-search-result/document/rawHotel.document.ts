@@ -15,7 +15,6 @@ export interface RawHotelDocument extends Document {
     readonly rate: string | null;
     readonly secondaryRateType: string | null;
     readonly secondaryRate: string | null;
-    readonly priceWithoutDiscount: string | null;
     readonly numberOfReviews: string | null;
     readonly propertyType: string | null;
     readonly starRating: string | null;

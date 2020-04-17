@@ -10,6 +10,7 @@ import { DataToProcessSender } from '../core/abstract/data-to-process.sender';
 import { Injectable } from '@nestjs/common';
 import { RawHotel } from '../core/model/RawHotel';
 import { RawHotelMapper } from './mapper/raw-hotel.mapper';
+import { RawSearchResultRepository } from '../core/abstract/raw-search-result.repository';
 
 @Injectable()
 export class AppDataCollectorService extends DataCollectorService {
@@ -19,6 +20,7 @@ export class AppDataCollectorService extends DataCollectorService {
     private readonly dataCollectionNotificationSender: DataCollectionNotificationSender,
     private readonly dataToProcessSender: DataToProcessSender,
     private readonly fileManagerService: FileManagerService,
+    private readonly rawSearchResultRepository: RawSearchResultRepository,
     private readonly scraperFacade: ScraperFacade,
   ) {
     super();
@@ -47,7 +49,9 @@ export class AppDataCollectorService extends DataCollectorService {
     const collectingTimeSec = TimeHelper.getDiffTimeInSeconds(startCollectingHotelsTimeMs);
     console.info(`Collecting data finish. Collecting last [${collectingTimeSec}]`);
     rawSearchResult.setCollectingTime(collectingTimeSec);
-    // TODO: save to db
+
+    console.debug(`Saving raw search result with id [${rawSearchResult.searchId}] to db,`)
+    await this.rawSearchResultRepository.create(rawSearchResult);
     this.dataCollectionNotificationSender.sendHotelsCollectionCompleted(searchId, collectingTimeSec);
 
     if (this.appConfigService.saveRawResultInJson) {

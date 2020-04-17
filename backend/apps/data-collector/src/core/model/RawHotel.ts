@@ -17,7 +17,6 @@ export class RawHotel {
     public readonly rate: string | null,
     public readonly secondaryRate: string | null,
     public readonly secondaryRateType: string | null,
-    public readonly priceWithoutDiscount: string | null,
     public readonly numberOfReviews: string | null,
     public readonly propertyType: string | null,
     public readonly starRating: string | null,
