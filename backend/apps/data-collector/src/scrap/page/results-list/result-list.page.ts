@@ -152,22 +152,19 @@ export class ResultListPage {
           if (groupRoomsContainer) {
             // in case of the search request different than the standard search criteria
             const roomsContainers = searchResultContainer.getElementsByClassName('roomrow entire_row_clickable');
-            const freeCancellationBonus = getTextFromElement(roomsContainers[0], 'sr_room_reinforcement');
-            if (freeCancellationBonus) {
-              hotelBonuses.push(freeCancellationBonus);
-            }
-            const breakfastIncludedBonus = getTextFromElement(searchResultContainer, 'add-red-tag__amount');
-            if (breakfastIncludedBonus) {
-              hotelBonuses.push(breakfastIncludedBonus);
-            }
             for (const roomContainer of roomsContainers) {
-              const description = getTextFromElement(roomContainer, 'room_link');
-              const personCount = getTextFromElement(roomContainer, 'invisible_spoken');
-              const beds = getTextFromElement(roomContainer, 'sr-group_recommendation__bed_wrapper--bigger');
+              const containerWithBonuses = getFirstElementByClass(roomContainer, 'roomNameInner');
+              const bonusesElements = containerWithBonuses.getElementsByTagName('sup');
+              const bonuses = Array.from(bonusesElements).map(b => b.innerText);
+              const descriptionShort = getTextFromElement(roomContainer, 'room_link');
+              const descriptionLong = getTextFromElement(roomContainer, 'c-unit-configuration');
+              const personCount = getTextFromElement(roomContainer, 'maxPersonsLeft');
+              const beds = getTextFromElement(roomContainer, 'c-beds-configuration');
               rooms.push({
-                description,
+                description: `${descriptionShort}|${descriptionLong}`,
                 personCount,
                 beds,
+                bonuses,
               });
             }
           } else {

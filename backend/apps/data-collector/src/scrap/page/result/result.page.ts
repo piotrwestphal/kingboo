@@ -35,7 +35,7 @@ export class ResultPage {
     const nextPageButton = await this.browserService.$(ResultPageElement.NEXT_PAGE_BUTTON);
     if (nextPageButton) {
       await this.browserService.click(ResultPageElement.NEXT_PAGE_BUTTON);
-      console.debug(`${ResultPageElement.NEXT_PAGE_BUTTON.description} clicked.`);
+      console.debug(`Proceeding to next page.`);
       return true;
     } else {
       return false;

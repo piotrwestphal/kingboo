@@ -5,6 +5,7 @@ export const RawRoomSchema = new Schema<RawRoomDocument>({
     description: String,
     personCount: String,
     beds: String,
+    bonuses: [String],
   },
   {
     _id: false,
