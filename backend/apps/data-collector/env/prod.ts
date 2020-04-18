@@ -10,10 +10,10 @@ export const prodConfig = (env: NodeJS.ProcessEnv): AppConfig =>
     puppeteer: {
       headlessModeOff: env.PUPPETEER_HEADLESS === 'true',
     },
-    /*fauna: {
-      dbName: env.FAUNA_DB_NAME,
+    fauna: {
+      dbName: env.FAUNA_DB_NAME, // TODO: not needed - clean up validation
       secret: env.FAUNA_DB_SECRET,
-    },*/
+    },
     mongo: {
       address: env.MONGO_ADDRESS,
     },
@@ -34,10 +34,10 @@ export const prodConfig = (env: NodeJS.ProcessEnv): AppConfig =>
     dataToProcessMqClient: {
       address: env.MQ_ADDRESS,
       queueDefinition: {
-        queue: env.MQ_USER_NOTIFICATIONS_QUEUE_NAME,
+        queue: env.MQ_DATA_TO_PROCESS_QUEUE_NAME,
         queueOptions: {
           arguments: {
-            'x-message-ttl': parseInt(env.MQ_USER_NOTIFICATIONS_QUEUE_MESSAGE_TTL, 10),
+            'x-message-ttl': parseInt(env.MQ_DATA_TO_PROCESS_QUEUE_NAME, 10),
           }
         }
       },

@@ -5,36 +5,32 @@ services:
       context: ./backend
       dockerfile: kb-data-collector.Dockerfile
     image: kb-data-collector
+    env_file:
+      - dev.env
     environment:
-      PORT: 8080
-      NODE_ENV: dev
-      CORS_ORIGINS: localhost
-      MONGO_ADDRESS: mongodb://mongo:27017/dev
-      MQ_ADDRESS: amqp://dev:dev@rabbitmq:5672
       MQ_CONSUMER_QUEUE_NAME: collecting-scenario
-      MQ_DATA_COLLECTION_NOTIFICATIONS_QUEUE_NAME: data-collection-notifications
-      MQ_USER_NOTIFICATIONS_QUEUE_NAME: data-to-process
+      FAUNA_DB_NAME: kingboo
+      FAUNA_ADMIN_DB_DOMAIN: faunadb
+      FAUNA_ADMIN_DB_SCHEME: http
+      FAUNA_ADMIN_DB_PORT: 8443
+      FAUNA_ADMIN_DB_SECRET: secret
     volumes:
       - ./scraping-results:/usr/src/app/dist/apps/data-collector/results
       - ./tools/wait-for-it.sh:/wait-for-it.sh
     ports:
       - 38080:8080
-    command: ["/wait-for-it.sh", "rabbitmq:5672", "-t", "60", "--", "node", "main"]
+    command: ["/wait-for-it.sh", "faunadb:8443", "-t", "60", "--", "node", "main"]
 
   search-queue-manager:
     build:
       context: ./backend
       dockerfile: kb-search-queue-manager.Dockerfile
     image: kb-search-queue-manager
+    env_file:
+      - ./dev.env
     environment:
-      PORT: 8080
-      NODE_ENV: dev
-      CORS_ORIGINS: localhost
-      MONGO_ADDRESS: mongodb://mongo:27017/dev
-      MQ_ADDRESS: amqp://dev:dev@rabbitmq:5672
       MQ_CONSUMER_QUEUE_NAME: data-collection-notifications
-      COLLECTING_SCENARIO_QUEUE_NAME: collecting-scenario
-      MQ_USER_NOTIFICATIONS_QUEUE_NAME: user-notifications
+
     volumes:
       - ./tools/wait-for-it.sh:/wait-for-it.sh
     ports:
@@ -67,3 +63,36 @@ services:
     image: mongo
     ports:
       - 27017:27017
+
+  faunadb:
+    image: fauna/faunadb
+    ports:
+      - 8443:8443
+      - 8444:8444
+
+  faunadb-initializer:
+    build:
+      context: ./db/fauna
+      dockerfile: faunadb-initializer.Dockerfile
+    depends_on:
+      - faunadb
+    env_file:
+      - dev.env
+    environment:
+      FAUNADB_INITIALIZED_CHECK_ADDRESS: http://faunadb:8443/ping
+      FAUNA_ADMIN_DB_SECRET: secret
+      FAUNA_DB_NAME: kingboo
+      FAUNA_PATH_TO_INIT_DB_SCRIPT: /bin/create-kingboo-db-with-data.fql
+    command: ["/bin/bash", "-c", "init-db-when-ready.sh"]
+    volumes:
+      - ./db/fauna/create-kingboo-db-with-data.fql:/bin/create-kingboo-db-with-data.fql
+      - ./db/fauna/init-db-when-ready.sh:/bin/init-db-when-ready.sh
+
+  faunadb-dashboard:
+    build:
+      context: ./db/fauna
+      dockerfile: faunadb-dashboard.Dockerfile
+    depends_on:
+      - faunadb
+    ports:
+      - 33000:3000

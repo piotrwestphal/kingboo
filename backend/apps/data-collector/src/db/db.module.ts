@@ -1,26 +1,32 @@
 import { Module } from '@nestjs/common';
-import { getModelToken } from '@nestjs/mongoose';
 import { AppConfigService } from '../config/app-config.service';
-import { RawSearchResultDocument, RawSearchResultSchema, RawSearchResultSchemaKey } from './raw-search-result';
-import { Model } from 'mongoose';
+import { RawSearchResultSchema, RawSearchResultSchemaKey } from './raw-search-result';
 import { RawSearchResultRepository } from '../core/abstract/raw-search-result.repository';
-import { MongoRawSearchResultRepository } from './mongo-raw-search-result.repository';
 import { MongoModule } from '@kb/mongo';
+import { FaunaClient, FaunaClientModule } from '@kb/fauna-client';
+import { FaunaRawSearchResultRepository } from './fauna-raw-search-result.repository';
 
 @Module({
   imports: [
-    // FaunaClientModule.register({ configClass: AppConfigService }),
+    FaunaClientModule.register({ configClass: AppConfigService }),
     MongoModule.register({ configClass: AppConfigService }, [
       { name: RawSearchResultSchemaKey, schema: RawSearchResultSchema },
     ]),
   ],
   providers: [
-    {
+    /*{
       provide: RawSearchResultRepository,
       useFactory: (rawSearchResultModel: Model<RawSearchResultDocument>) => {
         return new MongoRawSearchResultRepository(rawSearchResultModel);
       },
       inject: [getModelToken(RawSearchResultSchemaKey)],
+    },*/
+    {
+      provide: RawSearchResultRepository,
+      useFactory: (faunaClient: FaunaClient) => {
+        return new FaunaRawSearchResultRepository(faunaClient);
+      },
+      inject: [FaunaClient],
     },
   ],
   exports: [

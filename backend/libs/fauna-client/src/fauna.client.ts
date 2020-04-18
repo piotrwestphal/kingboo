@@ -1,8 +1,10 @@
-import { Injectable } from '@nestjs/common';
-import { Client } from 'faunadb';
+import { Client, Expr, QueryOptions } from 'faunadb';
 
-@Injectable()
 export class FaunaClient {
   constructor(private readonly client: Client) {
+  }
+
+  async query<T>(expr: Expr, options?: QueryOptions): Promise<T> {
+    return this.client.query<T>(expr, options);
   }
 }

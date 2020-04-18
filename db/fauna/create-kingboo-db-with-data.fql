@@ -1,0 +1,6 @@
+CreateCollection({ name: "raw-search-results" });
+CreateIndex(
+	{
+		name: "all_raw-search-results",
+		source: Collection("raw-search-results")
+	});

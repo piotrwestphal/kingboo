@@ -27,14 +27,15 @@ export class AppDataCollectorService extends DataCollectorService {
   }
 
   async collectData(collectHotelsScenario: CollectHotelsScenario): Promise<void> {
-    console.info('Start collecting data for scenario: ', collectHotelsScenario);
+    console.info('Start collecting data for scenario: ', JSON.stringify(collectHotelsScenario));
     const startCollectingHotelsTimeMs = Date.now();
 
-    const { searchId, searchPlace, resultsLimit } = collectHotelsScenario;
-    const rawSearchResult = new RawSearchResult(searchId, searchPlace);
+    const { searchId, resultsLimit } = collectHotelsScenario;
+    const rawSearchResult = new RawSearchResult(searchId);
     try {
       await this.scraperFacade.initializeBrowser(this.appConfigService.puppeteerOptions);
       const searchPlaceIdentifier = await this.collectSearchPlaceIdentifierIfNotPresentAndNotify(collectHotelsScenario);
+      rawSearchResult.setSearchPlaceIdentifier(searchPlaceIdentifier);
       const totalPagesCount = await this.scraperFacade.prepareResultList(searchPlaceIdentifier, collectHotelsScenario);
       const hotels = await this.collectHotelAsLongAsConditionsMet(searchId, totalPagesCount, resultsLimit);
       rawSearchResult.addHotelsAfterCollectingFinish(hotels);

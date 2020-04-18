@@ -13,7 +13,6 @@ export class SearchRequestController {
 
   @Post()
   async send(@Body() createSearchRequest: CreateSearchRequest): Promise<SearchRequest> {
-    console.log({createSearchRequest});
     return await this.searchRequestService.createSearchRequest('userId', createSearchRequest);
   }
 }

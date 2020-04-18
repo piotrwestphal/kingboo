@@ -4,7 +4,7 @@ import { retrieveRMQQueueOptions } from '@kb/rabbit';
 const mqAddress = (env) => env.MQ_ADDRESS;
 const consumerQueueName = (env) => env.MQ_CONSUMER_QUEUE_NAME;
 const dataCollectionNotificationsQueue = (env) => env.MQ_DATA_COLLECTION_NOTIFICATIONS_QUEUE_NAME;
-const userNotificationsQueue = (env) => env.MQ_USER_NOTIFICATIONS_QUEUE_NAME;
+const dataToProcessQueue = (env) => env.MQ_DATA_TO_PROCESS_QUEUE_NAME;
 
 export const devConfig = (env: NodeJS.ProcessEnv): AppConfig =>
   ({
@@ -16,7 +16,7 @@ export const devConfig = (env: NodeJS.ProcessEnv): AppConfig =>
     puppeteer: {
       headlessModeOff: false,
     },
-    /*fauna: {
+    fauna: {
       dbName: env.FAUNA_DB_NAME,
       adminDb: {
         domain: env.FAUNA_ADMIN_DB_DOMAIN,
@@ -24,7 +24,7 @@ export const devConfig = (env: NodeJS.ProcessEnv): AppConfig =>
         port: parseInt(env.FAUNA_ADMIN_DB_PORT, 10),
         secret: env.FAUNA_ADMIN_DB_SECRET,
       },
-    },*/
+    },
     mongo: {
       address: env.MONGO_ADDRESS,
     },
@@ -47,8 +47,8 @@ export const devConfig = (env: NodeJS.ProcessEnv): AppConfig =>
     dataToProcessMqClient: {
       address: mqAddress(env),
       queueDefinition: {
-        queue: userNotificationsQueue(env),
-        queueOptions: retrieveRMQQueueOptions(userNotificationsQueue(env)),
+        queue: dataToProcessQueue(env),
+        queueOptions: retrieveRMQQueueOptions(dataToProcessQueue(env)),
       },
     },
   });
