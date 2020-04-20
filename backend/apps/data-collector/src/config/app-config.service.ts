@@ -41,19 +41,11 @@ export class AppConfigService extends ConfigService<AppConfig> implements FaunaC
   }
 
   get faunaSecret(): string {
-    const secret = this.config.fauna.secret;
-    if (!secret) {
-      throw new Error('Fauna secret not found.');
-    }
-    return secret;
+    return this.config.fauna.secret;
   }
 
   get faunaAdminDbOptions(): FaunaAdminDbOptions {
-    const options = this.config.fauna.adminDb;
-    if (!options) {
-      throw new Error(`Options for fauna admin db not found.`);
-    }
-    return options;
+    return this.config.fauna.adminDb;
   }
 
   get mongoAddress(): string {

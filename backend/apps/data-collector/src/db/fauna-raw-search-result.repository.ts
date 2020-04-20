@@ -2,38 +2,28 @@ import { FaunaClient } from '@kb/fauna-client';
 import { query as q, values } from 'faunadb';
 import { RawSearchResultRepository } from '../core/abstract/raw-search-result.repository';
 import { RawSearchResult } from '../core/model/RawSearchResult';
+import { RawSearchResultMapper } from './raw-search-result.mapper';
 import Page = values.Page;
 import Document = values.Document;
+import { RawSearchResultDocument } from './raw-search-result/raw-search-result.document';
 
 export class FaunaRawSearchResultRepository extends RawSearchResultRepository {
 
   constructor(
     private readonly faunaClient: FaunaClient,
+    private readonly rawSearchResultMapper: RawSearchResultMapper,
   ) {
     super();
   }
 
-  // TODO: can not pass js objects with methods
   async create(rawSearchResult: RawSearchResult): Promise<void> {
-    const saved = await this.faunaClient.query<object>(
+    const rawSearchResultDocument = this.rawSearchResultMapper.fromRawSearchResult(rawSearchResult);
+    return this.faunaClient.query<Document<RawSearchResultDocument>>(
       q.Create(
         q.Collection('raw-search-results'),
-        {
-          data: {
-            searchId: rawSearchResult.searchId,
-            searchPlaceIdentifier: rawSearchResult.searchId,
-            collectingTimeSec: rawSearchResult.collectingTimeSec,
-            hotelsCount: rawSearchResult.hotelsCount,
-            hotels: rawSearchResult.hotels.map(v =>
-              ({
-                bonuses: v.bonuses,
-                price: v.price,
-              })),
-          },
-        },
-      ),
-    ).catch(reason => console.log(reason));
-    console.log('FAUNA created result!! ', saved);
+        { data: rawSearchResultDocument }))
+      .then((v) => console.info(`Raw search result with id [${v.data.searchId}] was saved.`))
+      .catch(reason => console.error('Error when saving raw search results', reason));
   }
 
   // TODO: example

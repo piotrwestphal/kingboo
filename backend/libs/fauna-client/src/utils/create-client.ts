@@ -33,7 +33,7 @@ export async function createClientForDevPurposes(faunaDbOptions: FaunaAdminDbOpt
       throw err;
     }
   }).pipe(
-    handleRetry(60, 5000),
+    handleRetry(12, 5000),
   ).toPromise();
 }
 

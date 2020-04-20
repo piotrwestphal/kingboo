@@ -1,5 +1,5 @@
 export * from './mongo.module';
-export { getMongoValidationSchemaMap } from './validation.schema';
+export { mongoValidationSchemaMap } from './validation.schema';
 export { MongoConfig } from './mongo.config';
 export { MongoConfigService } from './mongo-config.service';
 export { MongoConfigType } from './mongo-config.type';

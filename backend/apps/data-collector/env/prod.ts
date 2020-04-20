@@ -11,7 +11,6 @@ export const prodConfig = (env: NodeJS.ProcessEnv): AppConfig =>
       headlessModeOff: env.PUPPETEER_HEADLESS === 'true',
     },
     fauna: {
-      dbName: env.FAUNA_DB_NAME, // TODO: not needed - clean up validation
       secret: env.FAUNA_DB_SECRET,
     },
     mongo: {
@@ -38,8 +37,8 @@ export const prodConfig = (env: NodeJS.ProcessEnv): AppConfig =>
         queueOptions: {
           arguments: {
             'x-message-ttl': parseInt(env.MQ_DATA_TO_PROCESS_QUEUE_NAME, 10),
-          }
-        }
+          },
+        },
       },
     },
   });

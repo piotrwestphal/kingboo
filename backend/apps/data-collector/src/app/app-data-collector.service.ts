@@ -51,7 +51,7 @@ export class AppDataCollectorService extends DataCollectorService {
     console.info(`Collecting data finish. Collecting last [${collectingTimeSec}] sec`);
     rawSearchResult.setCollectingTime(collectingTimeSec);
 
-    console.debug(`Saving raw search result with id [${rawSearchResult.searchId}] to db,`);
+    console.debug(`Saving raw search result with id [${rawSearchResult.searchId}] to db.`);
     await this.rawSearchResultRepository.create(rawSearchResult);
     this.dataCollectionNotificationSender.sendHotelsCollectionCompleted(searchId, collectingTimeSec);
 
