@@ -16,5 +16,6 @@ export class RmqCollectingScenarioSender extends CollectingScenarioSender {
   sendScenario(searchRequest: SearchRequest): void {
     const scenarioMsg = CollectHotelsScenarioMapper.fromSearchRequest(searchRequest);
     this.client.emit<void, CollectHotelsScenarioMessage>(CollectingScenarioMessagePattern.NEW_SCENARIO, scenarioMsg);
+    console.debug(`Successfully send collecting scenario with id [${searchRequest.searchId}]`);
   }
 }
