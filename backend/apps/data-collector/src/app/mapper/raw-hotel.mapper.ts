@@ -21,7 +21,8 @@ export class RawHotelMapper {
                                bonuses,
                                rooms,
                                debug
-                             }: ScrapedRawHotel): RawHotel {
+                             }: ScrapedRawHotel,
+                             collectedAt: string): RawHotel {
     return new RawHotel(
       name,
       price,
@@ -39,6 +40,7 @@ export class RawHotelMapper {
       newlyAdded,
       bonuses,
       rooms,
+      collectedAt,
       debug,
     );
   }
@@ -61,6 +63,7 @@ export class RawHotelMapper {
                  newlyAdded,
                  bonuses,
                  rooms,
+                 collectedAt,
                }: RawHotel): RawHotelDto {
     return {
       hotelId,
@@ -80,6 +83,7 @@ export class RawHotelMapper {
       newlyAdded,
       bonuses,
       rooms,
+      collectedAt,
     };
   }
 }

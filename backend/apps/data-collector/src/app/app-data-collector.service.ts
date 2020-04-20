@@ -70,7 +70,8 @@ export class AppDataCollectorService extends DataCollectorService {
     let isNextPageButtonAvailable = totalPagesCount > 0;
     while (isNextPageButtonAvailable && resultsLimit > currentHotelsCount) {
       const { scrapedRawHotels, nextPageButtonAvailable } = await this.scraperFacade.collectHotelsFromCurrentPage();
-      const mappedRawHotels = scrapedRawHotels.map(h => RawHotelMapper.fromScrapedRawHotel(h));
+      const collectedAt = new Date().toISOString();
+      const mappedRawHotels = scrapedRawHotels.map(h => RawHotelMapper.fromScrapedRawHotel(h, collectedAt));
       rawHotels.push(...mappedRawHotels);
       isNextPageButtonAvailable = nextPageButtonAvailable;
       currentHotelsCount += scrapedRawHotels.length;

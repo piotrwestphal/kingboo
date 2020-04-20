@@ -19,4 +19,6 @@ export interface RawHotelDto {
   readonly newlyAdded: string | null;
   readonly bonuses: string[] | null;
   readonly rooms: RawRoomDto[] | null;
+  // additional info
+  readonly collectedAt: string;
 }

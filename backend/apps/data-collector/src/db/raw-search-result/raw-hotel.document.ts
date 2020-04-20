@@ -20,5 +20,7 @@ export interface RawHotelDocument {
   readonly newlyAdded: string | null;
   readonly bonuses: string[] | null;
   readonly rooms: RawRoomDocument[] | null;
+  // additional info
+  readonly collectedAt: string;
   readonly debug: object;
 }

@@ -38,6 +38,7 @@ export class RawSearchResultMapper {
                          newlyAdded,
                          bonuses,
                          rooms,
+                         collectedAt,
                          debug,
                        }: RawHotel): RawHotelDocument {
     return {
@@ -58,6 +59,7 @@ export class RawSearchResultMapper {
       newlyAdded,
       bonuses,
       rooms,
+      collectedAt,
       debug,
     };
   }
