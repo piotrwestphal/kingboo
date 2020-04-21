@@ -1,4 +1,3 @@
-import { CheckDate } from './CheckDate';
 import { OccupancyStatus } from './OccupancyStatus';
 import { InconsistencyException } from '../exception/InconsistencyException';
 
@@ -12,8 +11,8 @@ export class SearchRequest {
     public readonly updateFrequencyMinutes: number,
     public readonly resultsLimit: number,
     public readonly searchPlace: string,
-    public readonly checkInDate: CheckDate,
-    public readonly checkOutDate: CheckDate,
+    public readonly checkInDate: Date,
+    public readonly checkOutDate: Date,
     public readonly numberOfRooms: number,
     public readonly numberOfAdults: number,
     public readonly childrenAgeAtCheckout: number[],
@@ -50,20 +49,20 @@ export class SearchRequest {
   }
 
   static create({
-                     searchId,
-                     priority,
-                     updateFrequencyMinutes,
-                     resultsLimit,
-                     searchPlace,
-                     checkInDate,
-                     checkOutDate,
-                     numberOfRooms,
-                     numberOfAdults,
-                     childrenAgeAtCheckout,
-                     searchPlaceIdentifier,
-                     occupancyStatus,
-                     occupancyUpdatedAt,
-                   }: SearchRequestValues): SearchRequest {
+                  searchId,
+                  priority,
+                  updateFrequencyMinutes,
+                  resultsLimit,
+                  searchPlace,
+                  checkInDate,
+                  checkOutDate,
+                  numberOfRooms,
+                  numberOfAdults,
+                  childrenAgeAtCheckout,
+                  searchPlaceIdentifier,
+                  occupancyStatus,
+                  occupancyUpdatedAt,
+                }: SearchRequestValues): SearchRequest {
     return new SearchRequest(
       searchId,
       priority,

@@ -1,4 +1,4 @@
-import { CheckDate } from '../model/CheckDate';
+import { CheckDate } from './check-date';
 
 export interface IdentifierComponents {
   readonly searchPlace: string;

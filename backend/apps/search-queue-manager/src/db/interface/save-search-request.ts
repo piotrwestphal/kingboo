@@ -1,4 +1,4 @@
-export interface BaseSearchRequestDocument {
+export interface SaveSearchRequest {
 
   readonly searchId: string;
   readonly priority: number;

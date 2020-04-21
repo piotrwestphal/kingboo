@@ -18,8 +18,16 @@ export class CollectHotelsScenarioMapper {
       scenario: {
         resultsLimit,
         searchPlace,
-        checkInDate,
-        checkOutDate,
+        checkInDate: {
+          day: checkInDate.getDate(),
+          month: checkInDate.getMonth() + 1,
+          year: checkInDate.getFullYear(),
+        },
+        checkOutDate: {
+          day: checkOutDate.getDate(),
+          month: checkOutDate.getMonth() + 1,
+          year: checkOutDate.getFullYear(),
+        },
         numberOfRooms,
         numberOfAdults,
         childrenAgeAtCheckout,

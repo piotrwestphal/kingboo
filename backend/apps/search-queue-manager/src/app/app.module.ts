@@ -11,7 +11,7 @@ import { SearchRequestFactory } from './search-request.factory';
 import { SearchIdentifierBuilder } from '../core/search-identifier.builder';
 import { DataCollectionNotificationConsumer } from './data-collection-notification.consumer';
 import { ScheduleModule } from '@nestjs/schedule';
-import { FreeRequestSearcher } from './scheduled/free-request.searcher';
+import { FreeRequestSearcher } from './scheduler/free-request.searcher';
 
 @Module({
   imports: [

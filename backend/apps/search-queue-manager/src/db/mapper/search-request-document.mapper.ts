@@ -1,7 +1,6 @@
 import { SearchRequestDocument } from '../interface/search-request.document';
 import { SearchRequest } from '../../core/model/SearchRequest';
-import { BaseSearchRequestDocument } from '../interface/base-search-request.document';
-import { CheckDate } from '../../core/model/CheckDate';
+import { SaveSearchRequest } from '../interface/save-search-request';
 
 export class SearchRequestDocumentMapper {
   static toSearchRequest({
@@ -25,16 +24,8 @@ export class SearchRequestDocumentMapper {
       updateFrequencyMinutes,
       resultsLimit,
       searchPlace,
-      checkInDate: {
-        day: checkInDate.getDate(),
-        month: checkInDate.getMonth() + 1,
-        year: checkInDate.getFullYear(),
-      },
-      checkOutDate: {
-        day: checkOutDate.getDate(),
-        month: checkOutDate.getMonth() + 1,
-        year: checkOutDate.getFullYear(),
-      },
+      checkInDate: new Date(checkInDate),
+      checkOutDate: new Date(checkOutDate),
       numberOfRooms,
       numberOfAdults,
       childrenAgeAtCheckout,
@@ -58,23 +49,21 @@ export class SearchRequestDocumentMapper {
            searchPlaceIdentifier,
            occupancyStatus,
            occupancyUpdatedAt,
-         }: SearchRequest): BaseSearchRequestDocument {
+         }: SearchRequest): SaveSearchRequest {
     return {
       searchId,
       priority,
       updateFrequencyMinutes,
       resultsLimit,
       searchPlace,
-      checkInDate: this.mapCheckDate(checkInDate),
-      checkOutDate: this.mapCheckDate(checkOutDate),
+      checkInDate,
+      checkOutDate,
       numberOfRooms,
       numberOfAdults,
       childrenAgeAtCheckout,
       searchPlaceIdentifier,
       occupancyStatus,
-      occupancyUpdatedAt: occupancyUpdatedAt,
+      occupancyUpdatedAt,
     };
   }
-
-  mapCheckDate = ({ year, month, day }: CheckDate): Date => new Date(year, (month - 1), day);
 }
