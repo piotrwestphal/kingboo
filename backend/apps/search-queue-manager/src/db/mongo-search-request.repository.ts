@@ -4,6 +4,7 @@ import { Model } from 'mongoose';
 import { SearchRequestDocument } from './interface/searchRequest.document';
 import { SearchRequestDocumentMapper } from './mapper/search-request-document.mapper';
 import { InconsistencyException } from '../core/exception/InconsistencyException';
+import { OccupancyStatus } from '../core/model/OccupancyStatus';
 
 export class MongoSearchRequestRepository extends SearchRequestRepository {
 
@@ -39,6 +40,20 @@ export class MongoSearchRequestRepository extends SearchRequestRepository {
       .orFail(this.throwError(searchId)).exec();
   }
 
+  public getFreeSearchRequests(): Promise<SearchRequestDocument[]> {
+    return this.searchRequestModel.find({ occupancyStatus: OccupancyStatus.FREE })
+      .sort({ occupancyUpdatedAt: 1 })
+      .exec();
+  }
+
+  findFreeSortedByPriority(): Promise<SearchRequest[]> {
+    return this.searchRequestModel.find({ occupancyStatus: OccupancyStatus.FREE })
+      .sort({ priority: 1 })
+      .map((res) => res.map(doc => this.map(doc)))
+      .exec();
+  }
+
   private map = (doc: SearchRequestDocument) => SearchRequestDocumentMapper.toSearchRequest(doc);
+
   private throwError = (searchId: string) => new InconsistencyException(`Search request with search id: ${searchId} not exist`);
 }

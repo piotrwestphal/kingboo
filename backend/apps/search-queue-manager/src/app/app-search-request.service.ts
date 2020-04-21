@@ -3,7 +3,7 @@ import { SearchRequestRepository } from '../core/abstract/search-request.reposit
 import { SearchRequest } from '../core/model/SearchRequest';
 import { UserNotificationsSender } from '../core/abstract/user-notifications.sender';
 import { CollectingScenarioSender } from '../core/abstract/collecting-scenario.sender';
-import { Injectable } from '@nestjs/common';
+import { ConflictException, Injectable } from '@nestjs/common';
 import { SearchRequestFactory } from './search-request.factory';
 import { CreateSearchRequest } from '../core/interface/create-search-request';
 
@@ -21,6 +21,10 @@ export class AppSearchRequestService extends SearchRequestService {
 
   async createSearchRequest(userId: string, createSearchRequest: CreateSearchRequest): Promise<SearchRequest> {
     const created = this.searchRequestFactory.createNew(createSearchRequest);
+    const found = await this.searchRequestRepository.findBySearchId(created.searchId);
+    if (found) {
+      throw new ConflictException(`Search request with given search id [${created.searchId}] already exist.`);
+    }
     const saved = await this.searchRequestRepository.create(created);
     console.log(`Successfully created search request with search id [${saved.searchId}]`);
     this.collectingScenarioSender.sendScenario(saved);
