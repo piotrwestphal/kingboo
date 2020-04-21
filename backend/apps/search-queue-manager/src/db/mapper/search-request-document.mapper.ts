@@ -1,5 +1,7 @@
-import { SearchRequestDocument } from '../interface/searchRequest.document';
+import { SearchRequestDocument } from '../interface/search-request.document';
 import { SearchRequest } from '../../core/model/SearchRequest';
+import { BaseSearchRequestDocument } from '../interface/base-search-request.document';
+import { CheckDate } from '../../core/model/CheckDate';
 
 export class SearchRequestDocumentMapper {
   static toSearchRequest({
@@ -8,8 +10,8 @@ export class SearchRequestDocumentMapper {
                            updateFrequencyMinutes,
                            resultsLimit,
                            searchPlace,
-                           checkInDate: checkInDayDoc,
-                           checkOutDate: checkOutDayDoc,
+                           checkInDate,
+                           checkOutDate,
                            numberOfRooms,
                            numberOfAdults,
                            childrenAgeAtCheckout,
@@ -24,14 +26,14 @@ export class SearchRequestDocumentMapper {
       resultsLimit,
       searchPlace,
       checkInDate: {
-        day: checkInDayDoc.day,
-        month: checkInDayDoc.month,
-        year: checkInDayDoc.year,
+        day: checkInDate.getDate(),
+        month: checkInDate.getMonth() + 1,
+        year: checkInDate.getFullYear(),
       },
       checkOutDate: {
-        day: checkOutDayDoc.day,
-        month: checkOutDayDoc.month,
-        year: checkOutDayDoc.year,
+        day: checkOutDate.getDate(),
+        month: checkOutDate.getMonth() + 1,
+        year: checkOutDate.getFullYear(),
       },
       numberOfRooms,
       numberOfAdults,
@@ -41,4 +43,38 @@ export class SearchRequestDocumentMapper {
       occupancyUpdatedAt: new Date(occupancyUpdatedAt),
     });
   }
+
+  toBase({
+           searchId,
+           priority,
+           updateFrequencyMinutes,
+           resultsLimit,
+           searchPlace,
+           checkInDate,
+           checkOutDate,
+           numberOfRooms,
+           numberOfAdults,
+           childrenAgeAtCheckout,
+           searchPlaceIdentifier,
+           occupancyStatus,
+           occupancyUpdatedAt,
+         }: SearchRequest): BaseSearchRequestDocument {
+    return {
+      searchId,
+      priority,
+      updateFrequencyMinutes,
+      resultsLimit,
+      searchPlace,
+      checkInDate: this.mapCheckDate(checkInDate),
+      checkOutDate: this.mapCheckDate(checkOutDate),
+      numberOfRooms,
+      numberOfAdults,
+      childrenAgeAtCheckout,
+      searchPlaceIdentifier,
+      occupancyStatus,
+      occupancyUpdatedAt: occupancyUpdatedAt,
+    };
+  }
+
+  mapCheckDate = ({ year, month, day }: CheckDate): Date => new Date(year, (month - 1), day);
 }

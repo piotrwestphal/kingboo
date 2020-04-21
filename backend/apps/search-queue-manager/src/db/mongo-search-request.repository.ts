@@ -1,7 +1,7 @@
 import { SearchRequestRepository } from '../core/abstract/search-request.repository';
 import { SearchRequest } from '../core/model/SearchRequest';
 import { Model } from 'mongoose';
-import { SearchRequestDocument } from './interface/searchRequest.document';
+import { SearchRequestDocument } from './interface/search-request.document';
 import { SearchRequestDocumentMapper } from './mapper/search-request-document.mapper';
 import { InconsistencyException } from '../core/exception/InconsistencyException';
 import { OccupancyStatus } from '../core/model/OccupancyStatus';
@@ -23,14 +23,16 @@ export class MongoSearchRequestRepository extends SearchRequestRepository {
   }
 
   async create(searchRequest: SearchRequest): Promise<SearchRequest> {
-    const saved = await new this.searchRequestModel(searchRequest).save();
+    const base = this.mapper.toBase(searchRequest);
+    const saved = await new this.searchRequestModel(base).save();
     return this.map(saved);
   }
 
   async update(searchRequest: SearchRequest): Promise<SearchRequest> {
+    const base = this.mapper.toBase(searchRequest);
     const updated = await this.searchRequestModel.findOneAndUpdate(
-      { searchId: searchRequest.searchId },
-      searchRequest,
+      { searchId: base.searchId },
+      base,
       { new: true }).exec();
     return this.map(updated);
   }
@@ -40,14 +42,21 @@ export class MongoSearchRequestRepository extends SearchRequestRepository {
       .orFail(this.throwError(searchId)).exec();
   }
 
-  public getFreeSearchRequests(): Promise<SearchRequestDocument[]> {
-    return this.searchRequestModel.find({ occupancyStatus: OccupancyStatus.FREE })
+  findObsolete(): Promise<SearchRequest[]> {
+    return this.searchRequestModel.find({
+      occupancyStatus: OccupancyStatus.FREE,
+      checkInDate: { $lte: new Date() },
+    })
       .sort({ occupancyUpdatedAt: 1 })
+      .map((res) => res.map(doc => this.map(doc)))
       .exec();
   }
 
-  findFreeSortedByPriority(): Promise<SearchRequest[]> {
-    return this.searchRequestModel.find({ occupancyStatus: OccupancyStatus.FREE })
+  findValidSortedByPriority(): Promise<SearchRequest[]> {
+    return this.searchRequestModel.find({
+      occupancyStatus: OccupancyStatus.FREE,
+      checkInDate: { $gte: new Date() },
+    })
       .sort({ priority: 1 })
       .map((res) => res.map(doc => this.map(doc)))
       .exec();

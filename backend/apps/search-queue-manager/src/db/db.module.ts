@@ -5,7 +5,7 @@ import { AppConfigService } from '../config/app-config.service';
 import { getModelToken } from '@nestjs/mongoose';
 import { SearchRequestSchema, SearchRequestSchemaKey } from './schema/search-request.schema';
 import { Model } from 'mongoose';
-import { SearchRequestDocument } from './interface/searchRequest.document';
+import { SearchRequestDocument } from './interface/search-request.document';
 import { SearchRequestDocumentMapper } from './mapper/search-request-document.mapper';
 import { MongoModule } from '@kb/mongo';
 

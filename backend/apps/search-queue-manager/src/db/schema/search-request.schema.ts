@@ -1,6 +1,5 @@
 import { Schema } from 'mongoose';
-import { SearchRequestDocument } from '../interface/searchRequest.document';
-import { CheckDateSchema } from './check-date.schema';
+import { SearchRequestDocument } from '../interface/search-request.document';
 
 export const SearchRequestSchemaKey = 'searchRequest';
 
@@ -11,8 +10,8 @@ export const SearchRequestSchema = new Schema<SearchRequestDocument>({
     resultsLimit: Number,
     // Scenario parameters
     searchPlace: String,
-    checkInDate: CheckDateSchema,
-    checkOutDate: CheckDateSchema,
+    checkInDate: Date,
+    checkOutDate: Date,
     numberOfRooms: Number,
     numberOfAdults: Number,
     childrenAgeAtCheckout: [Number],

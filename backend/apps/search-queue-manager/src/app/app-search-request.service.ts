@@ -20,6 +20,7 @@ export class AppSearchRequestService extends SearchRequestService {
   }
 
   async createSearchRequest(userId: string, createSearchRequest: CreateSearchRequest): Promise<SearchRequest> {
+    // TODO: validate before create - use JOI
     const created = this.searchRequestFactory.createNew(createSearchRequest);
     const found = await this.searchRequestRepository.findBySearchId(created.searchId);
     if (found) {
