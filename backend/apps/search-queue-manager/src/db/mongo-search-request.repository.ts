@@ -23,13 +23,13 @@ export class MongoSearchRequestRepository extends SearchRequestRepository {
   }
 
   async create(searchRequest: SearchRequest): Promise<SearchRequest> {
-    const base = this.mapper.toBase(searchRequest);
+    const base = this.mapper.prepareForSave(searchRequest);
     const saved = await new this.searchRequestModel(base).save();
     return this.map(saved);
   }
 
   async update(searchRequest: SearchRequest): Promise<SearchRequest> {
-    const base = this.mapper.toBase(searchRequest);
+    const base = this.mapper.prepareForSave(searchRequest);
     const updated = await this.searchRequestModel.findOneAndUpdate(
       { searchId: base.searchId },
       base,

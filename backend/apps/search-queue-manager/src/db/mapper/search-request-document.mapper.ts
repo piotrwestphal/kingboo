@@ -35,21 +35,21 @@ export class SearchRequestDocumentMapper {
     });
   }
 
-  toBase({
-           searchId,
-           priority,
-           updateFrequencyMinutes,
-           resultsLimit,
-           searchPlace,
-           checkInDate,
-           checkOutDate,
-           numberOfRooms,
-           numberOfAdults,
-           childrenAgeAtCheckout,
-           searchPlaceIdentifier,
-           occupancyStatus,
-           occupancyUpdatedAt,
-         }: SearchRequest): SaveSearchRequest {
+  prepareForSave({
+                   searchId,
+                   priority,
+                   updateFrequencyMinutes,
+                   resultsLimit,
+                   searchPlace,
+                   checkInDate,
+                   checkOutDate,
+                   numberOfRooms,
+                   numberOfAdults,
+                   childrenAgeAtCheckout,
+                   searchPlaceIdentifier,
+                   occupancyStatus,
+                   occupancyUpdatedAt,
+                 }: SearchRequest): SaveSearchRequest {
     return {
       searchId,
       priority,

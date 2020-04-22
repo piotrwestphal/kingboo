@@ -35,9 +35,7 @@ export abstract class ConfigService<T extends CommonConfig> {
   }
 
   protected validate(schemaMap: SchemaMap, value: T): T {
-    const { error, value: validated } = Joi.object<CommonConfig>(schemaMap).validate(
-      value,
-    );
+    const { error, value: validated } = Joi.object<CommonConfig>(schemaMap).validate(value);
     if (error) {
       throw new Error(`Config validation error: ${error.message}`);
     }
