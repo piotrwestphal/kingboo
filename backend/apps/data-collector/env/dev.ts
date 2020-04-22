@@ -25,9 +25,6 @@ export const devConfig = (env: NodeJS.ProcessEnv): AppConfig =>
         secret: env.FAUNA_ADMIN_DB_SECRET,
       },
     },
-    mongo: {
-      address: env.MONGO_ADDRESS,
-    },
     mqConsumer: {
       address: mqAddress(env),
       queueDefinition: {

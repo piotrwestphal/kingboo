@@ -13,9 +13,6 @@ export const prodConfig = (env: NodeJS.ProcessEnv): AppConfig =>
     fauna: {
       secret: env.FAUNA_DB_SECRET,
     },
-    mongo: {
-      address: env.MONGO_ADDRESS,
-    },
     mqConsumer: {
       address: env.MQ_ADDRESS,
       queueDefinition: {

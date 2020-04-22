@@ -3,11 +3,10 @@ import { AppConfig } from './app.config';
 import { RmqOptions } from '@nestjs/microservices';
 import { buildRmqOptions } from '@kb/rabbit';
 import { appConfigValidationSchemaMap } from './validation.schema';
-import { MongoConfigService } from '@kb/mongo/mongo-config.service';
 import { LaunchOptions } from 'puppeteer';
 import { FaunaClientConfigService } from '@kb/fauna-client';
 
-export class AppConfigService extends ConfigService<AppConfig> implements FaunaClientConfigService, MongoConfigService {
+export class AppConfigService extends ConfigService<AppConfig> implements FaunaClientConfigService {
 
   constructor(mainConfig: AppConfig) {
     super(mainConfig, appConfigValidationSchemaMap);
@@ -46,10 +45,6 @@ export class AppConfigService extends ConfigService<AppConfig> implements FaunaC
 
   get faunaAdminDbOptions(): FaunaAdminDbOptions {
     return this.config.fauna.adminDb;
-  }
-
-  get mongoAddress(): string {
-    return this.config.mongo.address;
   }
 
   get dataCollectionNotificationsMqClient(): RmqOptions {
