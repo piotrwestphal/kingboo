@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
-import { UserNotificationsSender } from '../core/abstract/user-notifications.sender';
+import { UserNotificationSender } from '../core/abstract/user-notification.sender';
 import { ClientProxyFactory } from '@nestjs/microservices';
-import { RmqUserNotificationsSender } from './rmq-user-notifications.sender';
+import { RmqUserNotificationSender } from './rmq-user-notification.sender';
 import { AppConfigService } from '../config/app-config.service';
 import { CollectingScenarioSender } from '../core/abstract/collecting-scenario.sender';
 import { RmqCollectingScenarioSender } from './rmq-collecting-scenario.sender';
@@ -11,21 +11,21 @@ import { RmqCollectingScenarioSender } from './rmq-collecting-scenario.sender';
     {
       provide: CollectingScenarioSender,
       useFactory: (config: AppConfigService) => {
-        const clientProxy = ClientProxyFactory.create(config.dataCollectionNotificationsMqClient);
+        const clientProxy = ClientProxyFactory.create(config.collectingScenarioMqClient);
         return new RmqCollectingScenarioSender(clientProxy);
       },
       inject: [AppConfigService],
     },
     {
-      provide: UserNotificationsSender,
+      provide: UserNotificationSender,
       useFactory: (config: AppConfigService) => {
         const clientProxy = ClientProxyFactory.create(config.userNotificationsMqClient);
-        return new RmqUserNotificationsSender(clientProxy);
+        return new RmqUserNotificationSender(clientProxy);
       },
       inject: [AppConfigService],
     },
   ],
-  exports: [UserNotificationsSender, CollectingScenarioSender],
+  exports: [UserNotificationSender, CollectingScenarioSender],
 })
 export class MqModule {
 }

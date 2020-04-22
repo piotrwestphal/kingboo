@@ -2,20 +2,15 @@ import { AppConfig } from '../src/config/app.config';
 import { retrieveRMQQueueOptions } from '@kb/rabbit';
 
 const mqAddress = (env) => env.MQ_ADDRESS;
-const consumerQueueName = (env) => env.MQ_COLLECTING_SCENARIO_QUEUE_NAME;
-const dataCollectionNotificationsQueue = (env) => env.MQ_DATA_COLLECTION_NOTIFICATIONS_QUEUE_NAME;
-const dataToProcessQueue = (env) => env.MQ_DATA_TO_PROCESS_QUEUE_NAME;
+const consumerQueueName = (env) => env.DATA_TO_PROCESS_QUEUE_NAME;
+const userNotificationsQueue = (env) => env.MQ_USER_NOTIFICATIONS_QUEUE_NAME;
 
 export const devConfig = (env: NodeJS.ProcessEnv): AppConfig =>
   ({
     nodeEnv: env.NODE_ENV as 'dev',
     port: env.PORT ? parseInt(env.PORT, 10) : 8080,
     corsOrigins: env.CORS_ORIGINS,
-    saveRawResultInJson: true,
-    takeScreenshotOnError: true,
-    puppeteer: {
-      headlessModeOff: false,
-    },
+    saveResultInJson: true,
     fauna: {
       dbName: env.FAUNA_DB_NAME,
       adminDb: {
@@ -29,23 +24,14 @@ export const devConfig = (env: NodeJS.ProcessEnv): AppConfig =>
       address: mqAddress(env),
       queueDefinition: {
         queue: consumerQueueName(env),
-        noAck: false,
-        prefetchCount: 1,
         queueOptions: retrieveRMQQueueOptions(consumerQueueName(env)),
       },
     },
-    dataCollectionNotificationsMqClient: {
+    userNotificationsMqClient: {
       address: mqAddress(env),
       queueDefinition: {
-        queue: dataCollectionNotificationsQueue(env),
-        queueOptions: retrieveRMQQueueOptions(dataCollectionNotificationsQueue(env)),
-      },
-    },
-    dataToProcessMqClient: {
-      address: mqAddress(env),
-      queueDefinition: {
-        queue: dataToProcessQueue(env),
-        queueOptions: retrieveRMQQueueOptions(dataToProcessQueue(env)),
+        queue: userNotificationsQueue(env),
+        queueOptions: retrieveRMQQueueOptions(userNotificationsQueue(env)),
       },
     },
   });

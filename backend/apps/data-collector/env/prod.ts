@@ -31,11 +31,6 @@ export const prodConfig = (env: NodeJS.ProcessEnv): AppConfig =>
       address: env.MQ_ADDRESS,
       queueDefinition: {
         queue: env.MQ_DATA_TO_PROCESS_QUEUE_NAME,
-        queueOptions: {
-          arguments: {
-            'x-message-ttl': parseInt(env.MQ_DATA_TO_PROCESS_QUEUE_NAME, 10),
-          },
-        },
       },
     },
   });

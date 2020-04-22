@@ -1,7 +1,7 @@
 import { SearchRequestService } from '../core/abstract/search-request.service';
 import { SearchRequestRepository } from '../core/abstract/search-request.repository';
 import { SearchRequest } from '../core/model/SearchRequest';
-import { UserNotificationsSender } from '../core/abstract/user-notifications.sender';
+import { UserNotificationSender } from '../core/abstract/user-notification.sender';
 import { CollectingScenarioSender } from '../core/abstract/collecting-scenario.sender';
 import { ConflictException, Injectable } from '@nestjs/common';
 import { SearchRequestFactory } from './search-request.factory';
@@ -14,7 +14,7 @@ export class AppSearchRequestService extends SearchRequestService {
     private readonly collectingScenarioSender: CollectingScenarioSender,
     private readonly searchRequestFactory: SearchRequestFactory,
     private readonly searchRequestRepository: SearchRequestRepository,
-    private readonly userNotificationsSender: UserNotificationsSender,
+    private readonly userNotificationsSender: UserNotificationSender,
   ) {
     super();
   }

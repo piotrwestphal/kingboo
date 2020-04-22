@@ -15,7 +15,7 @@ export class AppConfigService extends ConfigService<AppConfig> implements MongoC
     return this.config.mongo.address;
   }
 
-  get dataCollectionNotificationsMqClient(): RmqOptions {
+  get collectingScenarioMqClient(): RmqOptions {
     return buildRmqOptions(this.config.collectingScenarioMqClient);
   }
 

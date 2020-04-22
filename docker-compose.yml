@@ -1,42 +1,5 @@
 version: "3.7"
 services:
-  data-collector:
-    build:
-      context: ./backend
-      dockerfile: kb-data-collector.Dockerfile
-    image: kb-data-collector
-    env_file:
-      - dev.env
-    environment:
-      MQ_CONSUMER_QUEUE_NAME: collecting-scenario
-      FAUNA_DB_NAME: kingboo
-      FAUNA_ADMIN_DB_DOMAIN: faunadb
-      FAUNA_ADMIN_DB_SCHEME: http
-      FAUNA_ADMIN_DB_PORT: 8443
-      FAUNA_ADMIN_DB_SECRET: secret
-    volumes:
-      - ./scraping-results:/usr/src/app/dist/apps/data-collector/results
-      - ./tools/wait-for-it.sh:/wait-for-it.sh
-    ports:
-      - 38080:8080
-    command: ["/wait-for-it.sh", "faunadb:8443", "-t", "60", "--", "node", "main"]
-
-  search-queue-manager:
-    build:
-      context: ./backend
-      dockerfile: kb-search-queue-manager.Dockerfile
-    image: kb-search-queue-manager
-    env_file:
-      - ./dev.env
-    environment:
-      MQ_CONSUMER_QUEUE_NAME: data-collection-notifications
-
-    volumes:
-      - ./tools/wait-for-it.sh:/wait-for-it.sh
-    ports:
-    - 38081:8080
-    command: ["/wait-for-it.sh", "rabbitmq:5672", "-t", "60", "--", "node", "main"]
-#
 #  user-service:
 #    build:
 #      context: ./backend
@@ -45,8 +8,51 @@ services:
 #    volumes:
 #      - ./tools/wait-for-it.sh:/wait-for-it.sh
 #    ports:
-#    - 38082:8080
+#      - 38082:8080
 #    command: ["/wait-for-it.sh", "rabbitmq:5672", "-t", "60", "--", "node", "main"]
+
+  search-queue-manager:
+    build:
+      context: ./backend
+      dockerfile: kb-search-queue-manager.Dockerfile
+    image: kb-search-queue-manager
+    env_file:
+      - ./dev.env
+    volumes:
+      - ./tools/wait-for-it.sh:/wait-for-it.sh
+    ports:
+      - 38081:8080
+    command: ["/wait-for-it.sh", "rabbitmq:5672", "-t", "60", "--", "node", "main"]
+
+  data-collector:
+    build:
+      context: ./backend
+      dockerfile: kb-data-collector.Dockerfile
+    image: kb-data-collector
+    env_file:
+      - dev.env
+    volumes:
+      - ./scraping-results:/usr/src/app/dist/apps/data-collector/results
+      - ./tools/wait-for-it.sh:/wait-for-it.sh
+    ports:
+      - 38082:8080
+    command: ["/wait-for-it.sh", "faunadb:8443", "-t", "60", "--", "node", "main"]
+
+
+  search-result-calculator:
+    build:
+      context: ./backend
+      dockerfile: kb-search-result-calculator.Dockerfile
+    image: kb-search-result-calculator
+    env_file:
+      - ./dev.env
+    volumes:
+      - ./calculating-results:/usr/src/app/dist/apps/search-result-calculator/results
+      - ./tools/wait-for-it.sh:/wait-for-it.sh
+    ports:
+    - 38083:8080
+    command: ["/wait-for-it.sh", "faunadb:8443", "-t", "60", "--", "node", "main"]
+=
 
   rabbitmq:
     image: rabbitmq:3-management-alpine
