@@ -1,7 +1,7 @@
 import { RawSearchResult } from '../core/model/RawSearchResult';
 import { RawHotel } from '../core/model/RawHotel';
-import { RawHotelDocument } from './raw-search-result/raw-hotel.document';
-import { RawSearchResultDocument } from './raw-search-result/raw-search-result.document';
+import { RawHotelDocument } from './interface/raw-hotel.document';
+import { RawSearchResultDocument } from './interface/raw-search-result.document';
 
 export class RawSearchResultMapper {
   fromRawSearchResult({

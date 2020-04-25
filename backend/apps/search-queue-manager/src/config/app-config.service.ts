@@ -7,8 +7,8 @@ import { MongoConfigService } from '@kb/mongo/mongo-config.service';
 
 export class AppConfigService extends ConfigService<AppConfig> implements MongoConfigService {
 
-  constructor(mainConfig: AppConfig) {
-    super(mainConfig, appConfigValidationSchemaMap);
+  constructor(appConfig: AppConfig) {
+    super(appConfig, appConfigValidationSchemaMap);
   }
 
   get mongoAddress(): string {

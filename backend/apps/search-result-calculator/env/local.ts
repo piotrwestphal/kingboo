@@ -19,6 +19,9 @@ export const localConfig: AppConfig = {
       secret: 'secret',
     },
   },
+  mongo: {
+    address: 'mongodb://127.0.0.1:27017/dev',
+  },
   mqConsumer: {
     address: mqAddress,
     queueDefinition: {

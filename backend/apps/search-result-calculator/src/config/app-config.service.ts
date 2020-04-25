@@ -4,11 +4,12 @@ import { RmqOptions } from '@nestjs/microservices';
 import { buildRmqOptions } from '@kb/rabbit';
 import { appConfigValidationSchemaMap } from './validation.schema';
 import { FaunaClientConfigService } from '@kb/fauna-client';
+import { MongoConfigService } from '@kb/mongo';
 
-export class AppConfigService extends ConfigService<AppConfig> implements FaunaClientConfigService {
+export class AppConfigService extends ConfigService<AppConfig> implements FaunaClientConfigService, MongoConfigService {
 
-  constructor(mainConfig: AppConfig) {
-    super(mainConfig, appConfigValidationSchemaMap);
+  constructor(appConfig: AppConfig) {
+    super(appConfig, appConfigValidationSchemaMap);
   }
 
   get saveResultInJson(): boolean {
@@ -21,6 +22,10 @@ export class AppConfigService extends ConfigService<AppConfig> implements FaunaC
 
   get faunaSecret(): string {
     return this.config.fauna.secret;
+  }
+
+  get mongoAddress(): string {
+    return this.config.mongo.address;
   }
 
   get faunaAdminDbOptions(): FaunaAdminDbOptions {

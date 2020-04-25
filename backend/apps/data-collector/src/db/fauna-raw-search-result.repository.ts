@@ -2,10 +2,10 @@ import { FaunaClient } from '@kb/fauna-client';
 import { query as q, values } from 'faunadb';
 import { RawSearchResultRepository } from '../core/abstract/raw-search-result.repository';
 import { RawSearchResult } from '../core/model/RawSearchResult';
+import { RawSearchResultDocument } from './interface/raw-search-result.document';
 import { RawSearchResultMapper } from './raw-search-result.mapper';
 import Page = values.Page;
 import Document = values.Document;
-import { RawSearchResultDocument } from './raw-search-result/raw-search-result.document';
 
 export class FaunaRawSearchResultRepository extends RawSearchResultRepository {
 

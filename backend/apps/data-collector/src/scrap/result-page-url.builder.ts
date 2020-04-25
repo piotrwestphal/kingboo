@@ -1,4 +1,3 @@
-import { CheckDateDocument } from '../model/document/checkDate.document';
 import { CheckDate } from '../core/interface/check-date';
 
 interface ScenarioParams {
@@ -61,7 +60,7 @@ export class ResultPageUrlBuilder {
     return `${this.SEARCH_RESULTS_PAGE}${this.START_QUERY_MARK}${queryParams}`;
   }
 
-  private combineDate = (prefix: string, { year, month, day }: CheckDateDocument): string[] =>
+  private combineDate = (prefix: string, { year, month, day }: CheckDate): string[] =>
     [
       `${this.YEAR_SUFFIX_KEY}${year}`,
       `${this.MONTH_SUFFIX_KEY}${month}`,

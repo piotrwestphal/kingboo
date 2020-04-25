@@ -156,12 +156,13 @@ export class ResultListPage {
               const containerWithBonuses = getFirstElementByClass(roomContainer, 'roomNameInner');
               const bonusesElements = containerWithBonuses.getElementsByTagName('sup');
               const bonuses = Array.from(bonusesElements).map(b => b.innerText);
-              const descriptionShort = getTextFromElement(roomContainer, 'room_link');
-              const descriptionLong = getTextFromElement(roomContainer, 'c-unit-configuration');
+              const shortDescription = getTextFromElement(roomContainer, 'room_link');
+              const longDescription = getTextFromElement(roomContainer, 'c-unit-configuration');
               const personCount = getTextFromElement(roomContainer, 'maxPersonsLeft');
               const beds = getTextFromElement(roomContainer, 'c-beds-configuration');
               rooms.push({
-                description: `${descriptionShort}|${descriptionLong}`,
+                shortDescription,
+                longDescription,
                 personCount,
                 beds,
                 bonuses,

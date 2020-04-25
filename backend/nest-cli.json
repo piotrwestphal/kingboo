@@ -8,15 +8,6 @@
     "tsConfigPath": "apps/user-service/tsconfig.app.json"
   },
   "projects": {
-    "user-service": {
-      "type": "application",
-      "root": "apps/user-service",
-      "entryFile": "main",
-      "sourceRoot": "apps/user-service/src",
-      "compilerOptions": {
-        "tsConfigPath": "apps/user-service/tsconfig.app.json"
-      }
-    },
     "data-collector": {
       "type": "application",
       "root": "apps/data-collector",
@@ -24,6 +15,15 @@
       "sourceRoot": "apps/data-collector/src",
       "compilerOptions": {
         "tsConfigPath": "apps/data-collector/tsconfig.app.json"
+      }
+    },
+    "search-queue-manager": {
+      "type": "application",
+      "root": "apps/search-queue-manager",
+      "entryFile": "main",
+      "sourceRoot": "apps/search-queue-manager/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/search-queue-manager/tsconfig.app.json"
       }
     },
     "search-result-calculator": {
@@ -35,6 +35,15 @@
         "tsConfigPath": "apps/search-result-calculator/tsconfig.app.json"
       }
     },
+    "user-service": {
+      "type": "application",
+      "root": "apps/user-service",
+      "entryFile": "main",
+      "sourceRoot": "apps/user-service/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/user-service/tsconfig.app.json"
+      }
+    },
     "model": {
       "type": "library",
       "root": "libs/model",
@@ -42,15 +51,6 @@
       "sourceRoot": "libs/model/src",
       "compilerOptions": {
         "tsConfigPath": "libs/model/tsconfig.lib.json"
-      }
-    },
-    "search-queue-manager": {
-      "type": "application",
-      "root": "apps/search-queue-manager",
-      "entryFile": "main",
-      "sourceRoot": "apps/search-queue-manager/src",
-      "compilerOptions": {
-        "tsConfigPath": "apps/search-queue-manager/tsconfig.app.json"
       }
     },
     "config": {

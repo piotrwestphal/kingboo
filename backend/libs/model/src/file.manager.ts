@@ -1,7 +1,7 @@
 import * as fs from 'fs';
-import { TimeHelper } from '../utils/TimeHelper';
+import { TimeHelper } from '@kb/model/TimeHelper';
 
-export class FileManagerService {
+export class FileManager {
 
   private readonly RESULTS_FOLDER_PATH = 'results';
 

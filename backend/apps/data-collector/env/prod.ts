@@ -18,7 +18,7 @@ export const prodConfig = (env: NodeJS.ProcessEnv): AppConfig =>
       queueDefinition: {
         noAck: false,
         prefetchCount: 1,
-        queue: env.MQ_CONSUMER_QUEUE_NAME,
+        queue: env.MQ_COLLECTING_SCENARIO_QUEUE_NAME,
       },
     },
     dataCollectionNotificationsMqClient: {

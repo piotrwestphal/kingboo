@@ -39,20 +39,19 @@ services:
     command: ["/wait-for-it.sh", "faunadb:8443", "-t", "60", "--", "node", "main"]
 
 
-  search-result-calculator:
-    build:
-      context: ./backend
-      dockerfile: kb-search-result-calculator.Dockerfile
-    image: kb-search-result-calculator
-    env_file:
-      - ./dev.env
-    volumes:
-      - ./calculating-results:/usr/src/app/dist/apps/search-result-calculator/results
-      - ./tools/wait-for-it.sh:/wait-for-it.sh
-    ports:
-    - 38083:8080
-    command: ["/wait-for-it.sh", "faunadb:8443", "-t", "60", "--", "node", "main"]
-=
+#  search-result-calculator:
+#    build:
+#      context: ./backend
+#      dockerfile: kb-search-result-calculator.Dockerfile
+#    image: kb-search-result-calculator
+#    env_file:
+#      - ./dev.env
+#    volumes:
+#      - ./calculating-results:/usr/src/app/dist/apps/search-result-calculator/results
+#      - ./tools/wait-for-it.sh:/wait-for-it.sh
+#    ports:
+#    - 38083:8080
+#    command: ["/wait-for-it.sh", "faunadb:8443", "-t", "60", "--", "node", "main"]
 
   rabbitmq:
     image: rabbitmq:3-management-alpine
