@@ -8,6 +8,7 @@ const userNotificationsQueue = 'user-notifications';
 export const localConfig: AppConfig = {
   nodeEnv: 'local',
   port: 8080,
+  logLevel: 'debug',
   corsOrigins: 'http://localhost', // separate multiple origins by comma
   saveResultInJson: true,
   fauna: {

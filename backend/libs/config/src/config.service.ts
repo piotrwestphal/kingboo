@@ -26,6 +26,10 @@ export abstract class ConfigService<T extends CommonConfig> {
     return this.config.port;
   }
 
+  get logLevel(): string {
+    return this.config.logLevel;
+  }
+
   get corsOrigins(): string | string[] {
     return this.createCorsWhitelist(this.config.corsOrigins);
   }
