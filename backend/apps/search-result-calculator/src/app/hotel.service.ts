@@ -18,6 +18,7 @@ export class HotelService {
   ) {
   }
 
+  // TODO: add prefetch count of something because too many messages can income
   async processMessage(message: CollectedHotelsMessage): Promise<void> {
     await this.fileManager.saveDataAsJSON(message, `MESSAGE_${message.searchId}`);
     const rawHotels = this.messageProcessor.processMessage(message);

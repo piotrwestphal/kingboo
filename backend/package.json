@@ -15,7 +15,7 @@
     "start:us": "nest start",
     "start:dc": "nest start data-collector",
     "start:sqm": "nest start search-queue-manager",
-    "start:src": "nest start ssearch-result-calculator",
+    "start:src": "nest start search-result-calculator",
     "start:watch:us": "nest start --watch",
     "start:watch:dc": "nest start data-collector --watch",
     "start:watch:sqm": "nest start search-queue-manager --watch",
