@@ -3,7 +3,7 @@ import { TimeHelper } from '@kb/model/TimeHelper';
 
 export class FileManager {
 
-  private readonly RESULTS_FOLDER_PATH = 'results';
+  private readonly RESULTS_FOLDER_PATH = 'output';
 
   get resultsFolderPath() {
     return this.RESULTS_FOLDER_PATH;

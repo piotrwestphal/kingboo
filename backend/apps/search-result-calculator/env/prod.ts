@@ -15,6 +15,8 @@ export const prodConfig = (env: NodeJS.ProcessEnv): AppConfig =>
     mqConsumer: {
       address: env.MQ_ADDRESS,
       queueDefinition: {
+        noAck: false,
+        prefetchCount: 5,
         queue: env.DATA_TO_PROCESS_QUEUE_NAME,
       },
     },

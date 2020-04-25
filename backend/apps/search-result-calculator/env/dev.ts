@@ -27,6 +27,8 @@ export const devConfig = (env: NodeJS.ProcessEnv): AppConfig =>
       address: mqAddress(env),
       queueDefinition: {
         queue: consumerQueueName(env),
+        noAck: false,
+        prefetchCount: 5,
         queueOptions: retrieveRMQQueueOptions(consumerQueueName(env)),
       },
     },

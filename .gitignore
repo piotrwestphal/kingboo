@@ -16,10 +16,10 @@ npm-debug.log*
 # IDEs and editors
 /.idea
 
-/scraping-results
-!/scraping-results/.gitkeep
+/scraping-output
+!/scraping-output/.gitkeep
 
-/calculating-results
-!/calculating-results/.gitkeep
+/calculating-output
+!/calculating-output/.gitkeep
 
 prod.env

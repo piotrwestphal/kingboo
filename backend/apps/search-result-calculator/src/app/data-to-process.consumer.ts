@@ -1,5 +1,5 @@
 import { Controller } from '@nestjs/common';
-import { MessagePattern, Payload } from '@nestjs/microservices';
+import { Ctx, MessagePattern, Payload, RmqContext } from '@nestjs/microservices';
 import { DataToProcessMessagePattern } from '@kb/rabbit/message-pattern/DataToProcessMessagePattern';
 import { CollectedHotelsMessage } from '@kb/model';
 import { HotelService } from './hotel.service';
@@ -14,7 +14,11 @@ export class DataToProcessConsumer {
 
 
   @MessagePattern(DataToProcessMessagePattern.HOTELS)
-  handleHotelsData(@Payload() message: CollectedHotelsMessage): void {
-    this.hotelService.processMessage(message)
+  async handleHotelsData(@Payload() message: CollectedHotelsMessage,
+                         @Ctx() ctx: RmqContext) {
+    await this.hotelService.processMessage(message);
+    const channel = ctx.getChannelRef();
+    const originalMsg = ctx.getMessage();
+    channel.ack(originalMsg);
   }
 }

@@ -20,7 +20,7 @@ export class HotelService {
 
   // TODO: add prefetch count of something because too many messages can income
   async processMessage(message: CollectedHotelsMessage): Promise<void> {
-    await this.fileManager.saveDataAsJSON(message, `MESSAGE_${message.searchId}`);
+    const now = Date.now();
     const rawHotels = this.messageProcessor.processMessage(message);
     await this.fileManager.saveDataAsJSON(rawHotels, `PROCESSED_MESSAGE_${message.searchId}`);
     const foundHotels = await this.hotelRepository.findAllBySearchIdAndHotelId(message.searchId, Array.from(rawHotels.keys()));
@@ -29,10 +29,9 @@ export class HotelService {
       .filter(hotelId => !foundHotels.has(hotelId))
       .map(hotelId => rawHotels.get(hotelId));
 
-    const created = await this.hotelRepository.createAll(hotelsToCreate.map(h => this.hotelFactory.createNew(h)));
-    console.log('CREATED HOTELS: ', created.length);
-    await this.fileManager.saveDataAsJSON(created, `CREATED_HOTELS_${message.searchId}`);
-
+    if (hotelsToCreate.length) {
+      await this.hotelRepository.createAll(hotelsToCreate.map(h => this.hotelFactory.createNew(h)));
+    }
     const updatedHotelsWithRaw = Array.from(foundHotels.keys()).map(hotelId => {
       const hotel = foundHotels.get(hotelId);
       const rawHotel = rawHotels.get(hotelId);
@@ -40,8 +39,8 @@ export class HotelService {
     });
     console.log('UPDATED HOTELS: ', updatedHotelsWithRaw.length);
 
-    await this.fileManager.saveDataAsJSON(created, `UPDATED_HOTELS_${message.searchId}`);
     await this.hotelRepository.updateAll(updatedHotelsWithRaw);
+    console.log(`PROCESSING_LAST: [${Date.now() - now}] ms`);
   }
 
   private updateHotelWithRaw(hotel: Hotel,
