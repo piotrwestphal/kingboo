@@ -7,7 +7,7 @@ import { ConfigModule } from '@kb/config';
 import { getEnvironments } from '../config/environments';
 import { AppConfigService } from '../config/app-config.service';
 import { ProcessingModule } from '../processing/processing.module';
-import { FileManager } from '@kb/model/file.manager';
+import { FileManager } from '@kb/util/file.manager';
 import { DataToProcessConsumer } from './data-to-process.consumer';
 import { PriceCalculator } from './price.calculator';
 import { HotelFactory } from './hotel.factory';

@@ -3,14 +3,13 @@ import { CollectHotelsScenario } from '../core/interface/collect-hotels-scenario
 import { RawSearchResult } from '../core/model/RawSearchResult';
 import { ScraperFacade } from '../scrap/scraper.facade';
 import { AppConfigService } from '../config/app-config.service';
-import { FileManager } from '@kb/model/file.manager';
-import { TimeHelper } from '@kb/model/TimeHelper';
 import { DataCollectionNotificationSender } from '../core/abstract/data-collection-notification.sender';
 import { DataToProcessSender } from '../core/abstract/data-to-process.sender';
 import { Injectable } from '@nestjs/common';
 import { RawHotel } from '../core/model/RawHotel';
 import { RawHotelMapper } from './mapper/raw-hotel.mapper';
 import { RawSearchResultRepository } from '../core/abstract/raw-search-result.repository';
+import { FileManager, TimeHelper } from '@kb/util';
 
 @Injectable()
 export class AppDataCollectorService extends DataCollectorService {

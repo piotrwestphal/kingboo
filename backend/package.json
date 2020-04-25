@@ -98,7 +98,11 @@
       "@kb/rabbit/(.*)": "<rootDir>/libs/rabbit/src/$1",
       "@kb/rabbit": "<rootDir>/libs/rabbit/src",
       "@kb/mongo/(.*)": "<rootDir>/libs/mongo/src/$1",
-      "@kb/mongo": "<rootDir>/libs/mongo/src"
+      "@kb/mongo": "<rootDir>/libs/mongo/src",
+      "@kb/util/(.*)": "<rootDir>/libs/util/src/$1",
+      "@kb/util": "<rootDir>/libs/util/src",
+      "@kb/logger/(.*)": "<rootDir>/libs/logger/src/$1",
+      "@kb/logger": "<rootDir>/libs/logger/src"
     }
   }
 }

@@ -8,7 +8,7 @@ import { getEnvironments } from '../config/environments';
 import { AppConfigService } from '../config/app-config.service';
 import { DataCollectorService } from '../core/abstract/data-collector.service';
 import { AppDataCollectorService } from './app-data-collector.service';
-import { FileManager } from '@kb/model/file.manager';
+import { FileManager } from '@kb/util/file.manager';
 import { DbModule } from '../db/db.module';
 
 @Module({

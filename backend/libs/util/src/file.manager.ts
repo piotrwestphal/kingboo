@@ -1,5 +1,5 @@
 import * as fs from 'fs';
-import { TimeHelper } from '@kb/model/TimeHelper';
+import { TimeHelper } from '@kb/util/time.helper';
 
 export class FileManager {
 

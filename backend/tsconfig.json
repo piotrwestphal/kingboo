@@ -41,6 +41,18 @@
       ],
       "@kb/mongo/*": [
         "libs/mongo/src/*"
+      ],
+      "@kb/util": [
+        "libs/util/src"
+      ],
+      "@kb/util/*": [
+        "libs/util/src/*"
+      ],
+      "@kb/logger": [
+        "libs/logger/src"
+      ],
+      "@kb/logger/*": [
+        "libs/logger/src/*"
       ]
     }
   },

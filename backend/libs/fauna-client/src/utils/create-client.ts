@@ -1,8 +1,8 @@
 import { Client, errors, query as q } from 'faunadb';
 import { defer } from 'rxjs';
 import { FetchError } from 'node-fetch';
-import { FaunaAdminDbOptions } from '@kb/config';
 import { handleRetry } from '@kb/fauna-client/utils/handle-retry';
+import { FaunaAdminDbOptions } from '@kb/fauna-client';
 import BadRequest = errors.BadRequest;
 import InternalError = errors.InternalError;
 

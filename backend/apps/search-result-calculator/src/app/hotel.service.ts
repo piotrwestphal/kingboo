@@ -1,7 +1,7 @@
 import { MessageProcessor } from '../processing/message.processor';
 import { HotelRepository } from '../core/abstract/hotel.repository';
 import { CollectedHotelsMessage } from '@kb/model';
-import { FileManager } from '@kb/model/file.manager';
+import { FileManager } from '@kb/util/file.manager';
 import { HotelFactory } from './hotel.factory';
 import { PriceCalculator } from './price.calculator';
 import { Hotel } from '../core/model/hotel';

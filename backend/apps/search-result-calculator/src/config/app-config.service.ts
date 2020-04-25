@@ -1,9 +1,9 @@
-import { ConfigService, FaunaAdminDbOptions } from '@kb/config';
+import { ConfigService } from '@kb/config';
 import { AppConfig } from './app.config';
 import { RmqOptions } from '@nestjs/microservices';
 import { buildRmqOptions } from '@kb/rabbit';
 import { appConfigValidationSchemaMap } from './validation.schema';
-import { FaunaClientConfigService } from '@kb/fauna-client';
+import { FaunaAdminDbOptions, FaunaClientConfigService } from '@kb/fauna-client';
 import { MongoConfigService } from '@kb/mongo';
 
 export class AppConfigService extends ConfigService<AppConfig> implements FaunaClientConfigService, MongoConfigService {
