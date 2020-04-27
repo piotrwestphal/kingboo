@@ -5,6 +5,7 @@ import { filter, flatMap } from 'rxjs/operators';
 import { SearchRequest } from '../../core/model/SearchRequest';
 import { CollectingScenarioSender } from '../../core/abstract/collecting-scenario.sender';
 import { Injectable } from '@nestjs/common';
+import { logger } from '../../logger';
 
 @Injectable()
 export class FreeRequestSearcher {
@@ -19,7 +20,7 @@ export class FreeRequestSearcher {
     name: 'find-free-search-requests',
   })
   findFreeSearchRequestsAndSend() {
-    console.debug(`Triggering job [find-free-search-requests]`);
+    logger.debug(`Triggering job [find-free-search-requests]`);
     const now = new Date();
     from(this.searchRequestRepository.findValidSortedByPriority()).pipe(
       flatMap(v => v),
@@ -27,7 +28,7 @@ export class FreeRequestSearcher {
     ).subscribe(async (searchRequest) => {
       const blocked = searchRequest.block();
       const updated = await this.searchRequestRepository.update(blocked);
-      console.info(`Sending free scenario with search id [${searchRequest.searchId}]`);
+      logger.info(`Sending free scenario with search id [${searchRequest.searchId}]`);
       this.collectingScenarioSender.sendScenario(updated);
     });
   }

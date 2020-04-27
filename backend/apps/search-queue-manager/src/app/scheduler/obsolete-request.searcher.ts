@@ -3,6 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { from } from 'rxjs';
 import { flatMap } from 'rxjs/operators';
+import { logger } from '../../logger';
 
 @Injectable()
 export class ObsoleteRequestSearcher {
@@ -17,12 +18,12 @@ export class ObsoleteRequestSearcher {
     name: 'find-obsolete-search-requests',
   })
   findObsoleteSearchRequests() {
-    console.debug(`Triggering job [find-obsolete-search-requests]`);
+    logger.debug(`Triggering job [find-obsolete-search-requests]`);
     from(this.searchRequestRepository.findObsolete()).pipe(
       flatMap(v => v),
     ).subscribe(async (searchRequest) => {
       // TODO: delete repeatable request when obsolete
-      console.warn(`Search request with id [${searchRequest.searchId}] is obsolete`)
+      logger.warn(`Search request with id [${searchRequest.searchId}] is obsolete`)
     });
   }
 }

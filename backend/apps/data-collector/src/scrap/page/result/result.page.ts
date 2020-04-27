@@ -1,5 +1,6 @@
 import { BrowserService } from '../../browser.service';
 import { ResultPageElement } from './result-page.element';
+import { logger } from '../../../logger';
 
 export class ResultPage {
 
@@ -10,9 +11,9 @@ export class ResultPage {
     try {
       await this.browserService.waitForVisible(ResultPageElement.SECURITY_CHECK_OVERLAY, 3000, false);
       await this.browserService.click(ResultPageElement.SECURITY_CHECK_CONFIRM_CHECKBOX);
-      console.error('THERE WAS SECURITY CHECK!!!');
+      logger.error('There was security check');
     } catch (e) {
-      console.debug('No security check');
+      logger.debug('No security check');
     }
   }
 
@@ -35,7 +36,7 @@ export class ResultPage {
     const nextPageButton = await this.browserService.$(ResultPageElement.NEXT_PAGE_BUTTON);
     if (nextPageButton) {
       await this.browserService.click(ResultPageElement.NEXT_PAGE_BUTTON);
-      console.debug(`Proceeding to next page.`);
+      logger.debug(`Proceeding to next page.`);
       return true;
     } else {
       return false;

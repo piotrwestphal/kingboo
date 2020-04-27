@@ -27,20 +27,24 @@ export class CustomLoggerService implements LoggerService {
 
   // For Nest logging purpose only
   public log(message: string, object?: any): void {
+    this.info(message, object);
+  }
+
+  public info(message: string, object?: any): void {
     this.logger.info(this.concatWithMessageIfObjExist(message, object));
   }
 
-  public info(message: string, ...meta: string[]): void {
-    this.logger.info(message, ...meta);
-  }
-
-  public warn(message: string, ...meta: string[]): void {
-    this.logger.warn(message, ...meta);
+  public warn(message: string, object?: any): void {
+    this.logger.warn(this.concatWithMessageIfObjExist(message, object));
   }
 
   // Last param is for Nest logging purpose only
-  public error(message: string, ...meta: string[]): void {
-    this.logger.error(message, ...meta);
+  public error(message: string, err?: any): void {
+    if (err) {
+      this.logger.error(`${message} ${err}`);
+    } else {
+      this.logger.error(message);
+    }
   }
 
   private concatWithMessageIfObjExist = (message: string, object?: any): string => {

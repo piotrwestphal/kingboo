@@ -1,6 +1,7 @@
 import { Body, Controller, Post } from '@nestjs/common';
 import { CollectHotelsScenario } from '../core/interface/collect-hotels-scenario';
 import { DataCollectorService } from '../core/abstract/data-collector.service';
+import { logger } from '../logger';
 
 @Controller('api/v1/start')
 export class AppController {
@@ -10,7 +11,7 @@ export class AppController {
 
   @Post()
   start(@Body() req: CollectHotelsScenario): void {
-    console.info('Starting scraping...');
+    logger.info('Starting scraping...');
     this.dataCollectorService.collectData(req);
   }
 }

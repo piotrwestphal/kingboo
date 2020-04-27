@@ -1,6 +1,7 @@
 import * as puppeteer from 'puppeteer';
 import { Browser, ElementHandle, EvaluateFn, LaunchOptions, Page } from 'puppeteer';
 import { PageElement } from './interface/page-element';
+import { logger } from '../logger';
 
 export class BrowserService {
 
@@ -67,8 +68,8 @@ export class BrowserService {
     try {
       await this.page.goto(url, { timeout });
     } catch (e) {
-      console.error(`Waiting ${timeout / 1000}s for navigation after going to page [${url}]. ` +
-        `Now stopping page loading. The browser might not display any content. Next steps could fail :(. ` +
+      logger.error(`Waiting ${timeout / 1000}s for navigation after going to page [${url}]. ` +
+        `Now stopping page loading. The browser might not display any content. Next steps could fail. ` +
         `Trying to proceed with process.`);
       await this.stopPageLoading();
     }
@@ -164,7 +165,7 @@ export class BrowserService {
   }
 
   private logAndRethrow(errorMessage: string, e: Error): void {
-    console.error(errorMessage, e);
+    logger.error(errorMessage, e);
     throw e;
   }
 }

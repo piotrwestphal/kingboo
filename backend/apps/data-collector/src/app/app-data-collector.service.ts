@@ -10,6 +10,7 @@ import { RawHotel } from '../core/model/RawHotel';
 import { RawHotelMapper } from './mapper/raw-hotel.mapper';
 import { RawSearchResultRepository } from '../core/abstract/raw-search-result.repository';
 import { FileManager, TimeHelper } from '@kb/util';
+import { logger } from '../logger';
 
 @Injectable()
 export class AppDataCollectorService extends DataCollectorService {
@@ -26,7 +27,7 @@ export class AppDataCollectorService extends DataCollectorService {
   }
 
   async collectData(collectHotelsScenario: CollectHotelsScenario): Promise<void> {
-    console.info('Start collecting data for scenario: ', JSON.stringify(collectHotelsScenario));
+    logger.info('Start collecting data for scenario: ', collectHotelsScenario);
     const startCollectingHotelsTimeMs = Date.now();
 
     const { searchId, resultsLimit } = collectHotelsScenario;
@@ -39,7 +40,7 @@ export class AppDataCollectorService extends DataCollectorService {
       const hotels = await this.collectHotelAsLongAsConditionsMet(searchId, totalPagesCount, resultsLimit);
       rawSearchResult.addHotelsAfterCollectingFinish(hotels);
     } catch (err) {
-      console.error('Error during collecting data.', err.message);
+      logger.error('Error during collecting data.', err.message);
       if (this.appConfigService.takeScreenshotOnError) {
         await this.scraperFacade.takeScreenshot(this.fileManagerService.resultsFolderPath);
       }
@@ -47,17 +48,17 @@ export class AppDataCollectorService extends DataCollectorService {
       await this.scraperFacade.performCleaningAfterScraping();
     }
     const collectingTimeSec = TimeHelper.getDiffTimeInSeconds(startCollectingHotelsTimeMs);
-    console.info(`Collecting data finish. Collecting last [${collectingTimeSec}] sec`);
+    logger.info(`Collecting data finish. Collecting last [${collectingTimeSec}] sec`);
     rawSearchResult.setCollectingTime(collectingTimeSec);
 
-    console.debug(`Saving raw search result with id [${rawSearchResult.searchId}] to db.`);
+    logger.debug(`Saving raw search result with id [${rawSearchResult.searchId}] to db.`);
     await this.rawSearchResultRepository.create(rawSearchResult);
     this.dataCollectionNotificationSender.sendHotelsCollectionCompleted(searchId, collectingTimeSec);
 
     if (this.appConfigService.saveRawResultInJson) {
       const pathToResult = await this.fileManagerService.saveDataAsJSON(rawSearchResult,
         `COLLECTED_DATA_${collectHotelsScenario.searchPlace}_${collectHotelsScenario.searchId}`);
-      console.debug(`Raw search result was saved locally to [${pathToResult}]`);
+      logger.debug(`Collected data was saved locally to [${pathToResult}]`);
     }
   }
 
@@ -77,9 +78,9 @@ export class AppDataCollectorService extends DataCollectorService {
       this.dataToProcessSender.sendHotels(searchId, mappedRawHotels);
     }
     if (isNextPageButtonAvailable) {
-      console.debug('Stop hotels scraping - results limit has reached.');
+      logger.debug('Stop hotels scraping - results limit has reached.');
     } else {
-      console.debug('Stop hotels scraping - there is no more pages.');
+      logger.debug('Stop hotels scraping - there is no more pages.');
     }
     return rawHotels;
   }

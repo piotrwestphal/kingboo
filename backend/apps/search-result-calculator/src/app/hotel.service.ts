@@ -25,7 +25,8 @@ export class HotelService {
     const now = Date.now();
     const rawHotels = this.messageProcessor.processMessage(message);
     if (this.configService.saveResultInJson) {
-      await this.fileManager.saveDataAsJSON(Array.from(rawHotels.values()), `PROCESSED_DATA_${message.searchId}`);
+      const pathToResult = await this.fileManager.saveDataAsJSON(Array.from(rawHotels.values()), `PROCESSED_DATA_${message.searchId}`);
+      logger.debug(`Processed data was saved locally to [${pathToResult}]`);
     }
     logger.debug(`Processed message with hotel ids`, Array.from(rawHotels.keys()));
     const foundHotels = await this.hotelRepository.findAllBySearchIdAndHotelId(message.searchId, Array.from(rawHotels.keys()));

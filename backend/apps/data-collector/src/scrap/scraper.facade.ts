@@ -5,6 +5,7 @@ import { AppConfigService } from '../config/app-config.service';
 import { LaunchOptions } from 'puppeteer';
 import { HotelsScraper } from './hotels.scraper';
 import { ResultPageUrlBuilder } from './result-page-url.builder';
+import { logger } from '../logger';
 
 export class ScraperFacade {
 
@@ -25,23 +26,23 @@ export class ScraperFacade {
   }
 
   public async initializeBrowser(launchOptions: LaunchOptions): Promise<void> {
-    console.debug(`Initializing browser with options: ${JSON.stringify(launchOptions)}`);
+    logger.debug(`Initializing browser with options`, launchOptions);
     await this.browserService.initBrowserAndOpenBlankPage(launchOptions);
 
-    console.debug(`Set page size [width: ${JSON.stringify(this.DEFAULT_RESOLUTION)}]`);
+    logger.debug(`Set page size`, this.DEFAULT_RESOLUTION);
     await this.browserService.setPageSize(this.DEFAULT_RESOLUTION);
   }
 
   public async prepareResultList(searchPlaceIdentifier: string, collectHotelsScenario: CollectHotelsScenario): Promise<number> {
-    console.debug(`Building result page uri based on search place identifier [${searchPlaceIdentifier}]`);
+    logger.debug(`Building result page uri based on search place identifier [${searchPlaceIdentifier}]`);
     const resultPageUri = this.resultPageUrlBuilder.fromSearchPlaceIdentifierAndScenarioParams(searchPlaceIdentifier, collectHotelsScenario);
 
-    console.debug(`Preparing result list.`);
+    logger.debug(`Preparing result list.`);
     return await this.hotelsScraper.prepareResultList(resultPageUri);
   }
 
   public async collectSearchPlaceIdentifier(searchPlace: string): Promise<string> {
-    console.debug(`Starting search place identifier collecting.`);
+    logger.debug(`Starting search place identifier collecting.`);
     return this.searchPlaceScraper.collectSearchPlaceIdentifier(this.HOMEPAGE_WITH_DEFAULT_CURRENCY_AND_LANGUAGE, searchPlace);
   }
 
@@ -55,9 +56,9 @@ export class ScraperFacade {
 
   public async performCleaningAfterScraping(): Promise<void> {
     const pagesBefore = await this.browserService.pagesCount() || [];
-    console.debug('Closing browser. Open pages: ', pagesBefore.map((p) => ({ url: p.url() })));
+    logger.debug('Closing browser. Open pages:', pagesBefore.map((p) => ({ url: p.url() })));
     await this.browserService.closeBrowser();
     const pagesAfter = await this.browserService.pagesCount() || [];
-    console.debug('Browser closed. Open pages: ', pagesAfter.map((p) => ({ url: p.url() })));
+    logger.debug('Browser closed. Open pages:', pagesAfter.map((p) => ({ url: p.url() })));
   }
 }

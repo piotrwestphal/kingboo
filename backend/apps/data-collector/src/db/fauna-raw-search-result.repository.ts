@@ -6,6 +6,7 @@ import { RawSearchResultDocument } from './interface/raw-search-result.document'
 import { RawSearchResultMapper } from './raw-search-result.mapper';
 import Page = values.Page;
 import Document = values.Document;
+import { logger } from '../logger';
 
 export class FaunaRawSearchResultRepository extends RawSearchResultRepository {
 
@@ -22,8 +23,8 @@ export class FaunaRawSearchResultRepository extends RawSearchResultRepository {
       q.Create(
         q.Collection('raw-search-results'),
         { data: rawSearchResultDocument }))
-      .then((v) => console.info(`Raw search result with id [${v.data.searchId}] was saved.`))
-      .catch(reason => console.error('Error when saving raw search results', reason));
+      .then((v) => logger.info(`Raw search result with id [${v.data.searchId}] was saved.`))
+      .catch(reason => logger.error('Error when saving raw search results', reason));
   }
 
   // TODO: example
@@ -37,6 +38,6 @@ export class FaunaRawSearchResultRepository extends RawSearchResultRepository {
         ),
         q.Lambda('rsr', q.Get(q.Var('rsr'))),
       ),
-    ).catch((err) => console.error('ERROR when receiving users: ', err));
+    ).catch((err) => logger.error('ERROR when receiving users: ', err));
   }
 }
