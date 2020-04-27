@@ -15,7 +15,7 @@ import { FreeRequestSearcher } from './scheduler/free-request.searcher';
 
 @Module({
   imports: [
-    ConfigModule.register(getEnvironments(), AppConfigService),
+    ConfigModule.register(getEnvironments(), { configClass: AppConfigService }),
     DbModule,
     MqModule,
     ScheduleModule.forRoot(),

@@ -8,10 +8,10 @@ export class FaunaClientModule {
   static register<T extends FaunaClientConfigService>({configClass}: {configClass: FaunaClientConfigType<T>}): DynamicModule {
     const faunaClientProvider = {
       provide: FaunaClient,
-      useFactory: async (config: T): Promise<FaunaClient> => {
-        const nativeClient = config.env === 'prod'
-          ? createClient(config.faunaSecret)
-          : await createClientForDevPurposes(config.faunaAdminDbOptions, config.faunaDbName);
+      useFactory: async (configService: T): Promise<FaunaClient> => {
+        const nativeClient = configService.env === 'prod'
+          ? createClient(configService.faunaSecret)
+          : await createClientForDevPurposes(configService.faunaAdminDbOptions, configService.faunaDbName);
         return new FaunaClient(nativeClient);
       },
       inject: [configClass],

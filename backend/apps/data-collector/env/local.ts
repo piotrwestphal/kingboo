@@ -9,7 +9,6 @@ const dataToProcessQueue = 'data-to-process';
 export const localConfig: AppConfig = {
   nodeEnv: 'local',
   port: 8080,
-  logLevel: 'debug',
   corsOrigins: 'http://localhost', // separate multiple origins by comma
   saveRawResultInJson: true,
   takeScreenshotOnError: true,

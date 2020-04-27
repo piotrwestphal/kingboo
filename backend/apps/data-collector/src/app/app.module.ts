@@ -13,7 +13,7 @@ import { DbModule } from '../db/db.module';
 
 @Module({
   imports: [
-    ConfigModule.register(getEnvironments(), AppConfigService),
+    ConfigModule.register(getEnvironments(), { configClass: AppConfigService }),
     DbModule,
     MqModule,
     ScrapModule,

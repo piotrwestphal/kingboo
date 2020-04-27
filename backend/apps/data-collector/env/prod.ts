@@ -4,7 +4,6 @@ export const prodConfig = (env: NodeJS.ProcessEnv): AppConfig =>
   ({
     nodeEnv: env.NODE_ENV as 'prod',
     port: env.PORT ? parseInt(env.PORT, 10) : 8080,
-    logLevel: env.LOG_LEVEL || 'info',
     corsOrigins: env.CORS_ORIGINS,
     saveRawResultInJson: env.SAVE_RAW_RESULT_IN_JSON === 'true',
     takeScreenshotOnError: env.TAKE_SCREENSHOT_ON_ERROR === 'true',

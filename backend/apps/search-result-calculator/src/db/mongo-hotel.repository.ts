@@ -35,13 +35,14 @@ export class MongoHotelRepository extends HotelRepository {
     return created.map(doc => this.mapper.toHotel(doc));
   }
 
-  async updateAll(hotels: Hotel[]): Promise<void> {
-    await Promise.all(hotels.map(hotel => this.hotelModel.findOneAndUpdate({
+  async updateAll(hotels: Hotel[]): Promise<Hotel[]> {
+    const updated = await Promise.all(hotels.map(hotel => this.hotelModel.findOneAndUpdate({
         searchId: hotel.searchId,
         hotelId: hotel.hotelId,
       },
       hotel,
+      { new: true },
     ).exec()));
+    return updated.map(doc => this.mapper.toHotel(doc));
   }
-
 }

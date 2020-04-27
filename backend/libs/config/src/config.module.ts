@@ -10,19 +10,19 @@ import { ConfigType } from '@kb/config/config.type';
 export class ConfigModule {
   static register<T extends CommonConfig, K extends ConfigService<T>>(
     envs: Environments<T>,
-    configServiceType: ConfigType<T, K>): DynamicModule {
+    { configClass }: { configClass: ConfigType<T, K> }): DynamicModule {
     return {
       module: ConfigModule,
       providers: [
         {
-          provide: configServiceType,
+          provide: configClass,
           useFactory: (): K => {
             const configOptions = getConfigBasedOnEnv(process.env, envs);
-            return new configServiceType(configOptions);
+            return new configClass(configOptions);
           },
         },
       ],
-      exports: [configServiceType],
+      exports: [configClass],
     };
   }
 }

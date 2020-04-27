@@ -37,7 +37,7 @@ export class FaunaHotelRepository extends HotelRepository {
     return null;
   }
 
-  updateAll(hotels: Hotel[]): Promise<void> {
+  updateAll(hotels: Hotel[]): Promise<Hotel[]> {
     return null;
   }
 

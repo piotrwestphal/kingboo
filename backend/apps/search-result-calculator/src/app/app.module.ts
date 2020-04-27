@@ -16,7 +16,7 @@ import { MessageProcessor } from '../processing/message.processor';
 
 @Module({
   imports: [
-    ConfigModule.register(getEnvironments(), AppConfigService),
+    ConfigModule.register(getEnvironments(), { configClass: AppConfigService }),
     DbModule,
     MqModule,
     ProcessingModule,
@@ -28,12 +28,14 @@ import { MessageProcessor } from '../processing/message.processor';
   providers: [
     {
       provide: HotelService,
-      useFactory: (hotelRepository: HotelRepository,
+      useFactory: (configService: AppConfigService,
+                   hotelRepository: HotelRepository,
                    messageProcessor: MessageProcessor) => {
         const fileManager = new FileManager();
         const hotelFactory = new HotelFactory();
         const priceCalculator = new PriceCalculator();
         return new HotelService(
+          configService,
           fileManager,
           hotelFactory,
           hotelRepository,
@@ -41,7 +43,7 @@ import { MessageProcessor } from '../processing/message.processor';
           priceCalculator,
         );
       },
-      inject: [HotelRepository, MessageProcessor],
+      inject: [AppConfigService, HotelRepository, MessageProcessor],
     },
   ],
 })

@@ -6,10 +6,13 @@ import { HotelFactory } from './hotel.factory';
 import { PriceCalculator } from './price.calculator';
 import { Hotel } from '../core/model/hotel';
 import { RawHotel } from '../core/interface/raw-hotel';
+import { AppConfigService } from '../config/app-config.service';
+import { logger } from '../logger';
 
 export class HotelService {
 
   constructor(
+    private readonly configService: AppConfigService,
     private readonly fileManager: FileManager,
     private readonly hotelFactory: HotelFactory,
     private readonly hotelRepository: HotelRepository,
@@ -18,11 +21,13 @@ export class HotelService {
   ) {
   }
 
-  // TODO: add prefetch count of something because too many messages can income
   async processMessage(message: CollectedHotelsMessage): Promise<void> {
     const now = Date.now();
     const rawHotels = this.messageProcessor.processMessage(message);
-    await this.fileManager.saveDataAsJSON(rawHotels, `PROCESSED_MESSAGE_${message.searchId}`);
+    if (this.configService.saveResultInJson) {
+      await this.fileManager.saveDataAsJSON(Array.from(rawHotels.values()), `PROCESSED_DATA_${message.searchId}`);
+    }
+    logger.debug(`Processed message with hotel ids`, Array.from(rawHotels.keys()));
     const foundHotels = await this.hotelRepository.findAllBySearchIdAndHotelId(message.searchId, Array.from(rawHotels.keys()));
 
     const hotelsToCreate = Array.from(rawHotels.keys())
@@ -30,17 +35,20 @@ export class HotelService {
       .map(hotelId => rawHotels.get(hotelId));
 
     if (hotelsToCreate.length) {
-      await this.hotelRepository.createAll(hotelsToCreate.map(h => this.hotelFactory.createNew(h)));
+      const created = await this.hotelRepository.createAll(hotelsToCreate.map(h => this.hotelFactory.createNew(h)));
+      logger.debug(`Hotels were created for hotel ids`, created.map(h => h.hotelId));
     }
     const updatedHotelsWithRaw = Array.from(foundHotels.keys()).map(hotelId => {
       const hotel = foundHotels.get(hotelId);
       const rawHotel = rawHotels.get(hotelId);
       return this.updateHotelWithRaw(hotel, rawHotel);
     });
-    console.log('UPDATED HOTELS: ', updatedHotelsWithRaw.length);
 
-    await this.hotelRepository.updateAll(updatedHotelsWithRaw);
-    console.log(`PROCESSING_LAST: [${Date.now() - now}] ms`);
+    if (updatedHotelsWithRaw.length) {
+      const updated = await this.hotelRepository.updateAll(updatedHotelsWithRaw);
+      logger.debug(`Hotels were updated for hotel ids`, updated.map(h => h.hotelId));
+    }
+    console.debug(`Message processing last [${Date.now() - now}] ms`);
   }
 
   private updateHotelWithRaw(hotel: Hotel,

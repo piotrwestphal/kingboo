@@ -19,7 +19,7 @@ npm-debug.log*
 /scraping-output
 !/scraping-output/.gitkeep
 
-/calculating-output
-!/calculating-output/.gitkeep
+/compose-output
+!/compose-output/.gitkeep
 
 prod.env
