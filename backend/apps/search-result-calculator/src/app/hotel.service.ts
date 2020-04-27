@@ -49,7 +49,7 @@ export class HotelService {
       const updated = await this.hotelRepository.updateAll(updatedHotelsWithRaw);
       logger.debug(`Hotels were updated for hotel ids`, updated.map(h => h.hotelId));
     }
-    console.debug(`Message processing last [${Date.now() - now}] ms`);
+    logger.debug(`Message processing last [${Date.now() - now}] ms`);
   }
 
   private updateHotelWithRaw(hotel: Hotel,

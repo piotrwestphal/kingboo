@@ -19,6 +19,7 @@ export class DataToProcessConsumer {
                          @Ctx() ctx: RmqContext) {
     logger.info(`Receive ${DataToProcessMessagePattern.HOTELS} message with search id [${message.searchId}]`);
     await this.hotelService.processMessage(message);
+    logger.info(`Processed message with search id [${message.searchId}]`);
     const channel = ctx.getChannelRef();
     const originalMsg = ctx.getMessage();
     channel.ack(originalMsg);

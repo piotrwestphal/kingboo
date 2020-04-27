@@ -2,7 +2,7 @@ import { AppConfig } from '../src/config/app.config';
 import { retrieveRMQQueueOptions } from '@kb/rabbit';
 
 const mqAddress = (env) => env.MQ_ADDRESS;
-const consumerQueueName = (env) => env.DATA_TO_PROCESS_QUEUE_NAME;
+const consumerQueueName = (env) => env.MQ_DATA_TO_PROCESS_QUEUE_NAME;
 const userNotificationsQueue = (env) => env.MQ_USER_NOTIFICATIONS_QUEUE_NAME;
 
 export const devConfig = (env: NodeJS.ProcessEnv): AppConfig =>

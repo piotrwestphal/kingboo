@@ -26,7 +26,7 @@ services:
       - 38081:8080
     command: ["/wait-for-it.sh", "rabbitmq:5672", "-t", "60", "--", "node", "main"]
 
-  data-collector:
+  data-collector-a:
     build:
       context: ./backend
       dockerfile: kb-data-collector.Dockerfile
@@ -36,24 +36,19 @@ services:
     volumes:
       - ./compose-output:/usr/src/app/dist/apps/data-collector/output
       - ./tools/wait-for-it.sh:/wait-for-it.sh
-    ports:
-      - 38082:8080
     command: ["/wait-for-it.sh", "faunadb:8443", "-t", "60", "--", "node", "main"]
 
-
-#  search-result-calculator:
-#    build:
-#      context: ./backend
-#      dockerfile: kb-search-result-calculator.Dockerfile
-#    image: kb-search-result-calculator
-#    env_file:
-#      - dev.env
-#    volumes:
-#      - ./compose-output:/usr/src/app/dist/apps/search-result-calculator/output
-#      - ./tools/wait-for-it.sh:/wait-for-it.sh
-#    ports:
-#    - 38083:8080
-#    command: ["/wait-for-it.sh", "faunadb:8443", "-t", "60", "--", "node", "main"]
+  search-result-calculator:
+    build:
+      context: ./backend
+      dockerfile: kb-search-result-calculator.Dockerfile
+    image: kb-search-result-calculator
+    env_file:
+      - dev.env
+    volumes:
+      - ./compose-output:/usr/src/app/dist/apps/search-result-calculator/output
+      - ./tools/wait-for-it.sh:/wait-for-it.sh
+    command: ["/wait-for-it.sh", "rabbitmq:5672", "-t", "60", "--", "node", "main"]
 
   rabbitmq:
     image: rabbitmq:3-management-alpine
