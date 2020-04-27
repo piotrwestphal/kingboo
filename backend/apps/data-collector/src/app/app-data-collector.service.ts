@@ -57,7 +57,7 @@ export class AppDataCollectorService extends DataCollectorService {
 
     if (this.appConfigService.saveRawResultInJson) {
       const pathToResult = await this.fileManagerService.saveDataAsJSON(rawSearchResult,
-        `COLLECTED_DATA_${collectHotelsScenario.searchPlace}_${collectHotelsScenario.searchId}`);
+        `${collectHotelsScenario.searchId}_COLLECTED`);
       logger.debug(`Collected data was saved locally to [${pathToResult}]`);
     }
   }

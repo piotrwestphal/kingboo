@@ -10,6 +10,7 @@ import { DataCollectorService } from '../core/abstract/data-collector.service';
 import { AppDataCollectorService } from './app-data-collector.service';
 import { FileManager } from '@kb/util/file.manager';
 import { DbModule } from '../db/db.module';
+import { logger } from '../logger';
 
 @Module({
   imports: [
@@ -19,7 +20,10 @@ import { DbModule } from '../db/db.module';
     ScrapModule,
   ],
   providers: [
-    FileManager,
+    {
+      provide: FileManager,
+      useFactory: () => new FileManager(logger),
+    },
     {
       provide: DataCollectorService,
       useClass: AppDataCollectorService,

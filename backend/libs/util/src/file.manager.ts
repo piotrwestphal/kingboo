@@ -1,27 +1,30 @@
 import * as fs from 'fs';
 import { TimeHelper } from '@kb/util/time.helper';
+import { CustomLoggerService } from '@kb/logger';
 
 export class FileManager {
 
   private readonly RESULTS_FOLDER_PATH = 'output';
+
+  constructor(
+    private readonly logger: CustomLoggerService,
+  ) {
+  }
 
   get resultsFolderPath() {
     return this.RESULTS_FOLDER_PATH;
   }
 
   public async saveDataAsJSON(data: any, formattedName: string): Promise<string> {
-    const jsonPath = `${this.RESULTS_FOLDER_PATH}/${TimeHelper.getFormattedDate(new Date())}-${formattedName}.json`;
-    if (!fs.existsSync(this.RESULTS_FOLDER_PATH)) {
-      fs.mkdirSync(this.RESULTS_FOLDER_PATH);
+    const now = new Date();
+    const baseDir = `${this.RESULTS_FOLDER_PATH}/${TimeHelper.getFormattedShortDate(now)}`;
+    const jsonPath = `${baseDir}/${TimeHelper.getFormattedDate(now)}-${formattedName}.json`;
+    try {
+      await fs.promises.mkdir(baseDir, { recursive: true });
+      await fs.promises.writeFile(jsonPath, JSON.stringify(data));
+    } catch (err) {
+      this.logger.error(`Error when saving data as json`, err);
     }
-    await new Promise<void>((resolve) => {
-      fs.writeFile(jsonPath, JSON.stringify(data), (err: NodeJS.ErrnoException): void => {
-        if (err) {
-          console.error(`Error when writing file '${jsonPath}'.`, err);
-        }
-        resolve();
-      });
-    });
     return jsonPath;
   }
 }

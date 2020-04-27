@@ -13,6 +13,7 @@ import { PriceCalculator } from './price.calculator';
 import { HotelFactory } from './hotel.factory';
 import { HotelRepository } from '../core/abstract/hotel.repository';
 import { MessageProcessor } from '../processing/message.processor';
+import { logger } from '../logger';
 
 @Module({
   imports: [
@@ -31,7 +32,7 @@ import { MessageProcessor } from '../processing/message.processor';
       useFactory: (configService: AppConfigService,
                    hotelRepository: HotelRepository,
                    messageProcessor: MessageProcessor) => {
-        const fileManager = new FileManager();
+        const fileManager = new FileManager(logger);
         const hotelFactory = new HotelFactory();
         const priceCalculator = new PriceCalculator();
         return new HotelService(
