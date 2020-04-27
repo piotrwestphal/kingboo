@@ -7,7 +7,7 @@ export const prodConfig = (env: NodeJS.ProcessEnv): AppConfig =>
     corsOrigins: env.CORS_ORIGINS,
     saveResultInJson: env.SAVE_RESULT_IN_JSON === 'true',
     fauna: {
-      secret: env.FAUNA_DB_SECRET,
+      secret: env.FAUNA_SECRET,
     },
     mongo: {
       address: env.MONGO_ADDRESS

@@ -11,7 +11,7 @@ export const prodConfig = (env: NodeJS.ProcessEnv): AppConfig =>
       headlessModeOff: env.PUPPETEER_HEADLESS === 'true',
     },
     fauna: {
-      secret: env.FAUNA_DB_SECRET,
+      secret: env.FAUNA_SECRET,
     },
     mqConsumer: {
       address: env.MQ_ADDRESS,

@@ -13,7 +13,6 @@ export class DataToProcessConsumer {
   ) {
   }
 
-
   @MessagePattern(DataToProcessMessagePattern.HOTELS)
   async handleHotelsData(@Payload() message: CollectedHotelsMessage,
                          @Ctx() ctx: RmqContext) {
