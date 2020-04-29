@@ -27,6 +27,13 @@ export const localConfig: AppConfig = {
       secret: 'secret',
     },
   },
+  firestore: {
+    projectId: 'dev',
+    emulator: {
+      host: 'localhost',
+      port: 8555,
+    },
+  },
   mqConsumer: {
     address: mqAddress,
     queueDefinition: {

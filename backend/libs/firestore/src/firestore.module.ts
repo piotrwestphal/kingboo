@@ -9,8 +9,14 @@ export class FirestoreModule {
       provide: FirestoreClient,
       useFactory: (configService: T): FirestoreClient => {
         const firestore = configService.env === 'prod'
-          ? createFirestore(configService)
-          : createFirestoreForDevPurposes(configService);
+          ? createFirestore(
+            configService.projectId,
+            configService.clientEmail,
+            configService.clientKey)
+          : createFirestoreForDevPurposes(
+            configService.projectId,
+            configService.emulator.host,
+            configService.emulator.port);
         return new FirestoreClient(firestore);
       },
       inject: [configClass],

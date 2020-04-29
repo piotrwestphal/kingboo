@@ -25,6 +25,13 @@ export const devConfig = (env: NodeJS.ProcessEnv): AppConfig =>
         secret: env.FAUNA_ADMIN_DB_SECRET,
       },
     },
+    firestore: {
+      projectId: env.FIRESTORE_PROJECT_ID,
+      emulator: {
+        host: env.FIRESTORE_EMULATOR_HOST,
+        port: parseInt(env.FIRESTORE_EMULATOR_PORT, 10),
+      },
+    },
     mqConsumer: {
       address: mqAddress(env),
       queueDefinition: {

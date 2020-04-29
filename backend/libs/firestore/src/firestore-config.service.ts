@@ -1,9 +1,9 @@
 import { NodeEnv } from '@kb/config';
+import { EmulatorOptions } from '@kb/firestore/emulator-options';
 
 export interface FirestoreConfigService {
   env: NodeEnv;
-  host: string;
-  port: number;
+  emulator: EmulatorOptions;
   projectId: string;
   clientEmail: string;
   clientKey: string;

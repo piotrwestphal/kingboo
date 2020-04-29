@@ -1,22 +1,25 @@
-import { FirestoreConfigService } from '@kb/firestore/firestore-config.service';
 import { Firestore } from '@google-cloud/firestore';
 
-export const createFirestore = (configService: FirestoreConfigService) => new Firestore({
-  projectId: configService.projectId,
+export const createFirestore = (projectId: string,
+                                clientEmail: string,
+                                clientKey: string) => new Firestore({
+  projectId,
   credentials: {
     // eslint-disable-next-line @typescript-eslint/camelcase
-    client_email: configService.clientEmail,
+    client_email: clientEmail,
     // eslint-disable-next-line @typescript-eslint/camelcase
-    private_key: configService.clientKey,
+    private_key: clientKey,
   },
 });
 
-export const createFirestoreForDevPurposes = (configService: FirestoreConfigService) => new Firestore({
-  projectId: configService.projectId,
-  host: configService.host,
-  port: configService.port,
+export const createFirestoreForDevPurposes = (projectId: string,
+                                              host: string,
+                                              port: number) => new Firestore({
+  projectId,
+  host,
+  port,
   ssl: false,
   customHeaders: {
-    "Authorization": "Bearer owner",
-  }
-})
+    'Authorization': 'Bearer owner',
+  },
+});
