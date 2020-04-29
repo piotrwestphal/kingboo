@@ -1,5 +1,5 @@
-import { FaunaOptions } from '@kb/fauna-client/interface/fauna-options';
+import { FaunaClientOptions } from '@kb/fauna-client/interface/fauna-client-options';
 
 export interface FaunaClientConfig {
-  fauna: FaunaOptions
+  readonly fauna: FaunaClientOptions;
 }

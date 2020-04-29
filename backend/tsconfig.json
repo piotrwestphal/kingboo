@@ -53,6 +53,12 @@
       ],
       "@kb/logger/*": [
         "libs/logger/src/*"
+      ],
+      "@kb/firestore": [
+        "libs/firestore/src"
+      ],
+      "@kb/firestore/*": [
+        "libs/firestore/src/*"
       ]
     }
   },

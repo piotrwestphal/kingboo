@@ -9,7 +9,7 @@ services:
 #      - ./compose-output:/usr/src/app/dist/apps/user-service/output
 #      - ./tools/wait-for-it.sh:/wait-for-it.sh
 #    ports:
-#      - 38082:8080
+#      - 38080:8080
 #    command: ["/wait-for-it.sh", "rabbitmq:5672", "-t", "60", "--", "node", "main"]
 
   search-queue-manager:
@@ -98,3 +98,9 @@ services:
       - faunadb
     ports:
       - 33000:3000
+
+  firestore:
+    build:
+      context: ./db/firestore
+    ports:
+      - 8555:8080

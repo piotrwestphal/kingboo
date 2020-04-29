@@ -1,8 +1,8 @@
 import * as Joi from '@hapi/joi';
 import { ObjectSchema } from '@hapi/joi';
-import { FaunaAdminDbOptions, FaunaOptions } from '@kb/fauna-client';
+import { FaunaAdminDbOptions, FaunaClientOptions } from '@kb/fauna-client';
 
-export const faunaValidationObjectSchema: ObjectSchema<FaunaOptions> = Joi.object<FaunaOptions>({
+export const faunaValidationObjectSchema: ObjectSchema<FaunaClientOptions> = Joi.object<FaunaClientOptions>({
   dbName: Joi.string(),
   secret: Joi.string(),
   adminDb: Joi.object<FaunaAdminDbOptions>({

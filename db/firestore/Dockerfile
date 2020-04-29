@@ -1,0 +1,6 @@
+FROM openjdk:14-slim
+ENV CLOUD_FIRESTORE_EMULATOR_VERSION=1.11.3
+ADD https://storage.googleapis.com/firebase-preview-drop/emulator/cloud-firestore-emulator-v${CLOUD_FIRESTORE_EMULATOR_VERSION}.jar /emulator.jar
+ENV PORT=8080
+CMD ["sh", "-c", "java -jar /emulator.jar --host 0.0.0.0 --port ${PORT}"]
+EXPOSE ${PORT}

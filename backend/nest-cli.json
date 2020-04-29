@@ -106,6 +106,15 @@
       "compilerOptions": {
         "tsConfigPath": "libs/logger/tsconfig.lib.json"
       }
+    },
+    "firestore": {
+      "type": "library",
+      "root": "libs/firestore",
+      "entryFile": "index",
+      "sourceRoot": "libs/firestore/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/firestore/tsconfig.lib.json"
+      }
     }
   }
 }

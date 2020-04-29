@@ -37,6 +37,7 @@
     "@nestjs/mongoose": "6.4.0",
     "@nestjs/platform-express": "7.0.7",
     "@nestjs/schedule": "0.3.1",
+    "@google-cloud/firestore": "3.7.5",
     "amqp-connection-manager": "3.2.0",
     "amqplib": "0.5.5",
     "faunadb": "2.13.1",
@@ -104,7 +105,9 @@
       "@kb/util/(.*)": "<rootDir>/libs/util/src/$1",
       "@kb/util": "<rootDir>/libs/util/src",
       "@kb/logger/(.*)": "<rootDir>/libs/logger/src/$1",
-      "@kb/logger": "<rootDir>/libs/logger/src"
+      "@kb/logger": "<rootDir>/libs/logger/src",
+      "@kb/firestore/(.*)": "<rootDir>/libs/firestore/src/$1",
+      "@kb/firestore": "<rootDir>/libs/firestore/src"
     }
   }
 }
