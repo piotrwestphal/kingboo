@@ -3,8 +3,8 @@ import { SearchRequest } from '../core/model/SearchRequest';
 import { Model } from 'mongoose';
 import { SearchRequestDocument } from './interface/search-request.document';
 import { SearchRequestDocumentMapper } from './mapper/search-request-document.mapper';
-import { InconsistencyException } from '../core/exception/InconsistencyException';
 import { OccupancyStatus } from '../core/model/OccupancyStatus';
+import { SearchRequestType } from '../core/model/SearchRequestType';
 
 export class MongoSearchRequestRepository extends SearchRequestRepository {
 
@@ -18,51 +18,75 @@ export class MongoSearchRequestRepository extends SearchRequestRepository {
   async findBySearchId(searchId: string): Promise<SearchRequest> {
     const found = await this.searchRequestModel.findOne({ searchId }).exec();
     return found
-      ? this.map(found)
+      ? this.fromDoc(found)
       : null;
   }
 
+  findAllWithSearchIds(searchIds: string[]): Promise<SearchRequest[]> {
+    return this.searchRequestModel.find({
+      searchId: { $in: searchIds },
+    })
+      .map(docs => docs.map(doc => this.fromDoc(doc)))
+      .exec();
+  }
+
+  findAllWithType(type: SearchRequestType): Promise<SearchRequest[]> {
+    return this.searchRequestModel.find({ type })
+      .map(docs => docs.map(doc => this.fromDoc(doc)))
+      .exec();
+  }
+
   async create(searchRequest: SearchRequest): Promise<SearchRequest> {
-    const base = this.mapper.prepareForSave(searchRequest);
-    const saved = await new this.searchRequestModel(base).save();
-    return this.map(saved);
+    const saveSearchRequest = this.mapper.prepareForSave(searchRequest);
+    const saved = await new this.searchRequestModel(saveSearchRequest).save();
+    return this.fromDoc(saved);
   }
 
   async update(searchRequest: SearchRequest): Promise<SearchRequest> {
-    const base = this.mapper.prepareForSave(searchRequest);
+    const saveSearchRequest = this.mapper.prepareForSave(searchRequest);
     const updated = await this.searchRequestModel.findOneAndUpdate(
-      { searchId: base.searchId },
-      base,
+      { searchId: saveSearchRequest.searchId },
+      saveSearchRequest,
       { new: true }).exec();
-    return this.map(updated);
+    return this.fromDoc(updated);
   }
 
-  public delete(searchId: string): Promise<SearchRequestDocument> | null {
-    return this.searchRequestModel.findOneAndDelete({ searchId })
-      .orFail(this.throwError(searchId)).exec();
+  async deleteMany(searchIds: string[]): Promise<number> {
+    const deleted = await this.searchRequestModel.deleteMany(
+      { searchId: { $in: searchIds } }).exec();
+    return deleted.deletedCount;
   }
 
-  findObsolete(): Promise<SearchRequest[]> {
+  findObsoleteCyclicRequests(): Promise<SearchRequest[]> {
     return this.searchRequestModel.find({
+      type: SearchRequestType.CYCLIC,
       occupancyStatus: OccupancyStatus.FREE,
       checkInDate: { $lte: new Date() },
     })
       .sort({ occupancyUpdatedAt: 1 })
-      .map((res) => res.map(doc => this.map(doc)))
+      .map((docs) => docs.map(doc => this.fromDoc(doc)))
       .exec();
   }
 
-  findValidSortedByPriority(): Promise<SearchRequest[]> {
+  findFreeAndValid(now: Date): Promise<SearchRequest[]> {
     return this.searchRequestModel.find({
       occupancyStatus: OccupancyStatus.FREE,
-      checkInDate: { $gte: new Date() },
+      checkInDate: { $gte: now },
     })
       .sort({ priority: 1 })
-      .map((res) => res.map(doc => this.map(doc)))
+      .map((docs) => docs.map(doc => this.fromDoc(doc)))
       .exec();
   }
 
-  private map = (doc: SearchRequestDocument) => SearchRequestDocumentMapper.toSearchRequest(doc);
+  findOccupiedLongerThanGivenThreshold(now: Date, minutes: number): Promise<SearchRequest[]> {
+    return this.searchRequestModel.find({
+      occupancyStatus: OccupancyStatus.BUSY,
+      occupancyUpdatedAt: { $lte: new Date(now.getTime() - (minutes * 60000)) },
+    })
+      .sort({ priority: 1 })
+      .map((docs) => docs.map(doc => this.fromDoc(doc)))
+      .exec();
+  }
 
-  private throwError = (searchId: string) => new InconsistencyException(`Search request with search id: ${searchId} not exist`);
+  private fromDoc = (doc: SearchRequestDocument) => this.mapper.toSearchRequest(doc);
 }

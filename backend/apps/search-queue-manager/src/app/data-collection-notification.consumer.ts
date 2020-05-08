@@ -3,7 +3,7 @@ import { MessagePattern, Payload } from '@nestjs/microservices';
 import { DataCollectionNotificationsMessagePattern } from '@kb/rabbit/message-pattern/DataCollectionNotificationsMessagePattern';
 import { SearchPlaceCollectionCompletedMessage } from '@kb/model/mqmessage/search-place-collection-completed.message';
 import { HotelsCollectionCompletedMessage } from '@kb/model/mqmessage/hotels-collection-completed.message';
-import { SearchRequestService } from '../core/abstract/search-request.service';
+import { SearchRequestService } from './search-request/search-request.service';
 
 @Controller()
 export class DataCollectionNotificationConsumer {

@@ -1,10 +1,12 @@
 import { SearchRequestDocument } from '../interface/search-request.document';
 import { SearchRequest } from '../../core/model/SearchRequest';
 import { SaveSearchRequest } from '../interface/save-search-request';
+import { SearchRequestType } from '../../core/model/SearchRequestType';
 
 export class SearchRequestDocumentMapper {
-  static toSearchRequest({
+  toSearchRequest({
                            searchId,
+                           type,
                            priority,
                            updateFrequencyMinutes,
                            resultsLimit,
@@ -20,6 +22,7 @@ export class SearchRequestDocumentMapper {
                          }: SearchRequestDocument): SearchRequest {
     return SearchRequest.create({
       searchId,
+      type: type as SearchRequestType,
       priority,
       updateFrequencyMinutes,
       resultsLimit,
@@ -37,6 +40,7 @@ export class SearchRequestDocumentMapper {
 
   prepareForSave({
                    searchId,
+                   type,
                    priority,
                    updateFrequencyMinutes,
                    resultsLimit,
@@ -52,6 +56,7 @@ export class SearchRequestDocumentMapper {
                  }: SearchRequest): SaveSearchRequest {
     return {
       searchId,
+      type,
       priority,
       updateFrequencyMinutes,
       resultsLimit,

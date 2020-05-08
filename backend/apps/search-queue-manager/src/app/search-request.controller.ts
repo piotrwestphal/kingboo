@@ -1,10 +1,13 @@
 import { Body, Controller, Post } from '@nestjs/common';
-import { CreateSearchRequest } from '../core/interface/create-search-request';
-import { SearchRequestService } from '../core/abstract/search-request.service';
 import { SearchRequest } from '../core/model/SearchRequest';
+import { SearchRequestService } from './search-request/search-request.service';
+import { UserCreateSearchRequest } from './search-request/user-create-search-request';
+import { CreateSearchRequestMapper } from './search-request/create-search-request.mapper';
 
 @Controller('api/v1/search-requests')
 export class SearchRequestController {
+
+  private readonly createSearchRequestMapper: CreateSearchRequestMapper = new CreateSearchRequestMapper();
 
   constructor(
     private readonly searchRequestService: SearchRequestService,
@@ -12,7 +15,8 @@ export class SearchRequestController {
   }
 
   @Post()
-  async send(@Body() createSearchRequest: CreateSearchRequest): Promise<SearchRequest> {
-    return this.searchRequestService.createSearchRequest('userId', createSearchRequest);
+  async createByUser(@Body() userCreateSearchRequest: UserCreateSearchRequest): Promise<SearchRequest> {
+    const createSearchRequest = this.createSearchRequestMapper.fromUserCreateSearchRequest(userCreateSearchRequest);
+    return this.searchRequestService.createUserSearchRequest('userId', createSearchRequest);
   }
 }

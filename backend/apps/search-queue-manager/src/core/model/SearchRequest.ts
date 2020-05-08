@@ -1,5 +1,6 @@
 import { OccupancyStatus } from './OccupancyStatus';
 import { InconsistencyException } from '../exception/InconsistencyException';
+import { SearchRequestType } from './SearchRequestType';
 
 type SearchRequestValues = Omit<SearchRequest, 'updateSearchPlaceIdentifier' | 'block' | 'unblock'>
 
@@ -7,6 +8,7 @@ export class SearchRequest {
 
   private constructor(
     public readonly searchId: string,
+    public readonly type: SearchRequestType,
     public readonly priority: number,
     public readonly updateFrequencyMinutes: number,
     public readonly resultsLimit: number,
@@ -20,6 +22,40 @@ export class SearchRequest {
     public occupancyStatus: string,
     public occupancyUpdatedAt: Date,
   ) {
+  }
+
+  static create({
+                  searchId,
+                  type,
+                  priority,
+                  updateFrequencyMinutes,
+                  resultsLimit,
+                  searchPlace,
+                  checkInDate,
+                  checkOutDate,
+                  numberOfRooms,
+                  numberOfAdults,
+                  childrenAgeAtCheckout,
+                  searchPlaceIdentifier,
+                  occupancyStatus,
+                  occupancyUpdatedAt,
+                }: SearchRequestValues): SearchRequest {
+    return new SearchRequest(
+      searchId,
+      type,
+      priority,
+      updateFrequencyMinutes,
+      resultsLimit,
+      searchPlace,
+      checkInDate,
+      checkOutDate,
+      numberOfRooms,
+      numberOfAdults,
+      childrenAgeAtCheckout,
+      searchPlaceIdentifier,
+      occupancyStatus,
+      occupancyUpdatedAt,
+    );
   }
 
   updateSearchPlaceIdentifier(searchPlaceIdentifier: string): SearchRequest {
@@ -46,37 +82,5 @@ export class SearchRequest {
     this.occupancyStatus = OccupancyStatus.BUSY;
     this.occupancyUpdatedAt = new Date();
     return this;
-  }
-
-  static create({
-                  searchId,
-                  priority,
-                  updateFrequencyMinutes,
-                  resultsLimit,
-                  searchPlace,
-                  checkInDate,
-                  checkOutDate,
-                  numberOfRooms,
-                  numberOfAdults,
-                  childrenAgeAtCheckout,
-                  searchPlaceIdentifier,
-                  occupancyStatus,
-                  occupancyUpdatedAt,
-                }: SearchRequestValues): SearchRequest {
-    return new SearchRequest(
-      searchId,
-      priority,
-      updateFrequencyMinutes,
-      resultsLimit,
-      searchPlace,
-      checkInDate,
-      checkOutDate,
-      numberOfRooms,
-      numberOfAdults,
-      childrenAgeAtCheckout,
-      searchPlaceIdentifier,
-      occupancyStatus,
-      occupancyUpdatedAt,
-    );
   }
 }

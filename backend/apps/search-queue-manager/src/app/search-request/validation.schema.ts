@@ -1,10 +1,8 @@
 import * as Joi from '@hapi/joi';
 import { SchemaMap } from '@hapi/joi';
-import { SearchRequest } from '../core/model/SearchRequest';
-import { OccupancyStatus } from '../core/model/OccupancyStatus';
+import { CreateSearchRequest } from './create-search-request';
 
-export const searchRequestValidationSchemaMap: SchemaMap<SearchRequest> = {
-  searchId: Joi.string().required(),
+export const createSearchRequestValidationSchemaMap: SchemaMap<CreateSearchRequest> = {
   priority: Joi.number().required(),
   updateFrequencyMinutes: Joi.number().required(),
   resultsLimit: Joi.number().required(),
@@ -14,8 +12,5 @@ export const searchRequestValidationSchemaMap: SchemaMap<SearchRequest> = {
   numberOfRooms: Joi.number().required(),
   numberOfAdults: Joi.number().required(),
   childrenAgeAtCheckout: Joi.array().items(Joi.number()),
-  searchPlaceIdentifier: Joi.optional(),
-  occupancyStatus: Joi.string().valid(...Object.values(OccupancyStatus)).required(),
-  occupancyUpdatedAt: Joi.date().required(),
 };
 

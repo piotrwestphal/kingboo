@@ -22,7 +22,7 @@ export class FreeRequestSearcher {
   findFreeSearchRequestsAndSend() {
     logger.debug(`Triggering job [find-free-search-requests]`);
     const now = new Date();
-    from(this.searchRequestRepository.findValidSortedByPriority()).pipe(
+    from(this.searchRequestRepository.findFreeAndValid(now)).pipe(
       flatMap(v => v),
       filter((sr) => this.isExceededFrequencyThreshold(sr, now)),
     ).subscribe(async (searchRequest) => {

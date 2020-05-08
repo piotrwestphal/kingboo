@@ -1,9 +1,10 @@
-import { CheckDate } from './check-date';
+import { SearchRequestType } from '../model/SearchRequestType';
 
-export interface IdentifierComponents {
+export interface SearchIdentifierComponents {
+  readonly type: SearchRequestType;
   readonly searchPlace: string;
-  readonly checkInDate: CheckDate;
-  readonly checkOutDate: CheckDate;
+  readonly checkInDate: Date;
+  readonly checkOutDate: Date;
   readonly numberOfRooms: number;
   readonly numberOfAdults: number;
   readonly childrenAgeAtCheckout: number[];
