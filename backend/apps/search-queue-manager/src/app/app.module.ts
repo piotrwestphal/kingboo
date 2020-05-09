@@ -20,13 +20,13 @@ import { CollectingScenarioSender } from '../core/abstract/collecting-scenario.s
 import { SearchRequestRepository } from '../core/abstract/search-request.repository';
 import { UserNotificationSender } from '../core/abstract/user-notification.sender';
 import { ObsoleteRequestSearcher } from './scheduler/obsolete-request.searcher';
-import { SearchRequestMaintainer } from './scheduler/search-request.maintainer';
 import { CycleCalculator } from './calculate-cycle/cycle.calculator';
 import { CycleWatcher } from './scheduler/cycle.watcher';
 import { CreateSearchRequestMapper } from './search-request/create-search-request.mapper';
 import { DifferenceFinder } from './calculate-cycle/difference.finder';
 import { CyclicSearchController } from './cyclic-search.controller';
 import { DifferenceResolver } from './calculate-cycle/difference.resolver';
+import { CyclicSearchMaintainer } from './scheduler/cyclic-search.maintainer';
 
 @Module({
   imports: [
@@ -37,9 +37,10 @@ import { DifferenceResolver } from './calculate-cycle/difference.resolver';
   ],
   providers: [
     CycleWatcher,
+    CyclicSearchMaintainer,
     FreeRequestSearcher,
     ObsoleteRequestSearcher,
-    SearchRequestMaintainer,
+    // SearchRequestMaintainer, TODO: add ttl (15 min) for CollectHotelsScenarioMessage?
     {
       provide: CyclicSearchService,
       useFactory: (
