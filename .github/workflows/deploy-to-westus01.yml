@@ -1,0 +1,59 @@
+name: Deploy to westus01
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - 'backend/**'
+      - 'cloud/opc/westus01/**'
+      - '.github/workflows/deploy-to-westus01.yml'
+
+jobs:
+  publish_data-collector:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+
+      # takes branch name as a tag
+      # in case of master takes 'latest'
+      # in case of PR takes $GITHUB_SH
+      - name: Publish data-collector to registry
+        uses: elgohr/Publish-Docker-Github-Action@master
+        with:
+          name: piotrwest/kb-data-collector
+          username: ${{ secrets.DOCKER_USER }}
+          password: ${{ secrets.DOCKER_PASS }}
+          workdir: backend
+          dockerfile: kb-data-collector.Dockerfile
+
+  deploy:
+    needs: [publish_data-collector]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+
+      - uses: webfactory/ssh-agent@v0.2.0
+        with:
+          ssh-private-key: ${{ secrets.WESTUS01_KEY }} # TODO
+
+      - name: Deploy services to westus01
+        env:
+          LOG_COLLECTOR_TOKEN: ${{ secrets.LOG_COLLECTOR_TOKEN }}
+          FIRESTORE_PROJECT_ID: ${{ secrets.FIRESTORE_PROJECT_ID }}
+          FIRESTORE_CLIENT_EMAIL: ${{ secrets.FIRESTORE_CLIENT_EMAIL }}
+          FIRESTORE_CLIENT_KEY: ${{ secrets.FIRESTORE_CLIENT_KEY }}
+          MQ_ADDRESS: ${{ secrets.MQ_ADDRESS }}
+        run: |
+          ssh -T -o StrictHostKeyChecking=no -l ${{ secrets.WESTUS01_USER }} ${{ secrets.WESTUS01_HOST }} << EOF
+            uptime
+            cd ~/app/cloud/opc/westus01
+            git fetch
+            git reset --hard origin/master
+            echo "LOG_COLLECTOR_TOKEN=$LOG_COLLECTOR_TOKEN >> westus01.env
+            echo "FIRESTORE_PROJECT_ID=$FIRESTORE_PROJECT_ID" >> westus01.env
+            echo "FIRESTORE_CLIENT_EMAIL=$FIRESTORE_CLIENT_EMAIL" >> westus01.env
+            echo "FIRESTORE_CLIENT_KEY=$FIRESTORE_CLIENT_KEY" >> westus01.env
+            echo "MQ_ADDRESS=$MQ_ADDRESS" >> westus01.env
+            docker-compose pull
+            docker-compose -d
+          EOF

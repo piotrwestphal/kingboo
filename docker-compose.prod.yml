@@ -11,8 +11,6 @@ services:
   data-collector:
     env_file:
       - prod.env
-    environment:
-      APP_LABEL: DC
     volumes:
       - ./compose-output:/usr/src/app/dist/apps/data-collector/output
 
