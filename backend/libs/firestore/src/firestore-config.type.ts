@@ -1,6 +1,6 @@
 import { FirestoreConfigService } from '@kb/firestore/firestore-config.service';
-import { FaunaClientConfig } from '@kb/fauna-client/fauna-client.config';
+import { FirestoreConfig } from '@kb/firestore/firestore.config';
 
 export interface FirestoreConfigType<T extends FirestoreConfigService>{
-  new(config: FaunaClientConfig): T;
+  new(config: FirestoreConfig): T;
 }

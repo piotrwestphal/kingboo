@@ -10,9 +10,6 @@ export const prodConfig = (env: NodeJS.ProcessEnv): AppConfig =>
     puppeteer: {
       headlessModeOff: env.PUPPETEER_HEADLESS === 'true',
     },
-    fauna: {
-      secret: env.FAUNA_SECRET,
-    },
     firestore: {
       projectId: env.FIRESTORE_PROJECT_ID,
       clientEmail: env.FIRESTORE_CLIENT_EMAIL,

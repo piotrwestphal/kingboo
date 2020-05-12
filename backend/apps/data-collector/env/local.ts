@@ -18,15 +18,6 @@ export const localConfig: AppConfig = {
     slowMoMs: 0,
     devtoolsTurnedOn: false,
   },
-  fauna: {
-    dbName: 'dev',
-    adminDb: {
-      domain: 'localhost',
-      scheme: 'http',
-      port: 8443,
-      secret: 'secret',
-    },
-  },
   firestore: {
     projectId: 'dev',
     emulator: {

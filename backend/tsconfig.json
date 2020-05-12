@@ -24,12 +24,6 @@
       "@kb/config/*": [
         "libs/config/src/*"
       ],
-      "@kb/fauna-client": [
-        "libs/fauna-client/src"
-      ],
-      "@kb/fauna-client/*": [
-        "libs/fauna-client/src/*"
-      ],
       "@kb/rabbit": [
         "libs/rabbit/src"
       ],
