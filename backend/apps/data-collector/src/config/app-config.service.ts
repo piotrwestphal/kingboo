@@ -28,8 +28,8 @@ export class AppConfigService extends ConfigService<AppConfig> implements Firest
     return this.config.firestore.emulator;
   };
 
-  get saveRawResultInJson(): boolean {
-    return this.config.saveRawResultInJson;
+  get saveRawResultAsJson(): boolean {
+    return this.config.saveRawResultAsJson;
   }
 
   get takeScreenshotOnError(): boolean {

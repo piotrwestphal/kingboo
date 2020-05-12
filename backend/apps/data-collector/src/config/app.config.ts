@@ -3,8 +3,8 @@ import { RabbitOptions } from '@kb/rabbit';
 import { PuppeteerOptions } from './puppeteer/puppeteer-options';
 import { FirestoreConfig } from '@kb/firestore';
 
-export interface AppConfig extends CommonConfig, FaunaClientConfig, FirestoreConfig {
-  readonly saveRawResultInJson: boolean;
+export interface AppConfig extends CommonConfig, FirestoreConfig {
+  readonly saveRawResultAsJson: boolean;
   readonly takeScreenshotOnError: boolean;
   readonly puppeteer: PuppeteerOptions;
   readonly dataCollectionNotificationsMqClient: RabbitOptions;

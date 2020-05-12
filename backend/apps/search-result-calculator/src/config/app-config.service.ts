@@ -11,8 +11,8 @@ export class AppConfigService extends ConfigService<AppConfig> implements MongoC
     super(appConfig, appConfigValidationSchemaMap);
   }
 
-  get saveResultInJson(): boolean {
-    return this.config.saveResultInJson;
+  get saveResultAsJson(): boolean {
+    return this.config.saveResultAsJson;
   }
 
   get mongoAddress(): string {

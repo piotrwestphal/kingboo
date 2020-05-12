@@ -10,7 +10,7 @@ export const localConfig: AppConfig = {
   nodeEnv: 'local',
   port: 8080,
   corsOrigins: 'http://localhost', // separate multiple origins by comma
-  saveRawResultInJson: true,
+  saveRawResultAsJson: true,
   takeScreenshotOnError: true,
   puppeteer: {
     headlessModeOff: true,

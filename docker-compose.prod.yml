@@ -1,10 +1,6 @@
 version: "3.7"
 services:
   search-queue-manager:
-    build:
-      context: ./backend
-      dockerfile: kb-search-queue-manager.Dockerfile
-    image: kb-search-queue-manager
     env_file:
       - prod.env
     volumes:
@@ -12,15 +8,11 @@ services:
     ports:
       - 38081:8080
 
-  data-collector-a:
-    build:
-      context: ./backend
-      dockerfile: kb-data-collector.Dockerfile
-    image: kb-data-collector
+  data-collector:
     env_file:
       - prod.env
     environment:
-      APP_LABEL: DCA
+      APP_LABEL: DC
     volumes:
       - ./compose-output:/usr/src/app/dist/apps/data-collector/output
 
@@ -34,13 +26,9 @@ services:
     environment:
       APP_LABEL: DCB
     volumes:
-      - ./compose-output:/usr/src/app/dist/apps/data-collector/output
+    - ./compose-output:/usr/src/app/dist/apps/data-collector/output
 
   search-result-calculator:
-    build:
-      context: ./backend
-      dockerfile: kb-search-result-calculator.Dockerfile
-    image: kb-search-result-calculator
     env_file:
       - prod.env
     volumes:

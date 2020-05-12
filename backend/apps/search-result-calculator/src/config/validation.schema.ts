@@ -6,8 +6,7 @@ import { mongoValidationSchemaMap } from '@kb/mongo';
 import { MongoOptions } from '@kb/mongo/interface/mongo-options';
 
 export const appConfigValidationSchemaMap: SchemaMap<AppConfig> = {
-  saveResultInJson: Joi.boolean().required(),
-  fauna: faunaValidationObjectSchema,
+  saveResultAsJson: Joi.boolean().required(),
   mongo: Joi.object<MongoOptions>(mongoValidationSchemaMap).required(),
   userNotificationsMqClient: Joi.object<RabbitOptions>(rabbitValidationSchemaMap).required(),
 };

@@ -5,7 +5,7 @@ export const prodConfig = (env: NodeJS.ProcessEnv): AppConfig =>
     nodeEnv: env.NODE_ENV as 'prod',
     port: env.PORT ? parseInt(env.PORT, 10) : 8080,
     corsOrigins: env.CORS_ORIGINS,
-    saveRawResultInJson: env.SAVE_RAW_RESULT_IN_JSON === 'true',
+    saveRawResultAsJson: env.SAVE_RAW_SEARCH_RESULT_AS_JSON === 'true',
     takeScreenshotOnError: env.TAKE_SCREENSHOT_ON_ERROR === 'true',
     puppeteer: {
       headlessModeOff: env.PUPPETEER_HEADLESS === 'true',
