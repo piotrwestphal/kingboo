@@ -38,6 +38,7 @@ jobs:
 
       - name: Deploy services to westus01
         env:
+          CORS_ORIGINS: ${{ secrets.CORS_ORIGINS }}
           LOG_COLLECTOR_TOKEN: ${{ secrets.LOG_COLLECTOR_TOKEN }}
           FIRESTORE_PROJECT_ID: ${{ secrets.FIRESTORE_PROJECT_ID }}
           FIRESTORE_CLIENT_EMAIL: ${{ secrets.FIRESTORE_CLIENT_EMAIL }}
@@ -50,6 +51,7 @@ jobs:
             git fetch
             git reset --hard origin/master
             cd cloud/opc/westus01
+            echo "CORS_ORIGINS=$CORS_ORIGINS" >> westus01.env
             echo "LOG_COLLECTOR_TOKEN=$LOG_COLLECTOR_TOKEN" >> westus01.env
             echo "FIRESTORE_PROJECT_ID=$FIRESTORE_PROJECT_ID" >> westus01.env
             echo "FIRESTORE_CLIENT_EMAIL=$FIRESTORE_CLIENT_EMAIL" >> westus01.env
