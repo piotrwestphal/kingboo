@@ -34,7 +34,7 @@ jobs:
 
       - uses: webfactory/ssh-agent@v0.2.0
         with:
-          ssh-private-key: ${{ secrets.WESTUS01_KEY }} # TODO
+          ssh-private-key: ${{ secrets.WESTUS01_KEY }}
 
       - name: Deploy services to westus01
         env:
