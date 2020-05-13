@@ -71,5 +71,5 @@ jobs:
             echo "MONGO_ADDRESS=$MONGO_ADDRESS" >> westus00.env
             echo "MQ_ADDRESS=$MQ_ADDRESS" >> westus00.env
             docker-compose pull
-            docker-compose -d
+            docker-compose up -d
           EOF
