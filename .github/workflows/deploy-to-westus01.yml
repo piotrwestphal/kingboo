@@ -46,9 +46,10 @@ jobs:
         run: |
           ssh -T -o StrictHostKeyChecking=no -l ${{ secrets.WESTUS01_USER }} ${{ secrets.WESTUS01_HOST }} << EOF
             uptime
-            cd ~/app/cloud/opc/westus01
+            cd ~/app
             git fetch
             git reset --hard origin/master
+            cd cloud/opc/westus01
             echo "LOG_COLLECTOR_TOKEN=$LOG_COLLECTOR_TOKEN >> westus01.env
             echo "FIRESTORE_PROJECT_ID=$FIRESTORE_PROJECT_ID" >> westus01.env
             echo "FIRESTORE_CLIENT_EMAIL=$FIRESTORE_CLIENT_EMAIL" >> westus01.env
