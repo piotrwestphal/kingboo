@@ -66,8 +66,8 @@ jobs:
             git fetch
             git reset --hard origin/master
             cd cloud/opc/westus00
-            echo "CORS_ORIGINS=$CORS_ORIGINS >> westus00.env
-            echo "LOG_COLLECTOR_TOKEN=$LOG_COLLECTOR_TOKEN >> westus00.env
+            echo "CORS_ORIGINS=$CORS_ORIGINS" >> westus00.env
+            echo "LOG_COLLECTOR_TOKEN=$LOG_COLLECTOR_TOKEN" >> westus00.env
             echo "MONGO_ADDRESS=$MONGO_ADDRESS" >> westus00.env
             echo "MQ_ADDRESS=$MQ_ADDRESS" >> westus00.env
             docker-compose pull
