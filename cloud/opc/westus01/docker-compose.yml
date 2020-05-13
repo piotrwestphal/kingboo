@@ -1,0 +1,9 @@
+version: "3.7"
+services:
+  data-collector:
+    image: piotrwest/kb-data-collector:latest
+    env_file:
+      - westus01.env
+      - ./../opc.env
+    volumes:
+      - ./../../../compose-output:/usr/src/app/dist/apps/data-collector/output

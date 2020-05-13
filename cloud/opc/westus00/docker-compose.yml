@@ -1,0 +1,19 @@
+version: "3.7"
+services:
+  search-queue-manager:
+    image: piotrwest/kb-search-queue-manager:latest
+    volumes:
+      - ./../../../compose-output:/usr/src/app/dist/apps/search-queue-manager/output
+    env_file:
+      - westus00.env
+      - ./../opc.env
+    ports:
+      - 8080:8080
+
+  search-result-calculator:
+    image: piotrwest/kb-search-result-calculator:latest
+    env_file:
+      - westus00.env
+      - ./../opc.env
+    volumes:
+      - ./../../../compose-output:/usr/src/app/dist/apps/search-result-calculator/output

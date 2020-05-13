@@ -10,16 +10,7 @@ export const devConfig = (env: NodeJS.ProcessEnv): AppConfig =>
     nodeEnv: env.NODE_ENV as 'dev',
     port: env.PORT ? parseInt(env.PORT, 10) : 8080,
     corsOrigins: env.CORS_ORIGINS,
-    saveResultInJson: true,
-    fauna: {
-      dbName: env.FAUNA_DB_NAME,
-      adminDb: {
-        domain: env.FAUNA_ADMIN_DB_DOMAIN,
-        scheme: env.FAUNA_ADMIN_DB_SCHEME as 'http' | 'https',
-        port: parseInt(env.FAUNA_ADMIN_DB_PORT, 10),
-        secret: env.FAUNA_ADMIN_DB_SECRET,
-      },
-    },
+    saveResultAsJson: true,
     mongo: {
       address: env.MONGO_ADDRESS,
     },

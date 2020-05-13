@@ -1,29 +1,26 @@
 import { SearchRequestRepository } from '../../core/abstract/search-request.repository';
 import { Injectable } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
-import { from } from 'rxjs';
-import { flatMap } from 'rxjs/operators';
 import { logger } from '../../logger';
 
 @Injectable()
 export class ObsoleteRequestSearcher {
 
-  // TODO: Search repeatable requests that are in the past and remove them
   constructor(
     private readonly searchRequestRepository: SearchRequestRepository,
   ) {
   }
 
-  @Cron(CronExpression.EVERY_30_SECONDS, {
+  @Cron(CronExpression.EVERY_5_MINUTES, {
     name: 'find-obsolete-search-requests',
   })
-  findObsoleteSearchRequests() {
+  async findObsoleteSearchRequests() {
     logger.debug(`Triggering job [find-obsolete-search-requests]`);
-    from(this.searchRequestRepository.findObsolete()).pipe(
-      flatMap(v => v),
-    ).subscribe(async (searchRequest) => {
-      // TODO: delete repeatable request when obsolete
-      logger.warn(`Search request with id [${searchRequest.searchId}] is obsolete`)
-    });
+    const found = await this.searchRequestRepository.findObsoleteCyclicRequests();
+    if (found.length) {
+      const searchIds = found.map(v => v.searchId);
+      const deletedCount = await this.searchRequestRepository.deleteMany(searchIds);
+      logger.info(`[${deletedCount}] cyclic search requests with ids [${searchIds}] were deleted due to obsolescence`);
+    }
   }
 }

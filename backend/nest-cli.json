@@ -62,15 +62,6 @@
         "tsConfigPath": "libs/config/tsconfig.lib.json"
       }
     },
-    "fauna-client": {
-      "type": "library",
-      "root": "libs/fauna-client",
-      "entryFile": "index",
-      "sourceRoot": "libs/fauna-client/src",
-      "compilerOptions": {
-        "tsConfigPath": "libs/fauna-client/tsconfig.lib.json"
-      }
-    },
     "rabbit": {
       "type": "library",
       "root": "libs/rabbit",

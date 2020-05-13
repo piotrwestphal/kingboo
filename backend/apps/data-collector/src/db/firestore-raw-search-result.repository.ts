@@ -15,8 +15,13 @@ export class FirestoreRawSearchResultRepository extends RawSearchResultRepositor
 
   async create(rawSearchResult: RawSearchResult): Promise<void> {
     const rawSearchResultDocument = this.rawSearchResultMapper.fromRawSearchResult(rawSearchResult);
-    const doc = await this.firestoreClient.addToCollection('raw-search-results', rawSearchResultDocument);
-    const data = doc.data();
-    logger.info('Created message', data);
+    try {
+      const doc = await this.firestoreClient.addToCollection('raw-search-results', rawSearchResultDocument);
+      const { searchId, searchPlaceIdentifier, collectingTimeSec, hotelsCount } = doc.data();
+      logger.info(`Created raw search result with search id [${searchId}]`);
+      logger.debug(`Details of created raw search result`, { searchPlaceIdentifier, collectingTimeSec, hotelsCount });
+    } catch (err) {
+      logger.error(`Error when adding raw search result with searchId [${rawSearchResult.searchId}] to collection`, err);
+    }
   }
 }

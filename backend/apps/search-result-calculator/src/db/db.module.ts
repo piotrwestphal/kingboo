@@ -10,19 +10,6 @@ import { HotelDocument } from './mongo/interface/hotel.document';
 import { MongoHotelDocumentMapper } from './mongo/mongo-hotel-document.mapper';
 
 @Module({
-  // imports: [
-  //   FaunaClientModule.register({ configClass: AppConfigService }),
-  // ],
-  // providers: [
-  //   {
-  //     provide: HotelRepository,
-  //     useFactory: (faunaClient: FaunaClient) => {
-  //       const mapper = new FaunaHotelDocumentMapper();
-  //       return new FaunaHotelRepository(mapper, faunaClient);
-  //     },
-  //     inject: [FaunaClient],
-  //   },
-  // ],
   imports: [
     MongoModule.register({ configClass: AppConfigService }, [
       { name: HotelSchemaKey, schema: HotelSchema },

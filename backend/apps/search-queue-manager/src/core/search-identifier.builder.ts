@@ -1,21 +1,24 @@
-import { IdentifierComponents } from './interface/identifier-components';
+import { SearchIdentifierComponents } from './interface/search-identifier-components';
+import { TimeHelper } from '@kb/util';
 
 export class SearchIdentifierBuilder {
   createIdentifier({
-                            searchPlace,
-                            checkInDate,
-                            checkOutDate,
-                            numberOfRooms,
-                            numberOfAdults,
-                            childrenAgeAtCheckout,
-                            priority,
-                            updateFrequencyMinutes,
-                            resultsLimit,
-                          }: IdentifierComponents): string {
-    return `${searchPlace.trim().toUpperCase().replace(/ /g, '_')}_` +
-      `${checkInDate.year}-${checkInDate.month}-${checkInDate.day}_` +
-      `${checkOutDate.year}-${checkOutDate.month}-${checkOutDate.day}_` +
+                     type,
+                     searchPlace,
+                     checkInDate,
+                     checkOutDate,
+                     numberOfRooms,
+                     numberOfAdults,
+                     childrenAgeAtCheckout,
+                     priority,
+                     updateFrequencyMinutes,
+                     resultsLimit,
+                   }: SearchIdentifierComponents): string {
+    return `${type}_${searchPlace.trim().toUpperCase().replace(/ /g, '_')}_` +
+      `${this.shorten(checkInDate)}_${this.shorten(checkOutDate)}_` +
       `${numberOfRooms}_${numberOfAdults}_${childrenAgeAtCheckout.length}_` +
       `${priority}_${updateFrequencyMinutes}_${resultsLimit}`;
   }
+
+  private shorten = (date: Date) => TimeHelper.getFormattedShortDate(date);
 }

@@ -17,57 +17,17 @@ services:
       context: ./backend
       dockerfile: kb-search-queue-manager.Dockerfile
     image: kb-search-queue-manager
-    env_file:
-      - dev.env
-    volumes:
-      - ./compose-output:/usr/src/app/dist/apps/search-queue-manager/output
-      - ./tools/wait-for-it.sh:/wait-for-it.sh
     ports:
       - 38081:8080
-    command: ["/wait-for-it.sh", "rabbitmq:5672", "-t", "60", "--", "node", "main"]
 
   data-collector:
     build:
       context: ./backend
       dockerfile: kb-data-collector.Dockerfile
     image: kb-data-collector
-    env_file:
-      - dev.env
-    volumes:
-      - ./compose-output:/usr/src/app/dist/apps/data-collector/output
-      - ./tools/wait-for-it.sh:/wait-for-it.sh
-    command: ["/wait-for-it.sh", "rabbitmq:5672", "-t", "60", "--", "node", "main"]
 
   search-result-calculator:
     build:
       context: ./backend
       dockerfile: kb-search-result-calculator.Dockerfile
     image: kb-search-result-calculator
-    env_file:
-      - dev.env
-    volumes:
-      - ./compose-output:/usr/src/app/dist/apps/search-result-calculator/output
-      - ./tools/wait-for-it.sh:/wait-for-it.sh
-    command: ["/wait-for-it.sh", "rabbitmq:5672", "-t", "60", "--", "node", "main"]
-
-  rabbitmq:
-    image: rabbitmq:3-management-alpine
-    environment:
-      RABBITMQ_DEFAULT_USER: dev
-      RABBITMQ_DEFAULT_PASS: dev
-    volumes:
-    - ./backend/mq/rmq-definitions.json:/etc/rabbitmq/definitions.json
-    ports:
-      - 15672:15672
-      - 5672:5672
-
-  mongo:
-    image: mongo
-    ports:
-      - 27017:27017
-
-  firestore:
-    build:
-      context: ./db/firestore
-    ports:
-      - 8555:8080

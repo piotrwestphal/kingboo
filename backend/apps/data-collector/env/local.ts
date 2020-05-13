@@ -10,22 +10,13 @@ export const localConfig: AppConfig = {
   nodeEnv: 'local',
   port: 8080,
   corsOrigins: 'http://localhost', // separate multiple origins by comma
-  saveRawResultInJson: true,
+  saveRawResultAsJson: true,
   takeScreenshotOnError: true,
   puppeteer: {
     headlessModeOff: true,
     executablePath: './node_modules/puppeteer/.local-chromium/mac-722234/chrome-mac/Chromium.app/Contents/MacOS/Chromium',
     slowMoMs: 0,
     devtoolsTurnedOn: false,
-  },
-  fauna: {
-    dbName: 'dev',
-    adminDb: {
-      domain: 'localhost',
-      scheme: 'http',
-      port: 8443,
-      secret: 'secret',
-    },
   },
   firestore: {
     projectId: 'dev',
