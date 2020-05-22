@@ -1,7 +1,6 @@
 import { BrowserService } from './browser.service';
 import { CollectHotelsScenario } from '../core/interface/collect-hotels-scenario';
 import { SearchPlaceScraper } from './search-place.scraper';
-import { AppConfigService } from '../config/app-config.service';
 import { LaunchOptions } from 'puppeteer';
 import { HotelsScraper } from './hotels.scraper';
 import { ResultPageUrlBuilder } from './result-page-url.builder';
@@ -17,7 +16,6 @@ export class ScraperFacade {
   };
 
   constructor(
-    private readonly appConfigService: AppConfigService,
     private readonly browserService: BrowserService,
     private readonly hotelsScraper: HotelsScraper,
     private readonly resultPageUrlBuilder: ResultPageUrlBuilder,
@@ -33,12 +31,14 @@ export class ScraperFacade {
     await this.browserService.setPageSize(this.DEFAULT_RESOLUTION);
   }
 
-  public async prepareResultList(searchPlaceIdentifier: string, collectHotelsScenario: CollectHotelsScenario): Promise<number> {
+  public async prepareResultList(searchPlaceIdentifier: string,
+                                 collectHotelsScenario: CollectHotelsScenario,
+                                 enableStyles: boolean): Promise<number> {
     logger.debug(`Building result page uri based on search place identifier [${searchPlaceIdentifier}]`);
     const resultPageUri = this.resultPageUrlBuilder.fromSearchPlaceIdentifierAndScenarioParams(searchPlaceIdentifier, collectHotelsScenario);
 
     logger.debug(`Preparing result list.`);
-    return await this.hotelsScraper.prepareResultList(resultPageUri);
+    return await this.hotelsScraper.prepareResultList(resultPageUri, enableStyles);
   }
 
   public async collectSearchPlaceIdentifier(searchPlace: string): Promise<string> {

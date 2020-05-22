@@ -36,7 +36,7 @@ export class BrowserService {
     }
   }
 
-  async enableRequestInterception(): Promise<void> {
+  async enableStylesRequestInterception(): Promise<void> {
     await this.page.setRequestInterception(true);
     this.page.on('request', (req) => {
       if (req.resourceType() === 'image' || req.resourceType() === 'font' || req.resourceType() === 'stylesheet') {

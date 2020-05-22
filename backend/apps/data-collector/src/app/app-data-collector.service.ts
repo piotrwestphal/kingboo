@@ -33,10 +33,11 @@ export class AppDataCollectorService extends DataCollectorService {
     const { searchId, resultsLimit } = collectHotelsScenario;
     let rawSearchResult = null;
     try {
-      await this.scraperFacade.initializeBrowser(this.appConfigService.puppeteerOptions);
+      await this.scraperFacade.initializeBrowser(this.appConfigService.puppeteerLaunchOptions);
       const searchPlaceIdentifier = await this.collectSearchPlaceIdentifierIfNotPresentAndNotify(collectHotelsScenario);
       rawSearchResult = new RawSearchResult(searchId, searchPlaceIdentifier);
-      const totalPagesCount = await this.scraperFacade.prepareResultList(searchPlaceIdentifier, collectHotelsScenario);
+      const enableStylesOnResultsPage = this.appConfigService.enableStylesOnResultsPage;
+      const totalPagesCount = await this.scraperFacade.prepareResultList(searchPlaceIdentifier, collectHotelsScenario, enableStylesOnResultsPage);
       const hotels = await this.collectHotelAsLongAsConditionsMet(searchId, totalPagesCount, resultsLimit);
       rawSearchResult.addHotelsAfterCollectingFinish(hotels);
     } catch (err) {

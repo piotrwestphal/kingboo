@@ -40,7 +40,7 @@ export class AppConfigService extends ConfigService<AppConfig> implements Firest
     return this.config.takeScreenshotOnError;
   }
 
-  get puppeteerOptions(): LaunchOptions {
+  get puppeteerLaunchOptions(): LaunchOptions {
     const {
       executablePath,
       headlessModeOff,
@@ -53,6 +53,10 @@ export class AppConfigService extends ConfigService<AppConfig> implements Firest
       slowMo: slowMoMs,
       devtools: devtoolsTurnedOn,
     };
+  }
+
+  get enableStylesOnResultsPage(): boolean {
+    return this.config.puppeteer.enableStylesOnResultsPage;
   }
 
   get dataCollectionNotificationsMqClient(): RmqOptions {

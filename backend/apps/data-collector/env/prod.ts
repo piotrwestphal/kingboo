@@ -10,6 +10,7 @@ export const prodConfig = (env: NodeJS.ProcessEnv): AppConfig =>
     takeScreenshotOnError: env.TAKE_SCREENSHOT_ON_ERROR === 'true',
     puppeteer: {
       headlessModeOff: env.PUPPETEER_HEADLESS_MODE_OFF === 'true',
+      enableStylesOnResultsPage: env.PUPPETEER_ENABLE_STYLES_ON_RESULTS_PAGE === 'true',
     },
     firestore: {
       projectId: env.FIRESTORE_PROJECT_ID,

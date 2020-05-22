@@ -15,6 +15,7 @@ export const localConfig: AppConfig = {
   takeScreenshotOnError: true,
   puppeteer: {
     headlessModeOff: true,
+    enableStylesOnResultsPage: false,
     executablePath: './node_modules/puppeteer/.local-chromium/mac-737027/chrome-mac/Chromium.app/Contents/MacOS/Chromium',
     slowMoMs: 0,
     devtoolsTurnedOn: false,

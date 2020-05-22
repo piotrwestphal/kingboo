@@ -16,6 +16,7 @@ export const devConfig = (env: NodeJS.ProcessEnv): AppConfig =>
     takeScreenshotOnError: true,
     puppeteer: {
       headlessModeOff: false,
+      enableStylesOnResultsPage: false,
     },
     firestore: {
       projectId: env.FIRESTORE_PROJECT_ID,

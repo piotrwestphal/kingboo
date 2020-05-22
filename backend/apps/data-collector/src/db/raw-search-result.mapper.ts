@@ -2,7 +2,7 @@ import { RawSearchResult } from '../core/model/RawSearchResult';
 import { RawHotel } from '../core/model/RawHotel';
 import { RawHotelDocument } from './interface/raw-hotel.document';
 import { RawSearchResultDocument } from './interface/raw-search-result.document';
-import Timestamp = FirebaseFirestore.Timestamp;
+import { Timestamp } from '@google-cloud/firestore';
 
 export class RawSearchResultMapper {
   fromRawSearchResult({
