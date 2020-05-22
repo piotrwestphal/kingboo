@@ -38,7 +38,7 @@ export class ScraperFacade {
     const resultPageUri = this.resultPageUrlBuilder.fromSearchPlaceIdentifierAndScenarioParams(searchPlaceIdentifier, collectHotelsScenario);
 
     logger.debug(`Preparing result list.`);
-    return await this.hotelsScraper.prepareResultList(resultPageUri, enableStyles);
+    return this.hotelsScraper.prepareResultList(resultPageUri, enableStyles);
   }
 
   public async collectSearchPlaceIdentifier(searchPlace: string): Promise<string> {
