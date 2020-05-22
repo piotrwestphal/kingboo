@@ -2,18 +2,13 @@ import { RawHotel } from './RawHotel';
 
 export class RawSearchResult {
 
-  public hotelsCount: number;
-  public searchPlaceIdentifier: string;
-  public collectingTimeSec;
-
   constructor(
     public readonly searchId: string,
+    public readonly searchPlaceIdentifier: string,
     public readonly hotels: RawHotel[] = [],
+    public hotelsCount: number = 0,
+    public collectingTimeSec: number = null,
   ) {
-  }
-
-  setSearchPlaceIdentifier(searchPlaceIdentifier: string) {
-    this.searchPlaceIdentifier = searchPlaceIdentifier;
   }
 
   addHotelsAfterCollectingFinish(rawHotels: RawHotel[]) {

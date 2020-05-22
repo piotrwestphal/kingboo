@@ -37,8 +37,8 @@ export class ResultPageUrlBuilder {
     numberOfRooms,
     childrenAgeAtCheckout,
   }: ScenarioParams): string {
-    const encodedSearchPlaceIDentifier = encodeURIComponent(searchPlaceIdentifier);
-    const searchPlaceParam = `${this.SEARCH_PLACE_KEY}${encodedSearchPlaceIDentifier}`;
+    const encodedSearchPlaceIdentifier = encodeURIComponent(searchPlaceIdentifier);
+    const searchPlaceParam = `${this.SEARCH_PLACE_KEY}${encodedSearchPlaceIdentifier}`;
     const checkinDateParams = this.combineDate(this.CHECKIN_PREFIX_PARAM, checkInDate);
     const checkoutDateParams = this.combineDate(this.CHECKOUT_PREFIX_PARAM, checkOutDate);
     const numberOfAdultsParam = `${this.NUMBER_OF_ADULTS_KEY}${numberOfAdults}`;

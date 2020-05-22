@@ -16,12 +16,13 @@ export class HotelsScraper {
   ) {
   }
 
-  async prepareResultList(resultPageUri: string): Promise<number> {
+  async prepareResultList(resultPageUri: string, enableStyles: boolean): Promise<number> {
     const resultPageUrl = `${this.BASE_URL}${resultPageUri}`;
     logger.debug(`Navigating to [${resultPageUrl}]`);
-    await this.browserService.enableRequestInterception();
+    if(!enableStyles) {
+      await this.browserService.enableStylesRequestInterception();
+    }
     await this.browserService.goToAddressAndProceedIfFail(resultPageUrl);
-
     logger.debug('Request page loaded. Default filter "show only available properties" is set ' +
       'and list is sorted by "distance from center".');
 

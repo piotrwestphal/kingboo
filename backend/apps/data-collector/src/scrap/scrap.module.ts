@@ -5,7 +5,6 @@ import { ResultListPage } from './page/results-list/result-list.page';
 import { ResultPage } from './page/result/result.page';
 import { MainPage } from './page/main/main.page';
 import { ResultPageUrlBuilder } from './result-page-url.builder';
-import { AppConfigService } from '../config/app-config.service';
 import { HotelsScraper } from './hotels.scraper';
 import { SearchPlaceScraper } from './search-place.scraper';
 
@@ -14,7 +13,7 @@ import { SearchPlaceScraper } from './search-place.scraper';
   providers: [
     {
       provide: ScraperFacade,
-      useFactory: (appConfigService: AppConfigService) => {
+      useFactory: () => {
         const browserService = new BrowserService();
         const mainPage = new MainPage(browserService);
         const resultListPage = new ResultListPage(browserService);
@@ -23,14 +22,12 @@ import { SearchPlaceScraper } from './search-place.scraper';
         const hotelsScraper = new HotelsScraper(browserService, resultListPage, resultPage);
         const searchPlaceScraper = new SearchPlaceScraper(browserService, mainPage);
         return new ScraperFacade(
-          appConfigService,
           browserService,
           hotelsScraper,
           resultPageUrlBuilder,
           searchPlaceScraper,
         );
       },
-      inject: [AppConfigService],
     },
   ],
   exports: [
