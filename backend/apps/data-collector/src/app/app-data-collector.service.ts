@@ -31,28 +31,34 @@ export class AppDataCollectorService extends DataCollectorService {
     const startCollectingHotelsTimeMs = Date.now();
 
     const { searchId, resultsLimit } = collectHotelsScenario;
-    const rawSearchResult = new RawSearchResult(searchId);
+    let rawSearchResult = null;
     try {
       await this.scraperFacade.initializeBrowser(this.appConfigService.puppeteerOptions);
       const searchPlaceIdentifier = await this.collectSearchPlaceIdentifierIfNotPresentAndNotify(collectHotelsScenario);
-      rawSearchResult.setSearchPlaceIdentifier(searchPlaceIdentifier);
+      rawSearchResult = new RawSearchResult(searchId, searchPlaceIdentifier);
       const totalPagesCount = await this.scraperFacade.prepareResultList(searchPlaceIdentifier, collectHotelsScenario);
       const hotels = await this.collectHotelAsLongAsConditionsMet(searchId, totalPagesCount, resultsLimit);
       rawSearchResult.addHotelsAfterCollectingFinish(hotels);
     } catch (err) {
       logger.error('Error during collecting data.', err.message);
       if (this.appConfigService.takeScreenshotOnError) {
-        await this.scraperFacade.takeScreenshot(this.fileManagerService.resultsFolderPath);
+        await this.scraperFacade.takeScreenshot('error', this.fileManagerService.resultsFolderPath);
       }
     } finally {
       await this.scraperFacade.performCleaningAfterScraping();
     }
+
     const collectingTimeSec = TimeHelper.getDiffTimeInSeconds(startCollectingHotelsTimeMs);
     logger.info(`Collecting data finish. Collecting last [${collectingTimeSec}] sec`);
-    rawSearchResult.setCollectingTime(collectingTimeSec);
 
-    logger.debug(`Saving raw search result with id [${rawSearchResult.searchId}] to db.`);
-    await this.rawSearchResultRepository.create(rawSearchResult);
+    if (rawSearchResult) {
+      rawSearchResult.setCollectingTime(collectingTimeSec);
+      logger.debug(`Saving raw search result with id [${rawSearchResult.searchId}] to db.`);
+      await this.rawSearchResultRepository.create(rawSearchResult);
+    } else {
+      logger.warn('Raw search result was not saved to db due to incomplete data. Raw search result: ', rawSearchResult)
+    }
+
     this.dataCollectionNotificationSender.sendHotelsCollectionCompleted(searchId, collectingTimeSec);
 
     if (this.appConfigService.saveRawResultAsJson) {

@@ -8,6 +8,7 @@ import { firestoreValidationObjectSchema } from '@kb/firestore';
 
 export const appConfigValidationSchemaMap: SchemaMap<AppConfig> = {
   takeScreenshotOnError: Joi.boolean().required(),
+  rawSearchResultLimitationDays: Joi.number().required(),
   saveRawResultAsJson: Joi.boolean().required(),
   puppeteer: Joi.object<PuppeteerOptions>(puppeteerSchemaMap).required(),
   dataCollectionNotificationsMqClient: Joi.object<RabbitOptions>(rabbitValidationSchemaMap).required(),

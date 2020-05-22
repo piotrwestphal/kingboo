@@ -11,6 +11,8 @@ import { AppDataCollectorService } from './app-data-collector.service';
 import { FileManager } from '@kb/util/file.manager';
 import { DbModule } from '../db/db.module';
 import { logger } from '../logger';
+import { ScheduleModule } from '@nestjs/schedule';
+import { ObsoleteResultsSearcher } from './scheduler/obsolete-results.searcher';
 
 @Module({
   imports: [
@@ -18,8 +20,10 @@ import { logger } from '../logger';
     DbModule,
     MqModule,
     ScrapModule,
+    ScheduleModule.forRoot(),
   ],
   providers: [
+    ObsoleteResultsSearcher,
     {
       provide: FileManager,
       useFactory: () => new FileManager(logger),

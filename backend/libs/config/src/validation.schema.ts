@@ -5,6 +5,6 @@ import { SchemaMap } from '@hapi/joi';
 export const commonConfigValidationSchemaMap: SchemaMap = {
   nodeEnv: Joi.string().valid('dev', 'prod', 'ci', 'local').required(),
   port: Joi.number().required(),
-  corsOrigins: Joi.string().optional(),
+  corsOrigins: Joi.string().required(),
   mqConsumer: rabbitValidationSchemaMap,
 };

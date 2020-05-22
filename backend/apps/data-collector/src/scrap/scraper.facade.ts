@@ -50,8 +50,8 @@ export class ScraperFacade {
     return this.hotelsScraper.collectHotelsFromCurrentPage();
   }
 
-  public async takeScreenshot(resultFolderPath: string) {
-    return this.browserService.takeScreenshot(resultFolderPath);
+  public async takeScreenshot(type: string, resultFolderPath: string) {
+    return this.browserService.takeScreenshot(type, resultFolderPath);
   }
 
   public async performCleaningAfterScraping(): Promise<void> {

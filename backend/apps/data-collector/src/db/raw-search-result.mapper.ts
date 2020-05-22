@@ -2,6 +2,7 @@ import { RawSearchResult } from '../core/model/RawSearchResult';
 import { RawHotel } from '../core/model/RawHotel';
 import { RawHotelDocument } from './interface/raw-hotel.document';
 import { RawSearchResultDocument } from './interface/raw-search-result.document';
+import Timestamp = FirebaseFirestore.Timestamp;
 
 export class RawSearchResultMapper {
   fromRawSearchResult({
@@ -12,11 +13,13 @@ export class RawSearchResultMapper {
                         hotels,
                       }: RawSearchResult): RawSearchResultDocument {
     return {
+      docId: `${searchId}_${Date.now()}`,
       searchId,
       searchPlaceIdentifier,
       collectingTimeSec,
       hotelsCount,
       hotels: hotels.map(h => this.fromRawHotel(h)),
+      createdAt: Timestamp.now(),
     };
   }
 

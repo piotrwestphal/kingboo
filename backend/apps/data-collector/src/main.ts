@@ -3,6 +3,8 @@ import { AppModule } from './app/app.module';
 import { AppConfigService } from './config/app-config.service';
 import { logger } from './logger';
 
+// TODO: add some global error filter
+
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     logger,

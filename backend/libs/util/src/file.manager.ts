@@ -18,7 +18,7 @@ export class FileManager {
   public async saveDataAsJSON(data: any, formattedName: string): Promise<string> {
     const now = new Date();
     const baseDir = `${this.RESULTS_FOLDER_PATH}/${TimeHelper.getFormattedDirectoryShortDate(now)}`;
-    const jsonPath = `${baseDir}/${formattedName}-${TimeHelper.getFormattedDate(now)}.json`;
+    const jsonPath = `${baseDir}/${TimeHelper.getFormattedDate(now)}-${formattedName}.json`;
     try {
       await fs.promises.mkdir(baseDir, { recursive: true });
       await fs.promises.writeFile(jsonPath, JSON.stringify(data));

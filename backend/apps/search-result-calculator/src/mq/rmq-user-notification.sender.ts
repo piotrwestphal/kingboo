@@ -7,4 +7,5 @@ export class RmqUserNotificationSender extends UserNotificationSender {
   ) {
     super();
   }
+  // TODO: finish
 }
