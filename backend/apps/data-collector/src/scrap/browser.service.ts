@@ -47,11 +47,17 @@ export class BrowserService {
     });
   }
 
-  async pagesCount(): Promise<Page[]> {
+  async getPagesAndUserAgent(): Promise<{ pages: Page[], userAgent: string }> {
     if (this.browser) {
-      return this.browser.pages();
+      return {
+        userAgent: await this.browser.userAgent(),
+        pages: await this.browser.pages(),
+      };
     } else {
-      return null;
+      return {
+        userAgent: null,
+        pages: null,
+      };
     }
   }
 
