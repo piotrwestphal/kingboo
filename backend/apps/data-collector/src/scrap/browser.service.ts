@@ -27,6 +27,7 @@ export class BrowserService {
       });
       const pages = await this.browser.pages();
       this.page = pages[0];
+      await this.page.setUserAgent('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 Safari/537.36');
       // TODO: below line could be removed if err not happen again
       this.page.on('error', (err) => {
         this.logAndRethrow('Something wrong happen during scraping. Check if there is no memory or CPU issue!! ', err);
