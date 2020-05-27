@@ -12,7 +12,7 @@ export class ResultPageUrlBuilder {
 
   private readonly SEARCH_RESULTS_PAGE = '/searchresults.en-gb.html';
   private readonly START_QUERY_MARK = '?';
-  private readonly SEPARATE_PARAM_MARK = '&';
+  private readonly SEPARATE_PARAM_MARK = ';';
   private readonly SEARCH_PLACE_KEY = 'ss=';
 
   private readonly CHECKIN_PREFIX_PARAM = 'checkin_';
