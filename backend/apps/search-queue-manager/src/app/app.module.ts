@@ -40,7 +40,6 @@ import { CyclicSearchMaintainer } from './scheduler/cyclic-search.maintainer';
     CyclicSearchMaintainer,
     FreeRequestSearcher,
     ObsoleteRequestSearcher,
-    // SearchRequestMaintainer, TODO: add ttl (15 min) for CollectHotelsScenarioMessage?
     {
       provide: CyclicSearchService,
       useFactory: (
