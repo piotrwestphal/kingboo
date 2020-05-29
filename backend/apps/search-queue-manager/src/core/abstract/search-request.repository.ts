@@ -9,6 +9,5 @@ export abstract class SearchRequestRepository {
   abstract update(searchRequest: SearchRequest): Promise<SearchRequest>;
   abstract deleteMany(searchIds: string[]): Promise<number>;
   abstract findFreeAndValid(now: Date): Promise<SearchRequest[]>;
-  abstract findOccupiedLongerThanGivenThreshold(now: Date, minutes: number): Promise<SearchRequest[]>;
   abstract findObsoleteCyclicRequests(): Promise<SearchRequest[]>;
 }

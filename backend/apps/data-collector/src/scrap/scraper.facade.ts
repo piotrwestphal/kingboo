@@ -30,7 +30,8 @@ export class ScraperFacade {
     logger.debug(`Set page size`, this.DEFAULT_RESOLUTION);
     await this.browserService.setPageSize(this.DEFAULT_RESOLUTION);
 
-    const { pages, userAgent } = await this.browserService.getPagesAndUserAgent();
+    const pages = await this.browserService.getPages();
+    const userAgent = await this.browserService.getUserAgent();
     logger.debug(`Initializing browser. Open pages: `, (pages || []).map((p) => ({ url: p.url() })));
     logger.debug(`Initializing browser. User agent: `, userAgent);
   }
@@ -59,12 +60,12 @@ export class ScraperFacade {
   }
 
   public async performCleaningAfterScraping(): Promise<void> {
-    const { pages: pagesBefore, userAgent: userAgentBefore } = await this.browserService.getPagesAndUserAgent();
-    logger.debug('Closing browser. User agent:', userAgentBefore);
+    const pagesBefore = await this.browserService.getPages();
+    const userAgent = await this.browserService.getUserAgent();
     logger.debug('Closing browser. Open pages:', (pagesBefore || []).map((p) => ({ url: p.url() })));
+    logger.debug(`Closing browser. User agent: `, userAgent);
     await this.browserService.closeBrowser();
-    const { pages: pagesAfter, userAgent: userAgentAfter } = await this.browserService.getPagesAndUserAgent();
-    logger.debug('Browser closed. User agent:', userAgentAfter);
+    const pagesAfter = await this.browserService.getPages();
     logger.debug('Browser closed. Open pages:', (pagesAfter || []).map((p) => ({ url: p.url() })));
   }
 }

@@ -48,18 +48,16 @@ export class BrowserService {
     });
   }
 
-  async getPagesAndUserAgent(): Promise<{ pages: Page[], userAgent: string }> {
-    if (this.browser) {
-      return {
-        userAgent: await this.browser.userAgent(),
-        pages: await this.browser.pages(),
-      };
-    } else {
-      return {
-        userAgent: null,
-        pages: null,
-      };
-    }
+  async getUserAgent(): Promise<string> {
+    return this.browser
+      ? this.page.evaluate(() => navigator.userAgent)
+      : null;
+  }
+
+  async getPages(): Promise<Page[]> {
+    return this.browser
+      ? this.browser.pages()
+      : null;
   }
 
   async closeBrowser(): Promise<void> {

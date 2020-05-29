@@ -78,15 +78,5 @@ export class MongoSearchRequestRepository extends SearchRequestRepository {
       .exec();
   }
 
-  findOccupiedLongerThanGivenThreshold(now: Date, minutes: number): Promise<SearchRequest[]> {
-    return this.searchRequestModel.find({
-      occupancyStatus: OccupancyStatus.BUSY,
-      occupancyUpdatedAt: { $lte: new Date(now.getTime() - (minutes * 60000)) },
-    })
-      .sort({ priority: 1 })
-      .map((docs) => docs.map(doc => this.fromDoc(doc)))
-      .exec();
-  }
-
   private fromDoc = (doc: SearchRequestDocument) => this.mapper.toSearchRequest(doc);
 }
