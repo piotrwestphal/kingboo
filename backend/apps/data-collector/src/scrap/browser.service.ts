@@ -62,8 +62,19 @@ export class BrowserService {
 
   async closeBrowser(): Promise<void> {
     try {
-      await this.browser.close();
-      this.browser = null;
+      if (this.page) {
+        logger.debug('Closing page')
+        await this.page.close();
+        logger.debug('Page closed')
+      } else {
+        logger.warn('There was no page.');
+      }
+      if (this.browser) {
+        await this.browser.close();
+        this.browser = null;
+      } else {
+        logger.warn('There was no browser.');
+      }
     } catch (e) {
       this.logAndRethrow(`Error when closing browser.`, e);
     }
@@ -170,7 +181,7 @@ export class BrowserService {
   }
 
   private logAndRethrow(errorMessage: string, e: Error): void {
-    logger.error(errorMessage, e);
+    logger.error(`Rethrowing error: ${errorMessage}`, e);
     throw e;
   }
 }
