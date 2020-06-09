@@ -76,7 +76,7 @@ export class BrowserService {
         logger.warn('There was no browser.');
       }
     } catch (e) {
-      this.logAndRethrow(`Error when closing browser.`, e);
+      logger.error(`Error when closing browser`, e);
     }
   }
 
