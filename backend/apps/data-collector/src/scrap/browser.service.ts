@@ -63,9 +63,9 @@ export class BrowserService {
   async closeBrowser(): Promise<void> {
     try {
       if (this.page) {
-        logger.debug('Closing page')
+        logger.debug('Closing page');
         await this.page.close();
-        logger.debug('Page closed')
+        logger.debug('Page closed');
       } else {
         logger.warn('There was no page.');
       }
