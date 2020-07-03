@@ -100,10 +100,11 @@ export class BrowserService {
   }
 
   async takeScreenshot(type: string, pathToScreenshotsFolder: string): Promise<void> {
+    const path = `${pathToScreenshotsFolder}/${new Date().toISOString().replace(/[^0-9]/g, '')}-${type}.png`;
     try {
-      await this.page.screenshot({ path: `${pathToScreenshotsFolder}/${new Date().toISOString().replace(/[^0-9]/g, '')}-${type}.png` });
+      await this.page.screenshot({ path });
     } catch (e) {
-      this.logAndRethrow(`Error when taking screen shot, screen name: ${name}.`, e);
+      this.logAndRethrow(`Error when taking screen shot, path: ${path}.`, e);
     }
   }
 
