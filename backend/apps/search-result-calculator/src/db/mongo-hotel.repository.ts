@@ -40,7 +40,7 @@ export class MongoHotelRepository extends HotelRepository {
         searchId: hotel.searchId,
         hotelId: hotel.hotelId,
       },
-      hotel,
+      hotel as any, // TODO: remove `any` when @types/mongoose add proper types for sub documents
       { new: true },
     ).exec()));
     return updated.map(doc => this.mapper.toHotel(doc));
