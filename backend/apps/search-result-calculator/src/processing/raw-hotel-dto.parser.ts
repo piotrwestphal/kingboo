@@ -6,15 +6,15 @@ import { Room } from '../core/interface/room';
 export class RawHotelDtoParser {
 
   public parseRate(rate: string): number | null {
-    if (rate && rate.trim() === '10') { // It is only one case when there is no dot
-      return 100;
-    }
-    if (rate) {
-      const rateWithoutDots = rate.trim().replace(/\./g, '');
-      return parseInt(rateWithoutDots, 0) || null;
-    } else {
+    if (!rate) {
       return null;
     }
+    const trimmedRate = rate.trim();
+    if (trimmedRate === '10') { // It is only one case when there is no dot
+      return 100;
+    }
+    const rateWithoutDots = trimmedRate.replace(/\./g, '');
+    return parseInt(rateWithoutDots, 0) || null;
   }
 
   public parseNumberOfReviews = (numberOfReviews: string): number | null => parseInt(this.removeComma(numberOfReviews), 0) || null;
@@ -29,7 +29,7 @@ export class RawHotelDtoParser {
     const districtNameWithCity = districtName.replace(/ –([^–]+)$/g, '').trim();
     const splitArr = districtNameWithCity.split(',');
     splitArr.pop();
-    return (splitArr && splitArr.length > 0)
+    return (splitArr?.length > 0)
       ? splitArr.reduce((v1, v2) => v1 + v2)
       : null;
   }
@@ -49,7 +49,7 @@ export class RawHotelDtoParser {
   }
 
   public parseStarRating(starRating: string): number | null {
-    if (starRating && starRating.length > 0) {
+    if (starRating?.length > 0) {
       const starNumber: string = starRating.split('-')[0];
       const parsedValue = parseInt(starNumber, 0);
       return isNaN(parsedValue) ? null : parsedValue;
@@ -59,13 +59,13 @@ export class RawHotelDtoParser {
   }
 
   public parseBonuses(bonuses: string[]): Bonuses {
-    return bonuses && bonuses.length
+    return bonuses?.length
       ? this.mapBonuses(bonuses)
       : null;
   }
 
   public parseRooms(rooms: RawRoomDto[]): Room[] {
-    return rooms && rooms.length
+    return rooms?.length
       ? rooms.map(bonus => this.formatRoom(bonus))
       : null;
   }
@@ -99,7 +99,7 @@ export class RawHotelDtoParser {
     };
   }
 
-  private isEmptyObject = (obj: object) => Object.keys(obj).length === 0;
+  private isEmptyObject = (obj: any) => Object.keys(obj).length === 0;
 
   private removeComma = (value: string) => value ? value.replace(/,/g, '') : null;
 }

@@ -21,7 +21,7 @@ export class MongoHotelRepository extends HotelRepository {
       },
     }).exec();
     const emptyMap = new Map<string, Hotel>();
-    if (hotelsDocs && hotelsDocs.length > 0) {
+    if (hotelsDocs?.length > 0) {
       return hotelsDocs.reduce((map, hotelDoc) => {
         const hotel = this.mapper.toHotel(hotelDoc);
         return map.set(hotelDoc.hotelId, hotel);

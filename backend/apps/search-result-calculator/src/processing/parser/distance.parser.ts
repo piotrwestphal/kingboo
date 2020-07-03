@@ -1,7 +1,7 @@
 export class DistanceParser {
 
   public parseDistance(rawDistance: string): number | null {
-    if (rawDistance && rawDistance.length > 0) {
+    if (rawDistance?.length > 0) {
       const splitRawDistance = rawDistance.split(' ') as [string, string | undefined];
       const valueWithValidSeparator = splitRawDistance[0].replace(/,/, '.');
       const unit = splitRawDistance[1];
