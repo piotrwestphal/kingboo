@@ -13,6 +13,7 @@ import { DbModule } from '../db/db.module';
 import { logger } from '../logger';
 import { ScheduleModule } from '@nestjs/schedule';
 import { ObsoleteResultsSearcher } from './scheduler/obsolete-results.searcher';
+import { HotelsCollector } from './hotels.collector';
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { ObsoleteResultsSearcher } from './scheduler/obsolete-results.searcher';
       provide: DataCollectorService,
       useClass: AppDataCollectorService,
     },
+    HotelsCollector,
   ],
   controllers: [
     AppController,

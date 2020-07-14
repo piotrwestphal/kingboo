@@ -27,6 +27,9 @@ export const localConfig: AppConfig = {
       port: 8555,
     },
   },
+  mongo: {
+    address: 'mongodb://127.0.0.1:27017/dev'
+  },
   mqConsumer: {
     address: mqAddress,
     queueDefinition: {

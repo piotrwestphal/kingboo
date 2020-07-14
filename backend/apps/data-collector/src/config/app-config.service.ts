@@ -5,8 +5,9 @@ import { buildRmqOptions } from '@kb/rabbit';
 import { appConfigValidationSchemaMap } from './validation.schema';
 import { LaunchOptions } from 'puppeteer';
 import { EmulatorOptions, FirestoreConfigService } from '@kb/firestore';
+import { MongoConfigService } from '@kb/mongo';
 
-export class AppConfigService extends ConfigService<AppConfig> implements FirestoreConfigService {
+export class AppConfigService extends ConfigService<AppConfig> implements FirestoreConfigService, MongoConfigService {
 
   constructor(appConfig: AppConfig) {
     super(appConfig, appConfigValidationSchemaMap);
@@ -65,5 +66,9 @@ export class AppConfigService extends ConfigService<AppConfig> implements Firest
 
   get dataToProcessMqClient(): RmqOptions {
     return buildRmqOptions(this.config.dataToProcessMqClient);
+  }
+
+  get mongoAddress(): string {
+    return this.config.mongo.address;
   }
 }

@@ -1,8 +1,8 @@
 import { HotelRepository } from '../core/abstract/hotel.repository';
 import { Hotel } from '../core/model/hotel';
 import { Model } from 'mongoose';
-import { MongoHotelDocumentMapper } from './mongo/mongo-hotel-document.mapper';
-import { HotelDocument } from './mongo/interface/hotel.document';
+import { MongoHotelDocumentMapper } from './mongo-hotel-document.mapper';
+import { HotelDocument } from './interface/hotel.document';
 
 export class MongoHotelRepository extends HotelRepository {
 

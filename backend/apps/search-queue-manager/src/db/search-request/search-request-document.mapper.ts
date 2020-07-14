@@ -1,6 +1,6 @@
-import { SearchRequestDocument } from '../interface/search-request.document';
+import { SearchRequestDocument } from './search-request.document';
 import { SearchRequest } from '../../core/model/SearchRequest';
-import { SaveSearchRequest } from '../interface/save-search-request';
+import { SaveSearchRequest } from './save-search-request';
 import { SearchRequestType } from '../../core/model/SearchRequestType';
 
 export class SearchRequestDocumentMapper {

@@ -25,6 +25,9 @@ export const devConfig = (env: NodeJS.ProcessEnv): AppConfig =>
         port: parseInt(env.FIRESTORE_EMULATOR_PORT, 10),
       },
     },
+    mongo: {
+      address: env.MONGO_ADDRESS,
+    },
     mqConsumer: {
       address: mqAddress(env),
       queueDefinition: {

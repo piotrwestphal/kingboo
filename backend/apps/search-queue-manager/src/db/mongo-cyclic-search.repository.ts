@@ -1,43 +1,43 @@
 import { CyclicSearchRepository } from '../core/abstract/cyclic-search.repository';
 import { CyclicSearch } from '../core/model/CyclicSearch';
 import { Model } from 'mongoose';
-import { CyclicSearchDocument } from './interface/cyclic-search.document';
-import { CyclicSearchDocumentMapper } from './mapper/cyclic-search-document.mapper';
+import { CyclicSearchDocument } from './cyclic-search/cyclic-search.document';
+import { CyclicSearchDocumentMapper } from './cyclic-search/cyclic-search-document.mapper';
 
 export class MongoCyclicSearchRepository extends CyclicSearchRepository {
 
   constructor(
-    private readonly cyclicSearchModel: Model<CyclicSearchDocument>,
     private readonly mapper: CyclicSearchDocumentMapper,
+    private readonly model: Model<CyclicSearchDocument>,
   ) {
     super();
   }
 
   findAll(): Promise<CyclicSearch[]> {
-    return this.cyclicSearchModel.find({})
+    return this.model.find({})
       .map(docs => docs.map(doc => this.fromDoc(doc)))
       .exec();
   }
 
   findByCyclicId(cyclicId: string): Promise<CyclicSearch> {
-    return this.cyclicSearchModel.findOne({cyclicId})
-      .map(doc => doc ? this.fromDoc(doc): null).exec();
+    return this.model.findOne({ cyclicId })
+      .map(doc => doc ? this.fromDoc(doc) : null).exec();
   }
 
   findByCyclicSearchRequest(searchId: string): Promise<CyclicSearch | null> {
-    return this.cyclicSearchModel.findOne({ cyclicSearchRequests: searchId })
+    return this.model.findOne({ cyclicSearchRequests: searchId })
       .map(doc => doc ? this.fromDoc(doc) : null).exec();
   }
 
   async create(cyclicSearch: CyclicSearch): Promise<CyclicSearch> {
     const saveCyclicSearch = this.mapper.prepareForSave(cyclicSearch);
-    const saved = await new this.cyclicSearchModel(saveCyclicSearch).save();
+    const saved = await new this.model(saveCyclicSearch).save();
     return this.fromDoc(saved);
   }
 
   update(cyclicSearch: CyclicSearch): Promise<CyclicSearch> {
     const saveCyclicSearch = this.mapper.prepareForSave(cyclicSearch);
-    return this.cyclicSearchModel.findOneAndUpdate(
+    return this.model.findOneAndUpdate(
       { cyclicId: saveCyclicSearch.cyclicId },
       saveCyclicSearch,
       { new: true })
@@ -45,7 +45,7 @@ export class MongoCyclicSearchRepository extends CyclicSearchRepository {
   }
 
   delete(cyclicId: string): Promise<CyclicSearch | null> {
-    return this.cyclicSearchModel.findOneAndDelete({ cyclicId })
+    return this.model.findOneAndDelete({ cyclicId })
       .map(doc => doc ? this.fromDoc(doc) : null).exec();
   }
 

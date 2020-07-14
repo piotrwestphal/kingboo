@@ -1,8 +1,8 @@
 import { SearchRequestRepository } from '../core/abstract/search-request.repository';
 import { SearchRequest } from '../core/model/SearchRequest';
 import { Model } from 'mongoose';
-import { SearchRequestDocument } from './interface/search-request.document';
-import { SearchRequestDocumentMapper } from './mapper/search-request-document.mapper';
+import { SearchRequestDocument } from './search-request/search-request.document';
+import { SearchRequestDocumentMapper } from './search-request/search-request-document.mapper';
 import { OccupancyStatus } from '../core/model/OccupancyStatus';
 import { SearchRequestType } from '../core/model/SearchRequestType';
 
@@ -10,20 +10,20 @@ export class MongoSearchRequestRepository extends SearchRequestRepository {
 
   constructor(
     private readonly mapper: SearchRequestDocumentMapper,
-    private readonly searchRequestModel: Model<SearchRequestDocument>,
+    private readonly model: Model<SearchRequestDocument>,
   ) {
     super();
   }
 
   async findBySearchId(searchId: string): Promise<SearchRequest> {
-    const found = await this.searchRequestModel.findOne({ searchId }).exec();
+    const found = await this.model.findOne({ searchId }).exec();
     return found
       ? this.fromDoc(found)
       : null;
   }
 
   findAllWithSearchIds(searchIds: string[]): Promise<SearchRequest[]> {
-    return this.searchRequestModel.find({
+    return this.model.find({
       searchId: { $in: searchIds },
     })
       .map(docs => docs.map(doc => this.fromDoc(doc)))
@@ -31,20 +31,20 @@ export class MongoSearchRequestRepository extends SearchRequestRepository {
   }
 
   findAllWithType(type: SearchRequestType): Promise<SearchRequest[]> {
-    return this.searchRequestModel.find({ type })
+    return this.model.find({ type })
       .map(docs => docs.map(doc => this.fromDoc(doc)))
       .exec();
   }
 
   async create(searchRequest: SearchRequest): Promise<SearchRequest> {
     const saveSearchRequest = this.mapper.prepareForSave(searchRequest);
-    const saved = await new this.searchRequestModel(saveSearchRequest).save();
+    const saved = await new this.model(saveSearchRequest).save();
     return this.fromDoc(saved);
   }
 
   async update(searchRequest: SearchRequest): Promise<SearchRequest> {
     const saveSearchRequest = this.mapper.prepareForSave(searchRequest);
-    const updated = await this.searchRequestModel.findOneAndUpdate(
+    const updated = await this.model.findOneAndUpdate(
       { searchId: saveSearchRequest.searchId },
       saveSearchRequest,
       { new: true }).exec();
@@ -52,13 +52,13 @@ export class MongoSearchRequestRepository extends SearchRequestRepository {
   }
 
   async deleteMany(searchIds: string[]): Promise<number> {
-    const deleted = await this.searchRequestModel.deleteMany(
+    const deleted = await this.model.deleteMany(
       { searchId: { $in: searchIds } }).exec();
     return deleted.deletedCount;
   }
 
   findObsoleteCyclicRequests(): Promise<SearchRequest[]> {
-    return this.searchRequestModel.find({
+    return this.model.find({
       type: SearchRequestType.CYCLIC,
       occupancyStatus: OccupancyStatus.FREE,
       checkInDate: { $lte: new Date() },
@@ -69,7 +69,7 @@ export class MongoSearchRequestRepository extends SearchRequestRepository {
   }
 
   findFreeAndValid(now: Date): Promise<SearchRequest[]> {
-    return this.searchRequestModel.find({
+    return this.model.find({
       occupancyStatus: OccupancyStatus.FREE,
       checkInDate: { $gte: now },
     })

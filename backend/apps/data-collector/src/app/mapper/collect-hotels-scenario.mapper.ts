@@ -1,22 +1,18 @@
-import { CollectHotelsScenarioMessage } from '@kb/model/mqmessage/collect-hotels-scenario.message';
 import { CollectHotelsScenario } from '../../core/interface/collect-hotels-scenario';
+import { CollectHotelsScenarioDto } from '@kb/model';
 
 export class CollectHotelsScenarioMapper {
   static fromMessage({
-                                   searchId,
-                                   scenario: {
-                                     resultsLimit,
-                                     searchPlace,
-                                     checkInDate,
-                                     checkOutDate,
-                                     numberOfRooms,
-                                     numberOfAdults,
-                                     childrenAgeAtCheckout,
-                                     searchPlaceIdentifier,
-                                   },
-                                 }: CollectHotelsScenarioMessage): CollectHotelsScenario {
+                       resultsLimit,
+                       searchPlace,
+                       checkInDate,
+                       checkOutDate,
+                       numberOfRooms,
+                       numberOfAdults,
+                       childrenAgeAtCheckout,
+                       searchPlaceIdentifier,
+                     }: CollectHotelsScenarioDto): CollectHotelsScenario {
     return {
-      searchId,
       resultsLimit,
       searchPlace,
       checkInDate,

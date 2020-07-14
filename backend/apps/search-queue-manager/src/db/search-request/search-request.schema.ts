@@ -1,5 +1,5 @@
 import { Schema } from 'mongoose';
-import { SearchRequestDocument } from '../interface/search-request.document';
+import { SearchRequestDocument } from './search-request.document';
 
 export const SearchRequestSchemaKey = 'searchRequest';
 

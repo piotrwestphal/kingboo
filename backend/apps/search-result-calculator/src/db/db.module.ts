@@ -4,10 +4,10 @@ import { HotelRepository } from '../core/abstract/hotel.repository';
 import { MongoModule } from '@kb/mongo';
 import { Model } from 'mongoose';
 import { getModelToken } from '@nestjs/mongoose';
-import { HotelSchema, HotelSchemaKey } from './mongo/schema/hotel.schema';
+import { HotelSchema, HotelSchemaKey } from './schema/hotel.schema';
 import { MongoHotelRepository } from './mongo-hotel.repository';
-import { HotelDocument } from './mongo/interface/hotel.document';
-import { MongoHotelDocumentMapper } from './mongo/mongo-hotel-document.mapper';
+import { HotelDocument } from './interface/hotel.document';
+import { MongoHotelDocumentMapper } from './mongo-hotel-document.mapper';
 
 @Module({
   imports: [

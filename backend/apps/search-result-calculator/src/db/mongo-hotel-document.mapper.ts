@@ -1,4 +1,4 @@
-import { Hotel } from '../../core/model/hotel';
+import { Hotel } from '../core/model/hotel';
 import { HotelDocument } from './interface/hotel.document';
 
 export class MongoHotelDocumentMapper {

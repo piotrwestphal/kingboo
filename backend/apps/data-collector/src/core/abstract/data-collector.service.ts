@@ -1,5 +1,7 @@
 import { CollectHotelsScenario } from '../interface/collect-hotels-scenario';
 
 export abstract class DataCollectorService {
-  abstract collectData(collectHotelsScenario: CollectHotelsScenario): Promise<void>;
+  abstract collectData(searchId: string,
+                       updateFrequencyMinutes: number,
+                       collectHotelsScenario: CollectHotelsScenario): Promise<void>;
 }
