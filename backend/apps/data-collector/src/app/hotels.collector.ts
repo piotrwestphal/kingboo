@@ -56,8 +56,6 @@ export class HotelsCollector {
       logger.warn('Raw search result was not saved to db due to incomplete data. Raw search result: ', rawSearchResult)
     }
 
-    this.dataCollectionNotificationSender.sendHotelsCollectionCompleted(searchId, collectingTimeSec);
-
     if (this.appConfigService.saveRawResultAsJson) {
       const pathToResult = await this.fileManagerService.saveDataAsJSON(rawSearchResult,
         `COLLECTED-${searchId}`);

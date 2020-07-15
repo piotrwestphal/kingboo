@@ -5,6 +5,7 @@ import { ScrapActivityRepository } from '../core/abstract/scrap-activity.reposit
 import { ScrapActivity } from '../core/model/ScrapActivity';
 import { HotelsCollector } from './hotels.collector';
 import { logger } from '../logger';
+import { UserNotificationSender } from '../core/abstract/user-notification.sender';
 
 @Injectable()
 export class AppDataCollectorService extends DataCollectorService {
@@ -14,6 +15,7 @@ export class AppDataCollectorService extends DataCollectorService {
   constructor(
     private readonly hotelsCollector: HotelsCollector,
     private readonly scrapActivityRepository: ScrapActivityRepository,
+    private readonly userNotificationSender: UserNotificationSender,
   ) {
     super();
   }
@@ -28,7 +30,7 @@ export class AppDataCollectorService extends DataCollectorService {
       if (eligibleToStart) {
         await this.startCollecting(searchId, collectHotelsScenario, found);
       } else {
-        logger.warn(`scenario could not be started due to high data collection frequency.` +
+        logger.warn(`scenario could not be started due to too high data collection frequency.` +
           `Update frequency minutes [${updateFrequencyMinutes}], last start time [${found.scrapStartedAt}],` +
           `now [${new Date()}].`)
       }
@@ -52,9 +54,11 @@ export class AppDataCollectorService extends DataCollectorService {
                                 scrapActivity: ScrapActivity): Promise<void> {
     scrapActivity.start();
     const started = await this.scrapActivityRepository.update(scrapActivity);
+    this.userNotificationSender.notifyAboutHotelsCollectionStarted(searchId, started.scrapStartedAt, started.scrapFinishedAt)
     await this.hotelsCollector.collectHotels(searchId, collectHotelsScenario);
     started.finish();
     const finished = await this.scrapActivityRepository.update(started);
+    this.userNotificationSender.notifyAboutHotelsCollectionCompleted(searchId, finished.scrapStartedAt, finished.scrapFinishedAt)
     logger.info(`Collecting data finish. Scrap started at [${finished.scrapStartedAt}], ` +
       `scrap finished at [${finished.scrapFinishedAt}].`);
   }

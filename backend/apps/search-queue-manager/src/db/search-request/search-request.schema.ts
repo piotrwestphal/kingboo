@@ -18,8 +18,7 @@ export const SearchRequestSchema = new Schema<SearchRequestDocument>({
     childrenAgeAtCheckout: [Number],
 
     searchPlaceIdentifier: String,
-    occupancyStatus: String,
-    occupancyUpdatedAt: Date,
+    nextSearchScheduledAt: Date,
   },
   {
     versionKey: false,

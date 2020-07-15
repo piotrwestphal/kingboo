@@ -1,8 +1,7 @@
-import { OccupancyStatus } from './OccupancyStatus';
 import { InconsistencyException } from '../exception/InconsistencyException';
 import { SearchRequestType } from './SearchRequestType';
 
-type SearchRequestValues = Omit<SearchRequest, 'updateSearchPlaceIdentifier' | 'block' | 'unblock'>
+type SearchRequestValues = Omit<SearchRequest, 'updateSearchPlaceIdentifier' | 'scheduleNextSearch'>
 
 export class SearchRequest {
 
@@ -19,8 +18,7 @@ export class SearchRequest {
     public readonly numberOfAdults: number,
     public readonly childrenAgeAtCheckout: number[],
     public searchPlaceIdentifier: string | null,
-    public occupancyStatus: string,
-    public occupancyUpdatedAt: Date,
+    public nextSearchScheduledAt: Date,
   ) {
   }
 
@@ -37,8 +35,7 @@ export class SearchRequest {
                   numberOfAdults,
                   childrenAgeAtCheckout,
                   searchPlaceIdentifier,
-                  occupancyStatus,
-                  occupancyUpdatedAt,
+                  nextSearchScheduledAt,
                 }: SearchRequestValues): SearchRequest {
     return new SearchRequest(
       searchId,
@@ -53,9 +50,14 @@ export class SearchRequest {
       numberOfAdults,
       childrenAgeAtCheckout,
       searchPlaceIdentifier,
-      occupancyStatus,
-      occupancyUpdatedAt,
+      nextSearchScheduledAt,
     );
+  }
+
+  scheduleNextSearch(now: Date): SearchRequest {
+    const minutesToAdd = this.updateFrequencyMinutes * 60000;
+    this.nextSearchScheduledAt = new Date(now.valueOf() + minutesToAdd);
+    return this;
   }
 
   updateSearchPlaceIdentifier(searchPlaceIdentifier: string): SearchRequest {
@@ -63,24 +65,6 @@ export class SearchRequest {
       throw new InconsistencyException(`Search place identifier already exists`);
     }
     this.searchPlaceIdentifier = searchPlaceIdentifier;
-    return this;
-  }
-
-  unblock(): SearchRequest {
-    if (this.occupancyStatus === OccupancyStatus.FREE) {
-      throw new InconsistencyException(`Search request is already ${OccupancyStatus.FREE}`);
-    }
-    this.occupancyStatus = OccupancyStatus.FREE;
-    this.occupancyUpdatedAt = new Date();
-    return this;
-  }
-
-  block(): SearchRequest {
-    if (this.occupancyStatus === OccupancyStatus.BUSY) {
-      throw new InconsistencyException(`Search request is already ${OccupancyStatus.BUSY}`);
-    }
-    this.occupancyStatus = OccupancyStatus.BUSY;
-    this.occupancyUpdatedAt = new Date();
     return this;
   }
 }

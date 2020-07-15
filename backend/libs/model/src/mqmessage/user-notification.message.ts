@@ -1,5 +1,5 @@
 import { MqMessage } from '@kb/model/mqmessage/mq-message';
 
-export interface UserNotificationMessage extends MqMessage {
-  readonly userId: string;
+export interface UserNotificationMessage<T> extends MqMessage {
+  readonly data: T;
 }

@@ -1,8 +1,7 @@
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { from } from 'rxjs';
 import { SearchRequestRepository } from '../../core/abstract/search-request.repository';
-import { filter, flatMap } from 'rxjs/operators';
-import { SearchRequest } from '../../core/model/SearchRequest';
+import { flatMap } from 'rxjs/operators';
 import { CollectingScenarioSender } from '../../core/abstract/collecting-scenario.sender';
 import { Injectable } from '@nestjs/common';
 import { logger } from '../../logger';
@@ -22,17 +21,14 @@ export class FreeRequestSearcher {
   findFreeSearchRequestsAndSend() {
     logger.debug(`Triggering job [find-free-search-requests]`);
     const now = new Date();
-    from(this.searchRequestRepository.findFreeAndValid(now)).pipe(
+    from(this.searchRequestRepository.findFree(now)).pipe(
       flatMap(v => v),
-      filter((sr) => this.isExceededFrequencyThreshold(sr, now)),
     ).subscribe(async (searchRequest) => {
-      const blocked = searchRequest.block();
+      const now = new Date();
+      const blocked = searchRequest.scheduleNextSearch(now);
       const updated = await this.searchRequestRepository.update(blocked);
       logger.info(`Sending free scenario with search id [${searchRequest.searchId}]`);
       this.collectingScenarioSender.sendScenario(updated);
     });
   }
-
-  private isExceededFrequencyThreshold = (doc: SearchRequest, now: Date): boolean =>
-    new Date(doc.occupancyUpdatedAt) < new Date(now.getTime() - (doc.updateFrequencyMinutes * 60000))
 }

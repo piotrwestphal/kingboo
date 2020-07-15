@@ -3,7 +3,6 @@ import { SearchRequest } from '../core/model/SearchRequest';
 import { Model } from 'mongoose';
 import { SearchRequestDocument } from './search-request/search-request.document';
 import { SearchRequestDocumentMapper } from './search-request/search-request-document.mapper';
-import { OccupancyStatus } from '../core/model/OccupancyStatus';
 import { SearchRequestType } from '../core/model/SearchRequestType';
 
 export class MongoSearchRequestRepository extends SearchRequestRepository {
@@ -57,23 +56,23 @@ export class MongoSearchRequestRepository extends SearchRequestRepository {
     return deleted.deletedCount;
   }
 
-  findObsoleteCyclicRequests(): Promise<SearchRequest[]> {
+  findFree(now: Date): Promise<SearchRequest[]> {
     return this.model.find({
-      type: SearchRequestType.CYCLIC,
-      occupancyStatus: OccupancyStatus.FREE,
-      checkInDate: { $lte: new Date() },
+      checkInDate: { $gte: now },
+      nextSearchScheduledAt: { $lte: now },
     })
-      .sort({ occupancyUpdatedAt: 1 })
+      .sort({ nextSearchScheduledAt: 1 })
       .map((docs) => docs.map(doc => this.fromDoc(doc)))
       .exec();
   }
 
-  findFreeAndValid(now: Date): Promise<SearchRequest[]> {
+  findObsoleteCyclicRequests(now: Date): Promise<SearchRequest[]> {
     return this.model.find({
-      occupancyStatus: OccupancyStatus.FREE,
-      checkInDate: { $gte: now },
+      type: SearchRequestType.CYCLIC,
+      checkInDate: { $lte: now },
+      nextSearchScheduledAt: { $lte: now },
     })
-      .sort({ priority: 1 })
+      .sort({ nextSearchScheduledAt: 1 })
       .map((docs) => docs.map(doc => this.fromDoc(doc)))
       .exec();
   }

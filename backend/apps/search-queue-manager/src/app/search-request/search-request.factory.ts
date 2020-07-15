@@ -1,6 +1,5 @@
 import { SearchRequest } from '../../core/model/SearchRequest';
 import { SearchIdentifierBuilder } from '../../core/search-identifier.builder';
-import { OccupancyStatus } from '../../core/model/OccupancyStatus';
 import { CreateSearchRequest } from './create-search-request';
 import * as Joi from '@hapi/joi';
 import { SchemaMap } from '@hapi/joi';
@@ -24,8 +23,7 @@ export class SearchRequestFactory {
       checkInDate: createSearchRequest.checkInDate,
       checkOutDate: createSearchRequest.checkOutDate,
       searchPlaceIdentifier: null,
-      occupancyStatus: OccupancyStatus.BUSY,
-      occupancyUpdatedAt: new Date(),
+      nextSearchScheduledAt: new Date(),
     });
   }
 
