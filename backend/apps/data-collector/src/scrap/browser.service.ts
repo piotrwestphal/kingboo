@@ -104,7 +104,7 @@ export class BrowserService {
     try {
       await this.page.screenshot({ path });
     } catch (e) {
-      this.logAndRethrow(`Error when taking screen shot, path: ${path}.`, e);
+      logger.error(`Error when taking screen shot, path: ${path}.`, e);
     }
   }
 
