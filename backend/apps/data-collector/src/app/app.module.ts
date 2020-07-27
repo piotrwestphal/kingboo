@@ -14,6 +14,7 @@ import { logger } from '../logger';
 import { ScheduleModule } from '@nestjs/schedule';
 import { ObsoleteResultsSearcher } from './scheduler/obsolete-results.searcher';
 import { HotelsCollector } from './hotels.collector';
+import { OldScrapActivityRemover } from './scheduler/old-scrap-activity.remover';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { HotelsCollector } from './hotels.collector';
   ],
   providers: [
     ObsoleteResultsSearcher,
+    OldScrapActivityRemover,
     {
       provide: FileManager,
       useFactory: () => new FileManager(logger),
