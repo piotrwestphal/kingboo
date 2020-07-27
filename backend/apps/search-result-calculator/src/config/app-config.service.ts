@@ -19,6 +19,10 @@ export class AppConfigService extends ConfigService<AppConfig> implements MongoC
     return this.config.mongo.address;
   }
 
+  get hotelsStorageDays(): number {
+    return this.config.hotelsStorageDays;
+  }
+
   get userNotificationsMqClient(): RmqOptions {
     return buildRmqOptions(this.config.userNotificationsMqClient);
   }

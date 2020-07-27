@@ -5,7 +5,7 @@ import { FirestoreConfig } from '@kb/firestore';
 import { MongoConfig } from '@kb/mongo';
 
 export interface AppConfig extends CommonConfig, FirestoreConfig, MongoConfig {
-  readonly rawSearchResultLimitationDays: number;
+  readonly rawSearchResultStorageDays: number;
   readonly saveRawResultAsJson: boolean;
   readonly takeScreenshotOnError: boolean;
   readonly puppeteer: PuppeteerOptions;

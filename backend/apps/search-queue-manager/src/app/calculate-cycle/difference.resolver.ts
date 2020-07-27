@@ -53,5 +53,4 @@ export class DifferenceResolver {
     logger.info(`[${searchIds.length}] of [${searchRequests.length}] search requests were created`);
     logger.debug(`Search ids of created search requests`, searchIds);
   }
-
 }

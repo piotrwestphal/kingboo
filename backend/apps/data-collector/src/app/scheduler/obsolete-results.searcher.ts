@@ -18,7 +18,7 @@ export class ObsoleteResultsSearcher {
   })
   async findObsoleteRawSearchResults() {
     logger.debug(`Triggering job [find-obsolete-raw-search-results]`);
-    const docIds = await this.rawSearchResultRepository.deleteOlderThanGivenDays(this.appConfigService.rawResultLimitationDays);
+    const docIds = await this.rawSearchResultRepository.deleteOlderThanGivenDays(this.appConfigService.rawResultStorageDays);
     if (docIds.length) {
       logger.info(`Deleted [${docIds.length}] raw search results due to obsolescence. Doc ids: ${docIds}`);
     }
