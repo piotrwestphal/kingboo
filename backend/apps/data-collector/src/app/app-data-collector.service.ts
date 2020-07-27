@@ -30,9 +30,9 @@ export class AppDataCollectorService extends DataCollectorService {
       if (eligibleToStart) {
         await this.startCollecting(searchId, collectHotelsScenario, found);
       } else {
-        logger.warn(`scenario could not be started due to too high data collection frequency.` +
-          `Update frequency minutes [${updateFrequencyMinutes}], last start time [${found.scrapStartedAt}],` +
-          `now [${new Date()}].`)
+        logger.warn(`Scenario could not be started due to too high data collection frequency. ` +
+          `Update frequency minutes [${updateFrequencyMinutes}], last start time [${found.scrapStartedAt.toISOString()}], ` +
+          `now [${new Date().toISOString()}].`)
       }
     } else {
       const scrapActivity = new ScrapActivity(searchId);
@@ -59,7 +59,7 @@ export class AppDataCollectorService extends DataCollectorService {
     started.finish();
     const finished = await this.scrapActivityRepository.update(started);
     this.userNotificationSender.notifyAboutHotelsCollectionCompleted(searchId, finished.scrapStartedAt, finished.scrapFinishedAt)
-    logger.info(`Collecting data finish. Scrap started at [${finished.scrapStartedAt}], ` +
-      `scrap finished at [${finished.scrapFinishedAt}].`);
+    logger.info(`Collecting data finish. Scrap started at [${finished.scrapStartedAt.toISOString()}], ` +
+      `scrap finished at [${finished.scrapFinishedAt.toISOString()}].`);
   }
 }

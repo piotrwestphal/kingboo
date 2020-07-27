@@ -22,7 +22,7 @@ export class OldHotelsRemover {
     const found = await this.hotelRepository.findHotelsLastUpdatedGivenDaysAgo(now, this.appConfigService.hotelsStorageDays)
     // TODO: finish it - find hotels by unique values (searchId and hotelId ?)
     if (found.length) {
-      const searchIds = found.map(v => v.searchId);
+      const searchIds = found.map(v => v);
 
     }
   }

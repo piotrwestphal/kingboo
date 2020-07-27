@@ -13,6 +13,7 @@ export class ObsoleteResultsSearcher {
   ) {
   }
 
+  // TODO: search for old scrap activity [scrap-activity-maintainer]
   @Cron(CronExpression.EVERY_HOUR, {
     name: 'find-obsolete-raw-search-results',
   })

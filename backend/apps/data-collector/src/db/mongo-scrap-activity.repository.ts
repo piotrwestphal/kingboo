@@ -24,13 +24,14 @@ export class MongoScrapActivityRepository extends ScrapActivityRepository {
     return this.fromDoc(saved);
   }
 
-  update(scrapActivity: ScrapActivity): Promise<ScrapActivity> {
+  async update(scrapActivity: ScrapActivity): Promise<ScrapActivity> {
     const saveScrapActivity = this.mapper.prepareForSave(scrapActivity);
-    return this.model.findOneAndUpdate(
+    const found = await this.model.findOneAndUpdate(
       { searchId: scrapActivity.searchId },
       saveScrapActivity,
       { new: true })
-      .map(doc => this.fromDoc(doc)).exec()
+      .exec()
+    return this.fromDoc(found);
   }
 
   private fromDoc = (doc: ScrapActivityDocument) => this.mapper.toScrapActivity(doc);

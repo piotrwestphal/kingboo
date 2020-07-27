@@ -35,13 +35,14 @@ export class MongoCyclicSearchRepository extends CyclicSearchRepository {
     return this.fromDoc(saved);
   }
 
-  update(cyclicSearch: CyclicSearch): Promise<CyclicSearch> {
+  async update(cyclicSearch: CyclicSearch): Promise<CyclicSearch> {
     const saveCyclicSearch = this.mapper.prepareForSave(cyclicSearch);
-    return this.model.findOneAndUpdate(
+    const found = await this.model.findOneAndUpdate(
       { cyclicId: saveCyclicSearch.cyclicId },
       saveCyclicSearch,
       { new: true })
-      .map(doc => this.fromDoc(doc)).exec();
+      .exec();
+    return this.fromDoc(found);
   }
 
   delete(cyclicId: string): Promise<CyclicSearch | null> {
