@@ -8,6 +8,6 @@ import { MongoOptions } from '@kb/mongo/interface/mongo-options';
 export const appConfigValidationSchemaMap: SchemaMap<AppConfig> = {
   saveResultAsJson: Joi.boolean().required(),
   mongo: Joi.object<MongoOptions>(mongoValidationSchemaMap).required(),
-  hotelsStorageDays: Joi.number().required(),
+  hotelsWithoutUpdateStorageDays: Joi.number().required(),
   userNotificationsMqClient: Joi.object<RabbitOptions>(rabbitValidationSchemaMap).required(),
 };

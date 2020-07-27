@@ -2,8 +2,9 @@ import { Coords } from '../interface/coords';
 import { LatestValues } from '../interface/latest-values';
 import { CalculatedValues } from '../interface/calculated-values';
 import { ValueWithDate } from '@kb/model/value-with-date';
+import { HotelIdentifier } from '../interface/hotel-identifier';
 
-export class Hotel {
+export class Hotel implements HotelIdentifier {
   constructor(
     readonly searchId: string,
     readonly hotelId: string,

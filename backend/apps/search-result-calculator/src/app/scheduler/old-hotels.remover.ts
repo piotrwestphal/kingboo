@@ -19,11 +19,13 @@ export class OldHotelsRemover {
   async calculateNextCycles() {
     logger.debug(`Triggering job [remove-old-hotels]`);
     const now = new Date();
-    const found = await this.hotelRepository.findHotelsLastUpdatedGivenDaysAgo(now, this.appConfigService.hotelsStorageDays)
-    // TODO: finish it - find hotels by unique values (searchId and hotelId ?)
+    const found = await this.hotelRepository.findHotelsLastUpdatedGivenDaysAgo(
+      now, this.appConfigService.hotelsWithoutUpdateStorageDays)
     if (found.length) {
-      const searchIds = found.map(v => v);
-
+      const deletedCount = await this.hotelRepository.deleteMany(found);
+      logger.info(`[${deletedCount}] hotels were deleted due to lack of updates for ` +
+        `[${this.appConfigService.hotelsWithoutUpdateStorageDays}] days`);
+      logger.debug('Deleted hotels identifiers: ', found);
     }
   }
 }
