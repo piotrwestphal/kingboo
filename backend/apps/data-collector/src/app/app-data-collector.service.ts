@@ -20,12 +20,17 @@ export class AppDataCollectorService extends DataCollectorService {
     super();
   }
 
+  // TODO: clean this mess
   async collectData(searchId: string,
                     updateFrequencyMinutes: number,
                     collectHotelsScenario: CollectHotelsScenario): Promise<void> {
     const nowMs = Date.now();
     const found = await this.scrapActivityRepository.find(searchId);
     if (found?.scrapStartedAt) {
+      if(!found.scrapFinishedAt) {
+        logger.warn(`Data collection was not completed last time.`)
+        return this.startCollecting(searchId, collectHotelsScenario, found);
+      }
       const eligibleToStart = this.isScenarioEligibleToStart(nowMs, found.scrapStartedAt, updateFrequencyMinutes);
       if (eligibleToStart) {
         await this.startCollecting(searchId, collectHotelsScenario, found);
