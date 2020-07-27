@@ -15,6 +15,7 @@ export class FreeRequestSearcher {
   ) {
   }
 
+  // TODO: notify about changes
   @Cron(CronExpression.EVERY_30_SECONDS, {
     name: 'find-free-search-requests',
   })

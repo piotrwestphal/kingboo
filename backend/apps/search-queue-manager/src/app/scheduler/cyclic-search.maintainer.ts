@@ -14,6 +14,7 @@ export class CyclicSearchMaintainer {
   ) {
   }
 
+  // TODO: notify about changes
   @Cron(CronExpression.EVERY_30_MINUTES, {
     name: 'find-unrelated-cyclic-search-requests',
   })
