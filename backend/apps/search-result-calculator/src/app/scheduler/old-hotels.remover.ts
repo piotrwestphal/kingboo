@@ -16,15 +16,15 @@ export class OldHotelsRemover {
   @Cron(CronExpression.EVERY_30_MINUTES, {
     name: 'remove-old-hotels',
   })
-  async calculateNextCycles() {
+  async removeOldHotels() {
     logger.debug(`Triggering job [remove-old-hotels]`);
     const now = new Date();
-    const found = await this.hotelRepository.findHotelsLastUpdatedGivenDaysAgo(
-      now, this.appConfigService.hotelsWithoutUpdateStorageDays)
+    const days = this.appConfigService.hotelsWithoutUpdateStorageDays;
+    const found = await this.hotelRepository.findLastUpdatedGivenDaysAgo(now, days);
     if (found.length) {
       const deletedCount = await this.hotelRepository.deleteMany(found);
       logger.info(`[${deletedCount}] hotels were deleted due to lack of updates for ` +
-        `[${this.appConfigService.hotelsWithoutUpdateStorageDays}] days`);
+        `[${days}] days`);
       logger.debug('Deleted hotels identifiers: ', found);
     }
   }

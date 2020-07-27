@@ -33,6 +33,17 @@ export class MongoHotelRepository extends HotelRepository {
     return hotelIdByHotel;
   }
 
+  findLastUpdatedGivenDaysAgo(now: Date, days: number): Promise<HotelIdentifier[]> {
+    const offset = new Date(now.valueOf() - days * this.DAY); // x days ago
+    return this.model.find({
+      updatedAt: { $lte: offset },
+    })
+      .map(docs => docs.map(({ searchId, hotelId }) => ({
+        searchId, hotelId
+      })))
+      .exec();
+  }
+
   async createAll(hotels: Hotel[]): Promise<Hotel[]> {
     const created = await this.model.insertMany(hotels);
     return created.map(doc => this.fromDoc(doc));
@@ -49,19 +60,8 @@ export class MongoHotelRepository extends HotelRepository {
     return updated.map(doc => this.fromDoc(doc));
   }
 
-  findHotelsLastUpdatedGivenDaysAgo(now: Date, days: number): Promise<HotelIdentifier[]> {
-    const offset = new Date(now.valueOf() - days * this.DAY); // x days ago
-    return this.model.find({
-      updatedAt: { $lte: offset },
-    })
-      .map(docs => docs.map(({ searchId, hotelId }) => ({
-        searchId, hotelId
-      })))
-      .exec();
-  }
-
-  async deleteMany(searchIds: HotelIdentifier[]): Promise<number> {
-    const pendingDeletions = searchIds.map(({ searchId, hotelId }) =>
+  async deleteMany(hotelIdentifiers: HotelIdentifier[]): Promise<number> {
+    const pendingDeletions = hotelIdentifiers.map(({ searchId, hotelId }) =>
       this.model.deleteOne({ searchId, hotelId }).exec());
     const deleted = await Promise.all(pendingDeletions);
     return deleted.length;

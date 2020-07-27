@@ -33,6 +33,10 @@ export class AppConfigService extends ConfigService<AppConfig> implements Firest
     return this.config.rawSearchResultStorageDays;
   }
 
+  get scrapActivitiesWithoutUpdateStorageDays(): number {
+    return this.config.scrapActivitiesWithoutUpdateStorageDays;
+  }
+
   get saveRawResultAsJson(): boolean {
     return this.config.saveRawResultAsJson;
   }
