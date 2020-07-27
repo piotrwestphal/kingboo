@@ -16,6 +16,7 @@ import { MessageProcessor } from '../processing/message.processor';
 import { logger } from '../logger';
 import { ScheduleModule } from '@nestjs/schedule';
 import { OldHotelsRemover } from './scheduler/old-hotels.remover';
+import { UserNotificationSender } from '../core/abstract/user-notification.sender';
 
 @Module({
   imports: [
@@ -35,7 +36,8 @@ import { OldHotelsRemover } from './scheduler/old-hotels.remover';
       provide: HotelService,
       useFactory: (configService: AppConfigService,
                    hotelRepository: HotelRepository,
-                   messageProcessor: MessageProcessor) => {
+                   messageProcessor: MessageProcessor,
+                   userNotificationSender: UserNotificationSender) => {
         const fileManager = new FileManager(logger);
         const hotelFactory = new HotelFactory();
         const priceCalculator = new PriceCalculator();
@@ -46,9 +48,10 @@ import { OldHotelsRemover } from './scheduler/old-hotels.remover';
           hotelRepository,
           messageProcessor,
           priceCalculator,
+          userNotificationSender,
         );
       },
-      inject: [AppConfigService, HotelRepository, MessageProcessor],
+      inject: [AppConfigService, HotelRepository, MessageProcessor, UserNotificationSender],
     },
   ],
 })
