@@ -8,6 +8,6 @@ export abstract class SearchRequestRepository {
   abstract create(searchRequest: SearchRequest): Promise<SearchRequest>;
   abstract update(searchRequest: SearchRequest): Promise<SearchRequest>;
   abstract deleteMany(searchIds: string[]): Promise<number>;
-  abstract findFreeAndValid(now: Date): Promise<SearchRequest[]>;
-  abstract findObsoleteCyclicRequests(): Promise<SearchRequest[]>;
+  abstract findFree(now: Date): Promise<SearchRequest[]>;
+  abstract findObsoleteCyclicRequests(now: Date): Promise<SearchRequest[]>;
 }

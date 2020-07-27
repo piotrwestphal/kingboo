@@ -1,6 +1,6 @@
 import { CyclicSearch } from '../../core/model/CyclicSearch';
-import { SaveCyclicSearch } from '../interface/save-cyclic-search';
-import { CyclicSearchDocument } from '../interface/cyclic-search.document';
+import { SaveCyclicSearch } from './save-cyclic-search';
+import { CyclicSearchDocument } from './cyclic-search.document';
 
 export class CyclicSearchDocumentMapper {
 

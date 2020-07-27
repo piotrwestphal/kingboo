@@ -1,5 +1,5 @@
 import { Schema } from 'mongoose';
-import { SearchRequestDocument } from '../interface/search-request.document';
+import { SearchRequestDocument } from './search-request.document';
 
 export const SearchRequestSchemaKey = 'searchRequest';
 
@@ -18,8 +18,7 @@ export const SearchRequestSchema = new Schema<SearchRequestDocument>({
     childrenAgeAtCheckout: [Number],
 
     searchPlaceIdentifier: String,
-    occupancyStatus: String,
-    occupancyUpdatedAt: Date,
+    nextSearchScheduledAt: Date,
   },
   {
     versionKey: false,

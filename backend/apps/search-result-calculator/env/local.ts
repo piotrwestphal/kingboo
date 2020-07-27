@@ -10,6 +10,7 @@ export const localConfig: AppConfig = {
   port: 8080,
   corsOrigins: 'http://localhost', // separate multiple origins by comma
   saveResultAsJson: true,
+  hotelsWithoutUpdateStorageDays: 7,
   mongo: {
     address: 'mongodb://127.0.0.1:27017/dev',
   },

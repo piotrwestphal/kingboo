@@ -1,5 +1,5 @@
 import { Schema } from 'mongoose';
-import { CyclicSearchDocument } from '../interface/cyclic-search.document';
+import { CyclicSearchDocument } from './cyclic-search.document';
 
 export const CyclicSearchSchemaKey = 'cyclicSearch';
 

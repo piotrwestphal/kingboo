@@ -16,7 +16,8 @@ export class ObsoleteRequestSearcher {
   })
   async findObsoleteSearchRequests() {
     logger.debug(`Triggering job [find-obsolete-search-requests]`);
-    const found = await this.searchRequestRepository.findObsoleteCyclicRequests();
+    const now = new Date();
+    const found = await this.searchRequestRepository.findObsoleteCyclicRequests(now);
     if (found.length) {
       const searchIds = found.map(v => v.searchId);
       const deletedCount = await this.searchRequestRepository.deleteMany(searchIds);

@@ -2,8 +2,8 @@ import { FirestoreClient } from '@kb/firestore';
 import { RawSearchResultRepository } from '../core/abstract/raw-search-result.repository';
 import { RawSearchResult } from '../core/model/RawSearchResult';
 import { logger } from '../logger';
-import { RawSearchResultMapper } from './raw-search-result.mapper';
-import { RawSearchResultDocument } from './interface/raw-search-result.document';
+import { RawSearchResultMapper } from './raw-search-result/raw-search-result.mapper';
+import { RawSearchResultDocument } from './raw-search-result/raw-search-result.document';
 
 export class FirestoreRawSearchResultRepository extends RawSearchResultRepository {
 

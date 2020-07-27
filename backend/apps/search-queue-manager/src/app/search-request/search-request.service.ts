@@ -41,17 +41,6 @@ export class SearchRequestService {
     }
   }
 
-  async unblockRequest(searchId: string): Promise<void> {
-    const found = await this.searchRequestRepository.findBySearchId(searchId);
-    if (found) {
-      const unblocked = found.unblock();
-      await this.searchRequestRepository.update(unblocked);
-      logger.debug(`Successfully unblock search request for given search id [${searchId}]`);
-    } else {
-      logger.warn(`Unable to unblock. Search request for given search id [${searchId}] not found`);
-    }
-  }
-
   async saveSearchRequest(searchRequest: SearchRequest): Promise<SearchRequest> {
     const found = await this.searchRequestRepository.findBySearchId(searchRequest.searchId);
     if (found) {

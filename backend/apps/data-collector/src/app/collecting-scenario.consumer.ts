@@ -14,10 +14,14 @@ export class CollectingScenarioConsumer {
   }
 
   @MessagePattern(CollectingScenarioMessagePattern.NEW_SCENARIO)
-  async handleHotelsCollectionCompleted(@Payload() collectHotelsScenarioMsg: CollectHotelsScenarioMessage,
+  async handleHotelsCollectionCompleted(@Payload() {
+                                          searchId,
+                                          updateFrequencyMinutes,
+                                          scenario,
+                                        }: CollectHotelsScenarioMessage,
                                         @Ctx() context: RmqContext) {
-    const collectHotelsScenario = CollectHotelsScenarioMapper.fromMessage(collectHotelsScenarioMsg);
-    await this.dataCollectorService.collectData(collectHotelsScenario);
+    const collectHotelsScenario = CollectHotelsScenarioMapper.fromMessage(scenario);
+    await this.dataCollectorService.collectData(searchId, updateFrequencyMinutes, collectHotelsScenario);
 
     const channel = context.getChannelRef();
     const originalMsg = context.getMessage();

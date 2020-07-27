@@ -1,25 +1,24 @@
-import { SearchRequestDocument } from '../interface/search-request.document';
+import { SearchRequestDocument } from './search-request.document';
 import { SearchRequest } from '../../core/model/SearchRequest';
-import { SaveSearchRequest } from '../interface/save-search-request';
+import { SaveSearchRequest } from './save-search-request';
 import { SearchRequestType } from '../../core/model/SearchRequestType';
 
 export class SearchRequestDocumentMapper {
   toSearchRequest({
-                           searchId,
-                           type,
-                           priority,
-                           updateFrequencyMinutes,
-                           resultsLimit,
-                           searchPlace,
-                           checkInDate,
-                           checkOutDate,
-                           numberOfRooms,
-                           numberOfAdults,
-                           childrenAgeAtCheckout,
-                           searchPlaceIdentifier,
-                           occupancyStatus,
-                           occupancyUpdatedAt,
-                         }: SearchRequestDocument): SearchRequest {
+                    searchId,
+                    type,
+                    priority,
+                    updateFrequencyMinutes,
+                    resultsLimit,
+                    searchPlace,
+                    checkInDate,
+                    checkOutDate,
+                    numberOfRooms,
+                    numberOfAdults,
+                    childrenAgeAtCheckout,
+                    searchPlaceIdentifier,
+                    nextSearchScheduledAt,
+                  }: SearchRequestDocument): SearchRequest {
     return SearchRequest.create({
       searchId,
       type: type as SearchRequestType,
@@ -33,8 +32,7 @@ export class SearchRequestDocumentMapper {
       numberOfAdults,
       childrenAgeAtCheckout,
       searchPlaceIdentifier,
-      occupancyStatus,
-      occupancyUpdatedAt: new Date(occupancyUpdatedAt),
+      nextSearchScheduledAt: new Date(nextSearchScheduledAt),
     });
   }
 
@@ -51,8 +49,7 @@ export class SearchRequestDocumentMapper {
                    numberOfAdults,
                    childrenAgeAtCheckout,
                    searchPlaceIdentifier,
-                   occupancyStatus,
-                   occupancyUpdatedAt,
+                   nextSearchScheduledAt,
                  }: SearchRequest): SaveSearchRequest {
     return {
       searchId,
@@ -67,8 +64,7 @@ export class SearchRequestDocumentMapper {
       numberOfAdults,
       childrenAgeAtCheckout,
       searchPlaceIdentifier,
-      occupancyStatus,
-      occupancyUpdatedAt,
+      nextSearchScheduledAt,
     };
   }
 }

@@ -12,6 +12,7 @@ export class CollectHotelsScenarioMapper {
                              numberOfAdults,
                              childrenAgeAtCheckout,
                              searchPlaceIdentifier,
+                             updateFrequencyMinutes,
                            }: SearchRequest): CollectHotelsScenarioMessage {
     return {
       searchId,
@@ -33,6 +34,7 @@ export class CollectHotelsScenarioMapper {
         childrenAgeAtCheckout,
         searchPlaceIdentifier,
       },
+      updateFrequencyMinutes,
       timestamp: Date.now(),
     };
   }

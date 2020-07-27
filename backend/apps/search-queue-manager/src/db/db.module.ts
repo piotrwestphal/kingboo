@@ -3,15 +3,15 @@ import { MongoSearchRequestRepository } from './mongo-search-request.repository'
 import { SearchRequestRepository } from '../core/abstract/search-request.repository';
 import { AppConfigService } from '../config/app-config.service';
 import { getModelToken } from '@nestjs/mongoose';
-import { SearchRequestSchema, SearchRequestSchemaKey } from './schema/search-request.schema';
+import { SearchRequestSchema, SearchRequestSchemaKey } from './search-request/search-request.schema';
 import { Model } from 'mongoose';
-import { SearchRequestDocument } from './interface/search-request.document';
-import { SearchRequestDocumentMapper } from './mapper/search-request-document.mapper';
+import { SearchRequestDocument } from './search-request/search-request.document';
+import { SearchRequestDocumentMapper } from './search-request/search-request-document.mapper';
 import { MongoModule } from '@kb/mongo';
 import { CyclicSearchRepository } from '../core/abstract/cyclic-search.repository';
-import { CyclicSearchSchema, CyclicSearchSchemaKey } from './schema/cyclic-search.schema';
-import { CyclicSearchDocument } from './interface/cyclic-search.document';
-import { CyclicSearchDocumentMapper } from './mapper/cyclic-search-document.mapper';
+import { CyclicSearchSchema, CyclicSearchSchemaKey } from './cyclic-search/cyclic-search.schema';
+import { CyclicSearchDocument } from './cyclic-search/cyclic-search.document';
+import { CyclicSearchDocumentMapper } from './cyclic-search/cyclic-search-document.mapper';
 import { MongoCyclicSearchRepository } from './mongo-cyclic-search.repository';
 
 @Module({
@@ -26,24 +26,24 @@ import { MongoCyclicSearchRepository } from './mongo-cyclic-search.repository';
   providers: [
     {
       provide: SearchRequestRepository,
-      useFactory: (searchRequestModel: Model<SearchRequestDocument>) => {
+      useFactory: (model: Model<SearchRequestDocument>) => {
         const mapper = new SearchRequestDocumentMapper();
-        return new MongoSearchRequestRepository(mapper, searchRequestModel);
+        return new MongoSearchRequestRepository(mapper, model);
       },
       inject: [getModelToken(SearchRequestSchemaKey)],
     },
     {
       provide: CyclicSearchRepository,
-      useFactory: (cyclicSearchModel: Model<CyclicSearchDocument>) => {
+      useFactory: (model: Model<CyclicSearchDocument>) => {
         const mapper = new CyclicSearchDocumentMapper();
-        return new MongoCyclicSearchRepository(cyclicSearchModel, mapper);
+        return new MongoCyclicSearchRepository(mapper, model);
       },
       inject: [getModelToken(CyclicSearchSchemaKey)],
     },
   ],
   exports: [
-    SearchRequestRepository,
     CyclicSearchRepository,
+    SearchRequestRepository,
   ],
 })
 export class DbModule {

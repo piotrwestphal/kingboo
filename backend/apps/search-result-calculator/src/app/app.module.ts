@@ -14,6 +14,8 @@ import { HotelFactory } from './hotel.factory';
 import { HotelRepository } from '../core/abstract/hotel.repository';
 import { MessageProcessor } from '../processing/message.processor';
 import { logger } from '../logger';
+import { ScheduleModule } from '@nestjs/schedule';
+import { OldHotelsRemover } from './scheduler/old-hotels.remover';
 
 @Module({
   imports: [
@@ -21,12 +23,14 @@ import { logger } from '../logger';
     DbModule,
     MqModule,
     ProcessingModule,
+    ScheduleModule.forRoot(),
   ],
   controllers: [
     AppController,
     DataToProcessConsumer,
   ],
   providers: [
+    OldHotelsRemover,
     {
       provide: HotelService,
       useFactory: (configService: AppConfigService,

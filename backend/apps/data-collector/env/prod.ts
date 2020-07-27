@@ -5,7 +5,7 @@ export const prodConfig = (env: NodeJS.ProcessEnv): AppConfig =>
     nodeEnv: env.NODE_ENV as 'prod',
     port: env.PORT ? parseInt(env.PORT, 10) : 8080,
     corsOrigins: env.CORS_ORIGINS,
-    rawSearchResultLimitationDays: env.RAW_SEARCH_RESULT_LIMITATION_DAYS ? parseInt(env.RAW_SEARCH_RESULT_LIMITATION_DAYS, 10) : 30,
+    rawSearchResultStorageDays: env.RAW_SEARCH_RESULT_STORAGE_DAYS ? parseInt(env.RAW_SEARCH_RESULT_LIMITATION_DAYS, 10) : 30,
     saveRawResultAsJson: env.SAVE_RAW_SEARCH_RESULT_AS_JSON === 'true',
     takeScreenshotOnError: env.TAKE_SCREENSHOT_ON_ERROR === 'true',
     puppeteer: {
@@ -16,6 +16,9 @@ export const prodConfig = (env: NodeJS.ProcessEnv): AppConfig =>
       projectId: env.FIRESTORE_PROJECT_ID,
       clientEmail: env.FIRESTORE_CLIENT_EMAIL,
       clientKey: JSON.parse(`"${env.FIRESTORE_CLIENT_KEY}"`),
+    },
+    mongo: {
+      address: env.MONGO_ADDRESS,
     },
     mqConsumer: {
       address: env.MQ_ADDRESS,
@@ -35,6 +38,18 @@ export const prodConfig = (env: NodeJS.ProcessEnv): AppConfig =>
       address: env.MQ_ADDRESS,
       queueDefinition: {
         queue: env.MQ_DATA_TO_PROCESS_QUEUE_NAME,
+      },
+    },
+
+    userNotificationsMqClient: {
+      address: env.MQ_ADDRESS,
+      queueDefinition: {
+        queue: env.MQ_USER_NOTIFICATIONS_QUEUE_NAME,
+        queueOptions: {
+          arguments: {
+            'x-message-ttl': parseInt(env.MQ_USER_NOTIFICATIONS_QUEUE_MESSAGE_TTL, 10),
+          }
+        }
       },
     },
   });

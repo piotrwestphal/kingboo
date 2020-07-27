@@ -79,7 +79,6 @@ export class ResultListPage {
         };
       };
 
-      // TODO: check if distance from center is extracted
       const extractFromAddressContainer = (searchResultContainer: Element): AddressContainerData => {
         const addressContainer = getFirstElementByClass(searchResultContainer, 'sr_card_address_line');
         if (addressContainer) {
