@@ -18,10 +18,14 @@ export class SearchRequestService {
   ) {
   }
 
+  findAll(): Promise<SearchRequest[]> {
+    return this.searchRequestRepository.findAll();
+  }
+
   async createUserSearchRequest(userId: string, createSearchRequest: CreateSearchRequest): Promise<SearchRequest> {
     const searchRequest = this.searchRequestFactory.createNew(SearchRequestType.USER, createSearchRequest);
     const saved = await this.saveSearchRequest(searchRequest);
-    this.userNotificationsSender.notifyAboutCreatedSearchRequest(userId, saved.searchId);
+    this.userNotificationsSender.notifyAboutCreatedUserSearchRequest(userId, saved.searchId);
     return saved;
   }
 

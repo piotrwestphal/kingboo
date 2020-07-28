@@ -18,10 +18,11 @@ export class CollectingScenarioConsumer {
                                           searchId,
                                           updateFrequencyMinutes,
                                           scenario,
+                                          timestamp,
                                         }: CollectHotelsScenarioMessage,
                                         @Ctx() context: RmqContext) {
     const collectHotelsScenario = CollectHotelsScenarioMapper.fromMessage(scenario);
-    await this.dataCollectorService.collectData(searchId, updateFrequencyMinutes, collectHotelsScenario);
+    await this.dataCollectorService.collectData(searchId, updateFrequencyMinutes, collectHotelsScenario, timestamp);
 
     const channel = context.getChannelRef();
     const originalMsg = context.getMessage();
