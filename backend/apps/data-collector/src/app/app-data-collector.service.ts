@@ -10,8 +10,6 @@ import { UserNotificationSender } from '../core/abstract/user-notification.sende
 @Injectable()
 export class AppDataCollectorService extends DataCollectorService {
 
-  private readonly NETWORK_LATENCY_THRESHOLD_MINUTES = 1;
-
   constructor(
     private readonly hotelsCollector: HotelsCollector,
     private readonly scrapActivityRepository: ScrapActivityRepository,
@@ -20,51 +18,32 @@ export class AppDataCollectorService extends DataCollectorService {
     super();
   }
 
-  // TODO: clean up this mess
   async collectData(searchId: string,
                     updateFrequencyMinutes: number,
-                    collectHotelsScenario: CollectHotelsScenario): Promise<void> {
+                    collectHotelsScenario: CollectHotelsScenario,
+                    messageTimestamp: number): Promise<void> {
     const nowMs = Date.now();
-    const found = await this.scrapActivityRepository.find(searchId);
-    if (found?.scrapStartedAt) {
-      if(!found.scrapFinishedAt) {
-        logger.warn(`Data collection was not completed last time.`)
-        return this.startCollecting(searchId, collectHotelsScenario, found);
-      }
-      const eligibleToStart = this.isScenarioEligibleToStart(nowMs, found.scrapStartedAt, updateFrequencyMinutes);
-      if (eligibleToStart) {
-        await this.startCollecting(searchId, collectHotelsScenario, found);
-      } else {
-        logger.warn(`Scenario could not be started due to too high data collection frequency. ` +
-          `Update frequency minutes [${updateFrequencyMinutes}], last start time [${found.scrapStartedAt.toISOString()}], ` +
-          `now [${new Date().toISOString()}].`)
-      }
+    const oldMessage = this.isMessageOld(nowMs, updateFrequencyMinutes, messageTimestamp);
+    if (oldMessage) {
+      logger.warn(`Scenario [${searchId}] could not be started due to time the message was sent. The message has expired. ` +
+        `Update frequency minutes [${updateFrequencyMinutes}], message sent time [${new Date(messageTimestamp).toISOString()}], ` +
+        `now [${new Date(nowMs).toISOString()}].`)
     } else {
       const scrapActivity = new ScrapActivity(searchId);
-      const created = await this.scrapActivityRepository.create(scrapActivity);
-      await this.startCollecting(searchId, collectHotelsScenario, created);
+      scrapActivity.start();
+      const saved = await this.scrapActivityRepository.createOrUpdate(searchId, scrapActivity);
+      this.userNotificationSender.notifyAboutHotelsCollectionStarted(searchId, saved.scrapStartedAt, saved.scrapFinishedAt)
+      await this.hotelsCollector.collectHotels(searchId, collectHotelsScenario);
+      saved.finish();
+      const finished = await this.scrapActivityRepository.update(searchId, saved);
+      this.userNotificationSender.notifyAboutHotelsCollectionCompleted(searchId, finished.scrapStartedAt, finished.scrapFinishedAt)
+      logger.info(`Collecting data finish. Scrap started at [${finished.scrapStartedAt.toISOString()}], ` +
+        `scrap finished at [${finished.scrapFinishedAt.toISOString()}].`);
     }
   }
 
-  private isScenarioEligibleToStart(nowMs: number,
-                                    scrapStartedAt: Date,
-                                    updateFrequencyMinutes: number) {
-    const lastStartedMs = scrapStartedAt.valueOf();
-    const timeSinceLastStartMinutes = (nowMs - lastStartedMs) / 1000 / 60;
-    return (timeSinceLastStartMinutes + this.NETWORK_LATENCY_THRESHOLD_MINUTES) > updateFrequencyMinutes;
-  }
-
-  private async startCollecting(searchId: string,
-                                collectHotelsScenario: CollectHotelsScenario,
-                                scrapActivity: ScrapActivity): Promise<void> {
-    scrapActivity.start();
-    const started = await this.scrapActivityRepository.update(scrapActivity);
-    this.userNotificationSender.notifyAboutHotelsCollectionStarted(searchId, started.scrapStartedAt, started.scrapFinishedAt)
-    await this.hotelsCollector.collectHotels(searchId, collectHotelsScenario);
-    started.finish();
-    const finished = await this.scrapActivityRepository.update(started);
-    this.userNotificationSender.notifyAboutHotelsCollectionCompleted(searchId, finished.scrapStartedAt, finished.scrapFinishedAt)
-    logger.info(`Collecting data finish. Scrap started at [${finished.scrapStartedAt.toISOString()}], ` +
-      `scrap finished at [${finished.scrapFinishedAt.toISOString()}].`);
-  }
+  private isMessageOld = (now: number,
+                          updateFrequencyMinutes: number,
+                          messageTimestamp: number): boolean =>
+    (messageTimestamp + (updateFrequencyMinutes * 1000 * 60)) < now;
 }

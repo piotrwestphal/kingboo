@@ -15,11 +15,6 @@ export class MongoScrapActivityRepository extends ScrapActivityRepository {
     super();
   }
 
-  find(searchId: string): Promise<ScrapActivity> {
-    return this.model.findOne({ searchId })
-      .map(doc => doc ? this.fromDoc(doc) : null).exec();
-  }
-
   findLastUpdatedGivenDaysAgo(now: Date, days: number): Promise<string[]> {
     const offset = new Date(now.valueOf() - days * this.DAY); // x days ago
     return this.model.find({
@@ -29,16 +24,19 @@ export class MongoScrapActivityRepository extends ScrapActivityRepository {
       .exec()
   }
 
-  async create(scrapActivity: ScrapActivity): Promise<ScrapActivity> {
+  async createOrUpdate(searchId: string, scrapActivity: ScrapActivity): Promise<ScrapActivity> {
     const saveScrapActivity = this.mapper.prepareForSave(scrapActivity);
-    const saved = await new this.model(saveScrapActivity).save();
+    const saved = await this.model.update(
+      { searchId },
+      saveScrapActivity,
+      { upsert: true });
     return this.fromDoc(saved);
   }
 
-  async update(scrapActivity: ScrapActivity): Promise<ScrapActivity> {
+  async update(searchId: string, scrapActivity: ScrapActivity): Promise<ScrapActivity> {
     const saveScrapActivity = this.mapper.prepareForSave(scrapActivity);
     const found = await this.model.findOneAndUpdate(
-      { searchId: scrapActivity.searchId },
+      { searchId },
       saveScrapActivity,
       { new: true })
       .exec()
