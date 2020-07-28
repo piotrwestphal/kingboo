@@ -44,6 +44,7 @@ jobs:
           FIRESTORE_CLIENT_EMAIL: ${{ secrets.FIRESTORE_CLIENT_EMAIL }}
           FIRESTORE_CLIENT_KEY: ${{ secrets.FIRESTORE_CLIENT_KEY }}
           MQ_ADDRESS: ${{ secrets.MQ_ADDRESS }}
+          MONGO_ADDRESS: ${{ secrets.MONGO_ADDRESS }}
         run: |
           ssh -T -o StrictHostKeyChecking=no -l ${{ secrets.WESTUS01_USER }} ${{ secrets.WESTUS01_HOST }} << EOF
             uptime
@@ -57,6 +58,7 @@ jobs:
             echo "FIRESTORE_CLIENT_EMAIL=$FIRESTORE_CLIENT_EMAIL" >> westus01.env
             echo "FIRESTORE_CLIENT_KEY=$FIRESTORE_CLIENT_KEY" >> westus01.env
             echo "MQ_ADDRESS=$MQ_ADDRESS" >> westus01.env
+            echo "MONGO_ADDRESS=$MONGO_ADDRESS" >> westus01.env
             docker-compose pull
             docker-compose up -d
           EOF
