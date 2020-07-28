@@ -8,6 +8,7 @@ import { Hotel } from '../core/model/hotel';
 import { RawHotel } from '../core/interface/raw-hotel';
 import { AppConfigService } from '../config/app-config.service';
 import { logger } from '../logger';
+import { UserNotificationSender } from '../core/abstract/user-notification.sender';
 
 export class HotelService {
 
@@ -18,20 +19,22 @@ export class HotelService {
     private readonly hotelRepository: HotelRepository,
     private readonly messageProcessor: MessageProcessor,
     private readonly priceCalculator: PriceCalculator,
+    private readonly userNotificationSender: UserNotificationSender,
   ) {
   }
 
   async processMessage(message: CollectedHotelsMessage): Promise<void> {
     const now = Date.now();
     const rawHotels = this.messageProcessor.processMessage(message);
+    const rawHotelIds = Array.from(rawHotels.keys());
     if (this.configService.saveResultAsJson) {
       const pathToResult = await this.fileManager.saveDataAsJSON(Array.from(rawHotels.values()), `PROCESSED-${message.searchId}`);
       logger.debug(`Processed data was saved locally to [${pathToResult}]`);
     }
-    logger.debug(`Processed message with hotel ids`, Array.from(rawHotels.keys()));
+    logger.debug(`Processed message with hotel ids`, rawHotelIds);
     const foundHotels = await this.hotelRepository.findAllBySearchIdAndHotelId(message.searchId, Array.from(rawHotels.keys()));
 
-    const hotelsToCreate = Array.from(rawHotels.keys())
+    const hotelsToCreate = rawHotelIds
       .filter(hotelId => !foundHotels.has(hotelId))
       .map(hotelId => rawHotels.get(hotelId));
 
@@ -49,7 +52,10 @@ export class HotelService {
       const updated = await this.hotelRepository.updateAll(updatedHotelsWithRaw);
       logger.debug(`Hotels were updated for hotel ids`, updated.map(h => h.hotelId));
     }
-    logger.debug(`Message processing last [${Date.now() - now}] ms`);
+    const messageProcessingTimeMs = Date.now() - now;
+    this.userNotificationSender.notifyAboutHotelsProcessingFinished(
+      message.searchId, rawHotelIds, messageProcessingTimeMs);
+    logger.debug(`Message processing last [${messageProcessingTimeMs}] ms`);
   }
 
   private updateHotelWithRaw(hotel: Hotel,

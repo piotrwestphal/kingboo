@@ -12,12 +12,13 @@ export const localConfig: AppConfig = {
   port: 8080,
   corsOrigins: 'http://localhost', // separate multiple origins by comma
   saveRawResultAsJson: true,
-  rawSearchResultStorageDays: 30, // TODO: change to more descriptive -> not updated results !!
+  rawSearchResultStorageDays: 30,
+  scrapActivitiesWithoutUpdateStorageDays: 7,
   takeScreenshotOnError: true,
   puppeteer: {
     headlessModeOff: true,
     enableStylesOnResultsPage: false,
-    executablePath: './node_modules/puppeteer/.local-chromium/mac-737027/chrome-mac/Chromium.app/Contents/MacOS/Chromium',
+    executablePath: './node_modules/puppeteer/.local-chromium/mac-756035/chrome-mac/Chromium.app/Contents/MacOS/Chromium',
     slowMoMs: 0,
     devtoolsTurnedOn: false,
   },

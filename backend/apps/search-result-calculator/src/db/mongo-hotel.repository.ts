@@ -3,6 +3,7 @@ import { Hotel } from '../core/model/hotel';
 import { Model } from 'mongoose';
 import { MongoHotelDocumentMapper } from './mongo-hotel-document.mapper';
 import { HotelDocument } from './interface/hotel.document';
+import { HotelIdentifier } from '../core/interface/hotel-identifier';
 
 export class MongoHotelRepository extends HotelRepository {
 
@@ -32,6 +33,17 @@ export class MongoHotelRepository extends HotelRepository {
     return hotelIdByHotel;
   }
 
+  findLastUpdatedGivenDaysAgo(now: Date, days: number): Promise<HotelIdentifier[]> {
+    const offset = new Date(now.valueOf() - days * this.DAY); // x days ago
+    return this.model.find({
+      updatedAt: { $lte: offset },
+    }).limit(1000)
+      .map(docs => docs.map(({ searchId, hotelId }) => ({
+        searchId, hotelId
+      })))
+      .exec();
+  }
+
   async createAll(hotels: Hotel[]): Promise<Hotel[]> {
     const created = await this.model.insertMany(hotels);
     return created.map(doc => this.fromDoc(doc));
@@ -48,19 +60,11 @@ export class MongoHotelRepository extends HotelRepository {
     return updated.map(doc => this.fromDoc(doc));
   }
 
-  findHotelsLastUpdatedGivenDaysAgo(now: Date, days: number): Promise<string[]> {
-    const offset = new Date(now.valueOf() - days * this.DAY); // x days ago
-    return this.model.find({
-      updatedAt: { $lte: offset},
-    })
-      .map(docs => docs.map(doc => doc.searchId))
-      .exec();
-  }
-
-  async deleteMany(searchIds: string[]): Promise<number> {
-    const deleted = await this.model.deleteMany(
-      { searchId: { $in: searchIds } }).exec();
-    return deleted.deletedCount;
+  async deleteMany(hotelIdentifiers: HotelIdentifier[]): Promise<number> {
+    const pendingDeletions = hotelIdentifiers.map(({ searchId, hotelId }) =>
+      this.model.deleteOne({ searchId, hotelId }).exec());
+    const deleted = await Promise.all(pendingDeletions);
+    return deleted.length;
   }
 
   private fromDoc = (doc: HotelDocument) => this.mapper.toHotel(doc);

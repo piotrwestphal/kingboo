@@ -44,7 +44,6 @@ export class CycleCalculator {
     }
   }
 
-
   private buildCyclicSearchRequest({ nightsOfStay, ...rest }: CyclicSearch, checkInDate: Date): SearchRequest {
     const checkOutDate = TimeHelper.addDays(checkInDate, nightsOfStay);
     const createSearchRequest = this.createSearchRequestMapper.fromCyclicSearch(rest, checkInDate, checkOutDate);

@@ -21,7 +21,7 @@ export class ResultListPage {
    *      This case of search request is called: 'standard search criteria'. 'rooms' will not be collected.
    * 2.   When the search request is for 2 persons with child or more than 2 persons or more than 1 room. 'rooms' will be collected.
    */
-  // TODO: clean up with google cloud logs
+  // TODO: clean up with prod logs
   public collectHotelsFromSearchResultList(): Promise<ScrapedRawHotel[]> {
     return this.browserService.evaluate<ScrapedRawHotel[]>(() => {
       // helper functions
@@ -79,7 +79,6 @@ export class ResultListPage {
         };
       };
 
-      // TODO: check if distance from center is extracted
       const extractFromAddressContainer = (searchResultContainer: Element): AddressContainerData => {
         const addressContainer = getFirstElementByClass(searchResultContainer, 'sr_card_address_line');
         if (addressContainer) {

@@ -1,8 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { RmqOptions, Transport } from '@nestjs/microservices';
-import { GlobalExceptionFilter } from '@kb/util/global-exception.filter';
-import { logger } from '../../data-collector/src/logger';
 
 async function bootstrap() {
   const app = await NestFactory.createMicroservice<RmqOptions>(AppModule, {
@@ -19,7 +17,6 @@ async function bootstrap() {
       },
     },
   });
-  app.useGlobalFilters(new GlobalExceptionFilter(logger));
   app.listen(() => console.log('Microservice is listening'));
 }
 

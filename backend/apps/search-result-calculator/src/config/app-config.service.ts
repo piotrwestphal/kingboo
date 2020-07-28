@@ -4,11 +4,12 @@ import { RmqOptions } from '@nestjs/microservices';
 import { buildRmqOptions } from '@kb/rabbit';
 import { appConfigValidationSchemaMap } from './validation.schema';
 import { MongoConfigService } from '@kb/mongo';
+import { CommonLoggerService } from '@kb/logger';
 
 export class AppConfigService extends ConfigService<AppConfig> implements MongoConfigService {
 
-  constructor(appConfig: AppConfig) {
-    super(appConfig, appConfigValidationSchemaMap);
+  constructor(appConfig: AppConfig, logger: CommonLoggerService) {
+    super(appConfig, appConfigValidationSchemaMap, logger);
   }
 
   get saveResultAsJson(): boolean {
@@ -19,8 +20,8 @@ export class AppConfigService extends ConfigService<AppConfig> implements MongoC
     return this.config.mongo.address;
   }
 
-  get hotelsStorageDays(): number {
-    return this.config.hotelsStorageDays;
+  get hotelsWithoutUpdateStorageDays(): number {
+    return this.config.hotelsWithoutUpdateStorageDays;
   }
 
   get userNotificationsMqClient(): RmqOptions {

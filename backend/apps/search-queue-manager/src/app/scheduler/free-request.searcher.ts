@@ -1,7 +1,7 @@
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { from } from 'rxjs';
 import { SearchRequestRepository } from '../../core/abstract/search-request.repository';
-import { flatMap } from 'rxjs/operators';
+import { mergeMap } from 'rxjs/operators';
 import { CollectingScenarioSender } from '../../core/abstract/collecting-scenario.sender';
 import { Injectable } from '@nestjs/common';
 import { logger } from '../../logger';
@@ -22,7 +22,7 @@ export class FreeRequestSearcher {
     logger.debug(`Triggering job [find-free-search-requests]`);
     const now = new Date();
     from(this.searchRequestRepository.findFree(now)).pipe(
-      flatMap(v => v),
+      mergeMap(v => v),
     ).subscribe(async (searchRequest) => {
       const now = new Date();
       const blocked = searchRequest.scheduleNextSearch(now);

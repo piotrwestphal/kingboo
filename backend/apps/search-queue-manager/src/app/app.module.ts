@@ -27,10 +27,11 @@ import { DifferenceFinder } from './calculate-cycle/difference.finder';
 import { CyclicSearchController } from './cyclic-search.controller';
 import { DifferenceResolver } from './calculate-cycle/difference.resolver';
 import { CyclicSearchMaintainer } from './scheduler/cyclic-search.maintainer';
+import { logger } from '../logger';
 
 @Module({
   imports: [
-    ConfigModule.register(getEnvironments(), { configClass: AppConfigService }),
+    ConfigModule.register(getEnvironments(), { configClass: AppConfigService, logger }),
     DbModule,
     MqModule,
     ScheduleModule.forRoot(),
@@ -80,11 +81,16 @@ import { CyclicSearchMaintainer } from './scheduler/cyclic-search.maintainer';
         cyclicSearchRepository: CyclicSearchRepository,
         searchRequestRepository: SearchRequestRepository,
         searchRequestService: SearchRequestService,
+        userNotificationSender: UserNotificationSender,
       ) => {
         const createSearchRequestMapper = new CreateSearchRequestMapper();
         const cycleStartFinder = new CycleStartFinder();
         const differenceFinder = new DifferenceFinder();
-        const differenceResolver = new DifferenceResolver(searchRequestRepository, searchRequestService);
+        const differenceResolver = new DifferenceResolver(
+          searchRequestRepository,
+          searchRequestService,
+          userNotificationSender,
+        );
         return new CycleCalculator(
           createSearchRequestMapper,
           cycleStartFinder,
@@ -95,7 +101,7 @@ import { CyclicSearchMaintainer } from './scheduler/cyclic-search.maintainer';
           searchRequestService,
         );
       },
-      inject: [CyclicSearchRepository, SearchRequestRepository, SearchRequestService],
+      inject: [CyclicSearchRepository, SearchRequestRepository, SearchRequestService, UserNotificationSender],
     },
   ],
   controllers: [

@@ -10,8 +10,8 @@ export class ScrapActivityDocumentMapper {
                   }: ScrapActivityDocument): ScrapActivity {
     return ScrapActivity.create({
       searchId,
-      scrapStartedAt: new Date(scrapStartedAt),
-      scrapFinishedAt: new Date(scrapFinishedAt),
+      scrapStartedAt: scrapStartedAt ? new Date(scrapStartedAt): null,
+      scrapFinishedAt: scrapFinishedAt ? new Date(scrapFinishedAt) : null,
     })
   }
 

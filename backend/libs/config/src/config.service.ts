@@ -5,12 +5,17 @@ import { RmqOptions } from '@nestjs/microservices';
 import { buildRmqOptions } from '@kb/rabbit';
 import { commonConfigValidationSchemaMap } from '@kb/config/validation.schema';
 import { CommonConfig } from '@kb/config/model/common-config';
+import { CommonLoggerService } from '@kb/logger';
 
 export abstract class ConfigService<T extends CommonConfig> {
 
   readonly config: T;
+  readonly logger: CommonLoggerService;
 
-  protected constructor(config: T, schemaMap: SchemaMap<T>) {
+  protected constructor(config: T,
+                        schemaMap: SchemaMap<T>,
+                        logger: CommonLoggerService) {
+    this.logger = logger;
     const concatSchemaMap = {
       ...commonConfigValidationSchemaMap,
       ...schemaMap,
@@ -37,6 +42,7 @@ export abstract class ConfigService<T extends CommonConfig> {
   protected validate(schemaMap: SchemaMap, value: T): T {
     const { error, value: validated } = Joi.object<CommonConfig>(schemaMap).validate(value);
     if (error) {
+      this.logger.error(`Config validation error: ${error.message}`);
       throw new Error(`Config validation error: ${error.message}`);
     }
     return validated;
