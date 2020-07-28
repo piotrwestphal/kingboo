@@ -37,7 +37,7 @@ export class MongoHotelRepository extends HotelRepository {
     const offset = new Date(now.valueOf() - days * this.DAY); // x days ago
     return this.model.find({
       updatedAt: { $lte: offset },
-    }).limit(500)
+    }).limit(1000)
       .map(docs => docs.map(({ searchId, hotelId }) => ({
         searchId, hotelId
       })))
