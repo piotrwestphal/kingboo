@@ -1,6 +1,6 @@
 import { transports } from 'winston';
 import HumioTransport from 'humio-winston';
-import { CustomLoggerService } from './custom-logger.service';
+import { CommonLoggerService } from './common-logger.service';
 import { LoggerConfig } from './logger.config';
 import * as Transport from 'winston-transport';
 
@@ -26,7 +26,7 @@ export const createLogger = ({
     }) as unknown;
     additionalTransports.push(humioTransport as Transport);
   }
-  return new CustomLoggerService({
+  return new CommonLoggerService({
     appLabel,
     logLevel,
     additionalTransports,

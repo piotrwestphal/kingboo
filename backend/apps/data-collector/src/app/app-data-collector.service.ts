@@ -20,7 +20,7 @@ export class AppDataCollectorService extends DataCollectorService {
     super();
   }
 
-  // TODO: clean this mess
+  // TODO: clean up this mess
   async collectData(searchId: string,
                     updateFrequencyMinutes: number,
                     collectHotelsScenario: CollectHotelsScenario): Promise<void> {

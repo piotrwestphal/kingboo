@@ -1,5 +1,3 @@
-export * from './rabbit.module';
-export * from './rabbit.client';
 export { RabbitOptions } from './model/rabbit-options';
 export { RabbitQueueDefinition } from './model/rabbit-queue-definition';
 export { RabbitQueueOptions } from './model/rabbit-queue-options';

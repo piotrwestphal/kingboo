@@ -14,10 +14,11 @@ import { logger } from '../logger';
 import { ScheduleModule } from '@nestjs/schedule';
 import { ObsoleteResultsSearcher } from './scheduler/obsolete-results.searcher';
 import { HotelsCollector } from './hotels.collector';
+import { OldScrapActivityRemover } from './scheduler/old-scrap-activity.remover';
 
 @Module({
   imports: [
-    ConfigModule.register(getEnvironments(), { configClass: AppConfigService }),
+    ConfigModule.register(getEnvironments(), { configClass: AppConfigService, logger }),
     DbModule,
     MqModule,
     ScrapModule,
@@ -25,6 +26,7 @@ import { HotelsCollector } from './hotels.collector';
   ],
   providers: [
     ObsoleteResultsSearcher,
+    OldScrapActivityRemover,
     {
       provide: FileManager,
       useFactory: () => new FileManager(logger),

@@ -11,6 +11,7 @@ export class ObsoleteRequestSearcher {
   ) {
   }
 
+  // TODO: notify about changes
   @Cron(CronExpression.EVERY_5_MINUTES, {
     name: 'find-obsolete-search-requests',
   })

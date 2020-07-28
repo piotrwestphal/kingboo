@@ -5,7 +5,8 @@ export const prodConfig = (env: NodeJS.ProcessEnv): AppConfig =>
     nodeEnv: env.NODE_ENV as 'prod',
     port: env.PORT ? parseInt(env.PORT, 10) : 8080,
     corsOrigins: env.CORS_ORIGINS,
-    rawSearchResultStorageDays: env.RAW_SEARCH_RESULT_STORAGE_DAYS ? parseInt(env.RAW_SEARCH_RESULT_LIMITATION_DAYS, 10) : 30,
+    rawSearchResultStorageDays: env.RAW_SEARCH_RESULT_STORAGE_DAYS ? parseInt(env.RAW_SEARCH_RESULT_STORAGE_DAYS, 10) : 30,
+    scrapActivitiesWithoutUpdateStorageDays: env.SCRAP_ACTIVITY_WITHOUT_UPDATE_STORAGE_DAYS ? parseInt(env.SCRAP_ACTIVITY_WITHOUT_UPDATE_STORAGE_DAYS, 10) : 7,
     saveRawResultAsJson: env.SAVE_RAW_SEARCH_RESULT_AS_JSON === 'true',
     takeScreenshotOnError: env.TAKE_SCREENSHOT_ON_ERROR === 'true',
     puppeteer: {
