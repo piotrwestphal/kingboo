@@ -13,10 +13,10 @@ export class ObsoleteRequestSearcher {
 
   // TODO: notify about changes
   @Cron(CronExpression.EVERY_5_MINUTES, {
-    name: 'find-obsolete-search-requests',
+    name: 'find-obsolete-cyclic-search-requests',
   })
-  async findObsoleteSearchRequests() {
-    logger.debug(`Triggering job [find-obsolete-search-requests]`);
+  async findObsoleteCyclicSearchRequests() {
+    logger.debug(`Triggering job [find-obsolete-cyclic-search-requests]`);
     const now = new Date();
     const found = await this.searchRequestRepository.findObsoleteCyclicRequests(now);
     if (found.length) {
