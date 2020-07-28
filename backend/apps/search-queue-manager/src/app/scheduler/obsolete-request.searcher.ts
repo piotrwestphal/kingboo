@@ -2,16 +2,17 @@ import { SearchRequestRepository } from '../../core/abstract/search-request.repo
 import { Injectable } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { logger } from '../../logger';
+import { UserNotificationSender } from '../../core/abstract/user-notification.sender';
 
 @Injectable()
 export class ObsoleteRequestSearcher {
 
   constructor(
     private readonly searchRequestRepository: SearchRequestRepository,
+    private readonly userNotificationSender: UserNotificationSender,
   ) {
   }
 
-  // TODO: notify about changes
   @Cron(CronExpression.EVERY_5_MINUTES, {
     name: 'find-obsolete-cyclic-search-requests',
   })
@@ -22,6 +23,7 @@ export class ObsoleteRequestSearcher {
     if (found.length) {
       const searchIds = found.map(v => v.searchId);
       const deletedCount = await this.searchRequestRepository.deleteMany(searchIds);
+      searchIds.map(v => this.userNotificationSender.notifyAboutDeletedCyclicSearchRequest(v));
       logger.info(`[${deletedCount}] cyclic search requests with ids [${searchIds}] were deleted due to obsolescence`);
     }
   }
