@@ -1,13 +1,13 @@
 import * as fs from 'fs';
 import { TimeHelper } from '@kb/util/time.helper';
-import { CustomLoggerService } from '@kb/logger';
+import { CommonLoggerService } from '@kb/logger';
 
 export class FileManager {
 
   private readonly RESULTS_FOLDER_PATH = 'output';
 
   constructor(
-    private readonly logger: CustomLoggerService,
+    private readonly logger: CommonLoggerService,
   ) {
   }
 
@@ -15,6 +15,7 @@ export class FileManager {
     return this.RESULTS_FOLDER_PATH;
   }
 
+  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   public async saveDataAsJSON(data: any, formattedName: string): Promise<string> {
     const now = new Date();
     const baseDir = `${this.RESULTS_FOLDER_PATH}/${TimeHelper.getFormattedDirectoryShortDate(now)}`;

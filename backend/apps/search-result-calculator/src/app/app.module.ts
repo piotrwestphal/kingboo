@@ -20,7 +20,7 @@ import { UserNotificationSender } from '../core/abstract/user-notification.sende
 
 @Module({
   imports: [
-    ConfigModule.register(getEnvironments(), { configClass: AppConfigService }),
+    ConfigModule.register(getEnvironments(), { configClass: AppConfigService, logger }),
     DbModule,
     MqModule,
     ProcessingModule,

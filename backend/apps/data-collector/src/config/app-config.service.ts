@@ -6,11 +6,13 @@ import { appConfigValidationSchemaMap } from './validation.schema';
 import { LaunchOptions } from 'puppeteer';
 import { EmulatorOptions, FirestoreConfigService } from '@kb/firestore';
 import { MongoConfigService } from '@kb/mongo';
+import { CommonLoggerService } from '@kb/logger';
 
 export class AppConfigService extends ConfigService<AppConfig> implements FirestoreConfigService, MongoConfigService {
 
-  constructor(appConfig: AppConfig) {
-    super(appConfig, appConfigValidationSchemaMap);
+  constructor(appConfig: AppConfig,
+              logger: CommonLoggerService) {
+    super(appConfig, appConfigValidationSchemaMap, logger);
   }
 
   get projectId(): string {

@@ -1,11 +1,11 @@
 import { ArgumentsHost, Catch, ExceptionFilter } from '@nestjs/common';
-import { CustomLoggerService } from '@kb/logger';
+import { CommonLoggerService } from '@kb/logger';
 
 @Catch()
 export class GlobalExceptionFilter implements ExceptionFilter {
 
   constructor(
-    private readonly logger: CustomLoggerService,
+    private readonly logger: CommonLoggerService,
   ) {
   }
 

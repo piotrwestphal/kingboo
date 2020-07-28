@@ -18,7 +18,7 @@ import { OldScrapActivityRemover } from './scheduler/old-scrap-activity.remover'
 
 @Module({
   imports: [
-    ConfigModule.register(getEnvironments(), { configClass: AppConfigService }),
+    ConfigModule.register(getEnvironments(), { configClass: AppConfigService, logger }),
     DbModule,
     MqModule,
     ScrapModule,

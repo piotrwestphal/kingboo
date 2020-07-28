@@ -27,10 +27,11 @@ import { DifferenceFinder } from './calculate-cycle/difference.finder';
 import { CyclicSearchController } from './cyclic-search.controller';
 import { DifferenceResolver } from './calculate-cycle/difference.resolver';
 import { CyclicSearchMaintainer } from './scheduler/cyclic-search.maintainer';
+import { logger } from '../logger';
 
 @Module({
   imports: [
-    ConfigModule.register(getEnvironments(), { configClass: AppConfigService }),
+    ConfigModule.register(getEnvironments(), { configClass: AppConfigService, logger }),
     DbModule,
     MqModule,
     ScheduleModule.forRoot(),

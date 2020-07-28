@@ -9,7 +9,7 @@ interface LoggerOptions {
   readonly additionalTransports: Transport[];
 }
 
-export class CustomLoggerService implements LoggerService {
+export class CommonLoggerService implements LoggerService {
 
   private readonly logger: Winston.Logger;
 
