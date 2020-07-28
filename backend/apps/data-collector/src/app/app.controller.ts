@@ -12,6 +12,6 @@ export class AppController {
   @Post()
   start(@Body() req: CollectHotelsScenario): void {
     logger.info('Starting scraping...');
-    this.dataCollectorService.collectData('test', 1, req);
+    this.dataCollectorService.collectData('test', 1, req, Date.now());
   }
 }
