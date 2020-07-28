@@ -81,11 +81,16 @@ import { logger } from '../logger';
         cyclicSearchRepository: CyclicSearchRepository,
         searchRequestRepository: SearchRequestRepository,
         searchRequestService: SearchRequestService,
+        userNotificationSender: UserNotificationSender,
       ) => {
         const createSearchRequestMapper = new CreateSearchRequestMapper();
         const cycleStartFinder = new CycleStartFinder();
         const differenceFinder = new DifferenceFinder();
-        const differenceResolver = new DifferenceResolver(searchRequestRepository, searchRequestService);
+        const differenceResolver = new DifferenceResolver(
+          searchRequestRepository,
+          searchRequestService,
+          userNotificationSender,
+        );
         return new CycleCalculator(
           createSearchRequestMapper,
           cycleStartFinder,
@@ -96,7 +101,7 @@ import { logger } from '../logger';
           searchRequestService,
         );
       },
-      inject: [CyclicSearchRepository, SearchRequestRepository, SearchRequestService],
+      inject: [CyclicSearchRepository, SearchRequestRepository, SearchRequestService, UserNotificationSender],
     },
   ],
   controllers: [

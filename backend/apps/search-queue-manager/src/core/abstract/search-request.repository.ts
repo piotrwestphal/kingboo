@@ -3,6 +3,7 @@ import { SearchRequestType } from '../model/SearchRequestType';
 
 export abstract class SearchRequestRepository {
   abstract findBySearchId(searchId: string): Promise<SearchRequest>;
+  abstract findAll(): Promise<SearchRequest[]>
   abstract findAllWithSearchIds(searchIds: string[]): Promise<SearchRequest[]>
   abstract findAllWithType(type: SearchRequestType): Promise<SearchRequest[]>
   abstract create(searchRequest: SearchRequest): Promise<SearchRequest>;

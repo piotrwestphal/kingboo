@@ -3,12 +3,14 @@ import { SearchRequestRepository } from '../../core/abstract/search-request.repo
 import { logger } from '../../logger';
 import { ConflictException } from '@nestjs/common';
 import { SearchRequestService } from '../search-request/search-request.service';
+import { UserNotificationSender } from '../../core/abstract/user-notification.sender';
 
 export class DifferenceResolver {
 
   constructor(
     private readonly searchRequestRepository: SearchRequestRepository,
     private readonly searchRequestService: SearchRequestService,
+    private readonly userNotificationsSender: UserNotificationSender,
   ) {
   }
 
@@ -33,6 +35,7 @@ export class DifferenceResolver {
     if (deletedCount) {
       logger.info(`[${deletedCount}] search requests were deleted`);
       logger.debug(`Deleted requests search ids:`, searchIds);
+      searchIds.map(v => this.userNotificationsSender.notifyAboutDeletedCyclicSearchRequest(v));
     }
   }
 
@@ -51,6 +54,7 @@ export class DifferenceResolver {
     }));
     const searchIds = created.filter(Boolean).map(v => v.searchId);
     logger.info(`[${searchIds.length}] of [${searchRequests.length}] search requests were created`);
+    searchIds.map(v => this.userNotificationsSender.notifyAboutCreatedCyclicSearchRequest(v));
     logger.debug(`Search ids of created search requests`, searchIds);
   }
 }

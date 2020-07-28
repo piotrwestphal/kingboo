@@ -21,6 +21,12 @@ export class MongoSearchRequestRepository extends SearchRequestRepository {
       : null;
   }
 
+  findAll(): Promise<SearchRequest[]> {
+    return this.model.find()
+      .map(docs => docs.map(doc => this.fromDoc(doc)))
+      .exec();
+  }
+
   findAllWithSearchIds(searchIds: string[]): Promise<SearchRequest[]> {
     return this.model.find({
       searchId: { $in: searchIds },

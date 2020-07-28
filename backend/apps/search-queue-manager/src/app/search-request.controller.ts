@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post } from '@nestjs/common';
 import { SearchRequest } from '../core/model/SearchRequest';
 import { SearchRequestService } from './search-request/search-request.service';
 import { UserCreateSearchRequest } from './search-request/user-create-search-request';
@@ -18,5 +18,10 @@ export class SearchRequestController {
   async createByUser(@Body() userCreateSearchRequest: UserCreateSearchRequest): Promise<SearchRequest> {
     const createSearchRequest = this.createSearchRequestMapper.fromUserCreateSearchRequest(userCreateSearchRequest);
     return this.searchRequestService.createUserSearchRequest('userId', createSearchRequest);
+  }
+
+  @Get()
+  async getAll(): Promise<SearchRequest[]> {
+    return this.searchRequestService.findAll();
   }
 }

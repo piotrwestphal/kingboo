@@ -2,7 +2,7 @@ import { UserNotificationSender } from '../core/abstract/user-notification.sende
 import { UserNotificationsMessagePattern } from '@kb/rabbit/message-pattern/UserNotificationsMessagePattern';
 import { UserNotificationMessage } from '@kb/model/mqmessage/user-notification.message';
 import { ClientProxy } from '@nestjs/microservices';
-import { UserData } from '@kb/model';
+import { MqMessage, UserData } from '@kb/model';
 
 export class RmqUserNotificationSender extends UserNotificationSender {
 
@@ -12,18 +12,18 @@ export class RmqUserNotificationSender extends UserNotificationSender {
     super();
   }
 
-  notifyAboutCreatedSearchRequest(userId: string, searchId: string): void {
-    this.client.emit<void, UserNotificationMessage<UserData>>(UserNotificationsMessagePattern.SEARCH_REQUEST_CREATED,
-      { data: {userId}, searchId, timestamp: Date.now() });
+  notifyAboutCreatedUserSearchRequest(userId: string, searchId: string): void {
+    this.client.emit<void, UserNotificationMessage<UserData>>(UserNotificationsMessagePattern.USER_SEARCH_REQUEST_CREATED,
+      { data: { userId }, searchId, timestamp: Date.now() });
   }
 
-  notifyAboutUpdatedSearchRequest(userId: string, searchId: string): void {
-    this.client.emit<void, UserNotificationMessage<UserData>>(UserNotificationsMessagePattern.SEARCH_REQUEST_UPDATED,
-      { data: {userId}, searchId, timestamp: Date.now() });
+  notifyAboutCreatedCyclicSearchRequest(searchId: string): void {
+    this.client.emit<void, MqMessage>(UserNotificationsMessagePattern.CYCLIC_SEARCH_REQUEST_CREATED,
+      { searchId, timestamp: Date.now() });
   }
 
-  notifyAboutDeletedSearchRequest(userId: string, searchId: string): void {
-    this.client.emit<void, UserNotificationMessage<UserData>>(UserNotificationsMessagePattern.SEARCH_REQUEST_DELETED,
-      { data: {userId}, searchId, timestamp: Date.now() });
+  notifyAboutDeletedCyclicSearchRequest(searchId: string): void {
+    this.client.emit<void, MqMessage>(UserNotificationsMessagePattern.CYCLIC_SEARCH_REQUEST_DELETED,
+      { searchId, timestamp: Date.now() });
   }
 }

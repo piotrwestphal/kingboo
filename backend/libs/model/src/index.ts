@@ -1,3 +1,4 @@
+export { MqMessage } from './mqmessage/mq-message';
 export { CollectHotelsScenarioMessage } from './mqmessage/collect-hotels-scenario.message';
 export { CollectedHotelsMessage } from './mqmessage/collected-hotels.message';
 export { SearchPlaceCollectionCompletedMessage } from './mqmessage/search-place-collection-completed.message';

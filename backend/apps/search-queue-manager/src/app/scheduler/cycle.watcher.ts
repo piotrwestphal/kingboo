@@ -3,7 +3,7 @@ import { CyclicSearchRepository } from '../../core/abstract/cyclic-search.reposi
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { logger } from '../../logger';
 import { from } from 'rxjs';
-import { flatMap } from 'rxjs/operators';
+import { mergeMap } from 'rxjs/operators';
 import { Injectable } from '@nestjs/common';
 
 @Injectable()
@@ -20,7 +20,7 @@ export class CycleWatcher {
   async calculateNextCycles() {
     logger.debug(`Triggering job [calculate-next-cycles]`);
     from(this.cyclicSearchRepository.findAll()).pipe(
-      flatMap(v => v),
+      mergeMap(v => v),
     ).subscribe(async (cyclicSearch) => {
       await this.cycleCalculator.calculate(cyclicSearch);
     });
