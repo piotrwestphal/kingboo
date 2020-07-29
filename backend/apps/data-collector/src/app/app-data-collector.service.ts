@@ -37,8 +37,8 @@ export class AppDataCollectorService extends DataCollectorService {
       saved.finish();
       const finished = await this.scrapActivityRepository.update(searchId, saved);
       this.userNotificationSender.notifyAboutHotelsCollectionCompleted(searchId, finished.scrapStartedAt, finished.scrapFinishedAt)
-      logger.info(`Collecting data finish. Scrap started at [${finished.scrapStartedAt}], ` +
-        `scrap finished at [${finished.scrapFinishedAt}].`);
+      logger.info(`Collecting data finish. Scrap started at [${finished.scrapStartedAt.toISOString()}], ` +
+        `scrap finished at [${finished.scrapFinishedAt.toISOString()}].`);
     }
   }
 
