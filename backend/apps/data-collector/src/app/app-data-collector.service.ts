@@ -31,14 +31,14 @@ export class AppDataCollectorService extends DataCollectorService {
     } else {
       const scrapActivity = new ScrapActivity(searchId);
       scrapActivity.start();
-      const saved = await this.scrapActivityRepository.createOrUpdate(searchId, scrapActivity);
+      const saved = await this.scrapActivityRepository.update(searchId, scrapActivity);
       this.userNotificationSender.notifyAboutHotelsCollectionStarted(searchId, saved.scrapStartedAt, saved.scrapFinishedAt)
       await this.hotelsCollector.collectHotels(searchId, collectHotelsScenario);
       saved.finish();
       const finished = await this.scrapActivityRepository.update(searchId, saved);
       this.userNotificationSender.notifyAboutHotelsCollectionCompleted(searchId, finished.scrapStartedAt, finished.scrapFinishedAt)
-      logger.info(`Collecting data finish. Scrap started at [${finished.scrapStartedAt}], ` +
-        `scrap finished at [${finished.scrapFinishedAt}].`);
+      logger.info(`Collecting data finish. Scrap started at [${finished.scrapStartedAt.toISOString()}], ` +
+        `scrap finished at [${finished.scrapFinishedAt.toISOString()}].`);
     }
   }
 
