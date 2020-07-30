@@ -31,7 +31,7 @@ export class AppDataCollectorService extends DataCollectorService {
     } else {
       const scrapActivity = new ScrapActivity(searchId);
       scrapActivity.start();
-      const saved = await this.scrapActivityRepository.createOrUpdate(searchId, scrapActivity);
+      const saved = await this.scrapActivityRepository.update(searchId, scrapActivity);
       this.userNotificationSender.notifyAboutHotelsCollectionStarted(searchId, saved.scrapStartedAt, saved.scrapFinishedAt)
       await this.hotelsCollector.collectHotels(searchId, collectHotelsScenario);
       saved.finish();

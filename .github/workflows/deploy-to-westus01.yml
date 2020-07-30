@@ -61,4 +61,5 @@ jobs:
             echo "MONGO_ADDRESS=$MONGO_ADDRESS" >> westus01.env
             docker-compose pull
             docker-compose up -d
+            docker image prune -f
           EOF
