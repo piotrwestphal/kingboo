@@ -5,8 +5,6 @@ services:
       - prod.env
     volumes:
       - ./compose-output:/usr/src/app/dist/apps/search-queue-manager/output
-    ports:
-      - 38081:8080
 
   data-collector:
     env_file:

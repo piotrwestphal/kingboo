@@ -31,6 +31,8 @@ services:
       context: ./backend
       dockerfile: kb-search-result-calculator.Dockerfile
     image: kb-search-result-calculator
+    ports:
+      - 38082:8080
 
 #  webapp:
 #    build:
