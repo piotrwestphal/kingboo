@@ -1,12 +1,14 @@
-import { Controller, Get } from '@nestjs/common';
-import { HotelService } from './hotel.service';
+import { Controller, Get, Query } from '@nestjs/common';
+import { AppService } from './app.service';
+import { HotelDto } from '../core/interface/hotel.dto';
 
-@Controller()
+@Controller('api/v1/hotels')
 export class AppController {
-  constructor(private readonly appService: HotelService) {}
+  constructor(private readonly appService: AppService) {
+  }
 
   @Get()
-  getHello(): string {
-    return null;
+  getHello(@Query('search_id') searchId: string): Promise<HotelDto[]> {
+    return this.appService.getHotels(searchId);
   }
 }

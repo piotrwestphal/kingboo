@@ -17,6 +17,7 @@ import { logger } from '../logger';
 import { ScheduleModule } from '@nestjs/schedule';
 import { OldHotelsRemover } from './scheduler/old-hotels.remover';
 import { UserNotificationSender } from '../core/abstract/user-notification.sender';
+import { AppService } from './app.service';
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { UserNotificationSender } from '../core/abstract/user-notification.sende
   ],
   providers: [
     OldHotelsRemover,
+    AppService,
     {
       provide: HotelService,
       useFactory: (configService: AppConfigService,

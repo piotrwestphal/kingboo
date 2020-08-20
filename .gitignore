@@ -16,10 +16,7 @@ npm-debug.log*
 # IDEs and editors
 /.idea
 
-/scraping-output
-!/scraping-output/.gitkeep
-
-/compose-output
+/compose-output/
 !/compose-output/.gitkeep
 
 prod.env

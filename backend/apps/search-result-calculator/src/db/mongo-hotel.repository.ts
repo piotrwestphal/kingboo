@@ -4,6 +4,7 @@ import { Model } from 'mongoose';
 import { MongoHotelDocumentMapper } from './mongo-hotel-document.mapper';
 import { HotelDocument } from './interface/hotel.document';
 import { HotelIdentifier } from '../core/interface/hotel-identifier';
+import { HotelDto } from '../core/interface/hotel.dto';
 
 export class MongoHotelRepository extends HotelRepository {
 
@@ -14,6 +15,29 @@ export class MongoHotelRepository extends HotelRepository {
     private readonly model: Model<HotelDocument>,
   ) {
     super();
+  }
+
+  findBySearchId(searchId: string): Promise<HotelDto[]> {
+    return this.model.find({ searchId })
+      .select({
+        searchId: 1,
+        hotelId: 1,
+        name: 1,
+        distanceFromCenterMeters: 1,
+        districtName: 1,
+        coords: 1,
+        hotelLink: 1,
+        propertyType: 1,
+        starRating: 1,
+        latestValues: 1,
+        calculatedValues: 1,
+      } as Record<keyof HotelDto, 1>)
+      .limit(50)
+      .sort({
+        'calculatedValues.priceRate': -1,
+        'latestValues.price': 1
+      })
+      .exec();
   }
 
   async findAllBySearchIdAndHotelId(searchId: string, hotelIds: string[]): Promise<Map<string, Hotel>> {
