@@ -18,10 +18,10 @@ handlers:
     static_files: public/static/media/\1
     upload: public/static/media/(.*)
 
-  - url: /(.*\.(json|ico))$
+  - url: /(.*\.(json|ico|png))$
     secure: always
     static_files: public/\1
-    upload: public/.*\.(json|ico)$
+    upload: public/.*\.(json|ico|png)$
 
   - url: /
     secure: always
