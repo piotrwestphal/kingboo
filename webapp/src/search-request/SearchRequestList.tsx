@@ -28,7 +28,7 @@ const mapper = (dto: SearchRequestDto[]): SearchRequest[] => dto.map(d => ({
 
 export default function SearchRequestList() {
   const classes = useStyles();
-
+  console.log({a: process.env.REACT_APP_SEARCH_QUEUE_MANAGER_ADDRESS, b: process.env.REACT_APP_SEARCH_RESULT_CALCULATOR_ADDRESS})
   const [searchRequests, loading, hasError] = useFetch<SearchRequestDto[], SearchRequest[]>(`${process.env.REACT_APP_SEARCH_QUEUE_MANAGER_ADDRESS}/api/v1/search-requests`, mapper)
   console.log({ searchRequests });
 

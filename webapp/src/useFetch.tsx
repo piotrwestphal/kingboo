@@ -8,6 +8,7 @@ export function useFetch<T, K>(url: string, mapper: (t: T) => K, opts?: RequestI
   const [hasError, setHasError] = useState(false)
   useEffect(() => {
     setLoading(true)
+    console.log({url})
     from(fetch(url, opts)).pipe(
       switchMap((res) => res.json() as Promise<T>),
       map(mapper),
