@@ -22,6 +22,6 @@ export function useFetch<T, K>(url: string, mapper: (t: T) => K, opts?: RequestI
       setResponse(v);
       setLoading(false)
     })
-  }, [opts, url])
+  }, [opts, url, mapper, setResponse])
   return [response, loading, hasError]
 }

@@ -35,14 +35,12 @@ jobs:
       - name: Build package ready for gcp
         working-directory: ./webapp
         env:
-#          ENV: 'production'
-#          NODE_ENV: 'production'
+          NODE_ENV: 'production'
           REACT_APP_SEARCH_QUEUE_MANAGER_ADDRESS: ''
           REACT_APP_SEARCH_RESULT_CALCULATOR_ADDRESS: ''
         run: |
-          echo $ENV
-          echo $NODE_ENV
-          echo $CI
+          echo "NODE_ENV $NODE_ENV"
+          echo "CI $CI"
           npm run build
           mv build/* ../cloud/gcp/public
 

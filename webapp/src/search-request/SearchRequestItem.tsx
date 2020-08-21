@@ -1,15 +1,14 @@
 import React from 'react';
-import { Box, createStyles, Theme } from '@material-ui/core';
+import { Box } from '@material-ui/core';
 import { SearchRequest } from './search-request';
 import './SearchRequestItem.css';
-import { makeStyles } from '@material-ui/core/styles';
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({}),
-);
+// const useStyles = makeStyles((theme: Theme) =>
+//   createStyles({}),
+// );
 
 export default function SearchRequestItem({ searchRequest }: { searchRequest: SearchRequest }) {
-  const classes = useStyles();
+  // const classes = useStyles();
   return (
     <>
       <Box component='p'>
