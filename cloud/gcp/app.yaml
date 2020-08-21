@@ -1,4 +1,5 @@
 # TODO: change CORS_ORIGINS env
+
 runtime: nodejs12
 default_expiration: "10m"
 handlers:
