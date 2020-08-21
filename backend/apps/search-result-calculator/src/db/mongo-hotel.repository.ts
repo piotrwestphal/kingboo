@@ -4,10 +4,10 @@ import { Model } from 'mongoose';
 import { MongoHotelDocumentMapper } from './mongo-hotel-document.mapper';
 import { HotelDocument } from './interface/hotel.document';
 import { HotelIdentifier } from '../core/interface/hotel-identifier';
-import { HotelDto } from '../core/interface/hotel.dto';
 import { TopHotelsDto } from '../core/interface/top-hotels.dto';
+import { SimpleHotelDto } from '../core/interface/simple-hotel.dto';
 
-const selectHotelDto: Record<keyof HotelDto, 1> = {
+const selectHotelDto: Record<keyof SimpleHotelDto, 1> = {
   searchId: 1,
   hotelId: 1,
   name: 1,

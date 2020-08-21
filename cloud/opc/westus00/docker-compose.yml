@@ -8,7 +8,7 @@ services:
       - westus00.env
       - ./../opc.env
     ports:
-      - 8080:8080
+      - 8081:8080
 
   search-result-calculator:
     image: piotrwest/kb-search-result-calculator:latest
@@ -17,3 +17,5 @@ services:
       - ./../opc.env
     volumes:
       - ./../../../compose-output:/usr/src/app/dist/apps/search-result-calculator/output
+    ports:
+      - 8082:8080

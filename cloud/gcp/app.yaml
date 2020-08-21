@@ -1,0 +1,30 @@
+# TODO: change CORS_ORIGINS env
+runtime: nodejs12
+default_expiration: "10m"
+handlers:
+  - url: /favicon\.ico
+    secure: always
+    redirect_http_response_code: 301
+    static_files: public/favicon.ico
+    upload: build/favicon\.ico
+
+  - url: /
+    secure: always
+    redirect_http_response_code: 301
+    static_files: build/index.html
+    upload: build/index.html
+
+  - url: /build
+    secure: always
+    redirect_http_response_code: 301
+    static_dir: build
+
+  - url: /socket\.io/.*
+    secure: always
+    script: auto
+
+  - url: /.*
+    secure: always
+    redirect_http_response_code: 301
+    script: auto
+

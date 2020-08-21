@@ -1,0 +1,4 @@
+#Before you deploy your dispatch file, you must ensure that all the services defined in that file have already been deployed to App Engine.
+dispatch:
+  - url: "api/v1/user-service/*"
+    service: user-service

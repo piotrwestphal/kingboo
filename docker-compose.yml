@@ -34,10 +34,13 @@ services:
     ports:
       - 38082:8080
 
-#  webapp:
-#    build:
-#      context: ./webapp
-#      dockerfile: Dockerfile
-#    ports:
-#      - 30000:80
-#    image: kb-webapp
+  webapp:
+    build:
+      context: ./webapp
+      dockerfile: Dockerfile
+    image: kb-webapp
+    ports:
+      - 30000:80
+    environment:
+      REACT_APP_SEARCH_QUEUE_MANAGER_ADDRESS: 'http://localhost:38081'
+      REACT_APP_SEARCH_RESULT_CALCULATOR_ADDRESS: 'http://localhost:38082'
