@@ -3,29 +3,30 @@
 runtime: nodejs12
 default_expiration: "10m"
 handlers:
-  - url: /favicon\.ico
+  # Serve all static files with url ending with a file extension
+  - url: /(.*\..+)$
     secure: always
+    static_files: public/\1
     redirect_http_response_code: 301
-    static_files: public/favicon.ico
-    upload: public/favicon\.ico
-
-  - url: /
-    secure: always
-    redirect_http_response_code: 301
-    static_files: public/index.html
-    upload: public/index.html
-
-  - url: /public
-    secure: always
-    redirect_http_response_code: 301
-    static_dir: public
-
-  - url: /socket\.io/.*
-    secure: always
-    script: auto
-
+    upload: public/(.*\..+)$
+  # Catch all handler to index.html
   - url: /.*
     secure: always
+    static_files: public/index.html
     redirect_http_response_code: 301
-    script: auto
+    upload: public/index.html
+
+#  - url: /public
+#    secure: always
+#    redirect_http_response_code: 301
+#    static_dir: public
+#
+#  - url: /socket\.io/.*
+#    secure: always
+#    script: auto
+#
+#  - url: /.*
+#    secure: always
+#    redirect_http_response_code: 301
+#    script: auto
 
