@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
+import { TopHotelsController } from './top-hotels.controller';
 import { HotelService } from './hotel.service';
 import { DbModule } from '../db/db.module';
 import { MqModule } from '../mq/mq.module';
@@ -17,7 +17,7 @@ import { logger } from '../logger';
 import { ScheduleModule } from '@nestjs/schedule';
 import { OldHotelsRemover } from './scheduler/old-hotels.remover';
 import { UserNotificationSender } from '../core/abstract/user-notification.sender';
-import { AppService } from './app.service';
+import { TopHotelsService } from './top-hotels.service';
 
 @Module({
   imports: [
@@ -28,12 +28,12 @@ import { AppService } from './app.service';
     ScheduleModule.forRoot(),
   ],
   controllers: [
-    AppController,
+    TopHotelsController,
     DataToProcessConsumer,
   ],
   providers: [
     OldHotelsRemover,
-    AppService,
+    TopHotelsService,
     {
       provide: HotelService,
       useFactory: (configService: AppConfigService,

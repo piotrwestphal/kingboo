@@ -5,6 +5,21 @@ import { MongoHotelDocumentMapper } from './mongo-hotel-document.mapper';
 import { HotelDocument } from './interface/hotel.document';
 import { HotelIdentifier } from '../core/interface/hotel-identifier';
 import { HotelDto } from '../core/interface/hotel.dto';
+import { TopHotelsDto } from '../core/interface/top-hotels.dto';
+
+const selectHotelDto: Record<keyof HotelDto, 1> = {
+  searchId: 1,
+  hotelId: 1,
+  name: 1,
+  distanceFromCenterMeters: 1,
+  districtName: 1,
+  coords: 1,
+  hotelLink: 1,
+  propertyType: 1,
+  starRating: 1,
+  latestValues: 1,
+  calculatedValues: 1,
+}
 
 export class MongoHotelRepository extends HotelRepository {
 
@@ -15,29 +30,6 @@ export class MongoHotelRepository extends HotelRepository {
     private readonly model: Model<HotelDocument>,
   ) {
     super();
-  }
-
-  findBySearchId(searchId: string): Promise<HotelDto[]> {
-    return this.model.find({ searchId })
-      .select({
-        searchId: 1,
-        hotelId: 1,
-        name: 1,
-        distanceFromCenterMeters: 1,
-        districtName: 1,
-        coords: 1,
-        hotelLink: 1,
-        propertyType: 1,
-        starRating: 1,
-        latestValues: 1,
-        calculatedValues: 1,
-      } as Record<keyof HotelDto, 1>)
-      .limit(50)
-      .sort({
-        'calculatedValues.priceRate': -1,
-        'latestValues.price': 1
-      })
-      .exec();
   }
 
   async findAllBySearchIdAndHotelId(searchId: string, hotelIds: string[]): Promise<Map<string, Hotel>> {
@@ -89,6 +81,48 @@ export class MongoHotelRepository extends HotelRepository {
       this.model.deleteOne({ searchId, hotelId }).exec());
     const deleted = await Promise.all(pendingDeletions);
     return deleted.length;
+  }
+
+  async findTopHotelsBySearchId(searchId: string): Promise<TopHotelsDto> {
+    const pendingBestPriceRate = this.model.find({ searchId })
+      .select(selectHotelDto)
+      .limit(10)
+      .sort({
+        'calculatedValues.priceRate': -1,
+        'latestValues.price': 1
+      })
+      .exec();
+    const pendingCheapest = this.model.find({ searchId })
+      .select(selectHotelDto)
+      .limit(10)
+      .sort({
+        'latestValues.price': 1
+      })
+      .exec();
+    const pendingBestLocation = this.model.find({ searchId })
+      .select(selectHotelDto)
+      .limit(10)
+      .sort({
+        'distanceFromCenterMeters': 1,
+        'latestValues.price': 1
+      })
+      .exec();
+    const pendingBestRate = this.model.find({ searchId })
+      .select(selectHotelDto)
+      .limit(10)
+      .sort({
+        'latestValues.rate': -1,
+        'latestValues.secondaryRate': -1
+      })
+      .exec();
+    const [bestPriceRate, cheapest, bestLocation, bestRate] = await Promise.all(
+      [pendingBestPriceRate, pendingCheapest, pendingBestLocation, pendingBestRate])
+    return {
+      bestPriceRate,
+      cheapest,
+      bestLocation,
+      bestRate,
+    }
   }
 
   private fromDoc = (doc: HotelDocument) => this.mapper.toHotel(doc);
