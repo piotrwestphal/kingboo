@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { from, of } from 'rxjs';
+import { from, of, throwError } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
 
 export function useFetch<T, K>(url: string, mapper: (t: T) => K, opts?: RequestInit): [K, boolean, boolean] {
@@ -8,9 +8,16 @@ export function useFetch<T, K>(url: string, mapper: (t: T) => K, opts?: RequestI
   const [hasError, setHasError] = useState(false)
   useEffect(() => {
     setLoading(true)
-    console.log({url})
+    console.log({ url })
     from(fetch(url, opts)).pipe(
-      switchMap((res) => res.json() as Promise<T>),
+      switchMap((res) => {
+        console.log(res)
+        if (res) {
+          return res.json() as Promise<T>
+        } else {
+          return throwError('there is no payload')
+        }
+      }),
       map(mapper),
       catchError((err) => {
         console.error(err);
