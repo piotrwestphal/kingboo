@@ -62,7 +62,8 @@ export class SearchRequest {
 
   updateSearchPlaceIdentifier(searchPlaceIdentifier: string): SearchRequest {
     if (this.searchPlaceIdentifier) {
-      throw new InconsistencyException(`Search place identifier already exists`);
+      throw new InconsistencyException(`Search place identifier for searchId [${this.searchId}] already exists. ` +
+        `Incoming [${searchPlaceIdentifier}], existing [${this.searchPlaceIdentifier}]`);
     }
     this.searchPlaceIdentifier = searchPlaceIdentifier;
     return this;
