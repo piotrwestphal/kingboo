@@ -11,11 +11,10 @@ export function useFetch<T, K>(url: string, mapper: (t: T) => K, opts?: RequestI
     console.log({ url })
     from(fetch(url, opts)).pipe(
       switchMap((res) => {
-        console.log({res})
-        console.log('text: ', res.text())
-        if (res) {
+        if (res.ok) {
           return res.json() as Promise<T>
         } else {
+          console.log({res})
           return throwError('there is no payload')
         }
       }),
