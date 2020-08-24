@@ -1,0 +1,20 @@
+service: user-service
+runtime: nodejs12
+instance_class: F1
+env_variables:
+  NODE_ENV: prod
+  PORT: 8080
+  LOG_LEVEL: debug
+  APP_LABEL: US
+  CORS_ORIGINS: "__CORS_ORIGINS__"
+  LOG_COLLECTOR_TOKEN: "__LOG_COLLECTOR_TOKEN__"
+  MQ_ADDRESS: "__MQ_ADDRESS__"
+  MQ_USER_NOTIFICATIONS_QUEUE_NAME: user-notifications
+  SEARCH_REQUESTS_RESOURCE_ADDRESS: "__SEARCH_REQUESTS_RESOURCE_ADDRESS__"
+  TOP_HOTELS_RESOURCE_ADDRESS: "__TOP_HOTELS_RESOURCE_ADDRESS__"
+
+automatic_scaling:
+  min_instances: 0
+  max_instances: 1
+  target_cpu_utilization: 0.9
+  target_throughput_utilization: 0.9

@@ -3,10 +3,10 @@ on:
   push:
     branches:
 # TODO: change to master
-      - initial-webapp
+      - develop
     paths:
       - 'webapp/**'
-      - 'cloud/gcp/**'
+      - 'cloud/gcp/webapp/**'
       - '.github/workflows/deploy-webapp.yml'
 
 jobs:
@@ -30,17 +30,14 @@ jobs:
       - name: Install dependencies
         working-directory: ./webapp
         run: |
-          npm ci
+          npm ci --silent
 
       - name: Build package ready for gcp
         working-directory: ./webapp
         env:
           NODE_ENV: 'production'
-          REACT_APP_SEARCH_QUEUE_MANAGER_ADDRESS: ''
-          REACT_APP_SEARCH_RESULT_CALCULATOR_ADDRESS: ''
+          REACT_APP_USER_SERVICE_ADDRESS: ''
         run: |
-          echo "NODE_ENV $NODE_ENV"
-          echo "CI $CI"
           npm run build
           mv build/* ../cloud/gcp/webapp/public
 

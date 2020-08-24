@@ -8,7 +8,7 @@ export const prodConfig = (env: NodeJS.ProcessEnv): AppConfig =>
     mqConsumer: {
       address: env.MQ_ADDRESS,
       queueDefinition: {
-        queue: env.MQ_DATA_COLLECTION_NOTIFICATIONS_QUEUE_NAME,
+        queue: env.MQ_USER_NOTIFICATIONS_QUEUE_NAME,
       },
     },
     searchRequestsResourceAddress: env.SEARCH_REQUESTS_RESOURCE_ADDRESS,
