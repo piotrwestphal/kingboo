@@ -45,10 +45,10 @@ jobs:
           jq -n 'input | .dependencies |= input.dependencies' ../cloud/gcp/backend/user-service/package.json package.json > ../cloud/gcp/backend/user-service/temp-package.json
 
       - name: Replace target package.json with temp package.json
-          working-directory: ./cloud/gcp/backend/user-service
-          run: |
-            rm package.json
-            mv temp-package.json package.json
+        working-directory: ./cloud/gcp/backend/user-service
+        run: |
+          rm package.json
+          mv temp-package.json package.json
 
       - name: GCP authenticate as service account
         uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
