@@ -39,16 +39,16 @@ jobs:
           npm run build:us
           mv dist/* ../cloud/gcp/backend/user-service/dist
 
-      - name: Add dependencies to temp package.json
+      - name: Add dependencies to target package.json
         working-directory: ./backend
         run: |
-          jq -n 'input | .dependencies |= input.dependencies' ../cloud/gcp/backend/user-service/package.json package.json > ../cloud/gcp/backend/user-service/temp-package.json
+          jq -n 'input | .dependencies |= input.dependencies' ../cloud/gcp/backend/user-service/package.json package.json > ../cloud/gcp/backend/user-service/target-package.json
 
-      - name: Replace target package.json with temp package.json
+      - name: Replace incomplete package.json with target package.json
         working-directory: ./cloud/gcp/backend/user-service
         run: |
           rm package.json
-          mv temp-package.json package.json
+          mv target-package.json package.json
 
       - name: GCP authenticate as service account
         uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
