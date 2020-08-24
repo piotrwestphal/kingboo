@@ -61,11 +61,11 @@ jobs:
           sed -i 's#__MQ_ADDRESS__#'"$MQ_ADDRESS"'#' app.yaml
           sed -i 's#__SEARCH_REQUESTS_RESOURCE_ADDRESS__#'"$SEARCH_REQUESTS_RESOURCE_ADDRESS"'#' app.yaml
           sed -i 's#__TOP_HOTELS_RESOURCE_ADDRESS__#'"$TOP_HOTELS_RESOURCE_ADDRESS"'#' app.yaml
-          ll
+          ls -a
           cd dist
-          ll
+          ls -a
           cd apps
-          ll
+          ls -a
           gcloud config set project ${{ secrets.GCLOUD_PROJECT }}
           gcloud -q app deploy -v $GITHUB_SHA
 
