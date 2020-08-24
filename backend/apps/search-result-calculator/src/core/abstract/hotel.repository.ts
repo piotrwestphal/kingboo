@@ -1,6 +1,6 @@
 import { Hotel } from '../model/hotel';
 import { HotelIdentifier } from '../interface/hotel-identifier';
-import { TopHotelsDto } from '../interface/top-hotels.dto';
+import { TopHotels } from '../interface/top-hotels';
 
 export abstract class HotelRepository {
   abstract findAllBySearchIdAndHotelId(searchId: string, hotelIds: string[]): Promise<Map<string, Hotel>>;
@@ -13,5 +13,5 @@ export abstract class HotelRepository {
 
   abstract deleteMany(hotelsIdentifiers: HotelIdentifier[]): Promise<number>;
 
-  abstract findTopHotelsBySearchId(searchId: string): Promise<TopHotelsDto>;
+  abstract findTopHotelsBySearchId(searchId: string): Promise<TopHotels>;
 }

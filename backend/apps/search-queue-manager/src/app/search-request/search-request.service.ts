@@ -7,26 +7,30 @@ import { SearchRequestFactory } from './search-request.factory';
 import { CreateSearchRequest } from './create-search-request';
 import { logger } from '../../logger';
 import { SearchRequestType } from '../../core/model/SearchRequestType';
+import { SearchRequestMapper } from './search-request.mapper';
+import { SearchRequestDto } from '@kb/model/search-request.dto';
 
 export class SearchRequestService {
 
   constructor(
     private readonly collectingScenarioSender: CollectingScenarioSender,
     private readonly searchRequestFactory: SearchRequestFactory,
+    private readonly searchRequestMapper: SearchRequestMapper,
     private readonly searchRequestRepository: SearchRequestRepository,
     private readonly userNotificationsSender: UserNotificationSender,
   ) {
   }
 
-  findAll(): Promise<SearchRequest[]> {
-    return this.searchRequestRepository.findAll();
+  async findAll(): Promise<SearchRequestDto[]> {
+    const found = await this.searchRequestRepository.findAll();
+    return found.map((sr) => this.searchRequestMapper.toDto(sr))
   }
 
-  async createUserSearchRequest(userId: string, createSearchRequest: CreateSearchRequest): Promise<SearchRequest> {
+  async createUserSearchRequest(userId: string, createSearchRequest: CreateSearchRequest): Promise<SearchRequestDto> {
     const searchRequest = this.searchRequestFactory.createNew(SearchRequestType.USER, createSearchRequest);
     const saved = await this.saveSearchRequest(searchRequest);
     this.userNotificationsSender.notifyAboutCreatedUserSearchRequest(userId, saved.searchId);
-    return saved;
+    return this.searchRequestMapper.toDto(saved);
   }
 
   buildCyclicSearchRequest(createSearchRequest: CreateSearchRequest): SearchRequest {

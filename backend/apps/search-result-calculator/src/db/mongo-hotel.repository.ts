@@ -4,10 +4,10 @@ import { Model } from 'mongoose';
 import { MongoHotelDocumentMapper } from './mongo-hotel-document.mapper';
 import { HotelDocument } from './interface/hotel.document';
 import { HotelIdentifier } from '../core/interface/hotel-identifier';
-import { TopHotelsDto } from '../core/interface/top-hotels.dto';
-import { SimpleHotelDto } from '../core/interface/simple-hotel.dto';
+import { TopHotels } from '../core/interface/top-hotels';
+import { SimpleHotel } from '../core/interface/simple-hotel';
 
-const selectHotelDto: Record<keyof SimpleHotelDto, 1> = {
+const selectHotelDto: Record<keyof SimpleHotel, 1> = {
   searchId: 1,
   hotelId: 1,
   name: 1,
@@ -83,9 +83,9 @@ export class MongoHotelRepository extends HotelRepository {
     return deleted.length;
   }
 
-  async findTopHotelsBySearchId(searchId: string): Promise<TopHotelsDto> {
+  async findTopHotelsBySearchId(searchId: string): Promise<TopHotels> {
     const pendingBestPriceRate = this.model.find({ searchId })
-      .select(selectHotelDto)
+      .select({ ...selectHotelDto, _id: 0 })
       .limit(10)
       .sort({
         'calculatedValues.priceRate': -1,
@@ -93,14 +93,14 @@ export class MongoHotelRepository extends HotelRepository {
       })
       .exec();
     const pendingCheapest = this.model.find({ searchId })
-      .select(selectHotelDto)
+      .select({ ...selectHotelDto, _id: 0 })
       .limit(10)
       .sort({
         'latestValues.price': 1
       })
       .exec();
     const pendingBestLocation = this.model.find({ searchId })
-      .select(selectHotelDto)
+      .select({ ...selectHotelDto, _id: 0 })
       .limit(10)
       .sort({
         'distanceFromCenterMeters': 1,
@@ -108,7 +108,7 @@ export class MongoHotelRepository extends HotelRepository {
       })
       .exec();
     const pendingBestRate = this.model.find({ searchId })
-      .select(selectHotelDto)
+      .select({ ...selectHotelDto, _id: 0 })
       .limit(10)
       .sort({
         'latestValues.rate': -1,

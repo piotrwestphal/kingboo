@@ -1,4 +1,4 @@
-import { Coords } from './coords';
+import { Coords } from '@kb/model';
 import { Bonuses } from './bonuses';
 import { Room } from './room';
 

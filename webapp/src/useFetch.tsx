@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { from, of, throwError } from 'rxjs';
-import { catchError, map, switchMap } from 'rxjs/operators';
+import { catchError, switchMap } from 'rxjs/operators';
 
-export function useFetch<T, K>(url: string, mapper: (t: T) => K, opts?: RequestInit): [K, boolean, boolean] {
+export function useFetch<T>(url: string, opts?: RequestInit): [T, boolean, boolean] {
   const [response, setResponse] = useState(null) as any
   const [loading, setLoading] = useState(false)
   const [hasError, setHasError] = useState(false)
@@ -14,11 +14,10 @@ export function useFetch<T, K>(url: string, mapper: (t: T) => K, opts?: RequestI
         if (res.ok) {
           return res.json() as Promise<T>
         } else {
-          console.log({res})
+          console.error(res)
           return throwError('there is no payload')
         }
       }),
-      map(mapper),
       catchError((err) => {
         console.error(err);
         setHasError(true);
@@ -30,6 +29,6 @@ export function useFetch<T, K>(url: string, mapper: (t: T) => K, opts?: RequestI
       setResponse(v);
       setLoading(false)
     })
-  }, [opts, url, mapper, setResponse])
+  }, [opts, url, setResponse])
   return [response, loading, hasError]
 }

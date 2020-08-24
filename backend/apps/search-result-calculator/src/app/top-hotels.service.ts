@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { HotelRepository } from '../core/abstract/hotel.repository';
-import { TopHotelsDto } from '../core/interface/top-hotels.dto';
+import { TopHotels } from '../core/interface/top-hotels';
 
 @Injectable()
 export class TopHotelsService {
@@ -10,7 +10,7 @@ export class TopHotelsService {
   ) {
   }
 
-  async getTopHotels(searchId: string): Promise<TopHotelsDto> {
+  async getTopHotels(searchId: string): Promise<TopHotels> {
     const { bestRate, bestLocation, cheapest, bestPriceRate } = await this.hotelRepository.findTopHotelsBySearchId(searchId);
     return {
       cheapest,

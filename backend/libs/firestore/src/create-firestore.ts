@@ -2,19 +2,17 @@ import { Firestore } from '@google-cloud/firestore';
 
 export const createFirestore = (projectId: string,
                                 clientEmail: string,
-                                clientKey: string) => new Firestore({
+                                clientKey: string): Firestore => new Firestore({
   projectId,
   credentials: {
-    // eslint-disable-next-line @typescript-eslint/camelcase
     client_email: clientEmail,
-    // eslint-disable-next-line @typescript-eslint/camelcase
     private_key: clientKey,
   },
 });
 
 export const createFirestoreForDevPurposes = (projectId: string,
                                               host: string,
-                                              port: number) => new Firestore({
+                                              port: number): Firestore => new Firestore({
   projectId,
   host,
   port,
