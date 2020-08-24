@@ -3,7 +3,6 @@ on:
   push:
     branches:
       # TODO: change to master
-      # TODO: Deploy dispatch
       # TODO: change CORS_ORIGINS env for webapp
       - initial-webapp
     paths:
@@ -41,9 +40,9 @@ jobs:
           mv dist/* ../cloud/gcp/backend/user-service/dist
 
       - name: Add dependencies to temp package.json
-          working-directory: ./backend
-          run: |
-            jq -n 'input | .dependencies |= input.dependencies' ../cloud/gcp/backend/user-service/package.json package.json > ../cloud/gcp/backend/user-service/temp-package.json
+        working-directory: ./backend
+        run: |
+          jq -n 'input | .dependencies |= input.dependencies' ../cloud/gcp/backend/user-service/package.json package.json > ../cloud/gcp/backend/user-service/temp-package.json
 
       - name: Replace target package.json with temp package.json
           working-directory: ./cloud/gcp/backend/user-service
@@ -79,6 +78,3 @@ jobs:
         working-directory: ./cloud/gcp/backend
         run: |
           gcloud -q app deploy dispatch.yaml -v $GITHUB_SHA
-
-# TODO!!!!!!
-# jq -n 'input | .dependencies |= input.dependencies' output.json input.json
