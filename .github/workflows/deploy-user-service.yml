@@ -38,7 +38,7 @@ jobs:
         working-directory: ./backend
         run: |
           npm run build:us
-          mv dist ../cloud/gcp/backend/user-service
+          mv dist/* ../cloud/gcp/backend/user-service/dist
           jq
 
       - name: GCP authenticate as service account
@@ -69,3 +69,6 @@ jobs:
         working-directory: ./cloud/gcp/backend
         run: |
           gcloud -q app deploy dispatch.yaml -v $GITHUB_SHA
+
+# TODO!!!!!!
+# jq -n 'input | .dependencies |= input.dependencies' output.json input.json
