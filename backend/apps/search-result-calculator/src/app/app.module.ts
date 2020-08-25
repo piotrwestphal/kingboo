@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { CacheModule, Module } from '@nestjs/common';
 import { TopHotelsController } from './top-hotels.controller';
 import { HotelService } from './hotel.service';
 import { DbModule } from '../db/db.module';
@@ -21,6 +21,7 @@ import { TopHotelsService } from './top-hotels.service';
 
 @Module({
   imports: [
+    CacheModule.register(),
     ConfigModule.register(getEnvironments(), { configClass: AppConfigService, logger }),
     DbModule,
     MqModule,

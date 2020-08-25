@@ -1,8 +1,9 @@
-import { Controller, Get, Query } from '@nestjs/common';
+import { CacheInterceptor, Controller, Get, Query, UseInterceptors } from '@nestjs/common';
 import { TopHotelsService } from './top-hotels.service';
 import { TopHotels } from '../core/interface/top-hotels';
 
 @Controller('api/v1/top-hotels')
+@UseInterceptors(CacheInterceptor)
 export class TopHotelsController {
 
   constructor(private readonly appService: TopHotelsService) {
