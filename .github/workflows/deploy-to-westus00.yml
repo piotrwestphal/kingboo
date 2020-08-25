@@ -71,6 +71,6 @@ jobs:
             echo "MONGO_ADDRESS=$MONGO_ADDRESS" >> westus00.env
             echo "MQ_ADDRESS=$MQ_ADDRESS" >> westus00.env
             docker-compose pull
-            docker-compose up -d
+            docker-compose -f docker-compose.yml -f prod.yml up -d
             docker image prune -f
           EOF
