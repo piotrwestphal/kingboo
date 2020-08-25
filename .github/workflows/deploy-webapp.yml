@@ -2,8 +2,7 @@ name: Deploy webapp
 on:
   push:
     branches:
-# TODO: change to master
-      - develop
+      - master
     paths:
       - 'webapp/**'
       - 'cloud/gcp/webapp/**'

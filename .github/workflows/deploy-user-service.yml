@@ -2,9 +2,7 @@ name: Deploy user-service
 on:
   push:
     branches:
-      # TODO: change to master
-      # TODO: change CORS_ORIGINS env for webapp
-      - initial-webapp
+      - master
     paths:
       - 'backend/**'
       - 'cloud/gcp/backend/**'
