@@ -2,7 +2,7 @@ import { DistanceParser } from './parser/distance.parser';
 import { PriceParser } from './parser/price.parser';
 import { RawHotelDtoParser } from './raw-hotel-dto.parser';
 import { RawHotel } from '../core/interface/raw-hotel';
-import { RawHotelDto } from '@kb/model/raw-hotel.dto';
+import { RawHotelDto } from '@kb/model';
 import { CollectedHotelsMessage } from '@kb/model';
 
 export class MessageProcessor {

@@ -1,5 +1,15 @@
 version: "3.7"
 services:
+  user-service:
+    env_file:
+      - dev.env
+    volumes:
+      - ./compose-output:/usr/src/app/dist/apps/user-service/output
+      - ./tools/wait-for-it.sh:/wait-for-it.sh
+    command: ["/wait-for-it.sh", "rabbitmq:5672", "-t", "60", "--", "node", "main"]
+    ports:
+      - 38080:8080
+
   search-queue-manager:
     env_file:
       - dev.env
@@ -7,6 +17,8 @@ services:
       - ./compose-output:/usr/src/app/dist/apps/search-queue-manager/output
       - ./tools/wait-for-it.sh:/wait-for-it.sh
     command: ["/wait-for-it.sh", "rabbitmq:5672", "-t", "60", "--", "node", "main"]
+    ports:
+      - 38081:8080
 
   data-collector:
     env_file:
@@ -23,6 +35,8 @@ services:
       - ./compose-output:/usr/src/app/dist/apps/search-result-calculator/output
       - ./tools/wait-for-it.sh:/wait-for-it.sh
     command: ["/wait-for-it.sh", "rabbitmq:5672", "-t", "60", "--", "node", "main"]
+    ports:
+      - 38082:8080
 
   rabbitmq:
     image: rabbitmq:3-management-alpine

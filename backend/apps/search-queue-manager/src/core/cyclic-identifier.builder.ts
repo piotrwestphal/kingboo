@@ -15,7 +15,7 @@ export class CyclicIdentifierBuilder {
                    }: CyclicIdentifierComponents): string {
     return `${searchPlace.trim().toUpperCase().replace(/ /g, '_')}_` +
       `${numberOfRooms}_${numberOfAdults}_${childrenAgeAtCheckout.length}_` +
-      `${priority}_${updateFrequencyMinutes}_${resultsLimit}` +
+      `${priority}_${updateFrequencyMinutes}_${resultsLimit}_` +
       `${dayOfTheWeek}_${nightsOfStay}_${beginSearchDaysBefore}`;
   }
 }

@@ -1,0 +1,8 @@
+{
+  "name": "gcp-user-service",
+  "description": "will be filled with dependencies during the deploy process",
+  "version": "0.0.1",
+  "scripts": {
+    "start": "node dist/apps/user-service/main.js"
+  }
+}

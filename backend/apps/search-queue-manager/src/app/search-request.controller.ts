@@ -1,8 +1,8 @@
 import { Body, Controller, Get, Post } from '@nestjs/common';
-import { SearchRequest } from '../core/model/SearchRequest';
 import { SearchRequestService } from './search-request/search-request.service';
 import { UserCreateSearchRequest } from './search-request/user-create-search-request';
 import { CreateSearchRequestMapper } from './search-request/create-search-request.mapper';
+import { SearchRequestDto } from '@kb/model';
 
 @Controller('api/v1/search-requests')
 export class SearchRequestController {
@@ -15,13 +15,13 @@ export class SearchRequestController {
   }
 
   @Post()
-  async createByUser(@Body() userCreateSearchRequest: UserCreateSearchRequest): Promise<SearchRequest> {
+  async createByUser(@Body() userCreateSearchRequest: UserCreateSearchRequest): Promise<SearchRequestDto> {
     const createSearchRequest = this.createSearchRequestMapper.fromUserCreateSearchRequest(userCreateSearchRequest);
     return this.searchRequestService.createUserSearchRequest('userId', createSearchRequest);
   }
 
   @Get()
-  async getAll(): Promise<SearchRequest[]> {
+  async getSearchRequests(): Promise<SearchRequestDto[]> {
     return this.searchRequestService.findAll();
   }
 }

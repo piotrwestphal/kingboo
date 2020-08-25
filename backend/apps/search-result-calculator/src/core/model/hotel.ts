@@ -1,4 +1,4 @@
-import { Coords } from '../interface/coords';
+import { Coords } from '@kb/model/coords';
 import { LatestValues } from '../interface/latest-values';
 import { CalculatedValues } from '../interface/calculated-values';
 import { ValueWithDate } from '@kb/model/value-with-date';
