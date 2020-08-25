@@ -21,7 +21,7 @@ import { TopHotelsService } from './top-hotels.service';
 
 @Module({
   imports: [
-    CacheModule.register(),
+    CacheModule.register({ttl: 30}),
     ConfigModule.register(getEnvironments(), { configClass: AppConfigService, logger }),
     DbModule,
     MqModule,
