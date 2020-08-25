@@ -1,8 +1,7 @@
-.git/
-.idea
 .dockerignore
 node_modules/
 dist
+output
 tslint.json
 *.log
 *.Dockerfile

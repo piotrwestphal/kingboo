@@ -28,6 +28,7 @@ import { CyclicSearchController } from './cyclic-search.controller';
 import { DifferenceResolver } from './calculate-cycle/difference.resolver';
 import { CyclicSearchMaintainer } from './scheduler/cyclic-search.maintainer';
 import { logger } from '../logger';
+import { SearchRequestMapper } from './search-request/search-request.mapper';
 
 @Module({
   imports: [
@@ -65,10 +66,12 @@ import { logger } from '../logger';
         userNotificationSender: UserNotificationSender,
       ) => {
         const searchIdentifierBuilder = new SearchIdentifierBuilder();
+        const searchRequestMapper = new SearchRequestMapper();
         const searchRequestFactory = new SearchRequestFactory(searchIdentifierBuilder);
         return new SearchRequestService(
           collectingScenarioSender,
           searchRequestFactory,
+          searchRequestMapper,
           searchRequestRepository,
           userNotificationSender,
         );

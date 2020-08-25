@@ -1,0 +1,42 @@
+runtime: nodejs12
+default_expiration: "10m"
+handlers:
+  - url: /static/js/(.*)
+    secure: always
+    static_files: public/static/js/\1
+    upload: public/static/js/(.*)
+
+  - url: /static/css/(.*)
+    secure: always
+    static_files: public/static/css/\1
+    upload: public/static/css/(.*)
+
+  - url: /static/media/(.*)
+    secure: always
+    static_files: public/static/media/\1
+    upload: public/static/media/(.*)
+
+  - url: /(.*\.(json|ico|png))$
+    secure: always
+    static_files: public/\1
+    upload: public/.*\.(json|ico|png)$
+
+  - url: /
+    secure: always
+    static_files: public/index.html
+    upload: public/index.html
+
+  - url: /.*
+    secure: always
+    redirect_http_response_code: 301
+    script: auto
+
+#  - url: /socket\.io/.*
+#    secure: always
+#    script: auto
+#
+#  - url: /.*
+#    secure: always
+#    redirect_http_response_code: 301
+#    script: auto
+

@@ -1,6 +1,6 @@
 import { Bonuses } from '../core/interface/bonuses';
-import { RawRoomDto } from '@kb/model/raw-room.dto';
-import { Coords } from '../core/interface/coords';
+import { RawRoomDto } from '@kb/model';
+import { Coords } from '@kb/model';
 import { Room } from '../core/interface/room';
 
 export class RawHotelDtoParser {
