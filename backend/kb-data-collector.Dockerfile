@@ -17,7 +17,7 @@ RUN npm i puppeteer
 WORKDIR /usr/src/app
 COPY package*.json ./
 # skip puppeteer installation | npm install --ignore-scripts
-RUN npm ci --silent
+RUN npm install
 COPY . .
 RUN npm run build:dc
 
