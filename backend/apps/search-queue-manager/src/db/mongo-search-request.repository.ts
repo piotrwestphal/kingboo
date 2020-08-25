@@ -33,6 +33,7 @@ export class MongoSearchRequestRepository extends SearchRequestRepository {
 
   findAll(): Promise<SearchRequest[]> {
     return this.model.find()
+      .sort({checkInDate: 1})
       .map(docs => docs.map(doc => this.fromDoc(doc)))
       .exec();
   }
