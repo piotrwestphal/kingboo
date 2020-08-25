@@ -1,6 +1,7 @@
 import { SearchRequestRepository } from '../core/abstract/search-request.repository';
 import { SearchRequest } from '../core/model/SearchRequest';
 import { Model } from 'mongoose';
+import { NotFoundException } from '@nestjs/common';
 import { SearchRequestDocument } from './search-request/search-request.document';
 import { SearchRequestDocumentMapper } from './search-request/search-request-document.mapper';
 import { SearchRequestType } from '../core/model/SearchRequestType';
@@ -16,6 +17,15 @@ export class MongoSearchRequestRepository extends SearchRequestRepository {
 
   async findBySearchId(searchId: string): Promise<SearchRequest> {
     const found = await this.model.findOne({ searchId }).exec();
+    return found
+      ? this.fromDoc(found)
+      : null;
+  }
+
+  async findBySearchIdOrFail(searchId: string): Promise<SearchRequest> {
+    const found = await this.model.findOne({ searchId })
+      .orFail(() => new NotFoundException(`Search request with search id: ${searchId} not exist`))
+      .exec();
     return found
       ? this.fromDoc(found)
       : null;

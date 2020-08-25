@@ -9,6 +9,7 @@ import { logger } from '../../logger';
 import { SearchRequestType } from '../../core/model/SearchRequestType';
 import { SearchRequestMapper } from './search-request.mapper';
 import { SearchRequestDto } from '@kb/model/search-request.dto';
+import { SearchRequestsDto } from '@kb/model/search-requests.dto';
 
 export class SearchRequestService {
 
@@ -21,9 +22,16 @@ export class SearchRequestService {
   ) {
   }
 
-  async findAll(): Promise<SearchRequestDto[]> {
+  async findAll(): Promise<SearchRequestsDto> {
     const found = await this.searchRequestRepository.findAll();
-    return found.map((sr) => this.searchRequestMapper.toDto(sr))
+    return {
+      searchRequests: found.map((sr) => this.searchRequestMapper.toDto(sr)),
+    }
+  }
+
+  async findOrFail(searchId: string): Promise<SearchRequestDto> {
+    const found = await this.searchRequestRepository.findBySearchIdOrFail(searchId);
+    return this.searchRequestMapper.toDto(found);
   }
 
   async createUserSearchRequest(userId: string, createSearchRequest: CreateSearchRequest): Promise<SearchRequestDto> {

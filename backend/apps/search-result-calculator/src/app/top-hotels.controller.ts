@@ -9,7 +9,7 @@ export class TopHotelsController {
   }
 
   @Get()
-  getTopHotels(@Query('search_id') searchId: string): Promise<TopHotels> {
+  getTopHotels(@Query('search_id') searchId: string | undefined): Promise<TopHotels> {
     return this.appService.getTopHotels(searchId);
   }
 }

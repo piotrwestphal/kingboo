@@ -13,5 +13,5 @@ export abstract class HotelRepository {
 
   abstract deleteMany(hotelsIdentifiers: HotelIdentifier[]): Promise<number>;
 
-  abstract findTopHotelsBySearchId(searchId: string): Promise<TopHotels>;
+  abstract findTopHotelsBySearchIdOrFail(searchId: string): Promise<TopHotels>;
 }
