@@ -10,6 +10,6 @@ export interface SearchRequestDto {
   readonly numberOfRooms: number;
   readonly numberOfAdults: number;
   readonly childrenAgeAtCheckout: number[];
-  readonly searchPlaceIdentifier: string | null;
+  readonly searchPlaceIdentifier?: string;
   readonly nextSearchScheduledAt: string;
 }
