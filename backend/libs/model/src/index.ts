@@ -12,7 +12,7 @@ export { HotelCalculatedValuesDto } from './hotel/hotel-calculated-values.dto';
 export { HotelLatestValuesDto } from './hotel/hotel-latest-values.dto';
 export { HotelRoomDto } from './hotel/hotel-room.dto';
 export { RawRoomDto } from './raw-hotel/raw-room.dto';
-export { ValueWithDate } from './value-with-date';
+export { PriceChange } from './price-change';
 export { HotelsData } from './mqmessage/user-notification/hotels.data';
 export { ScrapData } from './mqmessage/user-notification/scrap.data';
 export { UserData } from './mqmessage/user-notification/user.data';

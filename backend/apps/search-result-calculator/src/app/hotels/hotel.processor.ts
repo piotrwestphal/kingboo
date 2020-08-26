@@ -1,16 +1,17 @@
-import { MessageProcessor } from '../processing/message.processor';
-import { HotelRepository } from '../core/abstract/hotel.repository';
+import { MessageProcessor } from '../../processing/message.processor';
+import { HotelRepository } from '../../core/abstract/hotel.repository';
 import { CollectedHotelsMessage } from '@kb/model';
 import { FileManager } from '@kb/util/file.manager';
 import { HotelFactory } from './hotel.factory';
 import { PriceCalculator } from './price.calculator';
-import { Hotel } from '../core/model/hotel';
-import { RawHotel } from '../core/interface/raw-hotel';
-import { AppConfigService } from '../config/app-config.service';
-import { logger } from '../logger';
-import { UserNotificationSender } from '../core/abstract/user-notification.sender';
+import { Hotel } from '../../core/model/hotel';
+import { RawHotel } from '../../core/interface/raw-hotel';
+import { AppConfigService } from '../../config/app-config.service';
+import { logger } from '../../logger';
+import { UserNotificationSender } from '../../core/abstract/user-notification.sender';
+import { LatestValues } from '../../core/interface/latest-values';
 
-export class HotelService {
+export class HotelProcessor {
 
   constructor(
     private readonly configService: AppConfigService,
@@ -60,7 +61,7 @@ export class HotelService {
 
   private updateHotelWithRaw(hotel: Hotel,
                              {
-                               price,
+                               price: currentPrice,
                                rate,
                                secondaryRate,
                                secondaryRateType,
@@ -70,21 +71,20 @@ export class HotelService {
                                rooms,
                                collectedAt,
                              }: RawHotel): Hotel {
-    const calculatedValues = this.priceCalculator.calculate(price, hotel.prices);
-    return hotel.update(
-      price,
-      collectedAt,
-      {
-        price,
-        rate,
-        secondaryRate,
-        secondaryRateType,
-        numberOfReviews,
-        newlyAdded,
-        bonuses,
-        rooms,
-      },
-      calculatedValues,
-    );
+    const calculatedValues = this.priceCalculator.calculate(currentPrice, hotel.priceChanges);
+    const [lastPrice] = hotel.priceChanges.slice(-1);
+    const latestValues: LatestValues = {
+      price: currentPrice,
+      rate,
+      secondaryRate,
+      secondaryRateType,
+      numberOfReviews,
+      newlyAdded,
+      bonuses,
+      rooms,
+    }
+    return lastPrice?.value === currentPrice
+      ? hotel.updateWhenPriceHasNotChanged(collectedAt, latestValues, calculatedValues)
+      : hotel.updateWithChangedPrice(currentPrice, collectedAt, latestValues, calculatedValues);
   }
 }

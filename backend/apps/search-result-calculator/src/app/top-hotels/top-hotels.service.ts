@@ -1,6 +1,6 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { HotelRepository } from '../core/abstract/hotel.repository';
-import { TopHotels } from '../core/interface/top-hotels';
+import { HotelRepository } from '../../core/abstract/hotel.repository';
+import { TopHotels } from '../../core/interface/top-hotels';
 
 @Injectable()
 export class TopHotelsService {

@@ -5,6 +5,8 @@ import { TopHotels } from '../interface/top-hotels';
 export abstract class HotelRepository {
   abstract findAllBySearchIdAndHotelId(searchId: string, hotelIds: string[]): Promise<Map<string, Hotel>>;
 
+  abstract findAllBySearchId(searchId: string): Promise<Hotel[]>;
+
   abstract createAll(hotels: Hotel[]): Promise<Hotel[]>;
 
   abstract updateAll(hotels: Hotel[]): Promise<Hotel[]>;

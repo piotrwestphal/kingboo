@@ -50,6 +50,14 @@ export class MongoHotelRepository extends HotelRepository {
     return hotelIdByHotel;
   }
 
+  async findAllBySearchId(searchId: string): Promise<Hotel[]> {
+    const hotelsDocs = await this.model.find({ searchId })
+      .select({ ...selectHotelDto, _id: 0 })
+      .sort({ distanceFromCenterMeters: 1 })
+      .exec();
+    return hotelsDocs.map(doc => this.fromDoc(doc));
+  }
+
   findLastUpdatedGivenDaysAgo(now: Date, days: number): Promise<HotelIdentifier[]> {
     const offset = new Date(now.valueOf() - days * this.DAY); // x days ago
     return this.model.find({

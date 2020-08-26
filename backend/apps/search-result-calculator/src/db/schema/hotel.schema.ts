@@ -1,7 +1,7 @@
 import { Schema } from 'mongoose';
 import { HotelDocument } from '../interface/hotel.document';
 import { CoordsSchema } from './coords.schema';
-import { PriceWithDateSchema } from './price-with-date.schema';
+import { PriceChangeSchema } from './price-change.schema';
 import { LatestValuesSchema } from './latest-values.schema';
 import { CalculatedValuesSchema } from './calculated-values.schema';
 
@@ -17,10 +17,10 @@ export const HotelSchema = new Schema<HotelDocument>({
     hotelLink: String,
     propertyType: String,
     starRating: Number,
-    prices: [PriceWithDateSchema],
+    priceChanges: [PriceChangeSchema],
     latestValues: LatestValuesSchema,
     calculatedValues: CalculatedValuesSchema,
-    collectedAt: [String],
+    collectedAt: [Date],
   },
   {
     versionKey: false,

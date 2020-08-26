@@ -1,8 +1,8 @@
 import { CoordsDocument } from './coords.document';
 import { LatestValuesDocument } from './latest-values.document';
 import { CalculatedValuesDocument } from './calculated-values.document';
-import { ValueWithDate } from '@kb/model/value-with-date';
 import { Document } from 'mongoose';
+import { PriceChangeDocument } from './price-change.document';
 
 export interface HotelDocument extends Document {
   readonly searchId: string;
@@ -14,7 +14,7 @@ export interface HotelDocument extends Document {
   readonly hotelLink: string;
   readonly propertyType: string;
   readonly starRating: number;
-  readonly prices: ValueWithDate<number>[];
+  readonly priceChanges: PriceChangeDocument[];
   readonly latestValues: LatestValuesDocument;
   readonly calculatedValues: CalculatedValuesDocument;
   readonly collectedAt: string[];
