@@ -18,6 +18,7 @@ const selectHotelDto: Record<keyof SimpleHotel, 1> = {
   hotelLink: 1,
   propertyType: 1,
   starRating: 1,
+  priceChanges: 1,
   latestValues: 1,
   calculatedValues: 1,
 }
@@ -50,12 +51,11 @@ export class MongoHotelRepository extends HotelRepository {
     return hotelIdByHotel;
   }
 
-  async findAllBySearchId(searchId: string): Promise<Hotel[]> {
-    const hotelsDocs = await this.model.find({ searchId })
+  findAllBySearchId(searchId: string): Promise<SimpleHotel[]> {
+    return this.model.find({ searchId })
       .select({ ...selectHotelDto, _id: 0 })
       .sort({ distanceFromCenterMeters: 1 })
       .exec();
-    return hotelsDocs.map(doc => this.fromDoc(doc));
   }
 
   findLastUpdatedGivenDaysAgo(now: Date, days: number): Promise<HotelIdentifier[]> {

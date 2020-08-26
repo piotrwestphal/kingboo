@@ -1,8 +1,8 @@
 import { Coords } from '@kb/model/coords';
 import { LatestValues } from '../interface/latest-values';
 import { CalculatedValues } from '../interface/calculated-values';
-import { PriceChange } from '@kb/model/price-change';
 import { HotelIdentifier } from '../interface/hotel-identifier';
+import { PriceChange } from '../interface/price-change';
 
 export class Hotel implements HotelIdentifier {
   constructor(

@@ -1,4 +1,4 @@
-import { Coords, HotelCalculatedValuesDto, HotelLatestValuesDto } from '@kb/model';
+import { Coords, HotelCalculatedValuesDto, HotelLatestValuesDto, PriceChangeDto } from '@kb/model';
 
 export interface SimpleHotelDto {
   readonly searchId: string;
@@ -10,6 +10,7 @@ export interface SimpleHotelDto {
   readonly hotelLink: string;
   readonly propertyType: string;
   readonly starRating: number;
+  readonly priceChanges: PriceChangeDto[];
   readonly latestValues: HotelLatestValuesDto;
   readonly calculatedValues: HotelCalculatedValuesDto;
 }

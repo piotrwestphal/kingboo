@@ -1,5 +1,5 @@
 import { CalculatedValues } from '../../core/interface/calculated-values';
-import { PriceChange } from '@kb/model';
+import { PriceChange } from '../../core/interface/price-change';
 
 interface RepeatedValue {
   readonly value: number;
@@ -25,7 +25,7 @@ export class PriceCalculator {
   }
 
   private calcBasicPriceValues(values: RepeatedValue[]): { min: number, max: number, avg: number } {
-    const averagePrice =  this.calcAvgValue(values);
+    const averagePrice = this.calcAvgValue(values);
     const prices = values.map(v => v.value)
     const min = Math.min(...prices);
     const max = Math.max(...prices);

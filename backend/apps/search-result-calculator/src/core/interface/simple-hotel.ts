@@ -1,6 +1,7 @@
 import { Coords } from '@kb/model';
 import { LatestValues } from './latest-values';
 import { CalculatedValues } from './calculated-values';
+import { PriceChange } from './price-change';
 
 export interface SimpleHotel {
   readonly searchId: string;
@@ -12,6 +13,7 @@ export interface SimpleHotel {
   readonly hotelLink: string;
   readonly propertyType: string;
   readonly starRating: number;
+  readonly priceChanges: PriceChange[];
   readonly latestValues: LatestValues;
   readonly calculatedValues: CalculatedValues;
 }
