@@ -35,7 +35,7 @@ export class SearchResultsService {
                               numberOfAdults,
                               childrenAgeAtCheckout,
                             }: SearchRequestDto,
-                            topHotelsDto: TopHotelsDto): SearchResultDto {
+                            topHotelsDto?: TopHotelsDto): SearchResultDto {
     return {
       searchId,
       searchPlace,

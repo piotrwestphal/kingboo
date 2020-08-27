@@ -1,6 +1,6 @@
-import { Module } from '@nestjs/common';
+import { CacheModule, Module } from '@nestjs/common';
 import { TopHotelsController } from './top-hotels.controller';
-import { HotelService } from './hotel.service';
+import { HotelProcessor } from './hotels/hotel.processor';
 import { DbModule } from '../db/db.module';
 import { MqModule } from '../mq/mq.module';
 import { ConfigModule } from '@kb/config';
@@ -9,18 +9,21 @@ import { AppConfigService } from '../config/app-config.service';
 import { ProcessingModule } from '../processing/processing.module';
 import { FileManager } from '@kb/util/file.manager';
 import { DataToProcessConsumer } from './data-to-process.consumer';
-import { PriceCalculator } from './price.calculator';
-import { HotelFactory } from './hotel.factory';
+import { PriceCalculator } from './hotels/price.calculator';
+import { HotelFactory } from './hotels/hotel.factory';
 import { HotelRepository } from '../core/abstract/hotel.repository';
 import { MessageProcessor } from '../processing/message.processor';
 import { logger } from '../logger';
 import { ScheduleModule } from '@nestjs/schedule';
 import { OldHotelsRemover } from './scheduler/old-hotels.remover';
 import { UserNotificationSender } from '../core/abstract/user-notification.sender';
-import { TopHotelsService } from './top-hotels.service';
+import { TopHotelsService } from './top-hotels/top-hotels.service';
+import { HotelsController } from './hotels.controller';
+import { HotelsService } from './hotels/hotels.service';
 
 @Module({
   imports: [
+    CacheModule.register({ttl: 30}),
     ConfigModule.register(getEnvironments(), { configClass: AppConfigService, logger }),
     DbModule,
     MqModule,
@@ -29,13 +32,15 @@ import { TopHotelsService } from './top-hotels.service';
   ],
   controllers: [
     TopHotelsController,
+    HotelsController,
     DataToProcessConsumer,
   ],
   providers: [
     OldHotelsRemover,
     TopHotelsService,
+    HotelsService,
     {
-      provide: HotelService,
+      provide: HotelProcessor,
       useFactory: (configService: AppConfigService,
                    hotelRepository: HotelRepository,
                    messageProcessor: MessageProcessor,
@@ -43,7 +48,7 @@ import { TopHotelsService } from './top-hotels.service';
         const fileManager = new FileManager(logger);
         const hotelFactory = new HotelFactory();
         const priceCalculator = new PriceCalculator();
-        return new HotelService(
+        return new HotelProcessor(
           configService,
           fileManager,
           hotelFactory,

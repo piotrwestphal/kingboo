@@ -1,8 +1,9 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { SearchRequestService } from './search-request/search-request.service';
 import { UserCreateSearchRequest } from './search-request/user-create-search-request';
 import { CreateSearchRequestMapper } from './search-request/create-search-request.mapper';
 import { SearchRequestDto } from '@kb/model';
+import { SearchRequestsDto } from '@kb/model/search-requests.dto';
 
 @Controller('api/v1/search-requests')
 export class SearchRequestController {
@@ -21,7 +22,12 @@ export class SearchRequestController {
   }
 
   @Get()
-  async getSearchRequests(): Promise<SearchRequestDto[]> {
+  async getSearchRequests(): Promise<SearchRequestsDto> {
     return this.searchRequestService.findAll();
+  }
+
+  @Get(':searchId')
+  async getSearchRequest(@Param('searchId') searchId: string): Promise<SearchRequestDto> {
+    return this.searchRequestService.findOrFail(searchId);
   }
 }

@@ -1,6 +1,7 @@
 import { Coords } from './coords';
 import { HotelLatestValuesDto } from './hotel-latest-values.dto';
 import { HotelCalculatedValuesDto } from './hotel-calculated-values.dto';
+import { HotelPriceChangeDto } from './hotel-price-change.dto';
 
 export interface SimpleHotelDto {
   readonly searchId: string;
@@ -12,6 +13,7 @@ export interface SimpleHotelDto {
   readonly hotelLink: string;
   readonly propertyType: string;
   readonly starRating: number;
+  readonly priceChanges: HotelPriceChangeDto;
   readonly latestValues: HotelLatestValuesDto;
   readonly calculatedValues: HotelCalculatedValuesDto;
 }
