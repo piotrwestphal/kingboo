@@ -1,5 +1,5 @@
-import { RawHotel } from '../core/interface/raw-hotel';
-import { Hotel } from '../core/model/hotel';
+import { RawHotel } from '../../core/interface/raw-hotel';
+import { Hotel } from '../../core/model/hotel';
 
 export class HotelFactory {
   createNew({
@@ -32,9 +32,11 @@ export class HotelFactory {
       hotelLink,
       propertyType,
       starRating,
+      [collectedAt],
       [{
         value: price,
-        date: collectedAt,
+        changedAt: collectedAt,
+        occurrenceCount: 1,
       }],
       {
         price,
@@ -54,7 +56,6 @@ export class HotelFactory {
         maxPriceDiff: 0,
         priceRate: 0,
       },
-      [collectedAt],
     );
   }
 }

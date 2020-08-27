@@ -1,6 +1,6 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { HotelRepository } from '../core/abstract/hotel.repository';
-import { TopHotels } from '../core/interface/top-hotels';
+import { HotelRepository } from '../../core/abstract/hotel.repository';
+import { TopHotelsDto } from '@kb/model';
 
 @Injectable()
 export class TopHotelsService {
@@ -10,7 +10,7 @@ export class TopHotelsService {
   ) {
   }
 
-  async getTopHotels(searchId?: string): Promise<TopHotels> {
+  async getTopHotels(searchId?: string): Promise<TopHotelsDto> {
     if (!searchId) {
       throw new BadRequestException(`Missing query param "search_id"`)
     }
