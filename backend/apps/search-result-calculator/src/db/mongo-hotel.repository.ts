@@ -8,7 +8,7 @@ import { TopHotels } from '../core/interface/top-hotels';
 import { SimpleHotel } from '../core/interface/simple-hotel';
 import { NotFoundException } from '@nestjs/common';
 
-const selectHotelDto: Record<keyof SimpleHotel, 1> = {
+const selectSimpleHotel: Record<keyof SimpleHotel, 1> = {
   searchId: 1,
   hotelId: 1,
   name: 1,
@@ -53,7 +53,7 @@ export class MongoHotelRepository extends HotelRepository {
 
   findAllBySearchId(searchId: string): Promise<SimpleHotel[]> {
     return this.model.find({ searchId })
-      .select({ ...selectHotelDto, _id: 0 })
+      .select({ ...selectSimpleHotel, _id: 0 })
       .sort({ distanceFromCenterMeters: 1 })
       .exec();
   }
@@ -95,7 +95,7 @@ export class MongoHotelRepository extends HotelRepository {
   async findTopHotelsBySearchIdOrFail(searchId: string): Promise<TopHotels> {
     const findBySearchId = () => this.model.find({ searchId })
       .orFail(() => new NotFoundException(`Hotels with search id: ${searchId} not exist`))
-      .select({ ...selectHotelDto, _id: 0 })
+      .select({ ...selectSimpleHotel, _id: 0 })
       .limit(3);
     const pendingBestPriceRate = findBySearchId().sort({
       'calculatedValues.priceRate': -1,
