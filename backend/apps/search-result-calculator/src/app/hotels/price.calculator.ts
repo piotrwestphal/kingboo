@@ -37,8 +37,9 @@ export class PriceCalculator {
   }
 
   private calcAvgValue = (values: RepeatedValue[]): number => {
+    const occurrencesSum = values.map(v => v.occurrenceCount).reduce((a, b) => a + b)
     const pricesSum = values.map(v => (v.value * v.occurrenceCount)).reduce((a, b) => a + b)
-    return pricesSum / values.length
+    return pricesSum / occurrencesSum
   }
 
   private calcPriceRate = (lastPrice: number, maxPrice: number): number => {

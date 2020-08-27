@@ -83,7 +83,7 @@ export class HotelProcessor {
       bonuses,
       rooms,
     }
-    return lastPrice?.value === currentPrice
+    return lastPrice && lastPrice.value === currentPrice
       ? hotel.updateWhenPriceHasNotChanged(collectedAt, latestValues, calculatedValues)
       : hotel.updateWithChangedPrice(currentPrice, collectedAt, latestValues, calculatedValues);
   }

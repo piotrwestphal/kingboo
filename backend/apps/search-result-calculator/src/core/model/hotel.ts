@@ -33,8 +33,8 @@ export class Hotel implements HotelIdentifier {
   updateWhenPriceHasNotChanged(collectedAt: string,
                                latestValues: LatestValues,
                                calculatedValues: CalculatedValues): Hotel {
-    const lastPriceChange = this.priceChanges.pop()
-    this.priceChanges.push({ ...lastPriceChange, occurrenceCount: lastPriceChange.occurrenceCount + 1 });
+    const { value, changedAt, occurrenceCount } = this.priceChanges.pop()
+    this.priceChanges.push({ value, changedAt, occurrenceCount: occurrenceCount + 1 });
     return this.update(collectedAt, latestValues, calculatedValues);
   }
 
