@@ -1,29 +1,17 @@
 import React from 'react';
-import { createStyles, Grid, Paper, Theme } from '@material-ui/core';
+import { createStyles, Grid, Theme } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { useFetch } from '../useFetch';
-import SearchRequestItem from './SearchRequestItem';
 import { SearchResultDto } from '../core/search-result.dto';
+import SearchRequestCard from './SearchRequestCard';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       flexGrow: 1,
     },
-    item: {
-      padding: theme.spacing(1),
-      // textAlign: 'center',
-      color: theme.palette.text.secondary,
-    },
   }),
 );
-
-// const mapper = (dto: SearchRequestDto[]): SearchRequest[] => dto.map(d => ({
-//   ...d,
-//   checkInDate: new Date(d.checkInDate),
-//   checkOutDate: new Date(d.checkOutDate),
-//   nextSearchScheduledAt: new Date(d.nextSearchScheduledAt),
-// }))
 
 export default function SearchRequestList() {
   const classes = useStyles();
@@ -38,9 +26,7 @@ export default function SearchRequestList() {
           <Grid container spacing={1}>
             {dto?.searchResults.map((searchResult) =>
               <Grid key={searchResult.searchId} item xs={12} md={6}>
-                <Paper className={classes.item}>
-                  <SearchRequestItem searchResultDto={searchResult}/>
-                </Paper>
+                <SearchRequestCard searchResultDto={searchResult}/>
               </Grid>
             )}
           </Grid>
