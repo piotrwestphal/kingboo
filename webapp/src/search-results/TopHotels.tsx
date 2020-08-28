@@ -58,29 +58,49 @@ export default function TopHotels({
                                   }: TopHotelsProps) {
   const classes = useStyles()
   const empty =
-    <Typography variant="body2" component="p" color='textSecondary'>
-      There are no hotels that meet conditions
-    </Typography>
+    <Box className={classes.box}>
+      <Typography className={classes.primaryColumn} variant="body1" component="p">{title}:</Typography>
+      <Typography variant="body2" component="p" color='textSecondary'>
+        There are no hotels that meet conditions
+      </Typography>
+    </Box>
 
   return (
     <>
       {!simpleHotels.length ? empty
         : <>
           <Box className={classes.box}>
-            <Typography className={classes.primaryColumn} variant="body1" component="p">{title}:</Typography>
-            <Typography className={classes.secondaryColumn} variant="body2" component="p" color='textSecondary'>{secondaryKey}</Typography>
-            <Typography className={classes.secondaryColumn} variant="body2" component="p" color='textSecondary'>{primaryKey}</Typography>
+            <Typography className={classes.primaryColumn}
+                        variant="body1"
+                        component="p">{title}:</Typography>
+            <Typography className={classes.secondaryColumn}
+                        variant="body2"
+                        component="p"
+                        color='textSecondary'>{secondaryKey}</Typography>
+            <Typography className={classes.secondaryColumn}
+                        variant="body2"
+                        component="p"
+                        color='textSecondary'>{primaryKey}</Typography>
           </Box>
           <Container className={classes.hotelsContainer}>
             {simpleHotels.map((hotel) => {
               return <Box key={hotel.hotelId} className={classes.box}>
-                <Typography className={classes.primaryColumn} variant="body2" color='textSecondary' component="p">
+                <Typography className={classes.primaryColumn}
+                            variant="body2"
+                            color='textSecondary'
+                            component="p">
                   {hotel.name}
                 </Typography>
-                <Typography className={classes.secondaryColumn} variant="body1" color='secondary' component="p">
+                <Typography className={classes.secondaryColumn}
+                            variant="body1"
+                            color='secondary'
+                            component="p">
                   {secondaryValue(hotel)}
                 </Typography>
-                <Typography className={classes.secondaryColumn} variant="body1" color='primary' component="p">
+                <Typography className={classes.secondaryColumn}
+                            variant="body1"
+                            color='primary'
+                            component="p">
                   {primaryValue(hotel)}
                 </Typography>
                 <Link className={classes.hotelLink}
