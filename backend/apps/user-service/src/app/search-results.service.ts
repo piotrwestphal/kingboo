@@ -27,6 +27,7 @@ export class SearchResultsService {
 
   private mapToSearchResult({
                               searchId,
+                              type,
                               searchPlace,
                               searchPlaceIdentifier,
                               checkInDate,
@@ -34,10 +35,14 @@ export class SearchResultsService {
                               numberOfRooms,
                               numberOfAdults,
                               childrenAgeAtCheckout,
+                              updateFrequencyMinutes,
+                              priority,
+                              resultsLimit,
                             }: SearchRequestDto,
                             topHotelsDto?: TopHotelsDto): SearchResultDto {
     return {
       searchId,
+      type,
       searchPlace,
       searchPlaceIdentifier,
       checkInDate,
@@ -45,6 +50,9 @@ export class SearchResultsService {
       numberOfRooms,
       numberOfAdults,
       childrenAgeAtCheckout,
+      updateFrequencyMinutes,
+      priority,
+      resultsLimit,
       topHotels: topHotelsDto,
     }
   }

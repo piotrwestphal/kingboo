@@ -10,6 +10,12 @@ const useStyles = makeStyles((theme: Theme) =>
     root: {
       flexGrow: 1,
     },
+    grid: {
+      [theme.breakpoints.down('xs')]: {
+        width: '100%',
+        margin: 0,
+      }
+    }
   }),
 );
 
@@ -23,7 +29,7 @@ export default function SearchRequestList() {
       : (hasError
         ? <div>Error</div> :
         <div className={classes.root}>
-          <Grid container spacing={1}>
+          <Grid container className={classes.grid} spacing={1}>
             {dto?.searchResults.map((searchResult) =>
               <Grid key={searchResult.searchId} item xs={12} md={6}>
                 <SearchRequestCard searchResultDto={searchResult}/>

@@ -110,7 +110,7 @@ export class MongoHotelRepository extends HotelRepository {
     }).exec();
     const pendingBestRate = findBySearchId().sort({
       'latestValues.rate': -1,
-      'latestValues.secondaryRate': -1
+      'latestValues.price': 1
     }).exec();
     const [
       bestPriceRate,
