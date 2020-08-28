@@ -1,16 +1,13 @@
 import React, { useState } from 'react';
 import {
   Avatar,
-  Box,
   Card,
   CardActions,
   CardContent,
   CardHeader,
   Collapse,
-  Container,
   createStyles,
   IconButton,
-  Link,
   Theme,
   Typography
 } from '@material-ui/core';
@@ -21,12 +18,11 @@ import FavoriteIcon from '@material-ui/icons/Favorite';
 import ShareIcon from '@material-ui/icons/Share';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
-import LinkIcon from '@material-ui/icons/Link';
 import clsx from 'clsx'
+import MainContent from './MainContent';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    root: {},
     mainContent: {
       paddingTop: theme.spacing(1),
       paddingBottom: theme.spacing(1),
@@ -44,37 +40,12 @@ const useStyles = makeStyles((theme: Theme) =>
     avatar: {
       backgroundColor: green[600],
     },
-    expandedContent: {},
-    hotelsContainer: {
-      [theme.breakpoints.down('xs')]: {
-        padding: theme.spacing(0),
-      }
-    },
-    box: {
-      display: 'flex',
-      flexWrap: 'wrap',
-      marginBottom: theme.spacing(2),
-      alignItems: 'center'
-    },
-    hotelBoxName: {
-      marginRight: theme.spacing(2),
-      width: theme.spacing(24),
-      [theme.breakpoints.up('sm')]: {
-        width: theme.spacing(30),
-      },
-    },
-    hotelBoxValue: {
-      marginRight: theme.spacing(1),
-      width: theme.spacing(5),
-      textAlign: 'right'
-    },
-    hotelBoxLink: {
-      marginLeft: theme.spacing(1),
-      height: theme.spacing(3),
-    },
   }),
 );
 
+// TODO:
+//  divide by components
+//  add more params: type, updateFreq, priority, results limit
 export default function SearchRequestCard({ searchResultDto }: { searchResultDto: SearchResultDto }) {
   const classes = useStyles();
   const [expanded, setExpanded] = useState(false);
@@ -96,7 +67,7 @@ export default function SearchRequestCard({ searchResultDto }: { searchResultDto
   };
 
   return (
-    <Card className={classes.root}>
+    <Card>
       <CardHeader
         avatar={
           <Avatar aria-label="recipe" className={classes.avatar}>
@@ -151,100 +122,7 @@ export default function SearchRequestCard({ searchResultDto }: { searchResultDto
         </IconButton>
       </CardActions>
       <Collapse in={expanded} timeout="auto" unmountOnExit>
-        {!searchResultDto.topHotels &&
-        <CardContent><Typography variant="body1" component="p" color='textSecondary'>There are no collected hotels</Typography></CardContent>}
-        {searchResultDto.topHotels &&
-        <CardContent className={classes.expandedContent}>
-          <Box className={classes.box}>
-            <Typography className={classes.hotelBoxName} variant="body1" component="p">Best price rate:</Typography>
-            <Typography variant="body2" component="p" color='textSecondary'>price / price rate</Typography>
-          </Box>
-          <Container className={classes.hotelsContainer}>
-            {searchResultDto.topHotels.bestPriceRate.map((hotel) => {
-              return <Box key={hotel.hotelId} className={classes.box}>
-                <Typography className={classes.hotelBoxName} variant="body2" color='textSecondary' component="p">
-                  {hotel.name}
-                </Typography>
-                <Typography className={classes.hotelBoxValue} variant="body1" color='secondary' component="p">
-                  {hotel.latestValues.price}
-                </Typography>
-                <Typography className={classes.hotelBoxValue} variant="body1" color='primary' component="p">
-                  {hotel.calculatedValues.priceRate}
-                </Typography>
-                <Link className={classes.hotelBoxLink} color='primary' href={hotel.hotelLink}>
-                  <LinkIcon/>
-                </Link>
-              </Box>
-            })}
-          </Container>
-          <Box className={classes.box}>
-            <Typography className={classes.hotelBoxName} variant="body1" component="p">Cheapest:</Typography>
-            <Typography variant="body2" component="p" color='textSecondary'>rate / price</Typography>
-          </Box>
-          <Container className={classes.hotelsContainer}>
-            {searchResultDto.topHotels.cheapest.map((hotel) => {
-              return <Box key={hotel.hotelId} className={classes.box}>
-                <Typography className={classes.hotelBoxName} variant="body2" color='textSecondary' component="p">
-                  {hotel.name}
-                </Typography>
-                <Typography className={classes.hotelBoxValue} variant="body1" color='secondary' component="p">
-                  {hotel.latestValues.rate}
-                </Typography>
-                <Typography className={classes.hotelBoxValue} variant="body1" color='primary' component="p">
-                  {hotel.latestValues.price}
-                </Typography>
-                <Link className={classes.hotelBoxLink} color='primary' href={hotel.hotelLink}>
-                  <LinkIcon/>
-                </Link>
-              </Box>
-            })}
-          </Container>
-          <Box className={classes.box}>
-            <Typography className={classes.hotelBoxName} variant="body1" component="p">Best rate:</Typography>
-            <Typography variant="body2" component="p" color='textSecondary'>price / rate</Typography>
-          </Box>
-          <Container className={classes.hotelsContainer}>
-            {searchResultDto.topHotels.bestRate.map((hotel) => {
-              return <Box key={hotel.hotelId} className={classes.box}>
-                <Typography className={classes.hotelBoxName} variant="body2" color='textSecondary' component="p">
-                  {hotel.name}
-                </Typography>
-                <Typography className={classes.hotelBoxValue} variant="body1" color='secondary' component="p">
-                  {hotel.latestValues.price}
-                </Typography>
-                <Typography className={classes.hotelBoxValue} variant="body1" color='primary' component="p">
-                  {hotel.latestValues.rate}
-                </Typography>
-                <Link className={classes.hotelBoxLink} color='primary' href={hotel.hotelLink}>
-                  <LinkIcon/>
-                </Link>
-              </Box>
-            })}
-          </Container>
-          <Box className={classes.box}>
-            <Typography className={classes.hotelBoxName} variant="body1" component="p">Best location:</Typography>
-            <Typography variant="body2" component="p" color='textSecondary'>price / dist to center</Typography>
-          </Box>
-          <Container className={classes.hotelsContainer}>
-            {searchResultDto.topHotels.bestLocation.map((hotel) => {
-              return <Box key={hotel.hotelId} className={classes.box}>
-                <Typography className={classes.hotelBoxName} variant="body2" color='textSecondary' component="p">
-                  {hotel.name}
-                </Typography>
-                <Typography className={classes.hotelBoxValue} variant="body1" color='secondary' component="p">
-                  {hotel.latestValues.price}
-                </Typography>
-                <Typography className={classes.hotelBoxValue} variant="body1" color='primary' component="p">
-                  {hotel.distanceFromCenterMeters}
-                </Typography>
-                <Link className={classes.hotelBoxLink} color='primary' href={hotel.hotelLink}>
-                  <LinkIcon/>
-                </Link>
-              </Box>
-            })}
-          </Container>
-        </CardContent>
-        }
+        <MainContent topHotels={searchResultDto.topHotels}/>
       </Collapse>
     </Card>
   );
