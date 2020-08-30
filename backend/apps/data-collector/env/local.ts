@@ -5,7 +5,6 @@ const mqAddress = 'amqp://dev:dev@localhost:5672';
 const consumerQueueName = 'collecting-scenario';
 const dataCollectionNotificationsQueue = 'data-collection-notifications';
 const dataToProcessQueue = 'data-to-process';
-const userNotificationsQueue = 'user-notifications';
 
 export const localConfig: AppConfig = {
   nodeEnv: 'local',
@@ -53,13 +52,6 @@ export const localConfig: AppConfig = {
     queueDefinition: {
       queue: dataToProcessQueue,
       queueOptions: retrieveRMQQueueOptions(dataToProcessQueue),
-    },
-  },
-  userNotificationsMqClient: {
-    address: mqAddress,
-    queueDefinition: {
-      queue: userNotificationsQueue,
-      queueOptions: retrieveRMQQueueOptions(userNotificationsQueue),
     },
   },
 };

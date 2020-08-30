@@ -5,32 +5,32 @@ type ScrapActivityValues = Omit<ScrapActivity, 'start' | 'finish'>
 export class ScrapActivity {
   constructor(
     public readonly searchId: string,
-    public scrapStartedAt: Date = null,
-    public scrapFinishedAt: Date = null,
+    public scrapingStartedAt: Date = null,
+    public scrapingFinishedAt: Date = null,
   ) {
   }
 
   static create({
                   searchId,
-                  scrapStartedAt,
-                  scrapFinishedAt
+                  scrapingStartedAt,
+                  scrapingFinishedAt
                 }: ScrapActivityValues): ScrapActivity {
     return new ScrapActivity(
       searchId,
-      scrapStartedAt,
-      scrapFinishedAt,
+      scrapingStartedAt,
+      scrapingFinishedAt,
     )
   }
 
-  start() {
-    this.scrapStartedAt = new Date();
-    this.scrapFinishedAt = null;
+  start(): void {
+    this.scrapingStartedAt = new Date();
+    this.scrapingFinishedAt = null;
   }
 
-  finish() {
-    if (this.scrapFinishedAt) {
+  finish(): void {
+    if (this.scrapingFinishedAt) {
       throw new InconsistencyException('Scrap activity already finished');
     }
-    this.scrapFinishedAt = new Date();
+    this.scrapingFinishedAt = new Date();
   }
 }

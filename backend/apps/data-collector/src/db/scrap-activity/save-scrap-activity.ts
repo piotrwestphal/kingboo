@@ -1,5 +1,5 @@
 export interface SaveScrapActivity {
   readonly searchId: string;
-  readonly scrapStartedAt: Date;
-  readonly scrapFinishedAt: Date;
+  readonly scrapingStartedAt: Date;
+  readonly scrapingFinishedAt: Date;
 }

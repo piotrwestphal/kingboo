@@ -57,6 +57,19 @@ export class SearchRequestService {
     }
   }
 
+  async updateCollectingProgress(searchId: string, collectingStartedAt: string, collectingFinishedAt: string): Promise<void> {
+    const found = await this.searchRequestRepository.findBySearchId(searchId);
+    if (found) {
+      const updated = found.updateCollectingProgress(collectingStartedAt, collectingFinishedAt);
+      const saved = await this.searchRequestRepository.update(updated);
+      logger.info(`Successfully updated collecting progress, started at [${saved.collectingStartedAt}] ` +
+        `finished at [${saved.collectingFinishedAt}] for given search id [${searchId}]`);
+      logger.debug(`Updated search request`, saved);
+    } else {
+      logger.warn(`Unable to update collecting progress. Search request for given search id [${searchId}] not found`);
+    }
+  }
+
   async saveSearchRequest(searchRequest: SearchRequest): Promise<SearchRequest> {
     const found = await this.searchRequestRepository.findBySearchId(searchRequest.searchId);
     if (found) {

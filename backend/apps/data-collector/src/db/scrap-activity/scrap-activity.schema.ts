@@ -5,8 +5,8 @@ export const ScrapActivitySchemaKey = 'scrapActivity';
 
 export const ScrapActivitySchema = new Schema<ScrapActivityDocument>({
     searchId: String,
-    scrapStartedAt: Date,
-    scrapFinishedAt: Date,
+    scrapingStartedAt: Date,
+    scrapingFinishedAt: Date,
   },
   {
     versionKey: false,

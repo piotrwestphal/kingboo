@@ -1,7 +1,10 @@
 import { InconsistencyException } from '../exception/InconsistencyException';
 import { SearchRequestType } from './SearchRequestType';
 
-type SearchRequestValues = Omit<SearchRequest, 'updateSearchPlaceIdentifier' | 'scheduleNextSearch'>
+type SearchRequestValues = Omit<SearchRequest,
+  'updateSearchPlaceIdentifier'
+  | 'scheduleNextSearch'
+  | 'updateCollectingProgress'>
 
 export class SearchRequest {
 
@@ -19,6 +22,8 @@ export class SearchRequest {
     public readonly childrenAgeAtCheckout: number[],
     public searchPlaceIdentifier: string | null,
     public nextSearchScheduledAt: Date,
+    public collectingStartedAt: Date,
+    public collectingFinishedAt: Date,
   ) {
   }
 
@@ -36,6 +41,8 @@ export class SearchRequest {
                   childrenAgeAtCheckout,
                   searchPlaceIdentifier,
                   nextSearchScheduledAt,
+                  collectingStartedAt,
+                  collectingFinishedAt,
                 }: SearchRequestValues): SearchRequest {
     return new SearchRequest(
       searchId,
@@ -51,6 +58,8 @@ export class SearchRequest {
       childrenAgeAtCheckout,
       searchPlaceIdentifier,
       nextSearchScheduledAt,
+      collectingStartedAt,
+      collectingFinishedAt,
     );
   }
 
@@ -66,6 +75,12 @@ export class SearchRequest {
         `Incoming [${searchPlaceIdentifier}], existing [${this.searchPlaceIdentifier}]`);
     }
     this.searchPlaceIdentifier = searchPlaceIdentifier;
+    return this;
+  }
+
+  updateCollectingProgress(collectingStartedAt: string, collectingFinishedAt: string): SearchRequest {
+    this.collectingStartedAt = new Date(collectingStartedAt);
+    this.collectingFinishedAt = new Date(collectingFinishedAt);
     return this;
   }
 }
