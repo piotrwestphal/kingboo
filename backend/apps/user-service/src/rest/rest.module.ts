@@ -1,8 +1,8 @@
 import { HttpModule, HttpService, Module } from '@nestjs/common';
 import { SearchRequestsClient } from '../core/abstract/search-requests.client';
 import { RestSearchRequestsClient } from './rest-search-requests.client';
-import { TopHotelsClient } from '../core/abstract/top-hotels.client';
-import { RestTopHotelsClient } from './rest-top-hotels.client';
+import { HotelsClient } from '../core/abstract/hotels.client';
+import { RestHotelsClient } from './rest-hotels.client';
 import { AppConfigService } from '../config/app-config.service';
 
 @Module({
@@ -17,15 +17,15 @@ import { AppConfigService } from '../config/app-config.service';
       inject: [AppConfigService, HttpService],
     },
     {
-      provide: TopHotelsClient,
+      provide: HotelsClient,
       useFactory: (config: AppConfigService,
                    httpService: HttpService) => {
-        return new RestTopHotelsClient(config, httpService);
+        return new RestHotelsClient(config, httpService);
       },
       inject: [AppConfigService, HttpService],
     }
   ],
-  exports: [SearchRequestsClient, TopHotelsClient],
+  exports: [SearchRequestsClient, HotelsClient],
 })
 export class RestModule {
 }
