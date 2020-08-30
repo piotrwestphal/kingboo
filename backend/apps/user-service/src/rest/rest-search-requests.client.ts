@@ -3,7 +3,7 @@ import { HttpService } from '@nestjs/common';
 import { AppConfigService } from '../config/app-config.service';
 import { SearchRequestDto } from '@kb/model';
 import { map } from 'rxjs/operators';
-import { SearchRequestsDto } from '@kb/model/search-requests.dto';
+import { SearchRequestsDto } from '@kb/model/search-request/search-requests.dto';
 
 export class RestSearchRequestsClient extends SearchRequestsClient {
   constructor(

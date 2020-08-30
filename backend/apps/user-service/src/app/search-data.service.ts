@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { SearchResultsDto } from './dto/search-results.dto';
+import { SearchDataPayload } from './dto/search-data.payload';
 import { SearchRequestsClient } from '../core/abstract/search-requests.client';
 import { TopHotelsClient } from '../core/abstract/top-hotels.client';
-import { SearchRequestDto, SearchResultDto, TopHotelsDto } from '@kb/model';
+import { SearchRequestDto, SearchDataDto, TopHotelsDto } from '@kb/model';
 
 @Injectable()
-export class SearchResultsService {
+export class SearchDataService {
 
   constructor(
     private readonly searchRequestsClient: SearchRequestsClient,
@@ -13,19 +13,19 @@ export class SearchResultsService {
   ) {
   }
 
-  async getSearchResults(): Promise<SearchResultsDto> {
+  async getSearchData(): Promise<SearchDataPayload> {
     const searchRequests = await this.searchRequestsClient.getSearchRequests()
     const pendingSearchResultsDto = searchRequests.map(async (searchRequestDto) => {
       const topHotelsDto = await this.topHotelsClient.getTopHotels(searchRequestDto.searchId)
-      return this.mapToSearchResult(searchRequestDto, topHotelsDto)
+      return this.mapToSearchData(searchRequestDto, topHotelsDto)
     })
-    const searchResults = await Promise.all(pendingSearchResultsDto)
+    const searchDataList = await Promise.all(pendingSearchResultsDto)
     return {
-      searchResults,
+      searchDataList,
     }
   }
 
-  private mapToSearchResult({
+  private mapToSearchData({
                               searchId,
                               type,
                               searchPlace,
@@ -39,7 +39,7 @@ export class SearchResultsService {
                               priority,
                               resultsLimit,
                             }: SearchRequestDto,
-                            topHotelsDto?: TopHotelsDto): SearchResultDto {
+                            topHotelsDto?: TopHotelsDto): SearchDataDto {
     return {
       searchId,
       type,

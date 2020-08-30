@@ -8,8 +8,8 @@ import { CreateSearchRequest } from './create-search-request';
 import { logger } from '../../logger';
 import { SearchRequestType } from '../../core/model/SearchRequestType';
 import { SearchRequestMapper } from './search-request.mapper';
-import { SearchRequestDto } from '@kb/model/search-request.dto';
-import { SearchRequestsDto } from '@kb/model/search-requests.dto';
+import { SearchRequestDto } from '@kb/model';
+import { SearchRequestsDto } from '@kb/model';
 
 export class SearchRequestService {
 

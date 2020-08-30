@@ -1,6 +1,6 @@
 import { TopHotelsDto } from '@kb/model';
 
-export interface SearchResultDto {
+export interface SearchDataDto {
   readonly searchId: string;
   readonly type: string;
   readonly searchPlace: string;

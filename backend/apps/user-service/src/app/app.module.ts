@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { SearchResultsController } from './search-results.controller';
-import { SearchResultsService } from './search-results.service';
+import { SearchDataService } from './search-data.service';
 import { ConfigModule } from '@kb/config';
 import { AppConfigService } from '../config/app-config.service';
 import { getEnvironments } from '../config/environments';
@@ -14,7 +14,7 @@ import { RestModule } from '../rest/rest.module';
     RestModule,
   ],
   controllers: [SearchResultsController, UserNotificationsConsumer],
-  providers: [SearchResultsService],
+  providers: [SearchDataService],
 })
 export class AppModule {
 }

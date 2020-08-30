@@ -3,10 +3,10 @@ import { CardContent, Typography } from '@material-ui/core';
 import { TopHotelsDto } from '../core/top-hotels.dto';
 import TopHotels from './TopHotels';
 
-export default function MainContent({ topHotels }: { topHotels: TopHotelsDto | null }) {
+export default function TopHotelsList({ topHotels }: { topHotels: TopHotelsDto | null }) {
 
   const empty =
-    <Typography variant="body1" component="p" color='textSecondary'>
+    <Typography component="p" color='textSecondary'>
       There are no collected hotels
     </Typography>
 
