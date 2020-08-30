@@ -32,12 +32,12 @@ export class HotelFactory {
       hotelLink,
       propertyType,
       starRating,
-      [collectedAt],
       [{
         value: price,
         changedAt: collectedAt,
         occurrenceCount: 1,
       }],
+      [collectedAt],
       {
         price,
         rate,
@@ -56,6 +56,7 @@ export class HotelFactory {
         maxPriceDiff: 0,
         priceRate: 0,
       },
+      collectedAt,
     );
   }
 }

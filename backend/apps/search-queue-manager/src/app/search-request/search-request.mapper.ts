@@ -8,6 +8,8 @@ export class SearchRequestMapper {
       checkInDate: searchRequest.checkInDate.toISOString(),
       checkOutDate: searchRequest.checkOutDate.toISOString(),
       nextSearchScheduledAt: searchRequest.nextSearchScheduledAt.toISOString(),
+      collectingStartedAt: searchRequest.collectingStartedAt ? searchRequest.collectingStartedAt.toISOString() : null,
+      collectingFinishedAt: searchRequest.collectingFinishedAt ? searchRequest.collectingFinishedAt.toISOString() : null,
     }
   }
 }

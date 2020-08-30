@@ -23,7 +23,7 @@ export class SearchRequest {
     public searchPlaceIdentifier: string | null,
     public nextSearchScheduledAt: Date,
     public collectingStartedAt: Date,
-    public collectingFinishedAt: Date,
+    public collectingFinishedAt: Date | null,
   ) {
   }
 
@@ -80,7 +80,7 @@ export class SearchRequest {
 
   updateCollectingProgress(collectingStartedAt: string, collectingFinishedAt: string): SearchRequest {
     this.collectingStartedAt = new Date(collectingStartedAt);
-    this.collectingFinishedAt = new Date(collectingFinishedAt);
+    this.collectingFinishedAt = collectingFinishedAt ? new Date(collectingFinishedAt): null;
     return this;
   }
 }

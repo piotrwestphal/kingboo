@@ -18,9 +18,10 @@ export const HotelSchema = new Schema<HotelDocument>({
     propertyType: String,
     starRating: Number,
     priceChanges: [PriceChangeSchema],
+    collectedAt: [Date],
     latestValues: LatestValuesSchema,
     calculatedValues: CalculatedValuesSchema,
-    collectedAt: [Date],
+    lastCollectedAt: Date,
   },
   {
     versionKey: false,
