@@ -13,7 +13,7 @@ export class AppConfigService extends ConfigService<AppConfig> {
     return this.config.searchRequestsResourceAddress;
   }
 
-  get topHotelsResourceAddress(): string {
-    return this.config.topHotelsResourceAddress;
+  get hotelsResourceAddress(): string {
+    return this.config.hotelsResourceAddress;
   }
 }

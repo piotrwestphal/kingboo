@@ -7,7 +7,7 @@ const consumerQueueName = 'user-notifications';
 export const localConfig: AppConfig = {
   nodeEnv: 'local',
   port: 8080,
-  corsOrigins: 'http://localhost', // separate multiple origins by comma
+  corsOrigins: 'http://localhost:3000', // separate multiple origins by comma
   mqConsumer: {
     address: mqAddress,
     queueDefinition: {
@@ -16,5 +16,5 @@ export const localConfig: AppConfig = {
     },
   },
   searchRequestsResourceAddress: 'http://localhost:38081',
-  topHotelsResourceAddress: 'http://localhost:38082',
+  hotelsResourceAddress: 'http://localhost:38082',
 };
