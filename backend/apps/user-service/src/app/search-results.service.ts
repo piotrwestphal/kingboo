@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { SearchResultsDto } from './dto/search-results.dto';
 import { SearchRequestsClient } from '../core/abstract/search-requests.client';
-import { TopHotelsClient } from '../core/abstract/top-hotels.client';
+import { HotelsClient } from '../core/abstract/hotels.client';
 import { SearchRequestDto, SearchResultDto, TopHotelsDto } from '@kb/model';
 
 @Injectable()
@@ -9,14 +9,14 @@ export class SearchResultsService {
 
   constructor(
     private readonly searchRequestsClient: SearchRequestsClient,
-    private readonly topHotelsClient: TopHotelsClient,
+    private readonly hotelsClient: HotelsClient,
   ) {
   }
 
   async getSearchResults(): Promise<SearchResultsDto> {
     const searchRequests = await this.searchRequestsClient.getSearchRequests()
     const pendingSearchResultsDto = searchRequests.map(async (searchRequestDto) => {
-      const topHotelsDto = await this.topHotelsClient.getTopHotels(searchRequestDto.searchId)
+      const topHotelsDto = await this.hotelsClient.getTopHotels(searchRequestDto.searchId)
       return this.mapToSearchResult(searchRequestDto, topHotelsDto)
     })
     const searchResults = await Promise.all(pendingSearchResultsDto)
