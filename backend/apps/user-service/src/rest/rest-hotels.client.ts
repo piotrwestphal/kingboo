@@ -14,9 +14,12 @@ export class RestHotelsClient extends HotelsClient {
     super();
   }
 
-  getTopHotels(searchId: string): Promise<TopHotelsDto | null> {
+  getTopHotels(searchId: string,
+               collectingStartedAt: string,
+               collectingFinishedAt: string | null): Promise<TopHotelsDto | null> {
     const baseUrl = `${this.config.hotelsResourceAddress}/api/v1/top-hotels`
-    return this.httpService.get<TopHotelsDto>(`${baseUrl}?search_id=${encodeURIComponent(searchId)}`)
+    const urlQuery = this.buildUrlQuery(searchId, collectingStartedAt, collectingFinishedAt)
+    return this.httpService.get<TopHotelsDto>(`${baseUrl}${urlQuery}`)
       .pipe(
         map(res => res.data),
         catchError((err) => {
@@ -26,9 +29,12 @@ export class RestHotelsClient extends HotelsClient {
       ).toPromise();
   }
 
-  getHotels(searchId: string): Observable<SimpleHotelDto[]> {
+  getHotels(searchId: string,
+            collectingStartedAt: string,
+            collectingFinishedAt: string | null): Observable<SimpleHotelDto[]> {
     const baseUrl = `${this.config.hotelsResourceAddress}/api/v1/hotels`
-    return this.httpService.get<TopHotelsDto>(`${baseUrl}?search_id=${encodeURIComponent(searchId)}`)
+    const urlQuery = this.buildUrlQuery(searchId, collectingStartedAt, collectingFinishedAt)
+    return this.httpService.get<TopHotelsDto>(`${baseUrl}${urlQuery}`)
       .pipe(
         map(res => res.data),
         catchError((err) => {
@@ -36,5 +42,15 @@ export class RestHotelsClient extends HotelsClient {
           return of(null)
         })
       )
+  }
+
+  private buildUrlQuery = (searchId: string,
+                           collectingStartedAt: string,
+                           collectingFinishedAt: string | null) => {
+    const mandatoryQuery = `?search_id=${encodeURIComponent(searchId)}` +
+      `&collecting_started_at=${collectingStartedAt}`;
+    return collectingFinishedAt
+      ? `${mandatoryQuery}&collecting_finished_at=${collectingFinishedAt}`
+      : mandatoryQuery
   }
 }

@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { SearchDataPayload } from './dto/search-data.payload';
 import { SearchRequestsClient } from '../core/abstract/search-requests.client';
 import { HotelsClient } from '../core/abstract/hotels.client';
-import { SearchRequestDto, SearchDataDto, TopHotelsDto } from '@kb/model';
+import { SearchDataDto, SearchRequestDto, TopHotelsDto } from '@kb/model';
 
 @Injectable()
 export class SearchDataService {
@@ -16,7 +16,8 @@ export class SearchDataService {
   async getSearchData(): Promise<SearchDataPayload> {
     const searchRequests = await this.searchRequestsClient.getSearchRequests()
     const pendingSearchResultsDto = searchRequests.map(async (searchRequestDto) => {
-      const topHotelsDto = await this.hotelsClient.getTopHotels(searchRequestDto.searchId)
+      const topHotelsDto = await this.hotelsClient.getTopHotels(
+        searchRequestDto.searchId, searchRequestDto.collectingStartedAt, searchRequestDto.collectingFinishedAt)
       return this.mapToSearchData(searchRequestDto, topHotelsDto)
     })
     const searchDataList = await Promise.all(pendingSearchResultsDto)
@@ -26,20 +27,20 @@ export class SearchDataService {
   }
 
   private mapToSearchData({
-                              searchId,
-                              type,
-                              searchPlace,
-                              searchPlaceIdentifier,
-                              checkInDate,
-                              checkOutDate,
-                              numberOfRooms,
-                              numberOfAdults,
-                              childrenAgeAtCheckout,
-                              updateFrequencyMinutes,
-                              priority,
-                              resultsLimit,
-                            }: SearchRequestDto,
-                            topHotelsDto?: TopHotelsDto): SearchDataDto {
+                            searchId,
+                            type,
+                            searchPlace,
+                            searchPlaceIdentifier,
+                            checkInDate,
+                            checkOutDate,
+                            numberOfRooms,
+                            numberOfAdults,
+                            childrenAgeAtCheckout,
+                            updateFrequencyMinutes,
+                            priority,
+                            resultsLimit,
+                          }: SearchRequestDto,
+                          topHotelsDto?: TopHotelsDto): SearchDataDto {
     return {
       searchId,
       type,

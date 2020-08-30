@@ -13,5 +13,5 @@ export interface SearchRequestDto {
   readonly searchPlaceIdentifier?: string;
   readonly nextSearchScheduledAt: string;
   readonly collectingStartedAt: string;
-  readonly collectingFinishedAt: string;
+  readonly collectingFinishedAt: string | null;
 }
