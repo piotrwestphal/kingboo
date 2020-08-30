@@ -4,5 +4,5 @@ import { AppConfig } from './app.config';
 
 export const appConfigValidationSchemaMap: SchemaMap<AppConfig> = {
   searchRequestsResourceAddress: Joi.string().required(),
-  topHotelsResourceAddress: Joi.string().required(),
+  hotelsResourceAddress: Joi.string().required(),
 };

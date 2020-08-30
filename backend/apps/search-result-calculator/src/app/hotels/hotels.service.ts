@@ -10,7 +10,7 @@ export class HotelsService {
   ) {
   }
 
-  async getHotels(searchId: string): Promise<SimpleHotelsDto> {
+  async getHotels(searchId?: string): Promise<SimpleHotelsDto> {
     if (!searchId) {
       throw new BadRequestException(`Missing query param "search_id"`)
     }
