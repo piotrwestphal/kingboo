@@ -1,17 +1,17 @@
 import { Controller, Get } from '@nestjs/common';
-import { SearchResultsService } from './search-results.service';
-import { SearchResultsDto } from './dto/search-results.dto';
+import { SearchDataService } from './search-data.service';
+import { SearchDataPayload } from './dto/search-data.payload';
 
-@Controller('api/v1/search-results')
+@Controller('api/v1/search-data')
 export class SearchResultsController {
 
   constructor(
-    private readonly searchResultsService: SearchResultsService,
+    private readonly searchDataService: SearchDataService,
   ) {
   }
 
   @Get()
-  getSearchResults(): Promise<SearchResultsDto> {
-    return this.searchResultsService.getSearchResults();
+  getSearchData(): Promise<SearchDataPayload> {
+    return this.searchDataService.getSearchData();
   }
 }

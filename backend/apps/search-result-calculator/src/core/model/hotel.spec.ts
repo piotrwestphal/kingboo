@@ -16,12 +16,12 @@ describe('Hotel', () => {
       'mock',
       'mock',
       1,
-      ['mock1'],
       [{
         value: 100,
         changedAt: 'mock1',
         occurrenceCount: 1,
       }],
+      ['mock1'],
       {
         price: 100,
         rate: 0,
@@ -39,7 +39,8 @@ describe('Hotel', () => {
         avgPriceDiff: 0,
         maxPriceDiff: 0,
         priceRate: 0,
-      }
+      },
+      'mock1'
     )
 
     // when
@@ -73,6 +74,7 @@ describe('Hotel', () => {
     expect(hotel.collectedAt.length).toBe(2)
     expect(hotel.collectedAt[0]).toBe('mock1')
     expect(hotel.collectedAt[1]).toBe('mock2')
+    expect(hotel.lastCollectedAt).toBe('mock2')
   })
 
   it('should update when price has not changed', () => {
@@ -90,7 +92,6 @@ describe('Hotel', () => {
       'mock',
       'mock',
       1,
-      ['mock1', 'mock2', 'mock3', 'mock4', 'mock5'],
       [
         {
           value: 100,
@@ -108,6 +109,7 @@ describe('Hotel', () => {
           occurrenceCount: 2,
         }
       ],
+      ['mock1', 'mock2', 'mock3', 'mock4', 'mock5'],
       {
         price: 150,
         rate: 0,
@@ -125,7 +127,8 @@ describe('Hotel', () => {
         avgPriceDiff: 100,
         maxPriceDiff: 100,
         priceRate: 100,
-      }
+      },
+      'mock5'
     )
 
     // when
@@ -158,5 +161,6 @@ describe('Hotel', () => {
     expect(hotel.priceChanges[2].changedAt).toBe('mock4')
     expect(hotel.collectedAt.length).toBe(6)
     expect(hotel.collectedAt[5]).toBe('mock6')
+    expect(hotel.lastCollectedAt).toBe('mock6')
   })
 })

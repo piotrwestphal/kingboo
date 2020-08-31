@@ -15,7 +15,8 @@ export interface HotelDocument extends Document {
   readonly propertyType: string;
   readonly starRating: number;
   readonly priceChanges: PriceChangeDocument[];
+  readonly collectedAt: string[];
   readonly latestValues: LatestValuesDocument;
   readonly calculatedValues: CalculatedValuesDocument;
-  readonly collectedAt: string[];
+  readonly lastCollectedAt: string;
 }

@@ -59,7 +59,7 @@ export default function TopHotels({
   const classes = useStyles()
   const empty =
     <Box className={classes.box}>
-      <Typography className={classes.primaryColumn} variant="body1" component="p">{title}:</Typography>
+      <Typography className={classes.primaryColumn} component="p">{title}:</Typography>
       <Typography variant="body2" component="p" color='textSecondary'>
         There are no hotels that meet conditions
       </Typography>
@@ -71,7 +71,6 @@ export default function TopHotels({
         : <>
           <Box className={classes.box}>
             <Typography className={classes.primaryColumn}
-                        variant="body1"
                         component="p">{title}:</Typography>
             <Typography className={classes.secondaryColumn}
                         variant="body2"
@@ -92,13 +91,11 @@ export default function TopHotels({
                   {hotel.name}
                 </Typography>
                 <Typography className={classes.secondaryColumn}
-                            variant="body1"
                             color='secondary'
                             component="p">
                   {secondaryValue(hotel)}
                 </Typography>
                 <Typography className={classes.secondaryColumn}
-                            variant="body1"
                             color='primary'
                             component="p">
                   {primaryValue(hotel)}

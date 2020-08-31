@@ -24,6 +24,8 @@ export class SearchRequestFactory {
       checkOutDate: createSearchRequest.checkOutDate,
       searchPlaceIdentifier: null,
       nextSearchScheduledAt: new Date(),
+      collectingStartedAt: null,
+      collectingFinishedAt: null,
     });
   }
 

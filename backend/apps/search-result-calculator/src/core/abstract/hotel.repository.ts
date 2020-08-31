@@ -6,7 +6,7 @@ import { SimpleHotel } from '../interface/simple-hotel';
 export abstract class HotelRepository {
   abstract findAllBySearchIdAndHotelId(searchId: string, hotelIds: string[]): Promise<Map<string, Hotel>>;
 
-  abstract findAllBySearchId(searchId: string): Promise<SimpleHotel[]>;
+  abstract findAllBySearchId(searchId: string, collectingStartedAt: string, collectingFinishedAt?: string): Promise<SimpleHotel[]>;
 
   abstract createAll(hotels: Hotel[]): Promise<Hotel[]>;
 
@@ -16,5 +16,5 @@ export abstract class HotelRepository {
 
   abstract deleteMany(hotelsIdentifiers: HotelIdentifier[]): Promise<number>;
 
-  abstract findTopHotelsBySearchIdOrFail(searchId: string): Promise<TopHotels>;
+  abstract findTopHotelsBySearchIdOrFail(searchId: string, collectingStartedAt: string, collectingFinishedAt?: string): Promise<TopHotels>;
 }

@@ -19,6 +19,8 @@ export const SearchRequestSchema = new Schema<SearchRequestDocument>({
 
     searchPlaceIdentifier: String,
     nextSearchScheduledAt: Date,
+    collectingStartedAt: Date,
+    collectingFinishedAt: Date,
   },
   {
     versionKey: false,

@@ -15,10 +15,11 @@ export class Hotel implements HotelIdentifier {
     readonly hotelLink: string,
     readonly propertyType: string,
     readonly starRating: number,
-    readonly collectedAt: string[],
     readonly priceChanges: PriceChange[],
+    readonly collectedAt: string[],
     public latestValues: LatestValues,
     public calculatedValues: CalculatedValues,
+    public lastCollectedAt: string,
   ) {
   }
 
@@ -44,6 +45,7 @@ export class Hotel implements HotelIdentifier {
     this.collectedAt.push(collectedAt);
     this.latestValues = latestValues;
     this.calculatedValues = calculatedValues;
+    this.lastCollectedAt = collectedAt;
     return this;
   }
 }

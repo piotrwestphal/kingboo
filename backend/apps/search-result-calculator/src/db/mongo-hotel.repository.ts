@@ -23,6 +23,13 @@ const selectSimpleHotel: Record<keyof SimpleHotel, 1> = {
   calculatedValues: 1,
 }
 
+const dateRangeQuery = (startDate: string, endDate?: string) => {
+  const query = { $gte: startDate }
+  return endDate
+    ? { ...query, $lte: endDate }
+    : query
+}
+
 export class MongoHotelRepository extends HotelRepository {
 
   private readonly DAY = 24 * 60 * 60 * 1000;
@@ -51,8 +58,13 @@ export class MongoHotelRepository extends HotelRepository {
     return hotelIdByHotel;
   }
 
-  findAllBySearchId(searchId: string): Promise<SimpleHotel[]> {
-    return this.model.find({ searchId })
+  findAllBySearchId(searchId: string,
+                    collectingStartedAt: string,
+                    collectingFinishedAt?: string): Promise<SimpleHotel[]> {
+    return this.model.find({
+      searchId,
+      lastCollectedAt: dateRangeQuery(collectingStartedAt, collectingFinishedAt)
+    })
       .select({ ...selectSimpleHotel, _id: 0 })
       .sort({ distanceFromCenterMeters: 1 })
       .exec();
@@ -92,8 +104,13 @@ export class MongoHotelRepository extends HotelRepository {
     return deleted.length;
   }
 
-  async findTopHotelsBySearchIdOrFail(searchId: string): Promise<TopHotels> {
-    const findBySearchId = () => this.model.find({ searchId })
+  async findTopHotelsBySearchIdOrFail(searchId: string,
+                                      collectingStartedAt: string,
+                                      collectingFinishedAt?: string): Promise<TopHotels> {
+    const findBySearchId = () => this.model.find({
+      searchId,
+      lastCollectedAt: dateRangeQuery(collectingStartedAt, collectingFinishedAt)
+    })
       .orFail(() => new NotFoundException(`Hotels with search id: ${searchId} not exist`))
       .select({ ...selectSimpleHotel, _id: 0 })
       .limit(5);

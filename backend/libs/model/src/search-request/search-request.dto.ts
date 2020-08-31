@@ -12,4 +12,6 @@ export interface SearchRequestDto {
   readonly childrenAgeAtCheckout: number[];
   readonly searchPlaceIdentifier?: string;
   readonly nextSearchScheduledAt: string;
+  readonly collectingStartedAt: string;
+  readonly collectingFinishedAt: string | null;
 }

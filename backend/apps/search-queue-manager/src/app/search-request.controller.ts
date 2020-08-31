@@ -3,7 +3,7 @@ import { SearchRequestService } from './search-request/search-request.service';
 import { UserCreateSearchRequest } from './search-request/user-create-search-request';
 import { CreateSearchRequestMapper } from './search-request/create-search-request.mapper';
 import { SearchRequestDto } from '@kb/model';
-import { SearchRequestsDto } from '@kb/model/search-requests.dto';
+import { SearchRequestsDto } from '@kb/model/search-request/search-requests.dto';
 
 @Controller('api/v1/search-requests')
 export class SearchRequestController {

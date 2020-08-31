@@ -5,25 +5,25 @@ import { ScrapActivityDocument } from './scrap-activity.document';
 export class ScrapActivityDocumentMapper {
   toScrapActivity({
                     searchId,
-                    scrapStartedAt,
-                    scrapFinishedAt,
+                    scrapingStartedAt,
+                    scrapingFinishedAt,
                   }: ScrapActivityDocument): ScrapActivity {
     return ScrapActivity.create({
       searchId,
-      scrapStartedAt: scrapStartedAt ? new Date(scrapStartedAt): null,
-      scrapFinishedAt: scrapFinishedAt ? new Date(scrapFinishedAt) : null,
+      scrapingStartedAt: scrapingStartedAt ? new Date(scrapingStartedAt) : null,
+      scrapingFinishedAt: scrapingFinishedAt ? new Date(scrapingFinishedAt) : null,
     })
   }
 
   prepareForSave({
                    searchId,
-                   scrapStartedAt,
-                   scrapFinishedAt,
+                   scrapingStartedAt,
+                   scrapingFinishedAt,
                  }: ScrapActivity): SaveScrapActivity {
     return {
       searchId,
-      scrapStartedAt,
-      scrapFinishedAt,
+      scrapingStartedAt,
+      scrapingFinishedAt,
     }
   }
 }

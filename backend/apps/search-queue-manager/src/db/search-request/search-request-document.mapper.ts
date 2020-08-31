@@ -18,6 +18,8 @@ export class SearchRequestDocumentMapper {
                     childrenAgeAtCheckout,
                     searchPlaceIdentifier,
                     nextSearchScheduledAt,
+                    collectingStartedAt,
+                    collectingFinishedAt,
                   }: SearchRequestDocument): SearchRequest {
     return SearchRequest.create({
       searchId,
@@ -33,6 +35,8 @@ export class SearchRequestDocumentMapper {
       childrenAgeAtCheckout,
       searchPlaceIdentifier,
       nextSearchScheduledAt: new Date(nextSearchScheduledAt),
+      collectingStartedAt: new Date(collectingStartedAt),
+      collectingFinishedAt: new Date(collectingFinishedAt),
     });
   }
 
@@ -50,6 +54,8 @@ export class SearchRequestDocumentMapper {
                    childrenAgeAtCheckout,
                    searchPlaceIdentifier,
                    nextSearchScheduledAt,
+                   collectingStartedAt,
+                   collectingFinishedAt,
                  }: SearchRequest): SaveSearchRequest {
     return {
       searchId,
@@ -65,6 +71,8 @@ export class SearchRequestDocumentMapper {
       childrenAgeAtCheckout,
       searchPlaceIdentifier,
       nextSearchScheduledAt,
+      collectingStartedAt,
+      collectingFinishedAt,
     };
   }
 }
