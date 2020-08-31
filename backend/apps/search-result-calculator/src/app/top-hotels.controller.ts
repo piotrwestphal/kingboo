@@ -1,16 +1,18 @@
 import { CacheInterceptor, Controller, Get, Query, UseInterceptors } from '@nestjs/common';
-import { TopHotelsService } from './top-hotels/top-hotels.service';
 import { TopHotelsDto } from '@kb/model';
+import { HotelsService } from './hotels/hotels.service';
 
 @Controller('api/v1/top-hotels')
 @UseInterceptors(CacheInterceptor)
 export class TopHotelsController {
 
-  constructor(private readonly topHotelsService: TopHotelsService) {
+  constructor(private readonly hotelsService: HotelsService) {
   }
 
   @Get()
-  getTopHotels(@Query('search_id') searchId?: string): Promise<TopHotelsDto> {
-    return this.topHotelsService.getTopHotels(searchId);
+  getTopHotels(@Query('search_id') searchId: string,
+               @Query('collecting_started_at') collectingStartedAt: string,
+               @Query('collecting_finished_at') collectingFinishedAt?: string): Promise<TopHotelsDto> {
+    return this.hotelsService.getTopHotels(searchId, collectingStartedAt, collectingFinishedAt);
   }
 }

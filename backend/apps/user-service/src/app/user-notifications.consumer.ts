@@ -1,7 +1,7 @@
 import { Controller } from '@nestjs/common';
 import { MessagePattern, Payload } from '@nestjs/microservices';
 import { UserNotificationsMessagePattern } from '@kb/rabbit/message-pattern/UserNotificationsMessagePattern';
-import { HotelsData, ScrapData, UserNotificationMessage } from '@kb/model';
+import { HotelsData, UserNotificationMessage } from '@kb/model';
 import { logger } from '../logger';
 
 @Controller()
@@ -10,19 +10,17 @@ export class UserNotificationsConsumer {
   @MessagePattern(UserNotificationsMessagePattern.HOTELS_COLLECTION_STARTED)
   async handleHotelsCollectionStarted(@Payload() {
     searchId,
-    data,
     timestamp,
-  }: UserNotificationMessage<ScrapData>): Promise<void> {
-    logger.debug(`Received message ${UserNotificationsMessagePattern.HOTELS_COLLECTION_STARTED}`, data)
+  }: UserNotificationMessage): Promise<void> {
+    logger.debug(`Received message ${UserNotificationsMessagePattern.HOTELS_COLLECTION_STARTED}`)
   }
 
   @MessagePattern(UserNotificationsMessagePattern.HOTELS_COLLECTION_COMPLETED)
   async handleHotelsCollectionCompleted(@Payload() {
     searchId,
-    data,
     timestamp,
-  }: UserNotificationMessage<ScrapData>): Promise<void> {
-    logger.debug(`Received message ${UserNotificationsMessagePattern.HOTELS_COLLECTION_COMPLETED}`, data)
+  }: UserNotificationMessage): Promise<void> {
+    logger.debug(`Received message ${UserNotificationsMessagePattern.HOTELS_COLLECTION_COMPLETED}`)
   }
 
   @MessagePattern(UserNotificationsMessagePattern.HOTELS_PROCESSING_COMPLETED)

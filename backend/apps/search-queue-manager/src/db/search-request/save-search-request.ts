@@ -15,4 +15,6 @@ export interface SaveSearchRequest {
 
   readonly searchPlaceIdentifier: string;
   readonly nextSearchScheduledAt: Date;
+  readonly collectingStartedAt: Date;
+  readonly collectingFinishedAt: Date;
 }

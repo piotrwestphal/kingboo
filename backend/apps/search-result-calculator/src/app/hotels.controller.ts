@@ -10,7 +10,9 @@ export class HotelsController {
   }
 
   @Get()
-  getHotels(@Query('search_id') searchId?: string): Promise<SimpleHotelsDto> {
-    return this.hotelsService.getHotels(searchId);
+  getHotels(@Query('search_id') searchId: string,
+            @Query('collecting_started_at') collectingStartedAt: string,
+            @Query('collecting_finished_at') collectingFinishedAt?: string): Promise<SimpleHotelsDto> {
+    return this.hotelsService.getHotels(searchId, collectingStartedAt, collectingFinishedAt);
   }
 }

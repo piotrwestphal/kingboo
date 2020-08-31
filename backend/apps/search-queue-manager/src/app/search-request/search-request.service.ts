@@ -8,8 +8,8 @@ import { CreateSearchRequest } from './create-search-request';
 import { logger } from '../../logger';
 import { SearchRequestType } from '../../core/model/SearchRequestType';
 import { SearchRequestMapper } from './search-request.mapper';
-import { SearchRequestDto } from '@kb/model/search-request.dto';
-import { SearchRequestsDto } from '@kb/model/search-requests.dto';
+import { SearchRequestDto } from '@kb/model';
+import { SearchRequestsDto } from '@kb/model';
 
 export class SearchRequestService {
 
@@ -54,6 +54,19 @@ export class SearchRequestService {
       logger.debug(`Updated search request`, saved);
     } else {
       logger.warn(`Unable to update search place identifier. Search request for given search id [${searchId}] not found`);
+    }
+  }
+
+  async updateCollectingProgress(searchId: string, collectingStartedAt: string, collectingFinishedAt: string): Promise<void> {
+    const found = await this.searchRequestRepository.findBySearchId(searchId);
+    if (found) {
+      const updated = found.updateCollectingProgress(collectingStartedAt, collectingFinishedAt);
+      const saved = await this.searchRequestRepository.update(updated);
+      logger.info(`Successfully updated collecting progress, started at [${saved.collectingStartedAt}] ` +
+        `finished at [${saved.collectingFinishedAt}] for given search id [${searchId}]`);
+      logger.debug(`Updated search request`, saved);
+    } else {
+      logger.warn(`Unable to update collecting progress. Search request for given search id [${searchId}] not found`);
     }
   }
 

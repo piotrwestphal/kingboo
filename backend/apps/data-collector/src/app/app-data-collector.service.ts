@@ -5,15 +5,15 @@ import { ScrapActivityRepository } from '../core/abstract/scrap-activity.reposit
 import { ScrapActivity } from '../core/model/ScrapActivity';
 import { HotelsCollector } from './hotels.collector';
 import { logger } from '../logger';
-import { UserNotificationSender } from '../core/abstract/user-notification.sender';
+import { DataCollectionNotificationSender } from '../core/abstract/data-collection-notification.sender';
 
 @Injectable()
 export class AppDataCollectorService extends DataCollectorService {
 
   constructor(
+    private readonly dataCollectionNotificationSender: DataCollectionNotificationSender,
     private readonly hotelsCollector: HotelsCollector,
     private readonly scrapActivityRepository: ScrapActivityRepository,
-    private readonly userNotificationSender: UserNotificationSender,
   ) {
     super();
   }
@@ -32,13 +32,13 @@ export class AppDataCollectorService extends DataCollectorService {
       const scrapActivity = new ScrapActivity(searchId);
       scrapActivity.start();
       const saved = await this.scrapActivityRepository.update(searchId, scrapActivity);
-      this.userNotificationSender.notifyAboutHotelsCollectionStarted(searchId, saved.scrapStartedAt, saved.scrapFinishedAt)
+      this.dataCollectionNotificationSender.notifyAboutHotelsCollectionStarted(searchId, saved.scrapingStartedAt, saved.scrapingFinishedAt)
       await this.hotelsCollector.collectHotels(searchId, collectHotelsScenario);
       saved.finish();
       const finished = await this.scrapActivityRepository.update(searchId, saved);
-      this.userNotificationSender.notifyAboutHotelsCollectionCompleted(searchId, finished.scrapStartedAt, finished.scrapFinishedAt)
-      logger.info(`Collecting data finish. Scrap started at [${finished.scrapStartedAt.toISOString()}], ` +
-        `scrap finished at [${finished.scrapFinishedAt.toISOString()}].`);
+      this.dataCollectionNotificationSender.notifyAboutHotelsCollectionCompleted(searchId, finished.scrapingStartedAt, finished.scrapingFinishedAt)
+      logger.info(`Collecting data finish. Scrap started at [${finished.scrapingStartedAt.toISOString()}], ` +
+        `scrap finished at [${finished.scrapingFinishedAt.toISOString()}].`);
     }
   }
 

@@ -17,7 +17,6 @@ import { logger } from '../logger';
 import { ScheduleModule } from '@nestjs/schedule';
 import { OldHotelsRemover } from './scheduler/old-hotels.remover';
 import { UserNotificationSender } from '../core/abstract/user-notification.sender';
-import { TopHotelsService } from './top-hotels/top-hotels.service';
 import { HotelsController } from './hotels.controller';
 import { HotelsService } from './hotels/hotels.service';
 
@@ -37,7 +36,6 @@ import { HotelsService } from './hotels/hotels.service';
   ],
   providers: [
     OldHotelsRemover,
-    TopHotelsService,
     HotelsService,
     {
       provide: HotelProcessor,

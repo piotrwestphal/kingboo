@@ -13,9 +13,10 @@ export class MongoHotelDocumentMapper {
             propertyType,
             starRating,
             priceChanges,
+            collectedAt,
             latestValues,
             calculatedValues,
-            collectedAt,
+            lastCollectedAt,
           }: HotelDocument): Hotel {
     return new Hotel(
       searchId,
@@ -27,10 +28,11 @@ export class MongoHotelDocumentMapper {
       hotelLink,
       propertyType,
       starRating,
-      collectedAt,
       (priceChanges ?? []),
+      collectedAt,
       latestValues,
       calculatedValues,
+      lastCollectedAt,
     );
   }
 }
