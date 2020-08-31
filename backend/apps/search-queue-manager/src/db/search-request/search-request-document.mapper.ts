@@ -35,8 +35,8 @@ export class SearchRequestDocumentMapper {
       childrenAgeAtCheckout,
       searchPlaceIdentifier,
       nextSearchScheduledAt: new Date(nextSearchScheduledAt),
-      collectingStartedAt: new Date(collectingStartedAt),
-      collectingFinishedAt: new Date(collectingFinishedAt),
+      collectingStartedAt: collectingStartedAt ? new Date(collectingStartedAt) : null,
+      collectingFinishedAt: collectingFinishedAt ? new Date(collectingFinishedAt) : null,
     });
   }
 
