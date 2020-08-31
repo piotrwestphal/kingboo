@@ -2,7 +2,7 @@ export { MqMessage } from './mqmessage/mq-message';
 export { CollectHotelsScenarioMessage } from './mqmessage/collect-hotels-scenario.message';
 export { CollectedHotelsMessage } from './mqmessage/collected-hotels.message';
 export { SearchPlaceCollectionCompletedMessage } from './mqmessage/search-place-collection-completed.message';
-export { ScrapingProgressMessage } from './mqmessage/scraping-progress.message';
+export { ScrapingFinishedMessage } from './mqmessage/scraping-finished.message';
 export { UserNotificationMessage } from './mqmessage/user-notification.message';
 export { CollectHotelsScenarioDto } from './collect-hotels-scenario.dto';
 export { RawHotelDto } from './raw-hotel/raw-hotel.dto';

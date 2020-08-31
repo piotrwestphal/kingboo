@@ -2,7 +2,7 @@ import { DataCollectionNotificationSender } from '../core/abstract/data-collecti
 import { DataCollectionNotificationsMessagePattern } from '@kb/rabbit/message-pattern/DataCollectionNotificationsMessagePattern';
 import { SearchPlaceCollectionCompletedMessage } from '@kb/model/mqmessage/search-place-collection-completed.message';
 import { ClientProxy } from '@nestjs/microservices';
-import { ScrapingProgressMessage } from '@kb/model';
+import { ScrapingFinishedMessage } from '@kb/model';
 
 export class RmqDataCollectionNotificationSender extends DataCollectionNotificationSender {
 
@@ -18,24 +18,13 @@ export class RmqDataCollectionNotificationSender extends DataCollectionNotificat
       { searchPlaceIdentifier, searchId, timestamp: Date.now() });
   }
 
-  notifyAboutHotelsCollectionStarted(searchId: string, scrapingStartedAt: Date, scrapingFinishedAt: Date): void {
-    const msg = this.convertToProgressMsg(searchId, scrapingStartedAt, scrapingFinishedAt)
-    this.client.emit<void, ScrapingProgressMessage>(DataCollectionNotificationsMessagePattern.DATA_COLLECTION_PROGRESS, msg);
-  }
-
   notifyAboutHotelsCollectionCompleted(searchId: string, scrapingStartedAt: Date, scrapingFinishedAt: Date): void {
-    const msg = this.convertToProgressMsg(searchId, scrapingStartedAt, scrapingFinishedAt)
-    this.client.emit<void, ScrapingProgressMessage>(DataCollectionNotificationsMessagePattern.DATA_COLLECTION_PROGRESS, msg);
-  }
-
-  private convertToProgressMsg(searchId: string,
-                               scrapingStartedAt: Date,
-                               scrapingFinishedAt: Date): ScrapingProgressMessage {
-    return {
+    const msg: ScrapingFinishedMessage = {
       searchId,
-      scrapingStartedAt: scrapingStartedAt ? scrapingStartedAt.toISOString() : null,
-      scrapingFinishedAt: scrapingFinishedAt ? scrapingFinishedAt.toISOString() : null,
+      scrapingStartedAt: scrapingStartedAt.toISOString(),
+      scrapingFinishedAt: scrapingFinishedAt.toISOString(),
       timestamp: Date.now(),
     }
+    this.client.emit<void, ScrapingFinishedMessage>(DataCollectionNotificationsMessagePattern.DATA_COLLECTION_FINISHED, msg);
   }
 }

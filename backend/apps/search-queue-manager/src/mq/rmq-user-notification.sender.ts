@@ -26,4 +26,9 @@ export class RmqUserNotificationSender extends UserNotificationSender {
     this.client.emit<void, MqMessage>(UserNotificationsMessagePattern.CYCLIC_SEARCH_REQUEST_DELETED,
       { searchId, timestamp: Date.now() });
   }
+
+  notifyAboutFinishedCollecting(searchId: string): void {
+    this.client.emit<void, MqMessage>(UserNotificationsMessagePattern.HOTELS_COLLECTION_COMPLETED,
+      { searchId, timestamp: Date.now() });
+  }
 }

@@ -6,6 +6,7 @@ import { ScrapActivity } from '../core/model/ScrapActivity';
 import { HotelsCollector } from './hotels.collector';
 import { logger } from '../logger';
 import { DataCollectionNotificationSender } from '../core/abstract/data-collection-notification.sender';
+import { UserNotificationSender } from '../core/abstract/user-notification.sender';
 
 @Injectable()
 export class AppDataCollectorService extends DataCollectorService {
@@ -14,6 +15,7 @@ export class AppDataCollectorService extends DataCollectorService {
     private readonly dataCollectionNotificationSender: DataCollectionNotificationSender,
     private readonly hotelsCollector: HotelsCollector,
     private readonly scrapActivityRepository: ScrapActivityRepository,
+    private readonly userNotificationService: UserNotificationSender,
   ) {
     super();
   }
@@ -32,7 +34,7 @@ export class AppDataCollectorService extends DataCollectorService {
       const scrapActivity = new ScrapActivity(searchId);
       scrapActivity.start();
       const saved = await this.scrapActivityRepository.update(searchId, scrapActivity);
-      this.dataCollectionNotificationSender.notifyAboutHotelsCollectionStarted(searchId, saved.scrapingStartedAt, saved.scrapingFinishedAt)
+      this.userNotificationService.notifyAboutHotelsCollectionStarted(searchId);
       await this.hotelsCollector.collectHotels(searchId, collectHotelsScenario);
       saved.finish();
       const finished = await this.scrapActivityRepository.update(searchId, saved);

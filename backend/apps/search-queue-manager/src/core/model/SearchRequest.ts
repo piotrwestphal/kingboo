@@ -4,7 +4,7 @@ import { SearchRequestType } from './SearchRequestType';
 type SearchRequestValues = Omit<SearchRequest,
   'updateSearchPlaceIdentifier'
   | 'scheduleNextSearch'
-  | 'updateCollectingProgress'>
+  | 'finishCollecting'>
 
 export class SearchRequest {
 
@@ -78,9 +78,9 @@ export class SearchRequest {
     return this;
   }
 
-  updateCollectingProgress(collectingStartedAt: string, collectingFinishedAt: string): SearchRequest {
+  finishCollecting(collectingStartedAt: string, collectingFinishedAt: string): SearchRequest {
     this.collectingStartedAt = new Date(collectingStartedAt);
-    this.collectingFinishedAt = collectingFinishedAt ? new Date(collectingFinishedAt): null;
+    this.collectingFinishedAt = new Date(collectingFinishedAt);
     return this;
   }
 }
