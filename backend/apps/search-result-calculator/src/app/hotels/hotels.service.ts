@@ -11,7 +11,7 @@ export class HotelsService {
   ) {
   }
 
-  async getTopHotels(searchId?: string, collectingStartedAt?: string, collectingFinishedAt?: string): Promise<TopHotelsDto> {
+  async getTopHotels(searchId: string, collectingStartedAt: string, collectingFinishedAt?: string): Promise<TopHotelsDto> {
     this.validateMandatoryParams(searchId, collectingStartedAt)
     const { bestRate, bestLocation, cheapest, bestPriceRate } = await this.hotelRepository.findTopHotelsBySearchIdOrFail(
       searchId, collectingStartedAt, collectingFinishedAt);
@@ -23,7 +23,7 @@ export class HotelsService {
     }
   }
 
-  async getHotels(searchId?: string, collectingStartedAt?: string, collectingFinishedAt?: string): Promise<SimpleHotelsDto> {
+  async getHotels(searchId: string, collectingStartedAt: string, collectingFinishedAt?: string): Promise<SimpleHotelsDto> {
     this.validateMandatoryParams(searchId, collectingStartedAt)
     const simpleHotels = await this.hotelRepository.findAllBySearchId(
       searchId, collectingStartedAt, collectingFinishedAt);
