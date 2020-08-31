@@ -22,7 +22,7 @@ export class SearchRequest {
     public readonly childrenAgeAtCheckout: number[],
     public searchPlaceIdentifier: string | null,
     public nextSearchScheduledAt: Date,
-    public collectingStartedAt: Date,
+    public collectingStartedAt: Date | null,
     public collectingFinishedAt: Date | null,
   ) {
   }
