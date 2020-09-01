@@ -10,7 +10,7 @@ const userNotificationsQueue = 'user-notifications';
 export const localConfig: AppConfig = {
   nodeEnv: 'local',
   port: 8080,
-  corsOrigins: 'http://localhost', // separate multiple origins by comma
+  corsOrigins: 'http://localhost:3000', // separate multiple origins by comma
   saveRawResultAsJson: true,
   rawSearchResultStorageDays: 30,
   scrapActivitiesWithoutUpdateStorageDays: 7,
