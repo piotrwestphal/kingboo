@@ -1,7 +1,6 @@
 export interface SaveCyclicSearch {
 
   readonly cyclicId: string;
-  readonly priority: number;
   readonly updateFrequencyMinutes: number;
   readonly resultsLimit: number;
 

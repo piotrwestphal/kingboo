@@ -3,7 +3,6 @@ import { SchemaMap } from '@hapi/joi';
 import { CreateCyclicSearch } from './create-cyclic-search';
 
 export const cyclicSearchValidationSchemaMap: SchemaMap<CreateCyclicSearch> = {
-  priority: Joi.number().required(),
   updateFrequencyMinutes: Joi.number().required(),
   resultsLimit: Joi.number().required(),
   searchPlace: Joi.string().required(),

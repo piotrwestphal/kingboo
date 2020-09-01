@@ -18,7 +18,6 @@ export class CreateSearchRequestMapper {
   }
 
   fromCyclicSearch({
-                     priority,
                      updateFrequencyMinutes,
                      resultsLimit,
                      searchPlace,
@@ -29,7 +28,6 @@ export class CreateSearchRequestMapper {
                    checkInDate: Date,
                    checkOutDate: Date): CreateSearchRequest {
     return {
-      priority,
       updateFrequencyMinutes,
       resultsLimit,
       searchPlace,

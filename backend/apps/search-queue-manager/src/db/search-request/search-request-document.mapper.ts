@@ -7,7 +7,6 @@ export class SearchRequestDocumentMapper {
   toSearchRequest({
                     searchId,
                     type,
-                    priority,
                     updateFrequencyMinutes,
                     resultsLimit,
                     searchPlace,
@@ -24,7 +23,6 @@ export class SearchRequestDocumentMapper {
     return SearchRequest.create({
       searchId,
       type: type as SearchRequestType,
-      priority,
       updateFrequencyMinutes,
       resultsLimit,
       searchPlace,
@@ -43,7 +41,6 @@ export class SearchRequestDocumentMapper {
   prepareForSave({
                    searchId,
                    type,
-                   priority,
                    updateFrequencyMinutes,
                    resultsLimit,
                    searchPlace,
@@ -60,7 +57,6 @@ export class SearchRequestDocumentMapper {
     return {
       searchId,
       type,
-      priority,
       updateFrequencyMinutes,
       resultsLimit,
       searchPlace,

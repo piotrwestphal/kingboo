@@ -2,7 +2,6 @@ export interface SaveSearchRequest {
 
   readonly searchId: string;
   readonly type: string;
-  readonly priority: number;
   readonly updateFrequencyMinutes: number;
   readonly resultsLimit: number;
 

@@ -10,14 +10,13 @@ export class SearchIdentifierBuilder {
                      numberOfRooms,
                      numberOfAdults,
                      childrenAgeAtCheckout,
-                     priority,
                      updateFrequencyMinutes,
                      resultsLimit,
                    }: SearchIdentifierComponents): string {
     return `${type}_${searchPlace.trim().toUpperCase().replace(/ /g, '_')}_` +
       `${this.shorten(checkInDate)}_${this.shorten(checkOutDate)}_` +
       `${numberOfRooms}_${numberOfAdults}_${childrenAgeAtCheckout.length}_` +
-      `${priority}_${updateFrequencyMinutes}_${resultsLimit}`;
+      `${updateFrequencyMinutes}_${resultsLimit}`;
   }
 
   private shorten = (date: Date) => TimeHelper.getFormattedShortDate(date);

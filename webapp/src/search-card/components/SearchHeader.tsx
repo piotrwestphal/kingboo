@@ -34,11 +34,6 @@ export default function SearchHeader({ searchDataDto }: { searchDataDto: SearchD
           {avatarName(searchDataDto.searchPlace)}
         </Avatar>
       }
-      action={
-        <IconButton aria-label="settings">
-          <MoreVertIcon/>
-        </IconButton>
-      }
       title={
         <>
           <Typography variant="body2" color="textPrimary" component="span">{searchDataDto.searchPlace}</Typography>
@@ -50,6 +45,11 @@ export default function SearchHeader({ searchDataDto }: { searchDataDto: SearchD
         </>
       }
       subheader={`${new Date(searchDataDto.checkInDate).toDateString()} - ${new Date(searchDataDto.checkOutDate).toDateString()}`}
+      action={
+        <IconButton aria-label="settings">
+          <MoreVertIcon/>
+        </IconButton>
+      }
     />
   )
 }

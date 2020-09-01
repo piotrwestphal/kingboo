@@ -1,5 +1,4 @@
 export interface CreateCyclicSearch {
-  readonly priority: number;
   readonly updateFrequencyMinutes: number;
   readonly resultsLimit: number;
   readonly searchPlace: string;

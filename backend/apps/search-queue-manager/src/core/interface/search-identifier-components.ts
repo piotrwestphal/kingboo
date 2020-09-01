@@ -8,7 +8,6 @@ export interface SearchIdentifierComponents {
   readonly numberOfRooms: number;
   readonly numberOfAdults: number;
   readonly childrenAgeAtCheckout: number[];
-  readonly priority: number;
   readonly updateFrequencyMinutes: number;
   readonly resultsLimit: number;
 }

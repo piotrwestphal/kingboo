@@ -43,7 +43,6 @@ export class SearchDataService {
                             numberOfAdults,
                             childrenAgeAtCheckout,
                             updateFrequencyMinutes,
-                            priority,
                             resultsLimit,
                           }: SearchRequestDto,
                           topHotelsDto?: TopHotelsDto): SearchDataDto {
@@ -58,7 +57,6 @@ export class SearchDataService {
       numberOfAdults,
       childrenAgeAtCheckout,
       updateFrequencyMinutes,
-      priority,
       resultsLimit,
       topHotels: topHotelsDto,
     }
