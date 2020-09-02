@@ -1,8 +1,10 @@
-import React from 'react'
-import { Avatar, CardHeader, createStyles, IconButton, Theme, Typography } from '@material-ui/core';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
+import React from 'react';
+import { Avatar, CardHeader, createStyles, Theme, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import { SearchDataDto } from '../core/search-data.dto';
+import { SearchDataDto } from '../../core/search-data.dto';
+import PersonIcon from '@material-ui/icons/Person';
+import ReplayIcon from '@material-ui/icons/Replay';
+import { SearchRequestType } from '../../core/SearchRequestType';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -36,7 +38,7 @@ export default function SearchHeader({ searchDataDto }: { searchDataDto: SearchD
       }
       title={
         <>
-          <Typography variant="body2" color="textPrimary" component="span">{searchDataDto.searchPlace}</Typography>
+          <Typography variant="body1" color="textPrimary" component="span">{searchDataDto.searchPlace}</Typography>
           {searchDataDto.searchPlaceIdentifier &&
           <Typography variant="body2"
                       color="textSecondary"
@@ -46,9 +48,9 @@ export default function SearchHeader({ searchDataDto }: { searchDataDto: SearchD
       }
       subheader={`${new Date(searchDataDto.checkInDate).toDateString()} - ${new Date(searchDataDto.checkOutDate).toDateString()}`}
       action={
-        <IconButton aria-label="settings">
-          <MoreVertIcon/>
-        </IconButton>
+        searchDataDto.type === SearchRequestType.CYCLIC
+          ? <ReplayIcon color='disabled'/>
+          : <PersonIcon color='disabled'/>
       }
     />
   )
