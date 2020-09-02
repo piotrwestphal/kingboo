@@ -1,8 +1,9 @@
 import React from 'react'
 import { Box, Container, createStyles, Link, Theme, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import { SimpleHotelDto } from '../core/simple-hotel.dto';
+import { SimpleHotelDto } from '../../core/simple-hotel.dto';
 import OpenInNewIcon from '@material-ui/icons/OpenInNew';
+import clsx from 'clsx'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -11,6 +12,9 @@ const useStyles = makeStyles((theme: Theme) =>
       flexWrap: 'wrap',
       marginBottom: theme.spacing(2),
       alignItems: 'center'
+    },
+    bold: {
+      fontWeight: 500,
     },
     hotelsContainer: {
       [theme.breakpoints.down('xs')]: {
@@ -39,7 +43,7 @@ const useStyles = makeStyles((theme: Theme) =>
   }),
 );
 
-interface TopHotelsProps {
+interface SearchContentItemProps {
   readonly simpleHotels: SimpleHotelDto[];
   readonly title: string;
   readonly primaryValue: (h: SimpleHotelDto) => string | number;
@@ -48,19 +52,19 @@ interface TopHotelsProps {
   readonly secondaryKey: string;
 }
 
-export default function TopHotels({
-                                    simpleHotels,
-                                    title,
-                                    primaryValue,
-                                    primaryKey,
-                                    secondaryValue,
-                                    secondaryKey,
-                                  }: TopHotelsProps) {
+export default function SearchContentItem({
+                                            simpleHotels,
+                                            title,
+                                            primaryValue,
+                                            primaryKey,
+                                            secondaryValue,
+                                            secondaryKey,
+                                          }: SearchContentItemProps) {
   const classes = useStyles()
   const empty =
     <Box className={classes.box}>
-      <Typography className={classes.primaryColumn} component="p">{title}:</Typography>
-      <Typography variant="body2" component="p" color='textSecondary'>
+      <Typography className={classes.primaryColumn}>{title}:</Typography>
+      <Typography variant="body2" color='textSecondary'>
         There are no hotels that meet conditions
       </Typography>
     </Box>
@@ -74,11 +78,9 @@ export default function TopHotels({
                         component="p">{title}:</Typography>
             <Typography className={classes.secondaryColumn}
                         variant="body2"
-                        component="p"
                         color='textSecondary'>{secondaryKey}</Typography>
             <Typography className={classes.secondaryColumn}
                         variant="body2"
-                        component="p"
                         color='textSecondary'>{primaryKey}</Typography>
           </Box>
           <Container className={classes.hotelsContainer}>
@@ -86,18 +88,15 @@ export default function TopHotels({
               return <Box key={hotel.hotelId} className={classes.box}>
                 <Typography className={classes.primaryColumn}
                             variant="body2"
-                            color='textSecondary'
-                            component="p">
+                            color='textSecondary'>
                   {hotel.name}
                 </Typography>
                 <Typography className={classes.secondaryColumn}
-                            color='secondary'
-                            component="p">
+                            color='secondary'>
                   {secondaryValue(hotel)}
                 </Typography>
-                <Typography className={classes.secondaryColumn}
-                            color='primary'
-                            component="p">
+                <Typography className={clsx(classes.secondaryColumn, classes.bold)}
+                            color='primary'>
                   {primaryValue(hotel)}
                 </Typography>
                 <Link className={classes.hotelLink}
