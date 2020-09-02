@@ -12,8 +12,8 @@ export const localConfig: AppConfig = {
   port: 8080,
   corsOrigins: 'http://localhost:3000', // separate multiple origins by comma
   saveRawResultAsJson: true,
-  rawSearchResultStorageDays: 30,
-  scrapActivitiesWithoutUpdateStorageDays: 7,
+  rawSearchResultRetentionHours: 720,
+  scrapActivitiesWithoutUpdateRetentionDays: 7,
   takeScreenshotOnError: true,
   puppeteer: {
     headlessModeOff: true,

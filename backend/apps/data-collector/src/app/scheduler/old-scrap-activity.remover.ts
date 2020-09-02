@@ -16,10 +16,10 @@ export class OldScrapActivityRemover {
   @Cron(CronExpression.EVERY_30_MINUTES, {
     name: 'remove-old-scrap-activity',
   })
-  async removeOldScrapActivity() {
+  async removeOldScrapActivity(): Promise<void> {
     logger.debug(`Triggering job [remove-old-scrap-activity]`);
     const now = new Date();
-    const days = this.appConfigService.scrapActivitiesWithoutUpdateStorageDays;
+    const days = this.appConfigService.scrapActivitiesWithoutUpdateRetentionDays;
     const found = await this.scrapActivityRepository.findLastUpdatedGivenDaysAgo(now, days);
     if (found.length) {
       const deletedCount = await this.scrapActivityRepository.deleteMany(found);

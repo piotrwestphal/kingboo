@@ -31,12 +31,12 @@ export class AppConfigService extends ConfigService<AppConfig> implements Firest
     return this.config.firestore.emulator;
   };
 
-  get rawResultStorageDays(): number {
-    return this.config.rawSearchResultStorageDays;
+  get rawResultRetentionHours(): number {
+    return this.config.rawSearchResultRetentionHours;
   }
 
-  get scrapActivitiesWithoutUpdateStorageDays(): number {
-    return this.config.scrapActivitiesWithoutUpdateStorageDays;
+  get scrapActivitiesWithoutUpdateRetentionDays(): number {
+    return this.config.scrapActivitiesWithoutUpdateRetentionDays;
   }
 
   get saveRawResultAsJson(): boolean {
