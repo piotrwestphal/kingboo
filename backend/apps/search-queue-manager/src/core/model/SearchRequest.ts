@@ -11,7 +11,6 @@ export class SearchRequest {
   private constructor(
     public readonly searchId: string,
     public readonly type: SearchRequestType,
-    public readonly priority: number,
     public readonly updateFrequencyMinutes: number,
     public readonly resultsLimit: number,
     public readonly searchPlace: string,
@@ -30,7 +29,6 @@ export class SearchRequest {
   static create({
                   searchId,
                   type,
-                  priority,
                   updateFrequencyMinutes,
                   resultsLimit,
                   searchPlace,
@@ -47,7 +45,6 @@ export class SearchRequest {
     return new SearchRequest(
       searchId,
       type,
-      priority,
       updateFrequencyMinutes,
       resultsLimit,
       searchPlace,

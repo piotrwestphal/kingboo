@@ -4,7 +4,6 @@ export class CyclicSearch {
 
   private constructor(
     public readonly cyclicId: string,
-    public readonly priority: number,
     public readonly updateFrequencyMinutes: number,
     public readonly resultsLimit: number,
     public readonly searchPlace: string,
@@ -20,7 +19,6 @@ export class CyclicSearch {
 
   static create({
                   cyclicId,
-                  priority,
                   updateFrequencyMinutes,
                   resultsLimit,
                   searchPlace,
@@ -34,7 +32,6 @@ export class CyclicSearch {
                 }: CyclicSearchValues): CyclicSearch {
     return new CyclicSearch(
       cyclicId,
-      priority,
       updateFrequencyMinutes,
       resultsLimit,
       searchPlace,
@@ -49,7 +46,7 @@ export class CyclicSearch {
   }
 
 
-  updateCyclicSearchRequests(cyclicSearchIds: string[]) {
+  updateCyclicSearchRequests(cyclicSearchIds: string[]): CyclicSearch {
     this.cyclicSearchRequests.length = 0;
     this.cyclicSearchRequests.push(...cyclicSearchIds);
     return this;

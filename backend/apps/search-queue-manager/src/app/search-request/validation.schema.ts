@@ -3,7 +3,6 @@ import { SchemaMap } from '@hapi/joi';
 import { CreateSearchRequest } from './create-search-request';
 
 export const createSearchRequestValidationSchemaMap: SchemaMap<CreateSearchRequest> = {
-  priority: Joi.number().required(),
   updateFrequencyMinutes: Joi.number().required(),
   resultsLimit: Joi.number().required(),
   searchPlace: Joi.string().required(),

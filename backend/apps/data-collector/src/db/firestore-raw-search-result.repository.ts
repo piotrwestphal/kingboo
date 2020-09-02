@@ -7,7 +7,7 @@ import { RawSearchResultDocument } from './raw-search-result/raw-search-result.d
 
 export class FirestoreRawSearchResultRepository extends RawSearchResultRepository {
 
-  private readonly DAY = 24 * 60 * 60 * 1000;
+  private readonly HOUR = 60 * 60 * 1000;
 
   constructor(
     private readonly firestoreClient: FirestoreClient,
@@ -34,9 +34,9 @@ export class FirestoreRawSearchResultRepository extends RawSearchResultRepositor
     }
   }
 
-  async deleteOlderThanGivenDays(days: number): Promise<string[]> {
+  async deleteOlderThanGivenHours(hours: number): Promise<string[]> {
     const collectionRef = this.firestoreClient.getCollection<RawSearchResultDocument>('raw-search-results');
-    const offset = new Date(Date.now() - days * this.DAY);  // x days ago
+    const offset = new Date(Date.now() - hours * this.HOUR);  // x hours ago
     const docsRef = await collectionRef.where('createdAt', '<', offset).get();
     if (docsRef.empty) {
       return [];
@@ -44,7 +44,7 @@ export class FirestoreRawSearchResultRepository extends RawSearchResultRepositor
       const batch = this.firestoreClient.getBatch();
       docsRef.forEach(doc => batch.delete(doc.ref));
       await batch.commit();
-      logger.debug(`Deleted [${docsRef.size}] raw search results that were older than [${days}] days`);
+      logger.debug(`Deleted [${docsRef.size}] raw search results that were older than [${hours}] days`);
       return docsRef.docs.map(v => v.id);
     }
   }

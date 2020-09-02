@@ -16,9 +16,9 @@ export class ObsoleteResultsSearcher {
   @Cron(CronExpression.EVERY_HOUR, {
     name: 'find-obsolete-raw-search-results',
   })
-  async findObsoleteRawSearchResults() {
+  async findObsoleteRawSearchResults(): Promise<void> {
     logger.debug(`Triggering job [find-obsolete-raw-search-results]`);
-    const docIds = await this.rawSearchResultRepository.deleteOlderThanGivenDays(this.appConfigService.rawResultStorageDays);
+    const docIds = await this.rawSearchResultRepository.deleteOlderThanGivenHours(this.appConfigService.rawResultRetentionHours);
     if (docIds.length) {
       logger.info(`Deleted [${docIds.length}] raw search results due to obsolescence. Doc ids: ${docIds}`);
     }

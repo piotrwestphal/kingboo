@@ -2,7 +2,6 @@ import { CyclicIdentifierComponents } from './interface/cyclic-identifier-compon
 
 export class CyclicIdentifierBuilder {
   createIdentifier({
-                     priority,
                      updateFrequencyMinutes,
                      resultsLimit,
                      searchPlace,
@@ -15,7 +14,7 @@ export class CyclicIdentifierBuilder {
                    }: CyclicIdentifierComponents): string {
     return `${searchPlace.trim().toUpperCase().replace(/ /g, '_')}_` +
       `${numberOfRooms}_${numberOfAdults}_${childrenAgeAtCheckout.length}_` +
-      `${priority}_${updateFrequencyMinutes}_${resultsLimit}_` +
+      `${updateFrequencyMinutes}_${resultsLimit}_` +
       `${dayOfTheWeek}_${nightsOfStay}_${beginSearchDaysBefore}`;
   }
 }

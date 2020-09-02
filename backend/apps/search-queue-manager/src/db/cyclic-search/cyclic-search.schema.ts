@@ -5,7 +5,6 @@ export const CyclicSearchSchemaKey = 'cyclicSearch';
 
 export const CyclicSearchSchema = new Schema<CyclicSearchDocument>({
     cyclicId: String,
-    priority: Number,
     updateFrequencyMinutes: Number,
     resultsLimit: Number,
     searchPlace: String,

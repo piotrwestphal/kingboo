@@ -6,7 +6,6 @@ export class CyclicSearchDocumentMapper {
 
   toCyclicSearch({
                    cyclicId,
-                   priority,
                    updateFrequencyMinutes,
                    resultsLimit,
                    searchPlace,
@@ -20,7 +19,6 @@ export class CyclicSearchDocumentMapper {
                  }: CyclicSearchDocument): CyclicSearch {
     return CyclicSearch.create({
       cyclicId,
-      priority,
       updateFrequencyMinutes,
       resultsLimit,
       searchPlace,
@@ -36,7 +34,6 @@ export class CyclicSearchDocumentMapper {
 
   prepareForSave({
                    cyclicId,
-                   priority,
                    updateFrequencyMinutes,
                    resultsLimit,
                    searchPlace,
@@ -50,7 +47,6 @@ export class CyclicSearchDocumentMapper {
                  }: CyclicSearch): SaveCyclicSearch {
     return {
       cyclicId,
-      priority,
       updateFrequencyMinutes,
       resultsLimit,
       searchPlace,

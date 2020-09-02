@@ -27,7 +27,7 @@ const useStyles = makeStyles((theme: Theme) =>
 
 // TODO:
 //  divide by components
-//  add more params: type, updateFreq, priority, results limit
+//  add more params: type, updateFreq, results limit
 // add toggle buttons for top hotels categories
 export default function SearchCard({ searchDataDto }: { searchDataDto: SearchDataDto }) {
   const classes = useStyles();

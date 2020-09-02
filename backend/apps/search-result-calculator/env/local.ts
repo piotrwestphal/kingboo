@@ -8,7 +8,7 @@ const userNotificationsQueue = 'user-notifications';
 export const localConfig: AppConfig = {
   nodeEnv: 'local',
   port: 8080,
-  corsOrigins: 'http://localhost', // separate multiple origins by comma
+  corsOrigins: 'http://localhost:3000', // separate multiple origins by comma
   saveResultAsJson: true,
   hotelsWithoutUpdateStorageDays: 7,
   mongo: {
