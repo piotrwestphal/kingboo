@@ -20,6 +20,7 @@ export const SearchRequestSchema = new Schema<SearchRequestDocument>({
     nextSearchScheduledAt: Date,
     collectingStartedAt: Date,
     collectingFinishedAt: Date,
+    collectingCount: Number,
   },
   {
     versionKey: false,

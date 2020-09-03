@@ -16,4 +16,5 @@ export interface SaveSearchRequest {
   readonly nextSearchScheduledAt: Date;
   readonly collectingStartedAt: Date;
   readonly collectingFinishedAt: Date;
+  readonly collectingCount: number;
 }

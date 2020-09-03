@@ -10,7 +10,10 @@ export interface SearchDataDto {
   readonly numberOfRooms: number;
   readonly numberOfAdults: number;
   readonly childrenAgeAtCheckout: number[];
-  readonly updateFrequencyMinutes: number,
-  readonly resultsLimit: number,
+  readonly updateFrequencyMinutes: number;
+  readonly resultsLimit: number;
+  readonly nextSearchScheduledAt: string;
+  readonly collectingFinishedAt?: string;
+  readonly collectingCount: number,
   readonly topHotels?: TopHotelsDto;
 }

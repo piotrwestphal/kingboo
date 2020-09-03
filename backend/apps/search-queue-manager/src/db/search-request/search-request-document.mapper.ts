@@ -19,6 +19,7 @@ export class SearchRequestDocumentMapper {
                     nextSearchScheduledAt,
                     collectingStartedAt,
                     collectingFinishedAt,
+                    collectingCount,
                   }: SearchRequestDocument): SearchRequest {
     return SearchRequest.create({
       searchId,
@@ -35,6 +36,7 @@ export class SearchRequestDocumentMapper {
       nextSearchScheduledAt: new Date(nextSearchScheduledAt),
       collectingStartedAt: collectingStartedAt ? new Date(collectingStartedAt) : null,
       collectingFinishedAt: collectingFinishedAt ? new Date(collectingFinishedAt) : null,
+      collectingCount: collectingCount ?? 0,
     });
   }
 
@@ -53,6 +55,7 @@ export class SearchRequestDocumentMapper {
                    nextSearchScheduledAt,
                    collectingStartedAt,
                    collectingFinishedAt,
+                   collectingCount,
                  }: SearchRequest): SaveSearchRequest {
     return {
       searchId,
@@ -69,6 +72,7 @@ export class SearchRequestDocumentMapper {
       nextSearchScheduledAt,
       collectingStartedAt,
       collectingFinishedAt,
+      collectingCount,
     };
   }
 }

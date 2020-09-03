@@ -26,6 +26,7 @@ export class SearchRequestFactory {
       nextSearchScheduledAt: new Date(),
       collectingStartedAt: null,
       collectingFinishedAt: null,
+      collectingCount: 0,
     });
   }
 

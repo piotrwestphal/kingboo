@@ -23,6 +23,7 @@ export class SearchRequest {
     public nextSearchScheduledAt: Date,
     public collectingStartedAt: Date | null,
     public collectingFinishedAt: Date | null,
+    public collectingCount: number,
   ) {
   }
 
@@ -41,6 +42,7 @@ export class SearchRequest {
                   nextSearchScheduledAt,
                   collectingStartedAt,
                   collectingFinishedAt,
+                  collectingCount,
                 }: SearchRequestValues): SearchRequest {
     return new SearchRequest(
       searchId,
@@ -57,6 +59,7 @@ export class SearchRequest {
       nextSearchScheduledAt,
       collectingStartedAt,
       collectingFinishedAt,
+      collectingCount,
     );
   }
 
