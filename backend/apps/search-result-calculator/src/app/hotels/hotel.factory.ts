@@ -57,6 +57,7 @@ export class HotelFactory {
         priceRate: 0,
       },
       collectedAt,
+      1,
     );
   }
 }

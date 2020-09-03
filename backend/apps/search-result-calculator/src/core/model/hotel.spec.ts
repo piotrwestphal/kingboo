@@ -40,7 +40,8 @@ describe('Hotel', () => {
         maxPriceDiff: 0,
         priceRate: 0,
       },
-      'mock1'
+      'mock1',
+      1,
     )
 
     // when
@@ -128,7 +129,8 @@ describe('Hotel', () => {
         maxPriceDiff: 100,
         priceRate: 100,
       },
-      'mock5'
+      'mock5',
+      5,
     )
 
     // when
