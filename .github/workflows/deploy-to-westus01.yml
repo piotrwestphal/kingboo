@@ -26,7 +26,7 @@ jobs:
           workdir: backend
           dockerfile: kb-data-collector.Dockerfile
 
-  deploy:
+  deploy_data-collector:
     needs: [publish_data-collector]
     runs-on: ubuntu-latest
     steps:

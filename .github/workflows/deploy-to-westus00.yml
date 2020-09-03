@@ -43,7 +43,7 @@ jobs:
           workdir: backend
           dockerfile: kb-search-result-calculator.Dockerfile
 
-  deploy:
+  deploy_search-queue-manager_and_search-result-calculator:
     needs: [publish_search-queue-manager, publish_search-result-calculator]
     runs-on: ubuntu-latest
     steps:

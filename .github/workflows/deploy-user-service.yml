@@ -9,7 +9,7 @@ on:
       - '.github/workflows/deploy-user-service.yml'
 
 jobs:
-  deploy:
+  deploy_user-service:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1

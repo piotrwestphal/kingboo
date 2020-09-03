@@ -8,7 +8,7 @@ on:
       - '.github/workflows/test-backend.yml'
 
 jobs:
-  test:
+  test_backend:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1

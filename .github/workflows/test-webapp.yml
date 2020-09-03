@@ -8,7 +8,7 @@ on:
       - '.github/workflows/test-webapp.yml'
 
 jobs:
-  test:
+  test_webapp:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
