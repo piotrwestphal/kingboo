@@ -20,6 +20,7 @@ export class Hotel implements HotelIdentifier {
     public latestValues: LatestValues,
     public calculatedValues: CalculatedValues,
     public lastCollectedAt: string,
+    public collectingCount: number,
   ) {
   }
 
@@ -46,6 +47,7 @@ export class Hotel implements HotelIdentifier {
     this.latestValues = latestValues;
     this.calculatedValues = calculatedValues;
     this.lastCollectedAt = collectedAt;
+    this.collectingCount = this.collectedAt.length;
     return this;
   }
 }

@@ -21,6 +21,8 @@ const selectSimpleHotel: Record<keyof SimpleHotel, 1> = {
   priceChanges: 1,
   latestValues: 1,
   calculatedValues: 1,
+  lastCollectedAt: 1,
+  collectingCount: 1,
 }
 
 const dateRangeQuery = (startDate: string, endDate?: string) => {

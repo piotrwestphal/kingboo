@@ -17,6 +17,7 @@ export class MongoHotelDocumentMapper {
             latestValues,
             calculatedValues,
             lastCollectedAt,
+            collectingCount,
           }: HotelDocument): Hotel {
     return new Hotel(
       searchId,
@@ -33,6 +34,7 @@ export class MongoHotelDocumentMapper {
       latestValues,
       calculatedValues,
       lastCollectedAt,
+      collectingCount,
     );
   }
 }

@@ -19,4 +19,5 @@ export interface HotelDocument extends Document {
   readonly latestValues: LatestValuesDocument;
   readonly calculatedValues: CalculatedValuesDocument;
   readonly lastCollectedAt: string;
+  readonly collectingCount: number;
 }

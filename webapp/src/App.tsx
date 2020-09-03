@@ -1,8 +1,8 @@
 import React from 'react';
 import CssBaseline from "@material-ui/core/CssBaseline";
-import SearchCardList from './search-card/SearchCardList';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core';
 import { cyan, green } from '@material-ui/core/colors';
+import Main from './search-data/Main';
 
 const theme = createMuiTheme({
   palette: {
@@ -20,7 +20,7 @@ export default function App() {
     <React.Fragment>
       <CssBaseline>
         <ThemeProvider theme={theme}>
-          <SearchCardList/>
+          <Main/>
         </ThemeProvider>
       </CssBaseline>
     </React.Fragment>

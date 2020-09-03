@@ -16,4 +16,6 @@ export interface SimpleHotel {
   readonly priceChanges: PriceChange[];
   readonly latestValues: LatestValues;
   readonly calculatedValues: CalculatedValues;
+  readonly lastCollectedAt: string;
+  readonly collectingCount: number;
 }

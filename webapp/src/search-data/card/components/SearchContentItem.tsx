@@ -1,7 +1,7 @@
 import React from 'react'
 import { Box, Container, createStyles, Link, Theme, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import { SimpleHotelDto } from '../../core/simple-hotel.dto';
+import { SimpleHotelDto } from '../../../core/simple-hotel.dto';
 import OpenInNewIcon from '@material-ui/icons/OpenInNew';
 import clsx from 'clsx'
 
