@@ -3,9 +3,6 @@ on:
   pull_request:
     branches:
       - master
-    paths:
-      - 'webapp/**'
-      - '.github/workflows/test-webapp.yml'
 
 jobs:
   test_webapp:

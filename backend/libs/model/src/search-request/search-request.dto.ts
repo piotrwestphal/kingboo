@@ -13,4 +13,5 @@ export interface SearchRequestDto {
   readonly nextSearchScheduledAt: string;
   readonly collectingStartedAt: string | null;
   readonly collectingFinishedAt: string | null;
+  readonly collectingCount: number;
 }

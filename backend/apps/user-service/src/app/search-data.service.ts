@@ -35,6 +35,7 @@ export class SearchDataService {
   private mapToSearchData({
                             searchId,
                             type,
+                            resultsLimit,
                             searchPlace,
                             searchPlaceIdentifier,
                             checkInDate,
@@ -43,12 +44,15 @@ export class SearchDataService {
                             numberOfAdults,
                             childrenAgeAtCheckout,
                             updateFrequencyMinutes,
-                            resultsLimit,
+                            nextSearchScheduledAt,
+                            collectingFinishedAt,
+                            collectingCount,
                           }: SearchRequestDto,
                           topHotelsDto?: TopHotelsDto): SearchDataDto {
     return {
       searchId,
       type,
+      resultsLimit,
       searchPlace,
       searchPlaceIdentifier,
       checkInDate,
@@ -57,7 +61,9 @@ export class SearchDataService {
       numberOfAdults,
       childrenAgeAtCheckout,
       updateFrequencyMinutes,
-      resultsLimit,
+      nextSearchScheduledAt,
+      collectingFinishedAt,
+      collectingCount,
       topHotels: topHotelsDto,
     }
   }
