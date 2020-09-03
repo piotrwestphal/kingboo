@@ -9,7 +9,7 @@ on:
       - '.github/workflows/deploy-webapp.yml'
 
 jobs:
-  deploy:
+  deploy_webapp:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
