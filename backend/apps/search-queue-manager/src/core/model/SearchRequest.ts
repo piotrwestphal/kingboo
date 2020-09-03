@@ -81,6 +81,7 @@ export class SearchRequest {
   finishCollecting(collectingStartedAt: string, collectingFinishedAt: string): SearchRequest {
     this.collectingStartedAt = new Date(collectingStartedAt);
     this.collectingFinishedAt = new Date(collectingFinishedAt);
+    this.collectingCount = this.collectingCount++;
     return this;
   }
 }
