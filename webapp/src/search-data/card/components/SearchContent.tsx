@@ -1,6 +1,6 @@
 import React from 'react'
 import { CardContent, Typography } from '@material-ui/core';
-import { TopHotelsDto } from '../../core/top-hotels.dto';
+import { TopHotelsDto } from '../../../core/top-hotels.dto';
 import SearchContentItem from './SearchContentItem';
 
 interface SearchContentProps {

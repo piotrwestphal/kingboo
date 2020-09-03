@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Card, Collapse, Divider } from '@material-ui/core';
-import { SearchDataDto } from '../core/search-data.dto';
+import { SearchDataDto } from '../../core/search-data.dto';
 import SearchContent from './components/SearchContent';
 import SearchHeader from './components/SearchHeader';
 import SearchDetails from './components/SearchDetails';

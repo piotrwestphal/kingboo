@@ -22,6 +22,7 @@ export const HotelSchema = new Schema<HotelDocument>({
     latestValues: LatestValuesSchema,
     calculatedValues: CalculatedValuesSchema,
     lastCollectedAt: Date,
+    collectingCount: Number,
   },
   {
     versionKey: false,

@@ -13,4 +13,6 @@ export interface SimpleHotelDto {
   readonly priceChanges: PriceChangeDto[];
   readonly latestValues: HotelLatestValuesDto;
   readonly calculatedValues: HotelCalculatedValuesDto;
+  readonly lastCollectedAt: string;
+  readonly collectingCount: number;
 }

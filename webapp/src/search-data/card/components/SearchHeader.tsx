@@ -1,10 +1,10 @@
 import React from 'react';
 import { Avatar, CardHeader, createStyles, Theme, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import { SearchDataDto } from '../../core/search-data.dto';
+import { SearchDataDto } from '../../../core/search-data.dto';
 import PersonIcon from '@material-ui/icons/Person';
 import ReplayIcon from '@material-ui/icons/Replay';
-import { SearchRequestType } from '../../core/SearchRequestType';
+import { SearchRequestType } from '../../../core/SearchRequestType';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({

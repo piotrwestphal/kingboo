@@ -1,7 +1,7 @@
 import React from 'react'
 import { CardContent, createStyles, Theme } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import { SearchDataDto } from '../../core/search-data.dto';
+import { SearchDataDto } from '../../../core/search-data.dto';
 import ValueBlock from './ValueBlock';
 
 const useStyles = makeStyles((theme: Theme) =>
