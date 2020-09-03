@@ -76,6 +76,7 @@ describe('Hotel', () => {
     expect(hotel.collectedAt[0]).toBe('mock1')
     expect(hotel.collectedAt[1]).toBe('mock2')
     expect(hotel.lastCollectedAt).toBe('mock2')
+    expect(hotel.collectingCount).toBe(2)
   })
 
   it('should update when price has not changed', () => {
@@ -164,5 +165,6 @@ describe('Hotel', () => {
     expect(hotel.collectedAt.length).toBe(6)
     expect(hotel.collectedAt[5]).toBe('mock6')
     expect(hotel.lastCollectedAt).toBe('mock6')
+    expect(hotel.collectingCount).toBe(6)
   })
 })
