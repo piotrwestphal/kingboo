@@ -1,0 +1,56 @@
+name: Test backend
+on:
+  pull_request:
+    branches:
+      - master
+    paths:
+      - 'backend/**'
+      - '.github/workflows/test-backend.yml'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+
+      - uses: actions/setup-node@v1
+        with:
+          node-version: '12.x'
+
+      - name: Use cache
+        uses: actions/cache@v1
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-backend-ci-${{ hashFiles('backend/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-backend-ci-
+
+      - name: Install dependencies
+        working-directory: ./backend
+        run: |
+          npm ci --silent
+
+      - name: Build user-service
+        working-directory: ./backend
+        run: |
+          npm run build:us
+
+      - name: Build data-collector
+        working-directory: ./backend
+        run: |
+          npm run build:dc
+
+      - name: Build search-queue-manager
+        working-directory: ./backend
+        run: |
+          npm run build:sqm
+
+      - name: Build search-result-calculator
+        working-directory: ./backend
+        run: |
+          npm run build:src
+
+      - name: Test backend
+        working-directory: ./backend
+        run: |
+          npm test

@@ -1,0 +1,45 @@
+name: Test webapp
+on:
+  pull_request:
+    branches:
+      - master
+    paths:
+      - 'webapp/**'
+      - '.github/workflows/test-webapp.yml'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+
+      - uses: actions/setup-node@v1
+        with:
+          node-version: '12.x'
+
+      - name: Use cache
+        uses: actions/cache@v1
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-webapp-ci-${{ hashFiles('webapp/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-webapp-ci-
+
+      - name: Install dependencies
+        working-directory: ./webapp
+        run: |
+          npm ci --silent
+
+      - name: Build
+        working-directory: ./webapp
+        env:
+          NODE_ENV: 'production'
+        run: |
+          npm run build
+
+      - name: Test
+        working-directory: ./webapp
+        env:
+          CI: true
+        run: |
+          echo "there are no tests"
