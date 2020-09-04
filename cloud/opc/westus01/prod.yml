@@ -6,9 +6,3 @@ services:
       - ./../opc.env
     volumes:
       - ./../../../compose-output:/usr/src/app/dist/apps/data-collector/output
-    deploy:
-      restart_policy:
-        condition: on-failure
-        delay: 5s
-        max_attempts: 3
-        window: 60s
