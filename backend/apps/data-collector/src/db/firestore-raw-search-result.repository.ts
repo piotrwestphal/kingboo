@@ -4,6 +4,7 @@ import { RawSearchResult } from '../core/model/RawSearchResult';
 import { logger } from '../logger';
 import { RawSearchResultMapper } from './raw-search-result/raw-search-result.mapper';
 import { RawSearchResultDocument } from './raw-search-result/raw-search-result.document';
+import { Query } from '@google-cloud/firestore';
 
 export class FirestoreRawSearchResultRepository extends RawSearchResultRepository {
 
@@ -36,16 +37,34 @@ export class FirestoreRawSearchResultRepository extends RawSearchResultRepositor
 
   async deleteOlderThanGivenHours(hours: number): Promise<string[]> {
     const collectionRef = this.firestoreClient.getCollection<RawSearchResultDocument>('raw-search-results');
+    const batchSize = 10;
     const offset = new Date(Date.now() - hours * this.HOUR);  // x hours ago
-    const docsRef = await collectionRef.where('createdAt', '<', offset).get();
-    if (docsRef.empty) {
-      return [];
-    } else {
-      const batch = this.firestoreClient.getBatch();
-      docsRef.forEach(doc => batch.delete(doc.ref));
-      await batch.commit();
-      logger.debug(`Deleted [${docsRef.size}] raw search results that were older than [${hours}] days`);
-      return docsRef.docs.map(v => v.id);
+    const oldDocsQuery = await collectionRef.where('createdAt', '<', offset)
+    return new Promise((res) => {
+      this.deleteInBatch(oldDocsQuery, batchSize, res, [])
+    })
+  }
+
+  private async deleteInBatch(query: Query<RawSearchResultDocument>,
+                              batchSize: number,
+                              resolve: (docIds: string[]) => void,
+                              currentlyDeletedIds: string[]): Promise<string[]> {
+    const snapshot = await query.limit(batchSize).get()
+    if (snapshot.empty) {
+      resolve(currentlyDeletedIds)
+      return
     }
+    const batch = this.firestoreClient.getBatch()
+    snapshot.docs.forEach(doc => batch.delete(doc.ref))
+    await batch.commit()
+    const deletedIds = snapshot.docs
+      .map((v) => v.id)
+      .concat(currentlyDeletedIds);
+    logger.debug(`Deleted [${snapshot.size}] raw search results`)
+    // Recurse on the next process tick, to avoid
+    // exploding the stack.
+    process.nextTick(() => {
+      this.deleteInBatch(query, batchSize, resolve, deletedIds)
+    })
   }
 }
