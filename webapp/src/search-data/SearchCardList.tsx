@@ -47,7 +47,7 @@ export default function SearchCardList({ list: sourceList }: SearchCardListProps
         : sourceList
       return sort(filteredList, sortBy.primaryKey, sortBy.secondaryKey, reverse)
     })
-  }, [type, sortBy, reverse])
+  }, [type, sortBy, reverse, sourceList])
 
   return (
     <>
