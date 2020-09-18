@@ -23,14 +23,14 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     primaryColumn: {
       marginRight: theme.spacing(2),
-      width: theme.spacing(24),
+      width: theme.spacing(22),
       [theme.breakpoints.up('sm')]: {
         width: theme.spacing(30),
       },
     },
     secondaryColumn: {
       marginRight: theme.spacing(1),
-      width: theme.spacing(5),
+      width: theme.spacing(6),
       textAlign: 'right'
     },
     hotelLink: {

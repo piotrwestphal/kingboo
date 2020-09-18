@@ -3,8 +3,9 @@ import { Card, Collapse, Divider } from '@material-ui/core';
 import { SearchDataDto } from '../../core/search-data.dto';
 import SearchContent from './components/SearchContent';
 import SearchHeader from './components/SearchHeader';
-import SearchDetails from './components/SearchDetails';
+import SearchParams from './components/SearchParams';
 import SearchActions from './components/SearchActions';
+import SearchDetails from './components/SearchDetails';
 
 // TODO:
 //  add toggle buttons for top hotels categories
@@ -14,10 +15,11 @@ export default function SearchCard({ searchDataDto }: { searchDataDto: SearchDat
     <Card>
       <SearchHeader searchDataDto={searchDataDto}/>
       <Divider/>
-      <SearchDetails searchDataDto={searchDataDto}/>
+      <SearchParams searchDataDto={searchDataDto}/>
       <Divider/>
       <SearchActions expanded={expanded} setExpanded={setExpanded}/>
       <Collapse in={expanded} timeout="auto" unmountOnExit>
+        <SearchDetails searchDataDto={searchDataDto}/>
         <SearchContent topHotels={searchDataDto.topHotels}/>
       </Collapse>
     </Card>

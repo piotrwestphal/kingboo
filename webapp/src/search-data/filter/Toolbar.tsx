@@ -5,10 +5,11 @@ import PersonIcon from '@material-ui/icons/Person';
 import ReplayIcon from '@material-ui/icons/Replay';
 import { makeStyles } from '@material-ui/core/styles';
 import { Button, createStyles, Grid, Theme } from '@material-ui/core';
-import { SearchDataDto } from '../../core/search-data.dto';
 import SortByAlphaIcon from '@material-ui/icons/SortByAlpha';
 import TodayIcon from '@material-ui/icons/Today';
 import ExpandLessIcon from '@material-ui/icons/ExpandLess';
+import { SortByOptions } from './sort-by.options';
+import { sortByValue } from './sort-by.value';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -21,18 +22,29 @@ const useStyles = makeStyles((theme: Theme) =>
 interface FiltersProps {
   readonly type: SearchType | null;
   readonly setType: Dispatch<SetStateAction<SearchType | null>>;
-  readonly sortBy: keyof SearchDataDto;
-  readonly setSortBy: Dispatch<SetStateAction<keyof SearchDataDto>>;
+  readonly sortBy: SortByOptions;
+  readonly setSortBy: Dispatch<SetStateAction<SortByOptions>>;
+  readonly setReverse: Dispatch<SetStateAction<boolean>>;
 }
 
-export default function Filters({
+export default function Toolbar({
                                   type,
                                   setType,
                                   sortBy,
-                                  setSortBy
+                                  setSortBy,
+                                  setReverse,
                                 }: FiltersProps) {
   const classes = useStyles();
   const scrollUp = () => window.scrollTo(0, 0)
+
+  const sortChange = (event: React.MouseEvent, value: SortByOptions) => {
+    if (value) { // prevent null assignment
+      setSortBy(value)
+      setReverse(false)
+    } else {
+      setReverse((current) => !current)
+    }
+  }
   return (
     <Grid className={classes.container}
           justify="space-between"
@@ -54,15 +66,11 @@ export default function Filters({
       <ToggleButtonGroup aria-label='sort by'
                          exclusive
                          value={sortBy}
-                         onChange={(event, value: keyof SearchDataDto) => {
-                           if (value) { // prevent null assignment
-                             setSortBy(value)
-                           }
-                         }}>
-        <ToggleButton value={'searchPlace' as keyof SearchDataDto} aria-label="search place">
+                         onChange={sortChange}>
+        <ToggleButton value={sortByValue.place} aria-label="search place">
           <SortByAlphaIcon/>
         </ToggleButton>
-        <ToggleButton value={'checkInDate' as keyof SearchDataDto} aria-label="check in date">
+        <ToggleButton value={sortByValue.date} aria-label="check in date">
           <TodayIcon/>
         </ToggleButton>
       </ToggleButtonGroup>
