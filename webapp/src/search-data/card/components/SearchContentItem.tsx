@@ -1,5 +1,5 @@
 import React from 'react'
-import { Box, Container, createStyles, Link, Theme, Typography } from '@material-ui/core';
+import { Box, Container, createStyles, Divider, Link, Theme, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { SimpleHotelDto } from '../../../core/simple-hotel.dto';
 import OpenInNewIcon from '@material-ui/icons/OpenInNew';
@@ -10,20 +10,22 @@ const useStyles = makeStyles((theme: Theme) =>
     box: {
       display: 'flex',
       flexWrap: 'wrap',
-      marginBottom: theme.spacing(2),
+      marginBottom: theme.spacing(1),
       alignItems: 'center'
     },
     bold: {
       fontWeight: 500,
     },
+    tightLetters: {
+      letterSpacing: '-0.5px'
+    },
     hotelsContainer: {
-      [theme.breakpoints.down('xs')]: {
-        padding: theme.spacing(0),
-      }
+      padding: theme.spacing(0),
+      marginTop: theme.spacing(1),
     },
     primaryColumn: {
-      marginRight: theme.spacing(2),
-      width: theme.spacing(22),
+      marginRight: theme.spacing(1),
+      width: theme.spacing(23),
       [theme.breakpoints.up('sm')]: {
         width: theme.spacing(30),
       },
@@ -32,6 +34,11 @@ const useStyles = makeStyles((theme: Theme) =>
       marginRight: theme.spacing(1),
       width: theme.spacing(6),
       textAlign: 'right'
+    },
+    noWidth: {
+      width: 'auto',
+      minWidth: theme.spacing(6),
+      marginRight: theme.spacing(0),
     },
     hotelLink: {
       marginLeft: theme.spacing(0.6),
@@ -76,26 +83,30 @@ export default function SearchContentItem({
           <Box className={classes.box}>
             <Typography className={classes.primaryColumn}
                         component="p">{title}:</Typography>
-            <Typography className={classes.secondaryColumn}
+            <Typography className={clsx(classes.secondaryColumn)}
                         variant="body2"
                         color='textSecondary'>{secondaryKey}</Typography>
-            <Typography className={classes.secondaryColumn}
+            <Typography className={clsx(classes.secondaryColumn, classes.noWidth)}
                         variant="body2"
                         color='textSecondary'>{primaryKey}</Typography>
           </Box>
+          <Divider/>
           <Container className={classes.hotelsContainer}>
             {simpleHotels.map((hotel) => {
               return <Box key={hotel.hotelId} className={classes.box}>
-                <Typography className={classes.primaryColumn}
+                <Typography className={clsx(classes.primaryColumn, classes.tightLetters)}
+                            noWrap
                             variant="body2"
                             color='textSecondary'>
                   {hotel.name}
                 </Typography>
                 <Typography className={classes.secondaryColumn}
+                            variant='body2'
                             color='secondary'>
                   {secondaryValue(hotel)}
                 </Typography>
                 <Typography className={clsx(classes.secondaryColumn, classes.bold)}
+                            variant='body2'
                             color='primary'>
                   {primaryValue(hotel)}
                 </Typography>

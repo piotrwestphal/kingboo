@@ -9,16 +9,22 @@ const useStyles = makeStyles((theme: Theme) =>
     block: {
       display: 'flex',
       flexDirection: 'column',
+      textAlign: 'center',
+      minWidth: theme.spacing(12),
       padding: theme.spacing(0.5),
-      marginRight: theme.spacing(2),
+      marginRight: theme.spacing(1),
       marginLeft: theme.spacing(1),
     },
     container: {
       display: 'flex',
       alignItems: 'center',
+      justifyContent: 'center',
       paddingTop: theme.spacing(0),
       paddingBottom: theme.spacing(0),
     },
+    value: {
+      letterSpacing: '-0.5px'
+    }
   }),
 );
 
@@ -37,8 +43,11 @@ export default function SearchDetails({
 
   const block = (value: string | number | null, description: string) => value
     ? <Box className={classes.block}>
-      <Typography variant='body2' color="textSecondary">{description}</Typography>
-      <Typography variant='body2' color="textPrimary">{value}</Typography>
+      <Typography variant='body2'
+                  color="textSecondary">{description}</Typography>
+      <Typography className={classes.value}
+                  variant='body2'
+                  color="textPrimary">{value}</Typography>
     </Box>
     : null
 
@@ -48,7 +57,7 @@ export default function SearchDetails({
 
   return (
     <CardContent className={classes.container}>
-      {block(collectingCount, 'Collecting count')}
+      {block(collectingCount, 'Collecting ct.')}
       {block(finishedAt, 'Finished at')}
       {block(scheduledAt, 'Scheduled at')}
     </CardContent>

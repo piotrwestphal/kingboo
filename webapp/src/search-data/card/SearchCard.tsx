@@ -7,8 +7,6 @@ import SearchParams from './components/SearchParams';
 import SearchActions from './components/SearchActions';
 import SearchDetails from './components/SearchDetails';
 
-// TODO:
-//  add toggle buttons for top hotels categories
 export default function SearchCard({ searchDataDto }: { searchDataDto: SearchDataDto }) {
   const [expanded, setExpanded] = useState(false);
   return (
@@ -17,11 +15,13 @@ export default function SearchCard({ searchDataDto }: { searchDataDto: SearchDat
       <Divider/>
       <SearchParams searchDataDto={searchDataDto}/>
       <Divider/>
-      <SearchActions expanded={expanded} setExpanded={setExpanded}/>
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <SearchDetails searchDataDto={searchDataDto}/>
+        <Divider/>
         <SearchContent topHotels={searchDataDto.topHotels}/>
       </Collapse>
+      {expanded && <Divider/>}
+      <SearchActions expanded={expanded} setExpanded={setExpanded}/>
     </Card>
   );
 }
