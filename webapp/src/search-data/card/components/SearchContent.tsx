@@ -83,16 +83,16 @@ export default function SearchContent({ topHotels }: SearchContentProps) {
                                value={item}
                                onChange={handleItem} aria-label="device">
               <ToggleButton value="bestPriceRate" aria-label="bestPriceRate">
-                <StarsIcon/>
+                <StarsIcon color='secondary'/>
               </ToggleButton>
               <ToggleButton value="cheapest" aria-label="cheapest">
-                <AttachMoneyIcon/>
+                <AttachMoneyIcon color='secondary'/>
               </ToggleButton>
               <ToggleButton value="bestRate" aria-label="bestRate">
-                <ThumbUpIcon/>
+                <ThumbUpIcon color='secondary'/>
               </ToggleButton>
               <ToggleButton value="bestLocation" aria-label="bestLocation">
-                <LocationCityIcon/>
+                <LocationCityIcon color='secondary'/>
               </ToggleButton>
             </ToggleButtonGroup>
           </Box>

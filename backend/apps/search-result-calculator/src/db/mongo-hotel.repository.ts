@@ -115,7 +115,7 @@ export class MongoHotelRepository extends HotelRepository {
     })
       .orFail(() => new NotFoundException(`Hotels with search id: ${searchId} not exist`))
       .select({ ...selectSimpleHotel, _id: 0 })
-      .limit(5);
+      .limit(10);
     const pendingBestPriceRate = findBySearchId().sort({
       'calculatedValues.priceRate': -1,
       'latestValues.price': 1
