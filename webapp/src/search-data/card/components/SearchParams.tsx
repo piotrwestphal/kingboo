@@ -16,6 +16,7 @@ const useStyles = makeStyles((theme: Theme) =>
     container: {
       display: 'flex',
       alignItems: 'center',
+      justifyContent: 'center',
       paddingTop: theme.spacing(0),
       paddingBottom: theme.spacing(0),
     },

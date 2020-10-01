@@ -11,6 +11,9 @@ import StarsIcon from '@material-ui/icons/Stars';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
+    root: {
+      paddingTop: theme.spacing(1),
+    },
     toggleContainer: {
       paddingBottom: theme.spacing(2),
     },
@@ -71,7 +74,7 @@ export default function SearchContent({ topHotels }: SearchContentProps) {
   }
 
   return (
-    <CardContent>
+    <CardContent style={{paddingBottom: '8px'}} className={classes.root}>
       {!topHotels ? empty
         :
         <>

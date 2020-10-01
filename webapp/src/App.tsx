@@ -1,18 +1,25 @@
 import React from 'react';
 import CssBaseline from "@material-ui/core/CssBaseline";
 import { createMuiTheme, ThemeProvider } from '@material-ui/core';
-import { cyan, green } from '@material-ui/core/colors';
 import Main from './search-data/Main';
 
 const theme = createMuiTheme({
   palette: {
     primary: {
-      main: green[600],
+      main: '#1a3b57',
     },
     secondary: {
-      main: cyan[600],
+      main: '#2b7066',
     },
   },
+  typography: {
+    body1: {
+      fontWeight: 300,
+    },
+    body2: {
+      fontWeight: 200,
+    }
+  }
 });
 
 export default function App() {
