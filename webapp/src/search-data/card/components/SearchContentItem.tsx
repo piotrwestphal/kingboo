@@ -3,13 +3,14 @@ import { Box, Container, createStyles, Divider, Link, Theme, Typography } from '
 import { makeStyles } from '@material-ui/core/styles';
 import { SimpleHotelDto } from '../../../core/simple-hotel.dto';
 import clsx from 'clsx'
+import InfoWrapper from './InfoWrapper';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     box: {
       display: 'flex',
       flexWrap: 'wrap',
-      marginBottom: theme.spacing(1),
+      marginBottom: theme.spacing(1.5),
       alignItems: 'center'
     },
     bold: {
@@ -48,21 +49,31 @@ interface SearchContentItemProps {
   readonly title: string;
   readonly primaryValue: (h: SimpleHotelDto) => string | number;
   readonly primaryKey: string;
+  readonly primaryTooltip: string;
   readonly secondaryValue: (h: SimpleHotelDto) => string | number;
   readonly secondaryKey: string;
+  readonly secondaryTooltip: string;
   readonly tertiaryValue: (h: SimpleHotelDto) => string | number;
   readonly tertiaryKey: string;
+  readonly tertiaryTooltip: string;
 }
 
+// TODO: remove link from hotel name and open menu with options:
+//   details - priceChanges
+//   link icon - link to hotel
+// TODO: divide to smaller parts, make these parameters easier
 export default function SearchContentItem({
                                             simpleHotels,
                                             title,
                                             primaryValue,
                                             primaryKey,
+                                            primaryTooltip,
                                             secondaryValue,
                                             secondaryKey,
+                                            secondaryTooltip,
                                             tertiaryKey,
                                             tertiaryValue,
+                                            tertiaryTooltip,
                                           }: SearchContentItemProps) {
   const classes = useStyles()
   const empty =
@@ -80,15 +91,21 @@ export default function SearchContentItem({
           <Box className={classes.box}>
             <Typography className={classes.primaryColumn}
                         component="p">{title}:</Typography>
-            <Typography className={clsx(classes.secondaryColumn, classes.tightLetters)}
-                        variant="body2"
-                        color='textSecondary'>{tertiaryKey}</Typography>
-            <Typography className={clsx(classes.secondaryColumn, classes.tightLetters)}
-                        variant="body2"
-                        color='textSecondary'>{secondaryKey}</Typography>
-            <Typography className={clsx(classes.secondaryColumn, classes.tightLetters, classes.lastColumn)}
-                        variant="body2"
-                        color='textSecondary'>{primaryKey}</Typography>
+            <InfoWrapper title={tertiaryTooltip}>
+              <Typography className={clsx(classes.secondaryColumn, classes.tightLetters)}
+                          variant="body2"
+                          color='textSecondary'>{tertiaryKey}</Typography>
+            </InfoWrapper>
+            <InfoWrapper title={secondaryTooltip}>
+              <Typography className={clsx(classes.secondaryColumn, classes.tightLetters)}
+                          variant="body2"
+                          color='textSecondary'>{secondaryKey}</Typography>
+            </InfoWrapper>
+            <InfoWrapper title={primaryTooltip}>
+              <Typography className={clsx(classes.secondaryColumn, classes.tightLetters, classes.lastColumn)}
+                          variant="body2"
+                          color='textSecondary'>{primaryKey}</Typography>
+            </InfoWrapper>
           </Box>
           <Divider/>
           <Container className={classes.hotelsContainer}>

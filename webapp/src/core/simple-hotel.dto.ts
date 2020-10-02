@@ -13,7 +13,7 @@ export interface SimpleHotelDto {
   readonly hotelLink: string;
   readonly propertyType: string;
   readonly starRating: number;
-  readonly priceChanges: HotelPriceChangeDto;
+  readonly priceChanges: HotelPriceChangeDto[];
   readonly latestValues: HotelLatestValuesDto;
   readonly calculatedValues: HotelCalculatedValuesDto;
   readonly lastCollectedAt: string;
