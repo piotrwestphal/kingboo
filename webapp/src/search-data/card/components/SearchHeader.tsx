@@ -3,7 +3,8 @@ import { Avatar, CardHeader, createStyles, Theme, Typography } from '@material-u
 import { makeStyles } from '@material-ui/core/styles';
 import { SearchDataDto } from '../../../core/search-data.dto';
 import PersonIcon from '@material-ui/icons/Person';
-import ReplayIcon from '@material-ui/icons/Replay';
+import RepeatIcon from '@material-ui/icons/Repeat';
+import AutorenewIcon from '@material-ui/icons/Autorenew';
 import { SearchRequestType } from '../../../core/SearchRequestType';
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -22,6 +23,10 @@ const useStyles = makeStyles((theme: Theme) =>
       backgroundColor: theme.palette.primary.light,
       fontWeight: 'bold'
     },
+    icons: {
+      display: 'flex',
+      flexDirection: 'column'
+    }
   }),
 );
 
@@ -69,9 +74,12 @@ export default function SearchHeader({ searchDataDto }: { searchDataDto: SearchD
                     component="span">{new Date(searchDataDto.checkInDate).toDateString()} - {new Date(searchDataDto.checkOutDate).toDateString()}
         </Typography>}
       action={
-        searchDataDto.type === SearchRequestType.CYCLIC
-          ? <ReplayIcon color='disabled'/>
-          : <PersonIcon color='disabled'/>
+        <div className={classes.icons}>
+          {searchDataDto.type === SearchRequestType.CYCLIC
+            ? <RepeatIcon color='disabled'/>
+            : <PersonIcon color='disabled'/>}
+          {!searchDataDto.collectingFinishedAt && <AutorenewIcon color='disabled'/>}
+        </div>
       }
     />
   )

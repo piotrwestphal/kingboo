@@ -2,7 +2,7 @@ import React, { Dispatch, SetStateAction } from 'react';
 import { SearchType } from '../../core/SearchType';
 import { ToggleButton, ToggleButtonGroup } from '@material-ui/lab';
 import PersonIcon from '@material-ui/icons/Person';
-import ReplayIcon from '@material-ui/icons/Replay';
+import RepeatIcon from '@material-ui/icons/Repeat';
 import { makeStyles } from '@material-ui/core/styles';
 import { Button, createStyles, Grid, Theme } from '@material-ui/core';
 import SortByAlphaIcon from '@material-ui/icons/SortByAlpha';
@@ -54,10 +54,10 @@ export default function Toolbar({
                          value={type}
                          onChange={(event, value: SearchType | null) => setType(value)}>
         <ToggleButton value={SearchType.USER} aria-label="user">
-          <PersonIcon/>
+          <PersonIcon color='action'/>
         </ToggleButton>
         <ToggleButton value={SearchType.CYCLIC} aria-label="cyclic">
-          <ReplayIcon/>
+          <RepeatIcon color='action'/>
         </ToggleButton>
       </ToggleButtonGroup>
       <Button onClick={scrollUp}>
@@ -68,10 +68,10 @@ export default function Toolbar({
                          value={sortBy}
                          onChange={sortChange}>
         <ToggleButton value={sortByValue.place} aria-label="search place">
-          <SortByAlphaIcon/>
+          <SortByAlphaIcon color='action'/>
         </ToggleButton>
         <ToggleButton value={sortByValue.date} aria-label="check in date">
-          <TodayIcon/>
+          <TodayIcon color='action'/>
         </ToggleButton>
       </ToggleButtonGroup>
     </Grid>

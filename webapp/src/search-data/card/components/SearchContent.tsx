@@ -8,6 +8,7 @@ import ThumbUpIcon from '@material-ui/icons/ThumbUp';
 import LocationCityIcon from '@material-ui/icons/LocationCity';
 import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
 import StarsIcon from '@material-ui/icons/Stars';
+import { SimpleHotelDto } from '../../../core/simple-hotel.dto';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -40,36 +41,49 @@ export default function SearchContent({ topHotels }: SearchContentProps) {
     }
   }
 
+  const priceRateValue = (h: SimpleHotelDto) => `${Math.round(h.calculatedValues.priceRate)}`
+  const priceValue = (h: SimpleHotelDto) => h.latestValues.price
+  const rateValue = (h: SimpleHotelDto) => h.latestValues.rate || 'N/A'
+  const distanceValue = (h: SimpleHotelDto) => `${h.distanceFromCenterMeters}m`
+
   const createItem = (topHotels: TopHotelsDto, item: keyof TopHotelsDto) => {
     switch (item) {
       case 'bestPriceRate':
         return <SearchContentItem simpleHotels={topHotels.bestPriceRate}
                                   title='Best price rate'
-                                  primaryValue={(h) => h.calculatedValues.priceRate}
-                                  primaryKey='price rate'
-                                  secondaryValue={(h) => h.latestValues.price}
-                                  secondaryKey='price'/>
+                                  primaryValue={priceRateValue}
+                                  primaryKey='price rt'
+                                  secondaryValue={priceValue}
+                                  secondaryKey='price'
+                                  tertiaryValue={rateValue}
+                                  tertiaryKey='rate'/>
       case 'cheapest':
         return <SearchContentItem simpleHotels={topHotels.cheapest}
                                   title='Cheapest'
-                                  primaryValue={(h) => h.latestValues.price}
+                                  primaryValue={priceValue}
                                   primaryKey='price'
-                                  secondaryValue={(h) => h.latestValues.rate}
-                                  secondaryKey='rate'/>
+                                  secondaryValue={rateValue}
+                                  secondaryKey='rate'
+                                  tertiaryValue={priceRateValue}
+                                  tertiaryKey='price rt'/>
       case 'bestRate':
         return <SearchContentItem simpleHotels={topHotels.bestRate}
                                   title='Best rate'
-                                  primaryValue={(h) => h.latestValues.rate}
+                                  primaryValue={rateValue}
                                   primaryKey='rate'
-                                  secondaryValue={(h) => h.latestValues.price}
-                                  secondaryKey='price'/>
+                                  secondaryValue={priceValue}
+                                  secondaryKey='price'
+                                  tertiaryValue={priceRateValue}
+                                  tertiaryKey='price rt'/>
       case 'bestLocation':
         return <SearchContentItem simpleHotels={topHotels.bestLocation}
                                   title='Best location'
-                                  primaryValue={(h) => h.distanceFromCenterMeters}
-                                  primaryKey='dist to center'
-                                  secondaryValue={(h) => h.latestValues.price}
-                                  secondaryKey='price'/>
+                                  primaryValue={distanceValue}
+                                  primaryKey='center'
+                                  secondaryValue={priceValue}
+                                  secondaryKey='price'
+                                  tertiaryValue={rateValue}
+                                  tertiaryKey='rate'/>
     }
   }
 
