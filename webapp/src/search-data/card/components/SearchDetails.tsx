@@ -6,6 +6,13 @@ import { formatToSecondary } from '../../../util/date-formatter';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
+    container: {
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      paddingTop: theme.spacing(0),
+      paddingBottom: theme.spacing(0),
+    },
     block: {
       display: 'flex',
       flexDirection: 'column',
@@ -14,13 +21,6 @@ const useStyles = makeStyles((theme: Theme) =>
       padding: theme.spacing(0.5),
       marginRight: theme.spacing(1),
       marginLeft: theme.spacing(1),
-    },
-    container: {
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      paddingTop: theme.spacing(0),
-      paddingBottom: theme.spacing(0),
     },
     value: {
       letterSpacing: '-0.5px'
@@ -36,7 +36,6 @@ export default function SearchDetails({
                                         searchDataDto: {
                                           collectingCount,
                                           collectingFinishedAt,
-                                          nextSearchScheduledAt,
                                         }
                                       }: SearchDetailsProps) {
   const classes = useStyles();
@@ -53,13 +52,11 @@ export default function SearchDetails({
 
   // TODO: move to mapper
   const finishedAt = collectingFinishedAt ? formatToSecondary(collectingFinishedAt) : null
-  const scheduledAt = formatToSecondary(nextSearchScheduledAt)
 
   return (
     <CardContent className={classes.container}>
-      {block(collectingCount, 'Collecting ct.')}
-      {block(finishedAt, 'Finished at')}
-      {block(scheduledAt, 'Scheduled at')}
+      {block(collectingCount, 'Collecting count')}
+      {block(finishedAt, 'Last collected at')}
     </CardContent>
   )
 }

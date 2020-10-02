@@ -42,9 +42,17 @@ export default function SearchContent({ topHotels }: SearchContentProps) {
   }
 
   const priceRateValue = (h: SimpleHotelDto) => `${Math.round(h.calculatedValues.priceRate)}`
+  const priceRateKey = 'Price rt'
+  const priceRateTooltip = 'Price rate [%]'
   const priceValue = (h: SimpleHotelDto) => h.latestValues.price
+  const priceKey = 'Price'
+  const priceTooltip = 'Price [zł]'
   const rateValue = (h: SimpleHotelDto) => h.latestValues.rate || 'N/A'
-  const distanceValue = (h: SimpleHotelDto) => `${h.distanceFromCenterMeters}m`
+  const rateKey = 'Rate'
+  const rateTooltip = 'Rate [%]'
+  const distanceValue = (h: SimpleHotelDto) => h.distanceFromCenterMeters
+  const distanceKey = 'Center'
+  const distanceTooltip = 'Distance from center [m]'
 
   const createItem = (topHotels: TopHotelsDto, item: keyof TopHotelsDto) => {
     switch (item) {
@@ -52,43 +60,55 @@ export default function SearchContent({ topHotels }: SearchContentProps) {
         return <SearchContentItem simpleHotels={topHotels.bestPriceRate}
                                   title='Best price rate'
                                   primaryValue={priceRateValue}
-                                  primaryKey='price rt'
+                                  primaryKey={priceRateKey}
+                                  primaryTooltip={priceRateTooltip}
                                   secondaryValue={priceValue}
-                                  secondaryKey='price'
+                                  secondaryKey={priceKey}
+                                  secondaryTooltip={priceTooltip}
                                   tertiaryValue={rateValue}
-                                  tertiaryKey='rate'/>
+                                  tertiaryKey={rateKey}
+                                  tertiaryTooltip={rateTooltip}/>
       case 'cheapest':
         return <SearchContentItem simpleHotels={topHotels.cheapest}
                                   title='Cheapest'
                                   primaryValue={priceValue}
-                                  primaryKey='price'
+                                  primaryKey={priceKey}
+                                  primaryTooltip={priceTooltip}
                                   secondaryValue={rateValue}
-                                  secondaryKey='rate'
+                                  secondaryKey={rateKey}
+                                  secondaryTooltip={rateTooltip}
                                   tertiaryValue={priceRateValue}
-                                  tertiaryKey='price rt'/>
+                                  tertiaryKey={priceRateKey}
+                                  tertiaryTooltip={priceRateTooltip}/>
       case 'bestRate':
         return <SearchContentItem simpleHotels={topHotels.bestRate}
                                   title='Best rate'
                                   primaryValue={rateValue}
-                                  primaryKey='rate'
+                                  primaryKey={rateKey}
+                                  primaryTooltip={rateTooltip}
                                   secondaryValue={priceValue}
-                                  secondaryKey='price'
+                                  secondaryKey={priceKey}
+                                  secondaryTooltip={priceTooltip}
                                   tertiaryValue={priceRateValue}
-                                  tertiaryKey='price rt'/>
+                                  tertiaryKey={priceRateKey}
+                                  tertiaryTooltip={priceRateTooltip}/>
       case 'bestLocation':
         return <SearchContentItem simpleHotels={topHotels.bestLocation}
                                   title='Best location'
                                   primaryValue={distanceValue}
-                                  primaryKey='center'
+                                  primaryKey={distanceKey}
+                                  primaryTooltip={distanceTooltip}
                                   secondaryValue={priceValue}
-                                  secondaryKey='price'
+                                  secondaryKey={priceKey}
+                                  secondaryTooltip={priceTooltip}
                                   tertiaryValue={rateValue}
-                                  tertiaryKey='rate'/>
+                                  tertiaryKey={rateKey}
+                                  tertiaryTooltip={rateTooltip}/>
     }
   }
 
   return (
-    <CardContent style={{paddingBottom: '8px'}} className={classes.root}>
+    <CardContent style={{ paddingBottom: '8px' }} className={classes.root}>
       {!topHotels ? empty
         :
         <>
