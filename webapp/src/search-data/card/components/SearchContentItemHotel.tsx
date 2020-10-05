@@ -1,5 +1,5 @@
 import React from 'react'
-import { createStyles, Link, Menu, MenuItem, Theme, Typography, ListItemIcon } from '@material-ui/core';
+import { createStyles, Link, ListItemIcon, Menu, MenuItem, Theme, Typography } from '@material-ui/core';
 import { SimpleHotelDto } from '../../../core/simple-hotel.dto';
 import { makeStyles } from '@material-ui/core/styles';
 import PopupState, { bindMenu, bindTrigger } from 'material-ui-popup-state';
@@ -46,7 +46,8 @@ export default function SearchContentItemHotel({ hotel }: SearchContentItemHotel
                   target="_blank">
               <MenuItem className={classes.item}
                         onClick={popupState.close}>
-                <ListItemIcon className={classes.icon}><OpenInNewIcon/></ListItemIcon>
+                <ListItemIcon className={classes.icon}
+                              color='secondary'><OpenInNewIcon/></ListItemIcon>
                 <Typography variant="body2"
                             color='textSecondary'>
                   Link
@@ -54,8 +55,9 @@ export default function SearchContentItemHotel({ hotel }: SearchContentItemHotel
               </MenuItem>
             </Link>
             <MenuItem className={classes.item}
+                      color='secondary'
                       onClick={() => {
-                        console.log({details: hotel})
+                        console.log({ details: hotel })
                         popupState.close()
                       }}>
               <ListItemIcon className={classes.icon}><DetailsIcon/></ListItemIcon>
