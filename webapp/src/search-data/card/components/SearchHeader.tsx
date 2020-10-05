@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 import { Avatar, CardHeader, createStyles, Theme, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { SearchDataDto } from '../../../core/search-data.dto';
@@ -8,6 +8,17 @@ import { SearchRequestType } from '../../../core/SearchRequestType';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
+    root: {
+      padding: theme.spacing(1),
+      paddingLeft: theme.spacing(1.5),
+    },
+    avatar: {
+      marginRight: theme.spacing(1.5),
+    },
+    avatarContent: {
+      backgroundColor: theme.palette.primary.light,
+      fontWeight: 'bold'
+    },
     title: {
       letterSpacing: '1px',
       fontWeight: 400,
@@ -18,9 +29,9 @@ const useStyles = makeStyles((theme: Theme) =>
     subheader: {
       fontWeight: 400,
     },
-    avatar: {
-      backgroundColor: theme.palette.primary.light,
-      fontWeight: 'bold'
+    action: {
+      marginTop: theme.spacing(0.5),
+      marginRight: theme.spacing(0.5),
     },
     icons: {
       display: 'flex',
@@ -29,7 +40,15 @@ const useStyles = makeStyles((theme: Theme) =>
   }),
 );
 
-export default function SearchHeader({ searchDataDto }: { searchDataDto: SearchDataDto }) {
+interface SearchHeaderProps {
+  readonly searchDataDto: SearchDataDto
+  readonly setExpanded: Dispatch<SetStateAction<boolean>>
+}
+
+export default function SearchHeader({
+                                       searchDataDto,
+                                       setExpanded,
+                                     }: SearchHeaderProps) {
   const classes = useStyles();
 
   const createAvatarName = (searchPlace: string): string => {
@@ -46,8 +65,13 @@ export default function SearchHeader({ searchDataDto }: { searchDataDto: SearchD
 
   return (
     <CardHeader
+      onClick={() => setExpanded((current) => !current)}
+      classes={{
+        root: classes.root,
+        avatar: classes.avatar,
+      }}
       avatar={
-        <Avatar aria-label="recipe" className={classes.avatar}>
+        <Avatar aria-label="recipe" className={classes.avatarContent}>
           {createAvatarName(searchDataDto.searchPlace)}
         </Avatar>
       }
@@ -72,10 +96,13 @@ export default function SearchHeader({ searchDataDto }: { searchDataDto: SearchD
                     variant="body2"
                     component="span">{new Date(searchDataDto.checkInDate).toDateString()} - {new Date(searchDataDto.checkOutDate).toDateString()}
         </Typography>}
-      action={searchDataDto.type === SearchRequestType.CYCLIC
-        ? <RepeatIcon color='disabled'/>
-        : <PersonIcon color='disabled'/>
-      }
+      action={
+        <div className={classes.action}>{
+          searchDataDto.type === SearchRequestType.CYCLIC
+            ? <RepeatIcon color='disabled'/>
+            : <PersonIcon color='disabled'/>
+        }
+        </div>}
     />
   )
 }
