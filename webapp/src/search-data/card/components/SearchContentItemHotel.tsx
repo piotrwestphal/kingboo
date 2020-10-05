@@ -5,11 +5,15 @@ import { makeStyles } from '@material-ui/core/styles';
 import PopupState, { bindMenu, bindTrigger } from 'material-ui-popup-state';
 import OpenInNewIcon from '@material-ui/icons/OpenInNew';
 import DetailsIcon from '@material-ui/icons/Details';
+import clsx from 'clsx'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     tightLetters: {
       letterSpacing: '-0.5px'
+    },
+    boldLetters: {
+      fontWeight: 400,
     },
     icon: {
       minWidth: theme.spacing(0),
@@ -30,17 +34,19 @@ export default function SearchContentItemHotel({ hotel }: SearchContentItemHotel
   const classes = useStyles()
 
   return (
-    <PopupState variant="popover" popupId="demo-popup-menu">
+    <PopupState variant="popover">
       {(popupState) => (
         <React.Fragment>
           <Typography {...bindTrigger(popupState)}
-                      className={classes.tightLetters}
+                      className={clsx(classes.tightLetters,
+                        { [classes.boldLetters]: popupState.isOpen })}
                       noWrap
                       variant="body2"
-                      color='textSecondary'>
+                      color={popupState.isOpen ? 'primary' : 'textSecondary'}>
             {hotel.name}
           </Typography>
-          <Menu {...bindMenu(popupState)}>
+          <Menu anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+                {...bindMenu(popupState)}>
             <Link color='primary'
                   href={hotel.hotelLink}
                   target="_blank">
