@@ -8,7 +8,9 @@ interface InfoWrapperProps {
 
 export default function InfoWrapper({ children, title }: InfoWrapperProps) {
   return (
-    <Tooltip enterTouchDelay={100} title={title} placement="top">
+    <Tooltip title={title}
+             enterTouchDelay={0}
+             placement="top">
       {children}
     </Tooltip>
   )
