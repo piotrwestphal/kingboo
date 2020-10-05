@@ -13,7 +13,7 @@ import { SimpleHotelDto } from '../../../core/simple-hotel.dto';
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
-      paddingTop: theme.spacing(1),
+      padding: theme.spacing(1),
     },
     toggleContainer: {
       paddingBottom: theme.spacing(2),
@@ -108,7 +108,7 @@ export default function SearchContent({ topHotels }: SearchContentProps) {
   }
 
   return (
-    <CardContent style={{ paddingBottom: '8px' }} className={classes.root}>
+    <CardContent style={{ paddingBottom: '4px' }} className={classes.root}>
       {!topHotels ? empty
         :
         <>

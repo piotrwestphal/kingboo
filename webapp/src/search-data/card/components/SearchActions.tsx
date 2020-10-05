@@ -29,8 +29,8 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 interface SearchActionsProps {
-  readonly expanded: boolean;
-  readonly setExpanded: Dispatch<SetStateAction<boolean>>;
+  readonly expanded: boolean
+  readonly setExpanded: Dispatch<SetStateAction<boolean>>
 }
 
 export default function SearchActions({ expanded, setExpanded }: SearchActionsProps) {
@@ -45,12 +45,15 @@ export default function SearchActions({ expanded, setExpanded }: SearchActionsPr
                   aria-label="delete search request">
         <DeleteIcon/>
       </IconButton>
-      <IconButton className={clsx(classes.expand, classes.action, {
-        [classes.expandOpen]: expanded,
-      })}
-                  onClick={() => setExpanded((current) => !current)}
+      <IconButton className={clsx(
+        classes.expand,
+        classes.action,
+        {
+          [classes.expandOpen]: expanded,
+        })}
+                  aria-label="show more"
                   aria-expanded={expanded}
-                  aria-label="show more">
+                  onClick={() => setExpanded((current) => !current)}>
         <ExpandMoreIcon/>
       </IconButton>
     </CardActions>

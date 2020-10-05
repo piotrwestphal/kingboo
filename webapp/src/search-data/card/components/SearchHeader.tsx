@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 import { Avatar, CardHeader, createStyles, Theme, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { SearchDataDto } from '../../../core/search-data.dto';
@@ -10,9 +10,10 @@ const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       padding: theme.spacing(1),
+      paddingLeft: theme.spacing(1.5),
     },
     avatar: {
-      marginRight: theme.spacing(1),
+      marginRight: theme.spacing(1.5),
     },
     avatarContent: {
       backgroundColor: theme.palette.primary.light,
@@ -39,7 +40,15 @@ const useStyles = makeStyles((theme: Theme) =>
   }),
 );
 
-export default function SearchHeader({ searchDataDto }: { searchDataDto: SearchDataDto }) {
+interface SearchHeaderProps {
+  readonly searchDataDto: SearchDataDto
+  readonly setExpanded: Dispatch<SetStateAction<boolean>>
+}
+
+export default function SearchHeader({
+                                       searchDataDto,
+                                       setExpanded,
+                                     }: SearchHeaderProps) {
   const classes = useStyles();
 
   const createAvatarName = (searchPlace: string): string => {
@@ -56,6 +65,7 @@ export default function SearchHeader({ searchDataDto }: { searchDataDto: SearchD
 
   return (
     <CardHeader
+      onClick={() => setExpanded((current) => !current)}
       classes={{
         root: classes.root,
         avatar: classes.avatar,

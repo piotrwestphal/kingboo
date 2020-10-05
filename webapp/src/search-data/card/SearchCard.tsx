@@ -11,7 +11,7 @@ export default function SearchCard({ searchDataDto }: { searchDataDto: SearchDat
   const [expanded, setExpanded] = useState(false);
   return (
     <Card>
-      <SearchHeader searchDataDto={searchDataDto}/>
+      <SearchHeader searchDataDto={searchDataDto} setExpanded={setExpanded}/>
       <Divider/>
       <SearchParams searchDataDto={searchDataDto}/>
       <Divider/>

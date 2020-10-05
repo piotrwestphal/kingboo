@@ -25,9 +25,9 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     primaryColumn: {
       marginRight: theme.spacing(1),
-      width: theme.spacing(23),
+      width: theme.spacing(25),
       [theme.breakpoints.up('sm')]: {
-        width: theme.spacing(30),
+        width: theme.spacing(39),
       },
     },
     secondaryColumn: {
