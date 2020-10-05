@@ -8,9 +8,12 @@ import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    container: {
+    root: {
       paddingTop: theme.spacing(0),
       paddingBottom: theme.spacing(0),
+    },
+    action: {
+      padding: theme.spacing(1),
     },
     expand: {
       transform: 'rotate(0deg)',
@@ -33,14 +36,16 @@ interface SearchActionsProps {
 export default function SearchActions({ expanded, setExpanded }: SearchActionsProps) {
   const classes = useStyles();
   return (
-    <CardActions className={classes.container} disableSpacing>
-      <IconButton aria-label="edit search request">
+    <CardActions className={classes.root} disableSpacing>
+      <IconButton className={classes.action}
+                  aria-label="edit search request">
         <EditIcon/>
       </IconButton>
-      <IconButton aria-label="delete search request">
+      <IconButton className={classes.action}
+                  aria-label="delete search request">
         <DeleteIcon/>
       </IconButton>
-      <IconButton className={clsx(classes.expand, {
+      <IconButton className={clsx(classes.expand, classes.action, {
         [classes.expandOpen]: expanded,
       })}
                   onClick={() => setExpanded((current) => !current)}

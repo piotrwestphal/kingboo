@@ -8,6 +8,16 @@ import { SearchRequestType } from '../../../core/SearchRequestType';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
+    root: {
+      padding: theme.spacing(1),
+    },
+    avatar: {
+      marginRight: theme.spacing(1),
+    },
+    avatarContent: {
+      backgroundColor: theme.palette.primary.light,
+      fontWeight: 'bold'
+    },
     title: {
       letterSpacing: '1px',
       fontWeight: 400,
@@ -18,9 +28,9 @@ const useStyles = makeStyles((theme: Theme) =>
     subheader: {
       fontWeight: 400,
     },
-    avatar: {
-      backgroundColor: theme.palette.primary.light,
-      fontWeight: 'bold'
+    action: {
+      marginTop: theme.spacing(0.5),
+      marginRight: theme.spacing(0.5),
     },
     icons: {
       display: 'flex',
@@ -46,8 +56,12 @@ export default function SearchHeader({ searchDataDto }: { searchDataDto: SearchD
 
   return (
     <CardHeader
+      classes={{
+        root: classes.root,
+        avatar: classes.avatar,
+      }}
       avatar={
-        <Avatar aria-label="recipe" className={classes.avatar}>
+        <Avatar aria-label="recipe" className={classes.avatarContent}>
           {createAvatarName(searchDataDto.searchPlace)}
         </Avatar>
       }
@@ -72,10 +86,13 @@ export default function SearchHeader({ searchDataDto }: { searchDataDto: SearchD
                     variant="body2"
                     component="span">{new Date(searchDataDto.checkInDate).toDateString()} - {new Date(searchDataDto.checkOutDate).toDateString()}
         </Typography>}
-      action={searchDataDto.type === SearchRequestType.CYCLIC
-        ? <RepeatIcon color='disabled'/>
-        : <PersonIcon color='disabled'/>
-      }
+      action={
+        <div className={classes.action}>{
+          searchDataDto.type === SearchRequestType.CYCLIC
+            ? <RepeatIcon color='disabled'/>
+            : <PersonIcon color='disabled'/>
+        }
+        </div>}
     />
   )
 }
