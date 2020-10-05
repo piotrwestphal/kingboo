@@ -11,6 +11,7 @@ const useStyles = makeStyles((theme: Theme) =>
     root: {
       paddingTop: theme.spacing(0),
       paddingBottom: theme.spacing(0),
+      paddingRight: theme.spacing(0),
     },
     action: {
       padding: theme.spacing(1),

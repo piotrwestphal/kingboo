@@ -8,6 +8,7 @@
     "@material-ui/icons": "4.9.1",
     "date-fns": "2.16.1",
     "react": "16.13.1",
+    "material-ui-popup-state": "1.6.1",
     "react-dom": "16.13.1",
     "react-router-dom": "5.2.0",
     "rxjs": "6.6.2"

@@ -1,9 +1,10 @@
 import React from 'react'
-import { Box, Container, createStyles, Divider, Link, Theme, Typography } from '@material-ui/core';
+import { Box, Container, createStyles, Divider, Theme, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { SimpleHotelDto } from '../../../core/simple-hotel.dto';
 import clsx from 'clsx'
 import InfoWrapper from './InfoWrapper';
+import SearchContentItemHotel from './SearchContentItemHotel';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -58,10 +59,6 @@ interface SearchContentItemProps {
   readonly tertiaryTooltip: string;
 }
 
-// TODO: remove link from hotel name and open menu with options:
-//   details - priceChanges
-//   link icon - link to hotel
-// TODO: divide to smaller parts, make these parameters easier
 export default function SearchContentItem({
                                             simpleHotels,
                                             title,
@@ -86,7 +83,8 @@ export default function SearchContentItem({
 
   return (
     <>
-      {!simpleHotels.length ? empty
+      {!simpleHotels.length
+        ? empty
         : <>
           <Box className={classes.box}>
             <Typography className={classes.primaryColumn}
@@ -111,17 +109,9 @@ export default function SearchContentItem({
           <Container className={classes.hotelsContainer}>
             {simpleHotels.map((hotel) => {
               return <Box key={hotel.hotelId} className={classes.box}>
-                <Link className={classes.primaryColumn}
-                      color='primary'
-                      href={hotel.hotelLink}
-                      target="_blank">
-                  <Typography className={classes.tightLetters}
-                              noWrap
-                              variant="body2"
-                              color='textSecondary'>
-                    {hotel.name}
-                  </Typography>
-                </Link>
+                <div className={classes.primaryColumn}>
+                  <SearchContentItemHotel hotel={hotel}/>
+                </div>
                 <Typography className={classes.secondaryColumn}
                             variant='body2'
                             color='secondary'>
