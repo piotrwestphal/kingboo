@@ -1,10 +1,10 @@
 import React, { Dispatch, SetStateAction } from 'react';
-import { Avatar, CardHeader, createStyles, Theme, Typography } from '@material-ui/core';
+import { Avatar, CardHeader as MCardHeader, createStyles, Theme, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import { SearchDataDto } from '../../../core/search-data.dto';
+import { SearchDataDto } from '../../core/dto/search-data.dto';
 import PersonIcon from '@material-ui/icons/Person';
 import RepeatIcon from '@material-ui/icons/Repeat';
-import { SearchRequestType } from '../../../core/SearchRequestType';
+import { SearchRequestType } from '../../core/SearchRequestType';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -45,7 +45,7 @@ interface SearchHeaderProps {
   readonly setExpanded: Dispatch<SetStateAction<boolean>>
 }
 
-export default function SearchHeader({
+export default function CardHeader({
                                        searchDataDto,
                                        setExpanded,
                                      }: SearchHeaderProps) {
@@ -64,7 +64,7 @@ export default function SearchHeader({
   }
 
   return (
-    <CardHeader
+    <MCardHeader
       onClick={() => setExpanded((current) => !current)}
       classes={{
         root: classes.root,

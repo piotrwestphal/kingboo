@@ -1,10 +1,10 @@
 import React from 'react'
 import { Box, Container, createStyles, Divider, Theme, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import { SimpleHotelDto } from '../../../core/simple-hotel.dto';
+import { SimpleHotelDto } from '../../../core/dto/simple-hotel.dto';
 import clsx from 'clsx'
-import InfoWrapper from './InfoWrapper';
-import SearchContentItemHotel from './SearchContentItemHotel';
+import InfoWrapper from '../../../common/InfoWrapper';
+import ContentHotel from '../hotel/ContentHotel';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -59,7 +59,7 @@ interface SearchContentItemProps {
   readonly tertiaryTooltip: string;
 }
 
-export default function SearchContentItem({
+export default function ContentHotelList({
                                             simpleHotels,
                                             title,
                                             primaryValue,
@@ -110,7 +110,7 @@ export default function SearchContentItem({
             {simpleHotels.map((hotel) => {
               return <Box key={hotel.hotelId} className={classes.box}>
                 <div className={classes.primaryColumn}>
-                  <SearchContentItemHotel hotel={hotel}/>
+                  <ContentHotel hotel={hotel}/>
                 </div>
                 <Typography className={classes.secondaryColumn}
                             variant='body2'

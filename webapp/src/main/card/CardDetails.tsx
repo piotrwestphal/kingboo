@@ -1,8 +1,8 @@
 import React from 'react'
-import { SearchDataDto } from '../../../core/search-data.dto';
+import { SearchDataDto } from '../../core/dto/search-data.dto';
 import { makeStyles } from '@material-ui/core/styles';
 import { Box, CardContent, createStyles, Theme, Typography } from '@material-ui/core';
-import { formatToSecondary } from '../../../util/date-formatter';
+import { formatToSecondary } from '../../util/date-formatter';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -32,7 +32,7 @@ interface SearchDetailsProps {
   readonly searchDataDto: SearchDataDto;
 }
 
-export default function SearchDetails({
+export default function CardDetails({
                                         searchDataDto: {
                                           collectingCount,
                                           collectingFinishedAt,

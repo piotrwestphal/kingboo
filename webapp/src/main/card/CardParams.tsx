@@ -1,7 +1,7 @@
 import React from 'react'
 import { Box, CardContent, createStyles, Theme, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import { SearchDataDto } from '../../../core/search-data.dto';
+import { SearchDataDto } from '../../core/dto/search-data.dto';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme: Theme) =>
   }),
 );
 
-export default function SearchParams({
+export default function CardParams({
                                        searchDataDto: {
                                          numberOfRooms,
                                          numberOfAdults,

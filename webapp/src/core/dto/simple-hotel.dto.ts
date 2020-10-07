@@ -1,4 +1,4 @@
-import { Coords } from './coords';
+import { Coords } from '../coords';
 import { HotelLatestValuesDto } from './hotel-latest-values.dto';
 import { HotelCalculatedValuesDto } from './hotel-calculated-values.dto';
 import { HotelPriceChangeDto } from './hotel-price-change.dto';
