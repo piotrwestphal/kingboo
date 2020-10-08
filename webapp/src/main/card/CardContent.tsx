@@ -7,7 +7,7 @@ import ThumbUpIcon from '@material-ui/icons/ThumbUp';
 import LocationCityIcon from '@material-ui/icons/LocationCity';
 import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
 import StarsIcon from '@material-ui/icons/Stars';
-import { createHotelList } from './content/create-hotel-list';
+import { createHotelList } from './hotel/create-hotel-list';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({

@@ -1,9 +1,13 @@
-import { FunctionComponent } from 'react';
 import { SimpleHotelDto } from '../../../core/dto/simple-hotel.dto';
+
+export enum DialogView {
+  DETAILS = 'details',
+  PRICES = 'prices'
+}
 
 export interface DialogState {
   readonly open: boolean
-  readonly dialog?: FunctionComponent<DialogContentProps>
+  readonly initialView?: DialogView
 }
 
 export type DialogContentProps = {

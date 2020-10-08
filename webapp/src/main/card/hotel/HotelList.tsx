@@ -4,7 +4,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { SimpleHotelDto } from '../../../core/dto/simple-hotel.dto';
 import clsx from 'clsx'
 import InfoWrapper from '../../../common/InfoWrapper';
-import ContentHotel from '../hotel/ContentHotel';
+import Hotel from './Hotel';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -46,7 +46,7 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 interface SearchContentItemProps {
-  readonly simpleHotels: SimpleHotelDto[];
+  readonly hotels: SimpleHotelDto[];
   readonly title: string;
   readonly primaryValue: (h: SimpleHotelDto) => string | number;
   readonly primaryKey: string;
@@ -59,8 +59,8 @@ interface SearchContentItemProps {
   readonly tertiaryTooltip: string;
 }
 
-export default function ContentHotelList({
-                                            simpleHotels,
+export default function HotelList({
+                                            hotels,
                                             title,
                                             primaryValue,
                                             primaryKey,
@@ -83,7 +83,7 @@ export default function ContentHotelList({
 
   return (
     <>
-      {!simpleHotels.length
+      {!hotels.length
         ? empty
         : <>
           <Box className={classes.box}>
@@ -107,10 +107,10 @@ export default function ContentHotelList({
           </Box>
           <Divider/>
           <Container className={classes.hotelsContainer}>
-            {simpleHotels.map((hotel) => {
+            {hotels.map((hotel) => {
               return <Box key={hotel.hotelId} className={classes.box}>
                 <div className={classes.primaryColumn}>
-                  <ContentHotel hotel={hotel}/>
+                  <Hotel hotel={hotel}/>
                 </div>
                 <Typography className={classes.secondaryColumn}
                             variant='body2'
