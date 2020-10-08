@@ -9,5 +9,5 @@ export interface HotelLatestValuesDto {
   readonly numberOfReviews: number;
   readonly newlyAdded: boolean;
   readonly bonuses: HotelBonusesDto | null;
-  readonly rooms: HotelRoomDto[];
+  readonly rooms?: HotelRoomDto[];
 }

@@ -1,5 +1,5 @@
 import React, { Dispatch, SetStateAction } from 'react'
-import { CardActions, createStyles, IconButton, Theme } from '@material-ui/core';
+import { CardActions as MCardActions, createStyles, IconButton, Theme } from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import clsx from 'clsx';
@@ -34,10 +34,10 @@ interface SearchActionsProps {
   readonly setExpanded: Dispatch<SetStateAction<boolean>>
 }
 
-export default function SearchActions({ expanded, setExpanded }: SearchActionsProps) {
+export default function CardActions({ expanded, setExpanded }: SearchActionsProps) {
   const classes = useStyles();
   return (
-    <CardActions className={classes.root} disableSpacing>
+    <MCardActions className={classes.root} disableSpacing>
       <IconButton className={classes.action}
                   aria-label="edit search request">
         <EditIcon/>
@@ -57,6 +57,6 @@ export default function SearchActions({ expanded, setExpanded }: SearchActionsPr
                   onClick={() => setExpanded((current) => !current)}>
         <ExpandMoreIcon/>
       </IconButton>
-    </CardActions>
+    </MCardActions>
   )
 }
