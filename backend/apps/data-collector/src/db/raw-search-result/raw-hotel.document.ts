@@ -9,7 +9,6 @@ export interface RawHotelDocument {
   readonly distanceFromCenter: string;
   readonly districtName: string;
   readonly coords: string;
-  readonly hotelLink: string;
   // following parameters might not be available
   readonly rate: string | null;
   readonly secondaryRateType: string | null;
@@ -22,5 +21,5 @@ export interface RawHotelDocument {
   readonly rooms: RawRoomDocument[] | null;
   // additional info
   readonly collectedAt: string;
-  readonly debug: object;
+  readonly debug: Record<string, unknown>;
 }

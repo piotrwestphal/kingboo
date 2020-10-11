@@ -9,6 +9,8 @@ import { Query } from '@google-cloud/firestore';
 export class FirestoreRawSearchResultRepository extends RawSearchResultRepository {
 
   private readonly HOUR = 60 * 60 * 1000;
+  private readonly RAW_SEARCH_RESULTS_COLLECTION = 'raw-search-results';
+  private readonly LINKS_COLLECTION = 'hotel-links';
 
   constructor(
     private readonly firestoreClient: FirestoreClient,
@@ -17,12 +19,17 @@ export class FirestoreRawSearchResultRepository extends RawSearchResultRepositor
     super();
   }
 
+  /**
+   * It will save links to separate collection
+   * @param rawSearchResult
+   */
   async create(rawSearchResult: RawSearchResult): Promise<void> {
     const rawSearchResultDocument = this.rawSearchResultMapper.fromRawSearchResult(rawSearchResult);
+    const linksDocument = this.extractLinks(rawSearchResult)
     try {
-      const doc = await this.firestoreClient.addToCollection(
-        'raw-search-results', rawSearchResultDocument.docId, rawSearchResultDocument);
-      const { docId, searchId, searchPlaceIdentifier, collectingTimeSec, hotelsCount } = doc.data();
+      const savedRawSearchResult = await this.firestoreClient.addToCollection(this.RAW_SEARCH_RESULTS_COLLECTION,
+        rawSearchResultDocument.docId, rawSearchResultDocument);
+      const { docId, searchId, searchPlaceIdentifier, collectingTimeSec, hotelsCount } = savedRawSearchResult.data();
       logger.info(`Created raw search result with doc id [${docId}]`);
       logger.debug(`Details of created raw search result`, {
         searchId,
@@ -30,13 +37,16 @@ export class FirestoreRawSearchResultRepository extends RawSearchResultRepositor
         collectingTimeSec,
         hotelsCount,
       });
+      const linksDocId = `LINKS_${rawSearchResultDocument.docId}`
+      const savedLinks = await this.firestoreClient.addToCollection(this.LINKS_COLLECTION, linksDocId, linksDocument)
+      logger.info(`Created links with id [${linksDocId}]. Links count: [${Object.keys(savedLinks.data()).length}]`);
     } catch (err) {
       logger.error(`Error when adding raw search result with searchId [${rawSearchResult.searchId}] to collection`, err);
     }
   }
 
   async deleteOlderThanGivenHours(hours: number): Promise<string[]> {
-    const collectionRef = this.firestoreClient.getCollection<RawSearchResultDocument>('raw-search-results');
+    const collectionRef = this.firestoreClient.getCollection<RawSearchResultDocument>(this.RAW_SEARCH_RESULTS_COLLECTION);
     const batchSize = 10;
     const offset = new Date(Date.now() - hours * this.HOUR);  // x hours ago
     const oldDocsQuery = await collectionRef.where('createdAt', '<', offset)
@@ -67,4 +77,10 @@ export class FirestoreRawSearchResultRepository extends RawSearchResultRepositor
       this.deleteInBatch(query, batchSize, resolve, deletedIds)
     })
   }
+
+  private extractLinks = (rawSearchResult: RawSearchResult) => rawSearchResult.hotels
+    .reduce((prev, curr) => {
+      prev[curr.hotelId] = curr.hotelLink
+      return prev
+    }, {} as Record<string, string>)
 }

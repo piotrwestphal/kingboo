@@ -58,13 +58,13 @@ export class RawHotelDtoParser {
     }
   }
 
-  public parseBonuses(bonuses: string[]): Bonuses {
+  public parseBonuses(bonuses: string[]): Bonuses | null {
     return bonuses?.length
       ? this.mapBonuses(bonuses)
       : null;
   }
 
-  public parseRooms(rooms: RawRoomDto[]): Room[] {
+  public parseRooms(rooms: RawRoomDto[]): Room[] | null {
     return rooms?.length
       ? rooms.map(bonus => this.formatRoom(bonus))
       : null;
