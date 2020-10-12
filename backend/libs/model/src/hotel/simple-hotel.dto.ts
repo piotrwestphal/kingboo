@@ -8,8 +8,7 @@ export interface SimpleHotelDto {
   readonly districtName: string | null;
   readonly coords: Coords;
   readonly hotelLink: string;
-  readonly propertyType: string;
-  readonly starRating: number;
+  readonly starRating: number | null;
   readonly priceChanges: PriceChangeDto[];
   readonly latestValues: HotelLatestValuesDto;
   readonly calculatedValues: HotelCalculatedValuesDto;

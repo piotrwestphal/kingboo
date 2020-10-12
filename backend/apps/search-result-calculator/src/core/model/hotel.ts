@@ -13,7 +13,6 @@ export class Hotel implements HotelIdentifier {
     readonly districtName: string,
     readonly coords: Coords,
     readonly hotelLink: string,
-    readonly propertyType: string,
     readonly starRating: number,
     readonly priceChanges: PriceChange[],
     readonly collectedAt: string[],

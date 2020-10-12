@@ -14,7 +14,6 @@ describe('Hotel', () => {
         lon: 0,
       },
       'mock',
-      'mock',
       1,
       [{
         value: 100,
@@ -91,7 +90,6 @@ describe('Hotel', () => {
         lat: 0,
         lon: 0,
       },
-      'mock',
       'mock',
       1,
       [

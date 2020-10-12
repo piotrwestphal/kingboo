@@ -23,7 +23,8 @@ export class RestHotelsClient extends HotelsClient {
       .pipe(
         map(res => res.data),
         catchError((err) => {
-          logger.error(`Error when retrieving top hotels for ${searchId}`, err)
+          logger.error(`Error when retrieving top hotels for [${searchId}]. It might happen when there are no ` +
+            `collected hotels in selected date range [${collectingStartedAt}] : [${collectingFinishedAt}]`, err)
           return of(null)
         })
       ).toPromise();
@@ -38,7 +39,8 @@ export class RestHotelsClient extends HotelsClient {
       .pipe(
         map(res => res.data),
         catchError((err) => {
-          logger.error(`Error when retrieving hotels for ${searchId}`, err)
+          logger.error(`Error when retrieving hotels for [${searchId}]. It might happen when there are no ` +
+            `collected hotels in selected date range [${collectingStartedAt}] : [${collectingFinishedAt}]`, err)
           return of(null)
         })
       )

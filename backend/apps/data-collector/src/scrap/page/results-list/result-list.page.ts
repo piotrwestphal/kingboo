@@ -113,6 +113,20 @@ export class ResultListPage {
         };
       };
 
+      const extractStarsFromBadgesContainer = (searchResultContainer: Element): number => {
+        // if following container exists it means that the item has stars rating - so the item is hotel
+        const badgesContainer = getFirstElementByClass(searchResultContainer, 'c-accommodation-classification-rating__badge--stars');
+        if (badgesContainer) {
+          // get number of star icons
+          const starIconElements = badgesContainer.getElementsByClassName('bui-rating__item')
+          return starIconElements?.length
+            ? starIconElements.length
+            : null
+        } else {
+          return null
+        }
+      }
+
       const getHotelLink = (searchResultContainer: Element) => {
         const linkElement = getFirstElementByClass(searchResultContainer, 'hotel_name_link') as HTMLLinkElement;
         return linkElement
@@ -136,8 +150,7 @@ export class ResultListPage {
           const secondaryRate = getTextFromElementIfContainerExist(searchResultContainer,
             'review-score-widget__14', 'review-score-badge');
           const numberOfReviews = getTextFromElement(searchResultContainer, 'bui-review-score__text');
-          const propertyType = getTextFromElement(searchResultContainer, 'bh-property-type');
-          const starRating = getTextFromElementIfContainerExist(searchResultContainer, 'bk-icon-stars', 'invisible_spoken');
+          const starRating = extractStarsFromBadgesContainer(searchResultContainer)
           const hotelNewlyAdded = getTextFromElement(searchResultContainer, 'new_hotel__badge');
 
           // Price
@@ -191,7 +204,6 @@ export class ResultListPage {
             secondaryRateType,
             secondaryRate,
             numberOfReviews,
-            propertyType,
             starRating,
             newlyAdded: hotelNewlyAdded,
             bonuses: hotelBonuses.length ? hotelBonuses : null,

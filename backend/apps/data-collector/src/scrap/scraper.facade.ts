@@ -5,6 +5,7 @@ import { LaunchOptions } from 'puppeteer';
 import { HotelsScraper } from './hotels.scraper';
 import { ResultPageUrlBuilder } from './result-page-url.builder';
 import { logger } from '../logger';
+import { NextPageScrapResults } from './interface/next-page-scrap-results';
 
 export class ScraperFacade {
 
@@ -36,9 +37,9 @@ export class ScraperFacade {
     logger.debug(`Initializing browser. User agent: `, userAgent);
   }
 
-  public async prepareResultList(searchPlaceIdentifier: string,
-                                 collectHotelsScenario: CollectHotelsScenario,
-                                 enableStyles: boolean): Promise<number> {
+  public prepareResultList(searchPlaceIdentifier: string,
+                           collectHotelsScenario: CollectHotelsScenario,
+                           enableStyles: boolean): Promise<number> {
     logger.debug(`Building result page uri based on search place identifier [${searchPlaceIdentifier}]`);
     const resultPageUri = this.resultPageUrlBuilder.fromSearchPlaceIdentifierAndScenarioParams(searchPlaceIdentifier, collectHotelsScenario);
 
@@ -46,16 +47,16 @@ export class ScraperFacade {
     return this.hotelsScraper.prepareResultList(resultPageUri, enableStyles);
   }
 
-  public async collectSearchPlaceIdentifier(searchPlace: string): Promise<string> {
+  public collectSearchPlaceIdentifier(searchPlace: string): Promise<string> {
     logger.debug(`Starting search place identifier collecting.`);
     return this.searchPlaceScraper.collectSearchPlaceIdentifier(this.HOMEPAGE_WITH_DEFAULT_CURRENCY_AND_LANGUAGE, searchPlace);
   }
 
-  public async collectHotelsFromCurrentPage() {
+  public collectHotelsFromCurrentPage(): Promise<NextPageScrapResults> {
     return this.hotelsScraper.collectHotelsFromCurrentPage();
   }
 
-  public async takeScreenshot(type: string, resultFolderPath: string) {
+  public takeScreenshot(type: string, resultFolderPath: string): Promise<void> {
     return this.browserService.takeScreenshot(type, resultFolderPath);
   }
 

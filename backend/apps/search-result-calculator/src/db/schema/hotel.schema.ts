@@ -15,7 +15,6 @@ export const HotelSchema = new Schema<HotelDocument>({
     districtName: String,
     coords: CoordsSchema,
     hotelLink: String,
-    propertyType: String,
     starRating: Number,
     priceChanges: [PriceChangeSchema],
     collectedAt: [Date],

@@ -15,7 +15,6 @@ export class HotelFactory {
             secondaryRate,
             secondaryRateType,
             numberOfReviews,
-            propertyType,
             starRating,
             newlyAdded,
             bonuses,
@@ -30,7 +29,6 @@ export class HotelFactory {
       districtName,
       coords,
       hotelLink,
-      propertyType,
       starRating,
       [{
         value: price,

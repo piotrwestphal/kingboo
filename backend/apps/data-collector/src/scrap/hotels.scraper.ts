@@ -1,9 +1,9 @@
 import { BrowserService } from './browser.service';
 import { ResultPage } from './page/result/result.page';
 import { ResultListPage } from './page/results-list/result-list.page';
-import { ScrapedRawHotel } from './interface/scraped-raw-hotel';
 import { ResultPageElement } from './page/result/result-page.element';
 import { logger } from '../logger';
+import { NextPageScrapResults } from './interface/next-page-scrap-results';
 
 export class HotelsScraper {
 
@@ -19,7 +19,7 @@ export class HotelsScraper {
   async prepareResultList(resultPageUri: string, enableStyles: boolean): Promise<number> {
     const resultPageUrl = `${this.BASE_URL}${resultPageUri}`;
     logger.debug(`Navigating to [${resultPageUrl}]`);
-    if(!enableStyles) {
+    if (!enableStyles) {
       await this.browserService.enableStylesRequestInterception();
     }
     await this.browserService.goToAddressAndProceedIfFail(resultPageUrl);
@@ -41,7 +41,7 @@ export class HotelsScraper {
     return totalPagesCount;
   }
 
-  async collectHotelsFromCurrentPage(): Promise<{ scrapedRawHotels: ScrapedRawHotel[], nextPageButtonAvailable: boolean }> {
+  async collectHotelsFromCurrentPage(): Promise<NextPageScrapResults> {
     const scrapedRawHotels = await this.resultListPage.collectHotelsFromSearchResultList();
     await this.browserService.wait(1000);
     const nextPageButtonAvailable = await this.resultPage.clickNextPageButtonIfAvailable();

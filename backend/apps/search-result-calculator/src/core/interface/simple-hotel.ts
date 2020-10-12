@@ -11,8 +11,7 @@ export interface SimpleHotel {
   readonly districtName: string | null;
   readonly coords: Coords;
   readonly hotelLink: string;
-  readonly propertyType: string;
-  readonly starRating: number;
+  readonly starRating: number | null;
   readonly priceChanges: PriceChange[];
   readonly latestValues: LatestValues;
   readonly calculatedValues: CalculatedValues;
