@@ -1,4 +1,5 @@
 import { RawRoom } from './RawRoom';
+import { DebugValues } from '../../scrap/interface/debug.values';
 
 export class RawHotel {
 
@@ -25,7 +26,7 @@ export class RawHotel {
     public readonly rooms: RawRoom[] | null,
     // additional info
     public readonly collectedAt: string,
-    public readonly debug: Record<string, unknown> | null,
+    public readonly debug: DebugValues,
   ) {
     this.hotelId = this.assignHotelId(name, coords);
   }

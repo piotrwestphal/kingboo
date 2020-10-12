@@ -1,23 +1,24 @@
 import { ScrapedRawRoom } from './scraped-raw-room';
+import { DebugValues } from './debug.values';
 
 export interface ScrapedRawHotel {
   // following parameters always exist
-  name: string;
-  price: string;
-  tax: string;
-  distanceFromCenter: string;
-  districtName: string;
-  coords: string;
-  hotelLink: string;
+  readonly name: string;
+  readonly price: string;
+  readonly tax: string;
+  readonly distanceFromCenter: string;
+  readonly coords: string;
+  readonly hotelLink: string;
+  readonly debug: DebugValues;
   // following parameters might not be available
-  rate: string | null;
-  secondaryRate: string | null;
-  secondaryRateType: string | null;
-  numberOfReviews: string | null;
-  propertyType: string | null;
-  starRating: string | null;
-  newlyAdded: string | null;
-  bonuses: string[];
-  rooms: ScrapedRawRoom[];
-  debug: Record<string, unknown> | null;
+  readonly districtName: string | null;
+  readonly rate: string | null;
+  readonly secondaryRate: string | null;
+  readonly secondaryRateType: string | null;
+  readonly numberOfReviews: string | null;
+  readonly propertyType: string | null;
+  readonly starRating: string | null;
+  readonly newlyAdded: string | null;
+  readonly bonuses: string[] | null;
+  readonly rooms: ScrapedRawRoom[] | null;
 }

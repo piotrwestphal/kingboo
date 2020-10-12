@@ -5,6 +5,7 @@ import { logger } from '../logger';
 import { RawSearchResultMapper } from './raw-search-result/raw-search-result.mapper';
 import { RawSearchResultDocument } from './raw-search-result/raw-search-result.document';
 import { Query } from '@google-cloud/firestore';
+import { LinksDocument } from './raw-search-result/links.document';
 
 export class FirestoreRawSearchResultRepository extends RawSearchResultRepository {
 
@@ -86,7 +87,7 @@ export class FirestoreRawSearchResultRepository extends RawSearchResultRepositor
     })
   }
 
-  private extractLinks = (docId: string, rawSearchResult: RawSearchResult) => {
+  private extractLinks = (docId: string, rawSearchResult: RawSearchResult): LinksDocument => {
     const links = rawSearchResult.hotels
       .reduce((prev, curr) => {
         prev[curr.hotelId] = curr.hotelLink
