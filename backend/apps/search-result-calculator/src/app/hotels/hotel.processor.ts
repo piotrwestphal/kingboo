@@ -59,6 +59,7 @@ export class HotelProcessor {
     logger.debug(`Message processing last [${messageProcessingTimeMs}] ms`);
   }
 
+  // TODO: move more properties to latestValues
   private updateHotelWithRaw(hotel: Hotel,
                              {
                                price: currentPrice,
