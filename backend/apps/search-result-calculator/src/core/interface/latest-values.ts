@@ -9,5 +9,5 @@ export interface LatestValues {
   readonly numberOfReviews: number;
   readonly newlyAdded: boolean;
   readonly bonuses: Bonuses | null;
-  readonly rooms: Room[];
+  readonly rooms: Room[] | null;
 }

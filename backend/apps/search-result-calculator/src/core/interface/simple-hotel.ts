@@ -8,7 +8,7 @@ export interface SimpleHotel {
   readonly hotelId: string;
   readonly name: string;
   readonly distanceFromCenterMeters: number;
-  readonly districtName: string;
+  readonly districtName: string | null;
   readonly coords: Coords;
   readonly hotelLink: string;
   readonly propertyType: string;

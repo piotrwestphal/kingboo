@@ -63,8 +63,8 @@ export class SearchRequestService {
     if (found) {
       const updated = found.finishCollecting(collectingStartedAt, collectingFinishedAt);
       const saved = await this.searchRequestRepository.update(updated);
-      logger.info(`Successfully updated collecting progress, started at [${saved.collectingStartedAt}] ` +
-        `finished at [${saved.collectingFinishedAt}] for given search id [${searchId}]`);
+      logger.info(`Successfully updated collecting progress, started at [${saved.collectingStartedAt.toISOString()}] ` +
+        `finished at [${saved.collectingFinishedAt.toISOString()}] for given search id [${searchId}]`);
       logger.debug(`Updated search request`, saved);
       this.userNotificationsSender.notifyAboutFinishedCollecting(searchId);
     } else {
@@ -79,7 +79,6 @@ export class SearchRequestService {
     }
     const saved = await this.searchRequestRepository.create(searchRequest);
     logger.info(`Successfully created search request with search id [${saved.searchId}]`);
-    this.collectingScenarioSender.sendScenario(saved);
     return saved;
   }
 }
