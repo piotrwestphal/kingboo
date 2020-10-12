@@ -59,6 +59,7 @@ export class HotelProcessor {
     logger.debug(`Message processing last [${messageProcessingTimeMs}] ms`);
   }
 
+  // TODO: move more properties to latestValues
   private updateHotelWithRaw(hotel: Hotel,
                              {
                                price: currentPrice,
@@ -70,6 +71,7 @@ export class HotelProcessor {
                                bonuses,
                                rooms,
                                collectedAt,
+                               starRating,
                              }: RawHotel): Hotel {
     const calculatedValues = this.priceCalculator.calculate(currentPrice, hotel.priceChanges);
     const [lastPrice] = hotel.priceChanges.slice(-1);
@@ -84,7 +86,7 @@ export class HotelProcessor {
       rooms,
     }
     return lastPrice && lastPrice.value === currentPrice
-      ? hotel.updateWhenPriceHasNotChanged(collectedAt, latestValues, calculatedValues)
-      : hotel.updateWithChangedPrice(currentPrice, collectedAt, latestValues, calculatedValues);
+      ? hotel.updateWhenPriceHasNotChanged(collectedAt, latestValues, calculatedValues, starRating)
+      : hotel.updateWithChangedPrice(currentPrice, collectedAt, latestValues, calculatedValues, starRating);
   }
 }

@@ -14,7 +14,7 @@ const rateKey = 'Rate'
 const rateTooltip = 'Rate [%]'
 const distanceValue = (h: SimpleHotelDto) => h.distanceFromCenterMeters
 const distanceKey = 'Center'
-const distanceTooltip = 'Distance from center [m]'
+const distanceTooltip = 'Distance to the center [m]'
 
 export const createHotelList = (topHotels: TopHotelsDto, item: keyof TopHotelsDto) => {
   switch (item) {
