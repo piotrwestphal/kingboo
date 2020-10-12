@@ -18,7 +18,7 @@ export class SearchDataService {
     const searchRequests = await this.searchRequestsClient.getSearchRequests()
     const pendingSearchResultsDto = searchRequests.map(async (searchRequestDto) => {
       if (!searchRequestDto.collectingStartedAt) {
-        logger.warn(`Search request with search id ${searchRequestDto.searchId} has never been collected - ` +
+        logger.warn(`Search request with search id [${searchRequestDto.searchId}] has never been collected - ` +
           `'collectingStartedAt' does not exist`)
         return this.mapToSearchData(searchRequestDto, null);
       }
