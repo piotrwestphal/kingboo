@@ -11,7 +11,7 @@ const useStyles = makeStyles((theme: Theme) =>
     box: {
       display: 'flex',
       flexWrap: 'wrap',
-      marginBottom: theme.spacing(1.5),
+      marginBottom: theme.spacing(1),
       alignItems: 'center'
     },
     bold: {

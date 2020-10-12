@@ -43,10 +43,8 @@ export default function DetailsContent({ hotel }: DialogContentProps) {
   // TODO: update hotel logic!!
   return (
     <DialogContent dividers>
-      {row('District name: ', `${hotel.districtName}`)}
-      {row('Distance from center: ', `${hotel.distanceFromCenterMeters} m`)}
-      {row('Property type: ', `${hotel.starRating && 'HOTEL'}`)}
-      {row('Star rating: ', `${hotel.starRating && hotel.starRating}`)}
+      {row('Property type: ', `${hotel.starRating ? 'Hotel' : 'Apartment'}`)}
+      {hotel.starRating && row('Star rating: ', `${hotel.starRating}`)}
       {row('Price: ', `${hotel.latestValues.price} zł`)}
       {row('Price rate: ', `${hotel.calculatedValues.priceRate}`)}
       {row('Avg price: ', `${hotel.calculatedValues.avgPrice} zł`)}
@@ -61,7 +59,7 @@ export default function DetailsContent({ hotel }: DialogContentProps) {
       {row('Bonuses - cancel later: ', `${hotel.latestValues.bonuses?.cancelLater}`)}
       {row('Bonuses - free cancellation: ', `${hotel.latestValues.bonuses?.freeCancellation}`)}
       {row('Bonuses - no prepayment: ', `${hotel.latestValues.bonuses?.noPrepayment}`)}
-      {row('Rooms: ', `${hotel.latestValues.rooms}`)}
+      {hotel.latestValues.rooms?.map(r => row('Rooms: ', Object.values(r).join(', ')))}
     </DialogContent>
   )
 }

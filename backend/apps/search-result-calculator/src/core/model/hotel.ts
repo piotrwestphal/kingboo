@@ -13,9 +13,9 @@ export class Hotel implements HotelIdentifier {
     readonly districtName: string,
     readonly coords: Coords,
     readonly hotelLink: string,
-    readonly starRating: number,
     readonly priceChanges: PriceChange[],
     readonly collectedAt: string[],
+    public starRating: number,
     public latestValues: LatestValues,
     public calculatedValues: CalculatedValues,
     public lastCollectedAt: string,
@@ -26,27 +26,31 @@ export class Hotel implements HotelIdentifier {
   updateWithChangedPrice(price: number,
                          collectedAt: string,
                          latestValues: LatestValues,
-                         calculatedValues: CalculatedValues): Hotel {
+                         calculatedValues: CalculatedValues,
+                         starRating: number): Hotel {
     this.priceChanges.push({ value: price, occurrenceCount: 1, changedAt: collectedAt });
-    return this.update(collectedAt, latestValues, calculatedValues);
+    return this.update(collectedAt, latestValues, calculatedValues, starRating);
   }
 
   updateWhenPriceHasNotChanged(collectedAt: string,
                                latestValues: LatestValues,
-                               calculatedValues: CalculatedValues): Hotel {
+                               calculatedValues: CalculatedValues,
+                               starRating: number): Hotel {
     const { value, changedAt, occurrenceCount } = this.priceChanges.pop()
     this.priceChanges.push({ value, changedAt, occurrenceCount: occurrenceCount + 1 });
-    return this.update(collectedAt, latestValues, calculatedValues);
+    return this.update(collectedAt, latestValues, calculatedValues, starRating);
   }
 
   private update(collectedAt: string,
                  latestValues: LatestValues,
-                 calculatedValues: CalculatedValues): Hotel {
+                 calculatedValues: CalculatedValues,
+                 starRating: number): Hotel {
     this.collectedAt.push(collectedAt);
     this.latestValues = latestValues;
     this.calculatedValues = calculatedValues;
     this.lastCollectedAt = collectedAt;
     this.collectingCount = this.collectedAt.length;
+    this.starRating = starRating;
     return this;
   }
 }
