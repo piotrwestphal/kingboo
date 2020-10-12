@@ -15,8 +15,7 @@ export interface RawHotelDocument {
   readonly secondaryRateType: string | null;
   readonly secondaryRate: string | null;
   readonly numberOfReviews: string | null;
-  readonly propertyType: string | null;
-  readonly starRating: string | null;
+  readonly starRating: number | null;
   readonly newlyAdded: string | null;
   readonly bonuses: string[] | null;
   readonly rooms: RawRoomDocument[] | null;

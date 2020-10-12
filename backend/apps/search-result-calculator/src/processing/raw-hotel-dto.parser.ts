@@ -48,16 +48,6 @@ export class RawHotelDtoParser {
     };
   }
 
-  public parseStarRating(starRating: string): number | null {
-    if (starRating?.length > 0) {
-      const starNumber: string = starRating.split('-')[0];
-      const parsedValue = parseInt(starNumber, 0);
-      return isNaN(parsedValue) ? null : parsedValue;
-    } else {
-      return null;
-    }
-  }
-
   public parseBonuses(bonuses: string[]): Bonuses | null {
     return bonuses?.length
       ? this.mapBonuses(bonuses)

@@ -16,7 +16,6 @@ const selectSimpleHotel: Record<keyof SimpleHotel, 1> = {
   districtName: 1,
   coords: 1,
   hotelLink: 1,
-  propertyType: 1,
   starRating: 1,
   priceChanges: 1,
   latestValues: 1,

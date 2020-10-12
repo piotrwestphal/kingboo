@@ -40,12 +40,13 @@ export default function DetailsContent({ hotel }: DialogContentProps) {
       </Typography>
     </Box>
 
+  // TODO: update hotel logic!!
   return (
     <DialogContent dividers>
       {row('District name: ', `${hotel.districtName}`)}
       {row('Distance from center: ', `${hotel.distanceFromCenterMeters} m`)}
-      {row('Property type: ', `${hotel.propertyType}`)}
-      {row('Star rating: ', `${hotel.starRating}`)}
+      {row('Property type: ', `${hotel.starRating && 'HOTEL'}`)}
+      {row('Star rating: ', `${hotel.starRating && hotel.starRating}`)}
       {row('Price: ', `${hotel.latestValues.price} zł`)}
       {row('Price rate: ', `${hotel.calculatedValues.priceRate}`)}
       {row('Avg price: ', `${hotel.calculatedValues.avgPrice} zł`)}
