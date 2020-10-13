@@ -12,5 +12,4 @@ export interface AppConfig extends CommonConfig, FirestoreConfig, MongoConfig {
   readonly puppeteer: PuppeteerOptions;
   readonly dataCollectionNotificationsMqClient: RabbitOptions;
   readonly dataToProcessMqClient: RabbitOptions;
-  readonly userNotificationsMqClient: RabbitOptions;
 }

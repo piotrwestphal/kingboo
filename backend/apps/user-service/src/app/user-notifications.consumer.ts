@@ -7,11 +7,6 @@ import { logger } from '../logger';
 @Controller()
 export class UserNotificationsConsumer {
 
-  @MessagePattern(UserNotificationsMessagePattern.HOTELS_COLLECTION_STARTED)
-  async handleHotelsCollectionStarted(@Payload() { searchId }: MqMessage): Promise<void> {
-    logger.debug(`Received message ${UserNotificationsMessagePattern.HOTELS_COLLECTION_STARTED} for [${searchId}]`)
-  }
-
   @MessagePattern(UserNotificationsMessagePattern.HOTELS_COLLECTION_COMPLETED)
   async handleHotelsCollectionCompleted(@Payload() { searchId }: MqMessage): Promise<void> {
     logger.debug(`Received message ${UserNotificationsMessagePattern.HOTELS_COLLECTION_COMPLETED} for [${searchId}]`)

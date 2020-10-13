@@ -13,7 +13,6 @@ export const appConfigValidationSchemaMap: SchemaMap<AppConfig> = {
   scrapActivitiesWithoutUpdateRetentionDays: Joi.number().required(),
   saveRawResultAsJson: Joi.boolean().required(),
   puppeteer: Joi.object<PuppeteerOptions>(puppeteerSchemaMap).required(),
-  userNotificationsMqClient: Joi.object<RabbitOptions>(rabbitValidationSchemaMap).required(),
   dataCollectionNotificationsMqClient: Joi.object<RabbitOptions>(rabbitValidationSchemaMap).required(),
   dataToProcessMqClient: Joi.object<RabbitOptions>(rabbitValidationSchemaMap).required(),
   firestore: firestoreValidationObjectSchema.required(),
