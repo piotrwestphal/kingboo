@@ -8,6 +8,9 @@ export const localConfig: AppConfig = {
   nodeEnv: 'local',
   port: 8080,
   corsOrigins: 'http://localhost:3000', // separate multiple origins by comma
+  mongo: {
+    address: 'mongodb://127.0.0.1:27017/dev',
+  },
   mqConsumer: {
     address: mqAddress,
     queueDefinition: {
