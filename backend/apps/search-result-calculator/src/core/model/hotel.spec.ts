@@ -7,14 +7,10 @@ describe('Hotel', () => {
       'mock',
       'mock',
       'mock',
-      0,
-      'mock',
       {
         lat: 0,
         lon: 0,
       },
-      'mock',
-      1,
       [{
         value: 100,
         changedAt: 'mock1',
@@ -23,11 +19,15 @@ describe('Hotel', () => {
       ['mock1'],
       {
         price: 100,
+        districtName: 'mock',
+        distanceFromCenterMeters: 100,
+        hotelLink: 'link',
         rate: 0,
         secondaryRate: 0,
         secondaryRateType: 'mock',
         numberOfReviews: 0,
         newlyAdded: false,
+        starRating: 2,
         bonuses: null,
         rooms: [],
       },
@@ -47,12 +47,16 @@ describe('Hotel', () => {
     hotel.updateWhenPriceHasNotChanged(
       'mock2',
       {
-        price: 100,
-        rate: 1,
-        secondaryRate: 1,
-        secondaryRateType: 'mock2',
-        numberOfReviews: 1,
-        newlyAdded: true,
+        price: 150,
+        districtName: 'mock',
+        distanceFromCenterMeters: 100,
+        hotelLink: 'link',
+        rate: 0,
+        secondaryRate: 0,
+        secondaryRateType: 'mock',
+        numberOfReviews: 0,
+        newlyAdded: false,
+        starRating: 2,
         bonuses: null,
         rooms: [],
       },
@@ -64,7 +68,6 @@ describe('Hotel', () => {
         maxPriceDiff: 0,
         priceRate: 0,
       },
-      2
     )
 
     // then
@@ -77,7 +80,6 @@ describe('Hotel', () => {
     expect(hotel.collectedAt[1]).toBe('mock2')
     expect(hotel.lastCollectedAt).toBe('mock2')
     expect(hotel.collectingCount).toBe(2)
-    expect(hotel.starRating).toBe(2)
   })
 
   it('should update when price has not changed', () => {
@@ -86,14 +88,10 @@ describe('Hotel', () => {
       'mock',
       'mock',
       'mock',
-      0,
-      'mock',
       {
         lat: 0,
         lon: 0,
       },
-      'mock',
-      1,
       [
         {
           value: 100,
@@ -114,11 +112,15 @@ describe('Hotel', () => {
       ['mock1', 'mock2', 'mock3', 'mock4', 'mock5'],
       {
         price: 150,
+        districtName: 'mock',
+        distanceFromCenterMeters: 100,
+        hotelLink: 'link',
         rate: 0,
         secondaryRate: 0,
         secondaryRateType: 'mock',
         numberOfReviews: 0,
         newlyAdded: false,
+        starRating: 2,
         bonuses: null,
         rooms: [],
       },
@@ -139,11 +141,15 @@ describe('Hotel', () => {
       'mock6',
       {
         price: 150,
+        districtName: 'mock',
+        distanceFromCenterMeters: 100,
+        hotelLink: 'link',
         rate: 0,
         secondaryRate: 0,
         secondaryRateType: 'mock',
         numberOfReviews: 0,
         newlyAdded: false,
+        starRating: 3,
         bonuses: null,
         rooms: [],
       },
@@ -155,7 +161,6 @@ describe('Hotel', () => {
         maxPriceDiff: 100,
         priceRate: 100,
       },
-      3
     )
 
     // then
@@ -167,6 +172,6 @@ describe('Hotel', () => {
     expect(hotel.collectedAt[5]).toBe('mock6')
     expect(hotel.lastCollectedAt).toBe('mock6')
     expect(hotel.collectingCount).toBe(6)
-    expect(hotel.starRating).toBe(3)
+    expect(hotel.latestValues.starRating).toBe(3)
   })
 })

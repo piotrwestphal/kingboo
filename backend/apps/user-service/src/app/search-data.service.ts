@@ -14,6 +14,12 @@ export class SearchDataService {
   ) {
   }
 
+  /*
+  User connected
+  Get all user requests
+  Check if cache is updated
+   */
+
   async getSearchData(): Promise<SearchDataPayload> {
     const searchRequests = await this.searchRequestsClient.getSearchRequests()
     const pendingSearchResultsDto = searchRequests.map(async (searchRequestDto) => {

@@ -24,20 +24,20 @@ export class HotelProcessor {
   ) {
   }
 
-  async processMessage(message: CollectedHotelsMessage): Promise<void> {
+  async processMessage({ collectedAt, searchId, rawHotels }: CollectedHotelsMessage): Promise<void> {
     const now = Date.now();
-    const rawHotels = this.messageProcessor.processMessage(message);
-    const rawHotelIds = Array.from(rawHotels.keys());
+    const rawHotelsById = this.messageProcessor.processMessage(searchId, rawHotels);
+    const rawHotelIds = Array.from(rawHotelsById.keys());
     if (this.configService.saveResultAsJson) {
-      const pathToResult = await this.fileManager.saveDataAsJSON(Array.from(rawHotels.values()), `PROCESSED-${message.searchId}`);
+      const pathToResult = await this.fileManager.saveDataAsJSON(Array.from(rawHotelsById.values()), `PROCESSED-${searchId}`);
       logger.debug(`Processed data was saved locally to [${pathToResult}]`);
     }
     logger.debug(`Processed message with hotel ids`, rawHotelIds);
-    const foundHotels = await this.hotelRepository.findAllBySearchIdAndHotelId(message.searchId, Array.from(rawHotels.keys()));
+    const foundHotels = await this.hotelRepository.findAllBySearchIdAndHotelId(searchId, Array.from(rawHotelsById.keys()));
 
     const hotelsToCreate = rawHotelIds
       .filter(hotelId => !foundHotels.has(hotelId))
-      .map(hotelId => rawHotels.get(hotelId));
+      .map(hotelId => rawHotelsById.get(hotelId));
 
     if (hotelsToCreate.length) {
       const created = await this.hotelRepository.createAll(hotelsToCreate.map(h => this.hotelFactory.createNew(h)));
@@ -45,7 +45,7 @@ export class HotelProcessor {
     }
     const updatedHotelsWithRaw = Array.from(foundHotels.keys()).map(hotelId => {
       const hotel = foundHotels.get(hotelId);
-      const rawHotel = rawHotels.get(hotelId);
+      const rawHotel = rawHotelsById.get(hotelId);
       return this.updateHotelWithRaw(hotel, rawHotel);
     });
 
@@ -55,7 +55,7 @@ export class HotelProcessor {
     }
     const messageProcessingTimeMs = Date.now() - now;
     this.userNotificationSender.notifyAboutHotelsProcessingFinished(
-      message.searchId, rawHotelIds, messageProcessingTimeMs);
+      searchId, rawHotelIds, messageProcessingTimeMs, collectedAt);
     logger.debug(`Message processing last [${messageProcessingTimeMs}] ms`);
   }
 
@@ -63,30 +63,37 @@ export class HotelProcessor {
   private updateHotelWithRaw(hotel: Hotel,
                              {
                                price: currentPrice,
+                               districtName,
+                               distanceFromCenterMeters,
+                               hotelLink,
                                rate,
                                secondaryRate,
                                secondaryRateType,
                                numberOfReviews,
                                newlyAdded,
+                               starRating,
                                bonuses,
                                rooms,
                                collectedAt,
-                               starRating,
                              }: RawHotel): Hotel {
     const calculatedValues = this.priceCalculator.calculate(currentPrice, hotel.priceChanges);
     const [lastPrice] = hotel.priceChanges.slice(-1);
     const latestValues: LatestValues = {
       price: currentPrice,
+      districtName,
+      distanceFromCenterMeters,
+      hotelLink,
       rate,
       secondaryRate,
       secondaryRateType,
       numberOfReviews,
       newlyAdded,
+      starRating,
       bonuses,
       rooms,
     }
     return lastPrice && lastPrice.value === currentPrice
-      ? hotel.updateWhenPriceHasNotChanged(collectedAt, latestValues, calculatedValues, starRating)
-      : hotel.updateWithChangedPrice(currentPrice, collectedAt, latestValues, calculatedValues, starRating);
+      ? hotel.updateWhenPriceHasNotChanged(collectedAt, latestValues, calculatedValues)
+      : hotel.updateWithChangedPrice(currentPrice, collectedAt, latestValues, calculatedValues);
   }
 }

@@ -8,11 +8,7 @@ export interface HotelDocument extends Document {
   readonly searchId: string;
   readonly hotelId: string;
   readonly name: string;
-  readonly distanceFromCenterMeters: number;
-  readonly districtName: string;
   readonly coords: CoordsDocument;
-  readonly hotelLink: string;
-  readonly starRating: number;
   readonly priceChanges: PriceChangeDocument[];
   readonly collectedAt: string[];
   readonly latestValues: LatestValuesDocument;

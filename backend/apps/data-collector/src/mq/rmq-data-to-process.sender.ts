@@ -13,9 +13,11 @@ export class RmqDataToProcessSender extends DataToProcessSender {
     super();
   }
 
-  sendHotels(searchId: string, rawHotels: RawHotel[]): void {
+  sendHotels(searchId: string,
+             rawHotels: RawHotel[],
+             collectedAt: string): void {
     const rawHotelsDto = rawHotels.map(h => RawHotelMapper.toDto(h));
     this.client.emit<void, CollectedHotelsMessage>(DataToProcessMessagePattern.HOTELS,
-      { searchId, rawHotels: rawHotelsDto, timestamp: Date.now() });
+      { searchId, rawHotels: rawHotelsDto, collectedAt, timestamp: Date.now() });
   }
 }

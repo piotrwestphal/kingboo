@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { SearchResultsController } from './search-results.controller';
+import { SearchDataController } from './search-data.controller';
 import { SearchDataService } from './search-data.service';
 import { ConfigModule } from '@kb/config';
 import { AppConfigService } from '../config/app-config.service';
@@ -13,7 +13,7 @@ import { RestModule } from '../rest/rest.module';
     ConfigModule.register(getEnvironments(), { configClass: AppConfigService, logger }),
     RestModule,
   ],
-  controllers: [SearchResultsController, UserNotificationsConsumer],
+  controllers: [SearchDataController, UserNotificationsConsumer],
   providers: [SearchDataService],
 })
 export class AppModule {

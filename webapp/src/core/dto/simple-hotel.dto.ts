@@ -7,11 +7,7 @@ export interface SimpleHotelDto {
   readonly searchId: string;
   readonly hotelId: string;
   readonly name: string;
-  readonly distanceFromCenterMeters: number;
-  readonly districtName: string | null;
   readonly coords: Coords;
-  readonly hotelLink: string;
-  readonly starRating: number | null;
   readonly priceChanges: HotelPriceChangeDto[];
   readonly latestValues: HotelLatestValuesDto;
   readonly calculatedValues: HotelCalculatedValuesDto;

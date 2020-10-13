@@ -80,7 +80,7 @@ export class HotelsCollector {
       rawHotels.push(...mappedRawHotels);
       isNextPageButtonAvailable = nextPageButtonAvailable;
       currentHotelsCount += scrapedRawHotels.length;
-      this.dataToProcessSender.sendHotels(searchId, mappedRawHotels);
+      this.dataToProcessSender.sendHotels(searchId, mappedRawHotels, collectedAt);
     }
     if (isNextPageButtonAvailable) {
       logger.debug('Stop hotels scraping - results limit has reached.');

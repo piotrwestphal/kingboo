@@ -31,7 +31,11 @@ type HotelMenuProps = {
 }
 
 export default function HotelMenu({
-                                    hotel,
+                                    hotel: {
+                                      latestValues: {
+                                        hotelLink
+                                      }
+                                    },
                                     popupState,
                                     setDialog
                                   }: HotelMenuProps) {
@@ -64,7 +68,7 @@ export default function HotelMenu({
         popupState.close()
       })}
       <Link color='primary'
-            href={hotel.hotelLink}
+            href={hotelLink}
             target="_blank">
         {menuItem('Link', OpenInNewIcon, () => popupState.close)}
       </Link>

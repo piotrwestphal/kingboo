@@ -12,8 +12,9 @@ export class RmqUserNotificationSender extends UserNotificationSender {
 
   notifyAboutHotelsProcessingFinished(searchId: string,
                                       processedHotelIds: string[],
-                                      processingTimeMs: number): void {
+                                      processingTimeMs: number,
+                                      collectedAt: string): void {
     this.client.emit<void, UserNotificationMessage<HotelsData>>(UserNotificationsMessagePattern.HOTELS_PROCESSING_COMPLETED,
-      { data: { processedHotelIds, processingTimeMs }, searchId, timestamp: Date.now() })
+      { data: { processedHotelIds, processingTimeMs, collectedAt }, searchId, timestamp: Date.now() })
   }
 }
