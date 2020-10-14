@@ -63,10 +63,10 @@ export class SearchRequestService {
     if (found) {
       const updated = found.finishCollecting(collectingStartedAt, collectingFinishedAt);
       const saved = await this.searchRequestRepository.update(updated);
-      logger.info(`Successfully updated collecting progress, started at [${saved.collectingStartedAt.toISOString()}] ` +
-        `finished at [${saved.collectingFinishedAt.toISOString()}] for given search id [${searchId}]`);
+      logger.info(`Successfully updated collecting progress for search request with id [${searchId}], ` +
+        `started at [${collectingStartedAt}] finished at [${collectingFinishedAt}]`);
       logger.debug(`Updated search request`, saved);
-      this.userNotificationsSender.notifyAboutFinishedCollecting(searchId);
+      this.userNotificationsSender.notifyAboutFinishedCollecting(searchId, collectingStartedAt, collectingFinishedAt);
     } else {
       logger.warn(`Unable to update collecting progress. Search request for given search id [${searchId}] not found`);
     }

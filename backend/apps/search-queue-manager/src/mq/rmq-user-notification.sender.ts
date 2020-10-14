@@ -3,6 +3,7 @@ import { UserNotificationsMessagePattern } from '@kb/rabbit/message-pattern/User
 import { UserNotificationMessage } from '@kb/model/mqmessage/user-notification.message';
 import { ClientProxy } from '@nestjs/microservices';
 import { MqMessage, UserData } from '@kb/model';
+import { CollectingTimesData } from '@kb/model/mqmessage/user-notification/collecting-times.data';
 
 export class RmqUserNotificationSender extends UserNotificationSender {
 
@@ -27,8 +28,10 @@ export class RmqUserNotificationSender extends UserNotificationSender {
       { searchId, timestamp: Date.now() });
   }
 
-  notifyAboutFinishedCollecting(searchId: string): void {
-    this.client.emit<void, MqMessage>(UserNotificationsMessagePattern.HOTELS_COLLECTION_COMPLETED,
-      { searchId, timestamp: Date.now() });
+  notifyAboutFinishedCollecting(searchId: string,
+                                collectingStartedAt: string,
+                                collectingFinishedAt: string): void {
+    this.client.emit<void, UserNotificationMessage<CollectingTimesData>>(UserNotificationsMessagePattern.HOTELS_COLLECTION_COMPLETED,
+      { data: { collectingStartedAt, collectingFinishedAt }, searchId, timestamp: Date.now() });
   }
 }

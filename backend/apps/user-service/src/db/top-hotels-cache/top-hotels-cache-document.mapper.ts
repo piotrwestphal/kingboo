@@ -9,12 +9,14 @@ export class TopHotelsCacheDocumentMapper {
                 collectingStartedAt,
                 collectingFinishedAt,
                 topHotels,
+                updatedAt,
               }: TopHotelsCacheDocument): TopHotelsCache {
     return new TopHotelsCache(
       searchId,
       collectingStartedAt,
       collectingFinishedAt,
       topHotels,
+      new Date(updatedAt),
     )
   }
 

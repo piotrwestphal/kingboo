@@ -15,6 +15,8 @@ export const localConfig: AppConfig = {
     address: mqAddress,
     queueDefinition: {
       queue: consumerQueueName,
+      noAck: false,
+      prefetchCount: 1,
       queueOptions: retrieveRMQQueueOptions(consumerQueueName),
     },
   },

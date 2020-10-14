@@ -43,9 +43,8 @@ export class SearchDataService {
     if (this.isCacheUpToDate(searchRequestDto, topHotelsCache)) {
       return topHotelsCache.topHotels
     }
-    this.topHotelsCacheRepository.delete(searchId).then(() => {
-      logger.debug(`Cache is obsolete for top hotels with id [${searchRequestDto.searchId}] so was deleted`)
-    })
+    await this.topHotelsCacheRepository.delete(searchId)
+    logger.debug(`Cache is obsolete for top hotels with id [${searchRequestDto.searchId}] so was deleted`)
     return this.getTopHotelsAndSaveToCache(searchRequestDto)
   }
 

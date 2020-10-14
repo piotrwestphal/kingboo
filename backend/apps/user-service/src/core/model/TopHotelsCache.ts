@@ -6,6 +6,7 @@ export class TopHotelsCache {
     readonly collectingStartedAt: string,
     readonly collectingFinishedAt: string,
     readonly topHotels: TopHotelsDto,
+    readonly updatedAt?: Date,
   ) {
   }
 }

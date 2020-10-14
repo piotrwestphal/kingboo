@@ -104,5 +104,5 @@ export class HotelsCollector {
   }
 
   private getUnique = (rawHotels: RawHotel[], param: keyof DebugValues) =>
-    [...new Set(rawHotels.map(h => h.debug[param]))]
+    [...new Set(rawHotels.map(h => h.debug[param]))].join(', ')
 }

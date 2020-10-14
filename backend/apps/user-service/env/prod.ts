@@ -11,12 +11,9 @@ export const prodConfig = (env: NodeJS.ProcessEnv): AppConfig =>
     mqConsumer: {
       address: env.MQ_ADDRESS,
       queueDefinition: {
+        noAck: false,
+        prefetchCount: 1,
         queue: env.MQ_USER_NOTIFICATIONS_QUEUE_NAME,
-        queueOptions: {
-          arguments: {
-            'x-message-ttl': parseInt(env.MQ_USER_NOTIFICATIONS_QUEUE_MESSAGE_TTL, 10),
-          }
-        }
       },
     },
     searchRequestsResourceAddress: env.SEARCH_REQUESTS_RESOURCE_ADDRESS,
