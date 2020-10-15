@@ -1,5 +1,5 @@
 import { Schema } from 'mongoose';
-import { HotelDocument } from '../interface/hotel.document';
+import { HotelDocument } from '../document/hotel.document';
 import { CoordsSchema } from './coords.schema';
 import { PriceChangeSchema } from './price-change.schema';
 import { LatestValuesSchema } from './latest-values.schema';

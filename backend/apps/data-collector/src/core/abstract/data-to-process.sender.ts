@@ -1,7 +1,9 @@
 import { RawHotel } from '../model/RawHotel';
 
 export abstract class DataToProcessSender {
-  abstract sendHotels(searchId: string,
-                      rawHotels: RawHotel[],
-                      collectedAt: string): void;
+  abstract sendHotelsPart(searchId: string,
+                          rawHotels: RawHotel[]): void;
+
+  abstract sendHotelsSummary(searchId: string,
+                             expectedNumberOfParts: number): void;
 }

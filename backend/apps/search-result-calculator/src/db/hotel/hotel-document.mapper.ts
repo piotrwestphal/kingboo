@@ -1,7 +1,7 @@
-import { Hotel } from '../core/model/hotel';
-import { HotelDocument } from './interface/hotel.document';
+import { Hotel } from '../../core/model/Hotel';
+import { HotelDocument } from './document/hotel.document';
 
-export class MongoHotelDocumentMapper {
+export class HotelDocumentMapper {
   toHotel({
             searchId,
             hotelId,

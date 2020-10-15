@@ -1,4 +1,4 @@
-import { Hotel } from './hotel';
+import { Hotel } from './Hotel';
 
 describe('Hotel', () => {
   it('should update when price has not changed on new hotel', () => {

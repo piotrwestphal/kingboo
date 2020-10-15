@@ -1,9 +1,8 @@
 import { UserNotificationSender } from '../core/abstract/user-notification.sender';
-import { UserNotificationsMessagePattern } from '@kb/rabbit/message-pattern/UserNotificationsMessagePattern';
-import { UserNotificationMessage } from '@kb/model/mqmessage/user-notification.message';
+import { UserNotificationMessagePattern } from '@kb/rabbit/message-pattern/UserNotificationMessagePattern';
 import { ClientProxy } from '@nestjs/microservices';
-import { MqMessage, UserData } from '@kb/model';
-import { CollectingTimesData } from '@kb/model/mqmessage/user-notification/collecting-times.data';
+import { MqMessage, UserDto } from '@kb/model';
+import { CollectingTimesDto } from '@kb/model/mqmessage/user-notification/collecting-times.dto';
 
 export class RmqUserNotificationSender extends UserNotificationSender {
 
@@ -14,24 +13,24 @@ export class RmqUserNotificationSender extends UserNotificationSender {
   }
 
   notifyAboutCreatedUserSearchRequest(userId: string, searchId: string): void {
-    this.client.emit<void, UserNotificationMessage<UserData>>(UserNotificationsMessagePattern.USER_SEARCH_REQUEST_CREATED,
+    this.client.emit<void, MqMessage<UserDto>>(UserNotificationMessagePattern.USER_SEARCH_REQUEST_CREATED,
       { data: { userId }, searchId, timestamp: Date.now() });
   }
 
   notifyAboutCreatedCyclicSearchRequest(searchId: string): void {
-    this.client.emit<void, MqMessage>(UserNotificationsMessagePattern.CYCLIC_SEARCH_REQUEST_CREATED,
+    this.client.emit<void, MqMessage>(UserNotificationMessagePattern.CYCLIC_SEARCH_REQUEST_CREATED,
       { searchId, timestamp: Date.now() });
   }
 
   notifyAboutDeletedCyclicSearchRequest(searchId: string): void {
-    this.client.emit<void, MqMessage>(UserNotificationsMessagePattern.CYCLIC_SEARCH_REQUEST_DELETED,
+    this.client.emit<void, MqMessage>(UserNotificationMessagePattern.CYCLIC_SEARCH_REQUEST_DELETED,
       { searchId, timestamp: Date.now() });
   }
 
   notifyAboutFinishedCollecting(searchId: string,
                                 collectingStartedAt: string,
                                 collectingFinishedAt: string): void {
-    this.client.emit<void, UserNotificationMessage<CollectingTimesData>>(UserNotificationsMessagePattern.HOTELS_COLLECTION_COMPLETED,
+    this.client.emit<void, MqMessage<CollectingTimesDto>>(UserNotificationMessagePattern.HOTELS_COLLECTION_COMPLETED,
       { data: { collectingStartedAt, collectingFinishedAt }, searchId, timestamp: Date.now() });
   }
 }

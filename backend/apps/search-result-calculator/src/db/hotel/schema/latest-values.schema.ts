@@ -1,5 +1,5 @@
 import { Schema } from 'mongoose';
-import { LatestValuesDocument } from '../interface/latest-values.document';
+import { LatestValuesDocument } from '../document/latest-values.document';
 import { BonusesSchema } from './bonuses.schema';
 import { RoomSchema } from './room.schema';
 

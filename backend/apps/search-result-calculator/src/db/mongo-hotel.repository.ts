@@ -1,8 +1,8 @@
 import { HotelRepository } from '../core/abstract/hotel.repository';
-import { Hotel } from '../core/model/hotel';
+import { Hotel } from '../core/model/Hotel';
 import { Model } from 'mongoose';
-import { MongoHotelDocumentMapper } from './mongo-hotel-document.mapper';
-import { HotelDocument } from './interface/hotel.document';
+import { HotelDocumentMapper } from './hotel/hotel-document.mapper';
+import { HotelDocument } from './hotel/document/hotel.document';
 import { HotelIdentifier } from '../core/interface/hotel-identifier';
 import { TopHotels } from '../core/interface/top-hotels';
 import { SimpleHotel } from '../core/interface/simple-hotel';
@@ -32,7 +32,7 @@ export class MongoHotelRepository extends HotelRepository {
   private readonly DAY = 24 * 60 * 60 * 1000;
 
   constructor(
-    private readonly mapper: MongoHotelDocumentMapper,
+    private readonly mapper: HotelDocumentMapper,
     private readonly model: Model<HotelDocument>,
   ) {
     super();

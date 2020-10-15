@@ -11,12 +11,12 @@ export class RawSearchResult {
   ) {
   }
 
-  addHotelsAfterCollectingFinish(rawHotels: RawHotel[]) {
+  addHotelsAfterCollectingFinish(rawHotels: RawHotel[]): void {
     this.hotels.push(...rawHotels);
     this.hotelsCount = this.hotels.length;
   }
 
-  setCollectingTime(collectingTimeSec: number) {
+  setCollectingTime(collectingTimeSec: number): void {
     this.collectingTimeSec = collectingTimeSec;
   }
 }

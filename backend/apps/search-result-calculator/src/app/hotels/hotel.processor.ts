@@ -1,15 +1,15 @@
 import { MessageProcessor } from '../../processing/message.processor';
 import { HotelRepository } from '../../core/abstract/hotel.repository';
-import { CollectedHotelsMessage } from '@kb/model';
+import { RawHotelDto } from '@kb/model';
 import { FileManager } from '@kb/util/file.manager';
 import { HotelFactory } from './hotel.factory';
 import { PriceCalculator } from './price.calculator';
-import { Hotel } from '../../core/model/hotel';
+import { Hotel } from '../../core/model/Hotel';
 import { RawHotel } from '../../core/interface/raw-hotel';
 import { AppConfigService } from '../../config/app-config.service';
 import { logger } from '../../logger';
-import { UserNotificationSender } from '../../core/abstract/user-notification.sender';
 import { LatestValues } from '../../core/interface/latest-values';
+import { ProgressMeasuringService } from '../processing-progress/progress-measuring.service';
 
 export class HotelProcessor {
 
@@ -20,12 +20,11 @@ export class HotelProcessor {
     private readonly hotelRepository: HotelRepository,
     private readonly messageProcessor: MessageProcessor,
     private readonly priceCalculator: PriceCalculator,
-    private readonly userNotificationSender: UserNotificationSender,
+    private readonly progressMeasuringService: ProgressMeasuringService,
   ) {
   }
 
-  async processMessage({ collectedAt, searchId, rawHotels }: CollectedHotelsMessage): Promise<void> {
-    const now = Date.now();
+  async processMessage(searchId: string, rawHotels: RawHotelDto[]): Promise<void> {
     const rawHotelsById = this.messageProcessor.processMessage(searchId, rawHotels);
     const rawHotelIds = Array.from(rawHotelsById.keys());
     if (this.configService.saveResultAsJson) {
@@ -41,7 +40,7 @@ export class HotelProcessor {
 
     if (hotelsToCreate.length) {
       const created = await this.hotelRepository.createAll(hotelsToCreate.map(h => this.hotelFactory.createNew(h)));
-      logger.debug(`Hotels were created for hotel ids`, created.map(h => h.hotelId));
+      logger.debug(`Hotels were created for search id ${searchId}, hotel ids`, created.map(h => h.hotelId));
     }
     const updatedHotelsWithRaw = Array.from(foundHotels.keys()).map(hotelId => {
       const hotel = foundHotels.get(hotelId);
@@ -51,12 +50,9 @@ export class HotelProcessor {
 
     if (updatedHotelsWithRaw.length) {
       const updated = await this.hotelRepository.updateAll(updatedHotelsWithRaw);
-      logger.debug(`Hotels were updated for hotel ids`, updated.map(h => h.hotelId));
+      logger.debug(`Hotels were updated for search id ${searchId}, hotel ids`, updated.map(h => h.hotelId));
     }
-    const messageProcessingTimeMs = Date.now() - now;
-    this.userNotificationSender.notifyAboutHotelsProcessingFinished(
-      searchId, rawHotelIds, messageProcessingTimeMs, collectedAt);
-    logger.debug(`Message processing last [${messageProcessingTimeMs}] ms`);
+    this.progressMeasuringService.setProgress(searchId);
   }
 
   // TODO: move more properties to latestValues

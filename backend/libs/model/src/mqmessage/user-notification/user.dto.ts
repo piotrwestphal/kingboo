@@ -1,3 +1,3 @@
-export interface UserData {
+export interface UserDto {
   readonly userId: string;
 }

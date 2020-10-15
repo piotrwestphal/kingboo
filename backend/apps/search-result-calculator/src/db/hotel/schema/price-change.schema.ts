@@ -1,5 +1,5 @@
 import { Schema } from 'mongoose';
-import { PriceChangeDocument } from '../interface/price-change.document';
+import { PriceChangeDocument } from '../document/price-change.document';
 
 export const PriceChangeSchema = new Schema<PriceChangeDocument>({
     value: Number,

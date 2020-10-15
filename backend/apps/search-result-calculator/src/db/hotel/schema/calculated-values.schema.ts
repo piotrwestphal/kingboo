@@ -1,5 +1,5 @@
 import { Schema } from 'mongoose';
-import { CalculatedValuesDocument } from '../interface/calculated-values.document';
+import { CalculatedValuesDocument } from '../document/calculated-values.document';
 
 export const CalculatedValuesSchema = new Schema<CalculatedValuesDocument>({
     avgPrice: Number,

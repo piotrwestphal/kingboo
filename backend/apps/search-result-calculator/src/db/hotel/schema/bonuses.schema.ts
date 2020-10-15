@@ -1,5 +1,5 @@
 import { Schema } from 'mongoose';
-import { BonusesDocument } from '../interface/bonuses.document';
+import { BonusesDocument } from '../document/bonuses.document';
 
 export const BonusesSchema = new Schema<BonusesDocument>({
     freeCancellation: Boolean,

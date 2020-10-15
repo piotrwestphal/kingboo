@@ -1,5 +1,5 @@
 import { Schema } from 'mongoose';
-import { HotelDocument } from '../interface/hotel.document';
+import { HotelDocument } from '../document/hotel.document';
 
 export const CoordsSchema = new Schema<HotelDocument>({
     lat: Number,

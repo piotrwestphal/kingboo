@@ -12,6 +12,11 @@ import { RawHotel } from '../core/model/RawHotel';
 import { RawHotelMapper } from './mapper/raw-hotel.mapper';
 import { DebugValues } from '../scrap/interface/debug.values';
 
+interface HotelCollectionResult {
+  readonly pagesCollected: number
+  readonly rawHotels: RawHotel[]
+}
+
 @Injectable()
 export class HotelsCollector {
 
@@ -28,15 +33,17 @@ export class HotelsCollector {
   async collectHotels(searchId: string, collectHotelsScenario: CollectHotelsScenario): Promise<void> {
     logger.info('Start collecting data for scenario: ', collectHotelsScenario);
     const startCollectingHotelsTimeMs = Date.now();
-    let rawSearchResult = null;
+    let rawSearchResult: RawSearchResult = null;
+    let expectedNumberOfParts = 0;
     try {
       await this.scraperFacade.initializeBrowser(this.appConfigService.puppeteerLaunchOptions);
       const searchPlaceIdentifier = await this.collectSearchPlaceIdentifierIfNotPresentAndNotify(searchId, collectHotelsScenario);
       rawSearchResult = new RawSearchResult(searchId, searchPlaceIdentifier);
       const enableStylesOnResultsPage = this.appConfigService.enableStylesOnResultsPage;
       const totalPagesCount = await this.scraperFacade.prepareResultList(searchPlaceIdentifier, collectHotelsScenario, enableStylesOnResultsPage);
-      const hotels = await this.collectHotelAsLongAsConditionsMet(searchId, totalPagesCount, collectHotelsScenario.resultsLimit);
-      rawSearchResult.addHotelsAfterCollectingFinish(hotels);
+      const { pagesCollected, rawHotels } = await this.collectHotelAsLongAsConditionsMet(searchId, totalPagesCount, collectHotelsScenario.resultsLimit);
+      expectedNumberOfParts = pagesCollected
+      rawSearchResult.addHotelsAfterCollectingFinish(rawHotels);
     } catch (err) {
       logger.error('Error during collecting data.', err.message);
       if (this.appConfigService.takeScreenshotOnError) {
@@ -51,6 +58,7 @@ export class HotelsCollector {
 
     if (rawSearchResult) {
       rawSearchResult.setCollectingTime(collectingTimeSec);
+      this.dataToProcessSender.sendHotelsSummary(searchId, expectedNumberOfParts)
       logger.debug(`Saving raw search result with id [${rawSearchResult.searchId}] to db.`);
       await this.rawSearchResultRepository.create(rawSearchResult);
     } else {
@@ -66,10 +74,11 @@ export class HotelsCollector {
 
   private async collectHotelAsLongAsConditionsMet(searchId: string,
                                                   totalPagesCount: number,
-                                                  resultsLimit: number): Promise<RawHotel[]> {
-    const rawHotels: RawHotel[] = [];
+                                                  resultsLimit: number): Promise<HotelCollectionResult> {
+    const rawHotels = [];
     let currentHotelsCount = 0;
     let isNextPageButtonAvailable = totalPagesCount > 0;
+    let pagesCollected = 0;
     while (isNextPageButtonAvailable && resultsLimit > currentHotelsCount) {
       // TODO: wrap with try catch
       const { scrapedRawHotels, nextPageButtonAvailable } = await this.scraperFacade.collectHotelsFromCurrentPage();
@@ -80,14 +89,18 @@ export class HotelsCollector {
       rawHotels.push(...mappedRawHotels);
       isNextPageButtonAvailable = nextPageButtonAvailable;
       currentHotelsCount += scrapedRawHotels.length;
-      this.dataToProcessSender.sendHotels(searchId, mappedRawHotels, collectedAt);
+      pagesCollected = ++pagesCollected
+      this.dataToProcessSender.sendHotelsPart(searchId, mappedRawHotels);
     }
     if (isNextPageButtonAvailable) {
       logger.debug('Stop hotels scraping - results limit has reached.');
     } else {
       logger.debug('Stop hotels scraping - there is no more pages.');
     }
-    return rawHotels;
+    return {
+      rawHotels,
+      pagesCollected,
+    };
   }
 
   private async collectSearchPlaceIdentifierIfNotPresentAndNotify(searchId: string,

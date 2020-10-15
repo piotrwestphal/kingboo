@@ -1,4 +1,4 @@
-import { Hotel } from '../model/hotel';
+import { Hotel } from '../model/Hotel';
 import { HotelIdentifier } from '../interface/hotel-identifier';
 import { TopHotels } from '../interface/top-hotels';
 import { SimpleHotel } from '../interface/simple-hotel';

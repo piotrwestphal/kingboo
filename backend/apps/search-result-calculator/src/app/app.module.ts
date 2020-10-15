@@ -16,9 +16,11 @@ import { MessageProcessor } from '../processing/message.processor';
 import { logger } from '../logger';
 import { ScheduleModule } from '@nestjs/schedule';
 import { OldHotelsRemover } from './scheduler/old-hotels.remover';
-import { UserNotificationSender } from '../core/abstract/user-notification.sender';
 import { HotelsController } from './hotels.controller';
 import { HotelsService } from './hotels/hotels.service';
+import { ProgressMeasuringService } from './processing-progress/progress-measuring.service';
+import { UserNotificationSender } from '../core/abstract/user-notification.sender';
+import { ProcessingProgressRepository } from '../core/abstract/processing-progress.repository';
 
 @Module({
   imports: [
@@ -37,11 +39,21 @@ import { HotelsService } from './hotels/hotels.service';
     OldHotelsRemover,
     HotelsService,
     {
+      provide: ProgressMeasuringService,
+      useFactory: (
+        processingProgressRepository: ProcessingProgressRepository,
+        userNotificationSender: UserNotificationSender,
+      ) => {
+        return new ProgressMeasuringService(processingProgressRepository, userNotificationSender)
+      },
+      inject: [ProcessingProgressRepository, UserNotificationSender]
+    },
+    {
       provide: HotelProcessor,
       useFactory: (configService: AppConfigService,
                    hotelRepository: HotelRepository,
                    messageProcessor: MessageProcessor,
-                   userNotificationSender: UserNotificationSender) => {
+                   progressMeasuringService: ProgressMeasuringService) => {
         const fileManager = new FileManager(logger);
         const hotelFactory = new HotelFactory();
         const priceCalculator = new PriceCalculator();
@@ -52,7 +64,7 @@ import { HotelsService } from './hotels/hotels.service';
           hotelRepository,
           messageProcessor,
           priceCalculator,
-          userNotificationSender,
+          progressMeasuringService,
         );
       },
       inject: [AppConfigService, HotelRepository, MessageProcessor, UserNotificationSender],

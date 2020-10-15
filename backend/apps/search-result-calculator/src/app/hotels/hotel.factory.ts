@@ -1,5 +1,5 @@
 import { RawHotel } from '../../core/interface/raw-hotel';
-import { Hotel } from '../../core/model/hotel';
+import { Hotel } from '../../core/model/Hotel';
 
 export class HotelFactory {
   createNew({

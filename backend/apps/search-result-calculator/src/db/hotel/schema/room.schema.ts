@@ -1,5 +1,5 @@
 import { Schema } from 'mongoose';
-import { RoomDocument } from '../interface/room.document';
+import { RoomDocument } from '../document/room.document';
 import { BonusesSchema } from './bonuses.schema';
 
 export const RoomSchema = new Schema<RoomDocument>({
