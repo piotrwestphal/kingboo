@@ -1,29 +1,26 @@
 import { UserNotificationHandler } from '../core/abstract/user-notification.handler';
-import { HotelsClient } from '../core/abstract/hotels.client';
-import { TopHotelsCacheRepository } from '../core/abstract/top-hotels-cache.repository';
+import { CollectingTimesData } from '../core/interface/collecting-times.data';
+import { TopHotelsCacheMaintainer } from './top-hotels/top-hotels-cache.maintainer';
 import { logger } from '../logger';
 
 export class AppUserNotificationHandler extends UserNotificationHandler {
 
   constructor(
-    private readonly hotelsClient: HotelsClient,
-    private readonly topHotelsCacheRepository: TopHotelsCacheRepository,
+    private readonly topHotelsCacheMaintainer: TopHotelsCacheMaintainer,
   ) {
     super()
   }
 
-  async updateSearchRequestCache(searchId: string, timestamp: number): Promise<void> {
-    return
+  async updateSearchRequestCache(searchId: string,
+                                 collectingTimes: CollectingTimesData,
+                                 timestamp: number): Promise<void> {
+    logger.debug(`There is no any effect here until async communication with frontend happen :). ` +
+      `Search id: [${searchId}], collecting times: [${collectingTimes}], timestamp ${timestamp}`)
   }
 
-  // TODO: case when cache not found!
-  async updateTopHotelsCache(searchId: string, timestamp: number): Promise<void> {
-    const found = await this.topHotelsCacheRepository.find(searchId)
-    if (found && found.updatedAt.getTime() > timestamp) {
-      logger.debug(`Message timestamp [${timestamp}] is earlier than the cache update time ` +
-        `[${found.updatedAt.getTime()}]. The message has expired`)
-    } else {
-
-    }
+  updateTopHotelsCache(searchId: string,
+                       collectingTimes: CollectingTimesData,
+                       timestamp: number): Promise<void> {
+    return this.topHotelsCacheMaintainer.updateCache(searchId, collectingTimes, timestamp)
   }
 }

@@ -3,7 +3,7 @@ import { MessagePattern, Payload } from '@nestjs/microservices';
 import { DataCollectionNotificationsMessagePattern } from '@kb/rabbit/message-pattern/DataCollectionNotificationsMessagePattern';
 import { SearchPlaceCollectionCompletedDto } from '@kb/model/mqmessage/data-collection-notification/search-place-collection-completed.dto';
 import { SearchRequestService } from './search-request/search-request.service';
-import { MqMessage, ScrapingFinishedDto } from '@kb/model';
+import { CollectingTimesDto, MqMessage } from '@kb/model';
 
 @Controller()
 export class DataCollectionNotificationConsumer {
@@ -21,7 +21,7 @@ export class DataCollectionNotificationConsumer {
 
   @MessagePattern(DataCollectionNotificationsMessagePattern.DATA_COLLECTION_FINISHED)
   async handleDataCollectionFinished(
-    @Payload() { searchId, data: { scrapingStartedAt, scrapingFinishedAt } }: MqMessage<ScrapingFinishedDto>): Promise<void> {
-    await this.searchRequestService.updateCollectingProgress(searchId, scrapingStartedAt, scrapingFinishedAt);
+    @Payload() { searchId, data: { collectingStartedAt, collectingFinishedAt } }: MqMessage<CollectingTimesDto>): Promise<void> {
+    await this.searchRequestService.updateCollectingProgress(searchId, collectingStartedAt, collectingFinishedAt);
   }
 }

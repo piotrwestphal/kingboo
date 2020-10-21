@@ -4,7 +4,7 @@ import { ConditionalProcessingProgress } from '../core/interface/conditional-pro
 import { Model } from "mongoose";
 import { ProcessingProgressDocument } from './processing-activity/processing-progress.document';
 import { ProcessingProgressMapper } from './processing-activity/processing-progress.mapper';
-import { ProcessingProgress } from '../core/model/ProcessingProgress';
+import { ProcessingProgress } from '../core/interface/processing-progress';
 
 export class MongoProcessingProgressRepository extends ProcessingProgressRepository {
 

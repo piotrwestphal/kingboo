@@ -5,6 +5,7 @@ import { HotelsPartDto, HotelsSummaryDto, MqMessage } from '@kb/model';
 import { HotelProcessor } from './hotels/hotel.processor';
 import { logger } from '../logger';
 import { ProgressMeasuringService } from './processing-progress/progress-measuring.service';
+import { mqAck } from '@kb/rabbit';
 
 @Controller()
 export class DataToProcessConsumer {
@@ -23,20 +24,17 @@ export class DataToProcessConsumer {
     await this.hotelProcessor.processMessage(searchId, rawHotels);
     const messageProcessingTimeMs = Date.now() - now;
     logger.info(`Processed message with search id [${searchId}] within [${messageProcessingTimeMs}] ms`);
-    this.ack(ctx)
+    mqAck(ctx);
   }
 
   @MessagePattern(DataToProcessMessagePattern.HOTELS_SUMMARY)
-  async handleHotelsSummary(@Payload() { searchId, data: { expectedNumberOfParts } }: MqMessage<HotelsSummaryDto>,
+  async handleHotelsSummary(@Payload() {
+                              searchId,
+                              data,
+                            }: MqMessage<HotelsSummaryDto>,
                             @Ctx() ctx: RmqContext): Promise<void> {
     logger.info(`Receive ${ctx.getPattern()} message with search id [${searchId}]`);
-    await this.progressMeasuringService.summarizeProgress(searchId, expectedNumberOfParts);
-    this.ack(ctx)
-  }
-
-  private ack = (ctx: RmqContext) => {
-    const channel = ctx.getChannelRef();
-    const originalMsg = ctx.getMessage();
-    channel.ack(originalMsg);
+    await this.progressMeasuringService.summarizeProgress(searchId, data);
+    mqAck(ctx);
   }
 }

@@ -1,6 +1,6 @@
 import { ProcessingProgressType } from '../processing-actvity.type';
 import { ConditionalProcessingProgress } from '../interface/conditional-processing-progress';
-import { ProcessingProgress } from '../model/ProcessingProgress';
+import { ProcessingProgress } from '../interface/processing-progress';
 
 
 export abstract class ProcessingProgressRepository {

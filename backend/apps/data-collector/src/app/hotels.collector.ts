@@ -30,7 +30,7 @@ export class HotelsCollector {
   ) {
   }
 
-  async collectHotels(searchId: string, collectHotelsScenario: CollectHotelsScenario): Promise<void> {
+  async collectHotels(searchId: string, collectHotelsScenario: CollectHotelsScenario): Promise<number> {
     logger.info('Start collecting data for scenario: ', collectHotelsScenario);
     const startCollectingHotelsTimeMs = Date.now();
     let rawSearchResult: RawSearchResult = null;
@@ -58,7 +58,6 @@ export class HotelsCollector {
 
     if (rawSearchResult) {
       rawSearchResult.setCollectingTime(collectingTimeSec);
-      this.dataToProcessSender.sendHotelsSummary(searchId, expectedNumberOfParts)
       logger.debug(`Saving raw search result with id [${rawSearchResult.searchId}] to db.`);
       await this.rawSearchResultRepository.create(rawSearchResult);
     } else {
@@ -70,6 +69,8 @@ export class HotelsCollector {
         `COLLECTED-${searchId}`);
       logger.debug(`Collected data was saved locally to [${pathToResult}]`);
     }
+
+    return expectedNumberOfParts
   }
 
   private async collectHotelAsLongAsConditionsMet(searchId: string,

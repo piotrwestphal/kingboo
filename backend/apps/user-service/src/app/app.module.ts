@@ -1,19 +1,20 @@
 import { Module } from '@nestjs/common';
 import { SearchDataController } from './search-data.controller';
-import { SearchDataService } from './search-data.service';
+import { SearchDataService } from './search-data/search-data.service';
 import { ConfigModule } from '@kb/config';
 import { AppConfigService } from '../config/app-config.service';
 import { getEnvironments } from '../config/environments';
 import { logger } from '../logger';
-import { UserNotificationConsumer } from './user-notification.consumer';
+import { ProcessedDataMessageConsumer } from './processed-data-message.consumer';
 import { RestModule } from '../rest/rest.module';
 import { DbModule } from '../db/db.module';
 import { TopHotelsCacheRepository } from '../core/abstract/top-hotels-cache.repository';
 import { HotelsClient } from '../core/abstract/hotels.client';
 import { SearchRequestsClient } from '../core/abstract/search-requests.client';
-import { SearchDataMapper } from './search-data.mapper';
+import { SearchDataMapper } from './search-data/search-data.mapper';
 import { UserNotificationHandler } from '../core/abstract/user-notification.handler';
 import { AppUserNotificationHandler } from './app-user-notification.handler';
+import { TopHotelsCacheMaintainer } from './top-hotels/top-hotels-cache.maintainer';
 
 @Module({
   imports: [
@@ -21,15 +22,16 @@ import { AppUserNotificationHandler } from './app-user-notification.handler';
     DbModule,
     RestModule,
   ],
-  controllers: [SearchDataController, UserNotificationConsumer],
+  controllers: [SearchDataController, ProcessedDataMessageConsumer],
   providers: [
+    // SearchRequestCacheMaintainer,
+    TopHotelsCacheMaintainer,
     {
       provide: UserNotificationHandler,
       useFactory: (
-        hotelsClient: HotelsClient,
-        topHotelsRepository: TopHotelsCacheRepository,
-      ) => new AppUserNotificationHandler(hotelsClient, topHotelsRepository),
-      inject: [HotelsClient, TopHotelsCacheRepository],
+        topHotelsCacheMaintainer: TopHotelsCacheMaintainer,
+      ) => new AppUserNotificationHandler(topHotelsCacheMaintainer),
+      inject: [TopHotelsCacheMaintainer],
     },
     {
       provide: SearchDataService,

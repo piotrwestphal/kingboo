@@ -16,13 +16,25 @@ export class RmqDataToProcessSender extends DataToProcessSender {
   sendHotelsPart(searchId: string,
                  rawHotels: RawHotel[]): void {
     const rawHotelsDto = rawHotels.map(h => RawHotelMapper.toDto(h));
-    this.client.emit<void, MqMessage<HotelsPartDto>>(DataToProcessMessagePattern.HOTELS_PART,
-      { searchId, data: { rawHotels: rawHotelsDto }, timestamp: Date.now() });
+    this.client.emit<void, MqMessage<HotelsPartDto>>(DataToProcessMessagePattern.HOTELS_PART, {
+      searchId,
+      timestamp: Date.now(),
+      data: { rawHotels: rawHotelsDto }
+    });
   }
 
   sendHotelsSummary(searchId: string,
-                    expectedNumberOfParts: number): void {
-    this.client.emit<void, MqMessage<HotelsSummaryDto>>(DataToProcessMessagePattern.HOTELS_SUMMARY,
-      { searchId, data: { expectedNumberOfParts }, timestamp: Date.now() });
+                    expectedNumberOfParts: number,
+                    collectingStartedAt: Date,
+                    collectingFinishedAt: Date): void {
+    this.client.emit<void, MqMessage<HotelsSummaryDto>>(DataToProcessMessagePattern.HOTELS_SUMMARY, {
+      searchId,
+      timestamp: Date.now(),
+      data: {
+        expectedNumberOfParts,
+        collectingStartedAt: collectingStartedAt.toISOString(),
+        collectingFinishedAt: collectingFinishedAt.toISOString()
+      }
+    });
   }
 }

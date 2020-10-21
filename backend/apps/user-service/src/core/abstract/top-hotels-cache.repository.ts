@@ -1,7 +1,5 @@
-import { TopHotelsCache } from '../model/TopHotelsCache';
+import { TopHotelsDto } from '@kb/model';
+import { CacheRepository } from './cache.repository';
 
-export abstract class TopHotelsCacheRepository {
-  abstract find(searchId: string): Promise<TopHotelsCache>
-  abstract create(topHotelsCache: TopHotelsCache): Promise<TopHotelsCache>
-  abstract delete(searchId: string): Promise<boolean>
+export abstract class TopHotelsCacheRepository extends CacheRepository<TopHotelsDto> {
 }

@@ -5,5 +5,7 @@ export abstract class DataToProcessSender {
                           rawHotels: RawHotel[]): void;
 
   abstract sendHotelsSummary(searchId: string,
-                             expectedNumberOfParts: number): void;
+                             expectedNumberOfParts: number,
+                             collectingStartedAt: Date,
+                             collectingFinishedAt: Date): void;
 }

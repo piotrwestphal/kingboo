@@ -1,13 +1,11 @@
 import { Schema } from 'mongoose';
-import { TopHotelsCacheDocument } from './top-hotels-cache.document'
+import { CacheDocument } from './search-request-cache.document';
 
-export const TopHotelsCacheSchemaKey = 'topHotels';
-
-export const TopHotelsCacheSchema = new Schema<TopHotelsCacheDocument>({
+export const CacheSchema = new Schema<CacheDocument<any>>({
     searchId: String,
     collectingStartedAt: String,
     collectingFinishedAt: String,
-    topHotels: Object,
+    data: Object,
   },
   {
     versionKey: false,

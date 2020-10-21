@@ -13,6 +13,5 @@ export interface SearchDataDto {
   readonly updateFrequencyMinutes: number;
   readonly resultsLimit: number;
   readonly collectingFinishedAt: string | null;
-  readonly collectingCount: number,
   readonly topHotels: TopHotelsDto | null;
 }

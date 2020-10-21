@@ -1,11 +1,11 @@
-import { SearchDataPayload } from './dto/search-data.payload';
-import { SearchRequestsClient } from '../core/abstract/search-requests.client';
-import { HotelsClient } from '../core/abstract/hotels.client';
-import { logger } from '../logger';
-import { TopHotelsCacheRepository } from '../core/abstract/top-hotels-cache.repository';
+import { SearchDataPayload } from './search-data.payload';
+import { SearchRequestsClient } from '../../core/abstract/search-requests.client';
+import { HotelsClient } from '../../core/abstract/hotels.client';
+import { logger } from '../../logger';
+import { TopHotelsCacheRepository } from '../../core/abstract/top-hotels-cache.repository';
 import { SearchDataMapper } from './search-data.mapper';
 import { SearchRequestDto, TopHotelsDto } from '@kb/model';
-import { TopHotelsCache } from '../core/model/TopHotelsCache';
+import { CacheData } from '../../core/model/CacheData';
 
 export class SearchDataService {
 
@@ -23,10 +23,10 @@ export class SearchDataService {
       if (!searchRequestDto.collectingStartedAt) {
         logger.warn(`Search request with search id [${searchRequestDto.searchId}] has never been collected - ` +
           `'collectingStartedAt' does not exist`)
-        return this.searchDataMapper.fromDto(searchRequestDto, null);
+        return this.searchDataMapper.toDto(searchRequestDto, null);
       }
-      const topHotelsDto = await this.retrieveTopHotels(searchRequestDto)
-      return this.searchDataMapper.fromDto(searchRequestDto, topHotelsDto)
+      const topHotelsCache = await this.retrieveTopHotels(searchRequestDto)
+      return this.searchDataMapper.toDto(searchRequestDto, topHotelsCache)
     })
     const searchDataList = await Promise.all(pendingSearchDataDto)
     return {
@@ -34,31 +34,36 @@ export class SearchDataService {
     }
   }
 
-  private async retrieveTopHotels(searchRequestDto: SearchRequestDto): Promise<TopHotelsDto> {
+  private async retrieveTopHotels(searchRequestDto: SearchRequestDto): Promise<CacheData<TopHotelsDto>> {
     const { searchId } = searchRequestDto
     const topHotelsCache = await this.topHotelsCacheRepository.find(searchId)
     if (!topHotelsCache) {
       return this.getTopHotelsAndSaveToCache(searchRequestDto)
     }
     if (this.isCacheUpToDate(searchRequestDto, topHotelsCache)) {
-      return topHotelsCache.topHotels
+      return topHotelsCache
     }
     await this.topHotelsCacheRepository.delete(searchId)
     logger.debug(`Cache is obsolete for top hotels with id [${searchRequestDto.searchId}] so was deleted`)
     return this.getTopHotelsAndSaveToCache(searchRequestDto)
   }
 
-  private async getTopHotelsAndSaveToCache(searchRequestDto: SearchRequestDto): Promise<TopHotelsDto> {
+  private async getTopHotelsAndSaveToCache(searchRequestDto: SearchRequestDto): Promise<CacheData<TopHotelsDto>> {
     const { searchId, collectingStartedAt, collectingFinishedAt } = searchRequestDto
     const topHotelsDto = await this.hotelsClient.getTopHotels(searchId, collectingStartedAt, collectingFinishedAt)
-    const newCache = new TopHotelsCache(searchId, collectingStartedAt, collectingFinishedAt, topHotelsDto)
-    const { topHotels } = await this.topHotelsCacheRepository.create(newCache)
+    const newCache = CacheData.create({
+      searchId,
+      collectingStartedAt,
+      collectingFinishedAt,
+      data: topHotelsDto
+    })
+    const cacheData = await this.topHotelsCacheRepository.create(newCache)
     logger.debug(`Top hotels with id [${searchId}] was cached`)
-    return topHotels
+    return cacheData
   }
 
   private isCacheUpToDate = (searchRequestDto: SearchRequestDto,
-                             topHotelsCache: TopHotelsCache): boolean =>
+                             topHotelsCache: CacheData<TopHotelsDto>): boolean =>
     searchRequestDto.collectingStartedAt === topHotelsCache.collectingStartedAt
     && searchRequestDto.collectingFinishedAt === topHotelsCache.collectingFinishedAt
 }
