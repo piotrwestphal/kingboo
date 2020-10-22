@@ -15,6 +15,7 @@ import { SearchDataMapper } from './search-data/search-data.mapper';
 import { UserNotificationHandler } from '../core/abstract/user-notification.handler';
 import { AppUserNotificationHandler } from './app-user-notification.handler';
 import { TopHotelsCacheMaintainer } from './top-hotels/top-hotels-cache.maintainer';
+import { SearchRequestMessageConsumer } from './search-request-message.consumer';
 
 @Module({
   imports: [
@@ -22,7 +23,7 @@ import { TopHotelsCacheMaintainer } from './top-hotels/top-hotels-cache.maintain
     DbModule,
     RestModule,
   ],
-  controllers: [SearchDataController, ProcessedDataMessageConsumer],
+  controllers: [SearchDataController, ProcessedDataMessageConsumer, SearchRequestMessageConsumer],
   providers: [
     // SearchRequestCacheMaintainer,
     TopHotelsCacheMaintainer,

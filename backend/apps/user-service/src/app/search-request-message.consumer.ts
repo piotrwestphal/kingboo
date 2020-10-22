@@ -8,7 +8,7 @@ import { CollectingTimesDto } from '@kb/model/mqmessage/user-notification/collec
 import { mqAck } from '@kb/rabbit';
 
 @Controller()
-export class ProcessedDataMessageConsumer {
+export class SearchRequestMessageConsumer {
 
   constructor(
     private readonly userNotificationHandler: UserNotificationHandler
@@ -19,7 +19,7 @@ export class ProcessedDataMessageConsumer {
   @MessagePattern(UserNotificationMessagePattern.HOTELS_COLLECTION_COMPLETED)
   async handleHotelsCollectionCompleted(@Payload() { searchId, timestamp, data }: MqMessage<CollectingTimesDto>,
                                         @Ctx() ctx: RmqContext): Promise<void> {
-    logger.debug(`Received message ${UserNotificationMessagePattern.HOTELS_COLLECTION_COMPLETED} for [${searchId}]`, data)
+    logger.info(`Receive ${ctx.getPattern()} message with search id [${searchId}]`, data);
     await this.userNotificationHandler.updateSearchRequestCache(searchId, data, timestamp)
     mqAck(ctx);
   }

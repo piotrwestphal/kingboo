@@ -18,7 +18,7 @@ export class ProcessedDataMessageConsumer {
   @MessagePattern(UserNotificationMessagePattern.HOTELS_PROCESSING_COMPLETED)
   async handleHotelsProcessingCompleted(@Payload() { searchId, timestamp, data }: MqMessage<CollectingTimesDto>,
                                         @Ctx() ctx: RmqContext): Promise<void> {
-    logger.debug(`Received message ${UserNotificationMessagePattern.HOTELS_PROCESSING_COMPLETED} for [${searchId}]`)
+    logger.info(`Receive ${ctx.getPattern()} message with search id [${searchId}]`, data);
     await this.userNotificationHandler.updateTopHotelsCache(searchId, data, timestamp)
     mqAck(ctx);
   }

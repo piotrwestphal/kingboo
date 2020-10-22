@@ -6,7 +6,7 @@ export const ProcessingProgressSchemaKey = 'processingProgress';
 export const ProcessingProgressSchema = new Schema<ProcessingProgressDocument>({
     searchId: String,
     type: String,
-    value: Number,
+    data: Object,
   },
   {
     versionKey: false,
