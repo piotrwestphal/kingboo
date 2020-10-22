@@ -1,9 +1,8 @@
-import { CacheInterceptor, Controller, Get, Query, UseInterceptors } from '@nestjs/common';
+import { Controller, Get, Query } from '@nestjs/common';
 import { HotelsService } from './hotels/hotels.service';
 import { SimpleHotelsDto } from '@kb/model/hotel/simple-hotels.dto';
 
 @Controller('api/v1/hotels')
-@UseInterceptors(CacheInterceptor)
 export class HotelsController {
 
   constructor(private readonly hotelsService: HotelsService) {

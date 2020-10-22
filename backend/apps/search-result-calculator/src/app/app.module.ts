@@ -67,7 +67,7 @@ import { ProcessingProgressRepository } from '../core/abstract/processing-progre
           progressMeasuringService,
         );
       },
-      inject: [AppConfigService, HotelRepository, MessageProcessor, UserNotificationSender],
+      inject: [AppConfigService, HotelRepository, MessageProcessor, ProgressMeasuringService],
     },
   ],
 })

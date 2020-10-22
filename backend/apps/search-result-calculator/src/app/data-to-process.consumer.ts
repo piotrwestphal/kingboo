@@ -19,11 +19,10 @@ export class DataToProcessConsumer {
   @MessagePattern(DataToProcessMessagePattern.HOTELS_PART)
   async handleHotelsPart(@Payload() { searchId, data: { rawHotels } }: MqMessage<HotelsPartDto>,
                          @Ctx() ctx: RmqContext): Promise<void> {
-    const now = Date.now();
+    const debugMarker = Date.now(); // TODO: change to now when bug with performance will be tracked down :)
     logger.info(`Receive ${ctx.getPattern()} message with search id [${searchId}]`);
-    await this.hotelProcessor.processMessage(searchId, rawHotels);
-    const messageProcessingTimeMs = Date.now() - now;
-    logger.info(`Processed message with search id [${searchId}] within [${messageProcessingTimeMs}] ms`);
+    await this.hotelProcessor.processMessage(searchId, rawHotels, debugMarker);
+    logger.debug(`[${debugMarker}] Processed message with search id [${searchId}] within [${Date.now() - debugMarker}] ms`);
     mqAck(ctx);
   }
 

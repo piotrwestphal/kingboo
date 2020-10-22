@@ -18,6 +18,7 @@ export class SearchDataService {
   }
 
   async getSearchData(): Promise<SearchDataPayload> {
+    const now = Date.now()
     const searchRequests = await this.searchRequestsClient.getSearchRequests()
     const pendingSearchDataDto = searchRequests.map(async (searchRequestDto) => {
       if (!searchRequestDto.collectingStartedAt) {
@@ -29,6 +30,7 @@ export class SearchDataService {
       return this.searchDataMapper.toDto(searchRequestDto, topHotelsCache)
     })
     const searchDataList = await Promise.all(pendingSearchDataDto)
+    logger.debug(`Search data loaded within [${Date.now() - now}] ms`);
     return {
       searchDataList,
     }
