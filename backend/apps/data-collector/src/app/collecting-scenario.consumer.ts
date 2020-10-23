@@ -4,6 +4,7 @@ import { CollectingScenarioMessagePattern } from '@kb/rabbit/message-pattern/Col
 import { CollectHotelsScenarioMessage } from '@kb/model/mqmessage/collect-hotels-scenario.message';
 import { DataCollectorService } from '../core/abstract/data-collector.service';
 import { CollectHotelsScenarioMapper } from './mapper/collect-hotels-scenario.mapper';
+import { mqAck } from '@kb/rabbit';
 
 @Controller()
 export class CollectingScenarioConsumer {
@@ -20,12 +21,9 @@ export class CollectingScenarioConsumer {
                                           scenario,
                                           timestamp,
                                         }: CollectHotelsScenarioMessage,
-                                        @Ctx() context: RmqContext) {
+                                        @Ctx() ctx: RmqContext): Promise<void> {
     const collectHotelsScenario = CollectHotelsScenarioMapper.fromMessage(scenario);
     await this.dataCollectorService.collectData(searchId, updateFrequencyMinutes, collectHotelsScenario, timestamp);
-
-    const channel = context.getChannelRef();
-    const originalMsg = context.getMessage();
-    channel.ack(originalMsg);
+    mqAck(ctx);
   }
 }

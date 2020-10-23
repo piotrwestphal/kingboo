@@ -1,8 +1,8 @@
 import { HotelRepository } from '../core/abstract/hotel.repository';
-import { Hotel } from '../core/model/hotel';
+import { Hotel } from '../core/model/Hotel';
 import { Model } from 'mongoose';
-import { MongoHotelDocumentMapper } from './mongo-hotel-document.mapper';
-import { HotelDocument } from './interface/hotel.document';
+import { HotelDocumentMapper } from './hotel/hotel-document.mapper';
+import { HotelDocument } from './hotel/document/hotel.document';
 import { HotelIdentifier } from '../core/interface/hotel-identifier';
 import { TopHotels } from '../core/interface/top-hotels';
 import { SimpleHotel } from '../core/interface/simple-hotel';
@@ -12,11 +12,7 @@ const selectSimpleHotel: Record<keyof SimpleHotel, 1> = {
   searchId: 1,
   hotelId: 1,
   name: 1,
-  distanceFromCenterMeters: 1,
-  districtName: 1,
   coords: 1,
-  hotelLink: 1,
-  starRating: 1,
   priceChanges: 1,
   latestValues: 1,
   calculatedValues: 1,
@@ -36,7 +32,7 @@ export class MongoHotelRepository extends HotelRepository {
   private readonly DAY = 24 * 60 * 60 * 1000;
 
   constructor(
-    private readonly mapper: MongoHotelDocumentMapper,
+    private readonly mapper: HotelDocumentMapper,
     private readonly model: Model<HotelDocument>,
   ) {
     super();
@@ -83,19 +79,27 @@ export class MongoHotelRepository extends HotelRepository {
   }
 
   async createAll(hotels: Hotel[]): Promise<Hotel[]> {
-    const created = await this.model.insertMany(hotels);
+    const hotelsToSave = hotels.map(h => this.mapper.prepareForSave(h))
+    const created = await this.model.insertMany(hotelsToSave);
     return created.map(doc => this.fromDoc(doc));
   }
 
-  async updateAll(hotels: Hotel[]): Promise<Hotel[]> {
-    const updated = await Promise.all(hotels.map(hotel => this.model.findOneAndUpdate({
-        searchId: hotel.searchId,
-        hotelId: hotel.hotelId,
-      },
-      hotel as any, // TODO: remove `any` when @types/mongoose add proper types for sub documents
-      { new: true },
-    ).exec()));
-    return updated.map(doc => this.fromDoc(doc));
+  async updateAll(hotels: Hotel[]): Promise<number> {
+    const updateOps = hotels.map(h => this.mapper.prepareForSave(h))
+      .map(sh => ({
+        updateOne: {
+          filter: {
+            searchId: sh.searchId,
+            hotelId: sh.hotelId,
+          },
+          update: {
+            $set: sh,
+          },
+          upsert: true, // TODO: maybe merge create and update ops
+        }
+      }))
+    const writeResult = await this.model.bulkWrite(updateOps)
+    return writeResult.modifiedCount
   }
 
   async deleteMany(hotelIdentifiers: HotelIdentifier[]): Promise<number> {
@@ -144,5 +148,5 @@ export class MongoHotelRepository extends HotelRepository {
     }
   }
 
-  private fromDoc = (doc: HotelDocument) => this.mapper.toHotel(doc);
+  private fromDoc = (doc: HotelDocument) => this.mapper.fromDoc(doc);
 }

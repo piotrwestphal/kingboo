@@ -33,11 +33,10 @@ interface SearchDetailsProps {
 }
 
 export default function CardDetails({
-                                        searchDataDto: {
-                                          collectingCount,
-                                          collectingFinishedAt,
-                                        }
-                                      }: SearchDetailsProps) {
+                                      searchDataDto: {
+                                        collectingFinishedAt,
+                                      }
+                                    }: SearchDetailsProps) {
   const classes = useStyles();
 
   const block = (value: string | number | null, description: string) => value
@@ -54,8 +53,8 @@ export default function CardDetails({
   const finishedAt = collectingFinishedAt ? formatToSecondary(collectingFinishedAt) : null
 
   return (
+    //TODO: move to card content
     <CardContent className={classes.container}>
-      {block(collectingCount, 'Collecting count')}
       {block(finishedAt, 'Last collected at')}
     </CardContent>
   )

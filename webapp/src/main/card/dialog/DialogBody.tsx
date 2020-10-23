@@ -62,6 +62,7 @@ export default function DialogBody({
                                      setDialog,
                                    }: DialogProps) {
   const classes = useStyles();
+  const { name, latestValues: { districtName, distanceFromCenterMeters, hotelLink } } = hotel
   const [view, setView] = useState<DialogView>(initialView)
 
   const dialogContent = (v: DialogView) => {
@@ -80,20 +81,20 @@ export default function DialogBody({
         <Typography className={classes.spaceRight}
                     variant='body1'
                     color='textPrimary'>
-          {hotel.name}
+          {name}
         </Typography>
         <Box className={clsx(classes.subtitleContainer, classes.spaceRight)}>
-          {hotel.districtName && <Typography className={clsx(classes.tightLetters, classes.spaceRight)}
-                                             variant='body2'
-                                             component='span'
-                                             color='textSecondary'>
-            District: {hotel.districtName}
+          {districtName && <Typography className={clsx(classes.tightLetters, classes.spaceRight)}
+                                       variant='body2'
+                                       component='span'
+                                       color='textSecondary'>
+            District: {districtName}
           </Typography>}
-          <Typography className={clsx(classes.tightLetters, { [classes.spaceLeft]: hotel.districtName })}
+          <Typography className={clsx(classes.tightLetters, { [classes.spaceLeft]: districtName })}
                       variant='body2'
                       component='span'
                       color='textSecondary'>
-            {hotel.distanceFromCenterMeters}m {hotel.districtName ? 'to center' : 'to search place'}
+            {distanceFromCenterMeters}m {districtName ? 'to center' : 'to search place'}
           </Typography>
         </Box>
         <IconButton aria-label="close"
@@ -106,7 +107,7 @@ export default function DialogBody({
       <DialogActions className={classes.root}
                      disableSpacing>
         <Link color='primary'
-              href={hotel.hotelLink}
+              href={hotelLink}
               target="_blank">
           <Button color='secondary'>
             <OpenInNewIcon/>

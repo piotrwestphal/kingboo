@@ -1,7 +1,7 @@
 import { UserNotificationSender } from '../core/abstract/user-notification.sender';
 import { ClientProxy } from '@nestjs/microservices';
-import { HotelsData, UserNotificationMessage } from '@kb/model';
-import { UserNotificationsMessagePattern } from '@kb/rabbit/message-pattern/UserNotificationsMessagePattern';
+import { CollectingTimesDto, MqMessage } from '@kb/model';
+import { UserNotificationMessagePattern } from '@kb/rabbit/message-pattern/UserNotificationMessagePattern';
 
 export class RmqUserNotificationSender extends UserNotificationSender {
   constructor(
@@ -11,9 +11,15 @@ export class RmqUserNotificationSender extends UserNotificationSender {
   }
 
   notifyAboutHotelsProcessingFinished(searchId: string,
-                                      processedHotelIds: string[],
-                                      processingTimeMs: number): void {
-    this.client.emit<void, UserNotificationMessage<HotelsData>>(UserNotificationsMessagePattern.HOTELS_PROCESSING_COMPLETED,
-      { data: { processedHotelIds, processingTimeMs }, searchId, timestamp: Date.now() })
+                                      collectingStartedAt: string,
+                                      collectingFinishedAt: string): void {
+    this.client.emit<void, MqMessage<CollectingTimesDto>>(UserNotificationMessagePattern.HOTELS_PROCESSING_COMPLETED, {
+      searchId,
+      timestamp: Date.now(),
+      data: {
+        collectingStartedAt,
+        collectingFinishedAt,
+      }
+    })
   }
 }

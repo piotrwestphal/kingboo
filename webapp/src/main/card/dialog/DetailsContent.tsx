@@ -21,7 +21,12 @@ const useStyles = makeStyles((theme: Theme) =>
   }),
 );
 
-export default function DetailsContent({ hotel }: DialogContentProps) {
+export default function DetailsContent({
+                                         hotel: {
+                                           latestValues,
+                                           calculatedValues
+                                         }
+                                       }: DialogContentProps) {
   const classes = useStyles()
 
   const row = (description: string, value: string) =>
@@ -43,23 +48,23 @@ export default function DetailsContent({ hotel }: DialogContentProps) {
   // TODO: update hotel logic!!
   return (
     <DialogContent dividers>
-      {row('Property type: ', `${hotel.starRating ? 'Hotel' : 'Apartment'}`)}
-      {hotel.starRating && row('Star rating: ', `${hotel.starRating}`)}
-      {row('Price: ', `${hotel.latestValues.price} zł`)}
-      {row('Price rate: ', `${hotel.calculatedValues.priceRate}`)}
-      {row('Avg price: ', `${hotel.calculatedValues.avgPrice} zł`)}
-      {row('Min price: ', `${hotel.calculatedValues.minPrice} zł`)}
-      {row('Max price: ', `${hotel.calculatedValues.maxPrice} zł`)}
-      {row('Rate: ', `${hotel.latestValues.rate}`)}
-      {row('Number of reviews: ', `${hotel.latestValues.numberOfReviews}`)}
-      {row('Newly added: ', `${hotel.latestValues.newlyAdded}`)}
-      {row('Secondary rate type: ', `${hotel.latestValues.secondaryRateType}`)}
-      {row('Secondary rate: ', `${hotel.latestValues.secondaryRate}`)}
-      {row('Bonuses - breakfast: ', `${hotel.latestValues.bonuses?.breakfastIncluded}`)}
-      {row('Bonuses - cancel later: ', `${hotel.latestValues.bonuses?.cancelLater}`)}
-      {row('Bonuses - free cancellation: ', `${hotel.latestValues.bonuses?.freeCancellation}`)}
-      {row('Bonuses - no prepayment: ', `${hotel.latestValues.bonuses?.noPrepayment}`)}
-      {hotel.latestValues.rooms?.map(r => row('Rooms: ', Object.values(r).join(', ')))}
+      {row('Property type: ', `${latestValues.starRating ? 'Hotel' : 'Apartment'}`)}
+      {latestValues.starRating && row('Star rating: ', `${latestValues.starRating}`)}
+      {row('Price: ', `${latestValues.price} zł`)}
+      {row('Price rate: ', `${calculatedValues.priceRate}`)}
+      {row('Avg price: ', `${calculatedValues.avgPrice} zł`)}
+      {row('Min price: ', `${calculatedValues.minPrice} zł`)}
+      {row('Max price: ', `${calculatedValues.maxPrice} zł`)}
+      {row('Rate: ', `${latestValues.rate}`)}
+      {row('Number of reviews: ', `${latestValues.numberOfReviews}`)}
+      {row('Newly added: ', `${latestValues.newlyAdded}`)}
+      {row('Secondary rate type: ', `${latestValues.secondaryRateType}`)}
+      {row('Secondary rate: ', `${latestValues.secondaryRate}`)}
+      {row('Bonuses - breakfast: ', `${latestValues.bonuses?.breakfastIncluded}`)}
+      {row('Bonuses - cancel later: ', `${latestValues.bonuses?.cancelLater}`)}
+      {row('Bonuses - free cancellation: ', `${latestValues.bonuses?.freeCancellation}`)}
+      {row('Bonuses - no prepayment: ', `${latestValues.bonuses?.noPrepayment}`)}
+      {latestValues.rooms?.map(r => row('Rooms: ', Object.values(r).join(', ')))}
     </DialogContent>
   )
 }

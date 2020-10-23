@@ -6,16 +6,16 @@ import { ScrapActivity } from '../core/model/ScrapActivity';
 import { HotelsCollector } from './hotels.collector';
 import { logger } from '../logger';
 import { DataCollectionNotificationSender } from '../core/abstract/data-collection-notification.sender';
-import { UserNotificationSender } from '../core/abstract/user-notification.sender';
+import { DataToProcessSender } from '../core/abstract/data-to-process.sender';
 
 @Injectable()
 export class AppDataCollectorService extends DataCollectorService {
 
   constructor(
     private readonly dataCollectionNotificationSender: DataCollectionNotificationSender,
+    private readonly dataToProcessSender: DataToProcessSender,
     private readonly hotelsCollector: HotelsCollector,
     private readonly scrapActivityRepository: ScrapActivityRepository,
-    private readonly userNotificationService: UserNotificationSender,
   ) {
     super();
   }
@@ -34,13 +34,15 @@ export class AppDataCollectorService extends DataCollectorService {
       const scrapActivity = new ScrapActivity(searchId);
       scrapActivity.start();
       const saved = await this.scrapActivityRepository.update(searchId, scrapActivity);
-      this.userNotificationService.notifyAboutHotelsCollectionStarted(searchId);
-      await this.hotelsCollector.collectHotels(searchId, collectHotelsScenario);
+      const expectedNumberOfParts = await this.hotelsCollector.collectHotels(searchId, collectHotelsScenario);
       saved.finish();
-      const finished = await this.scrapActivityRepository.update(searchId, saved);
-      this.dataCollectionNotificationSender.notifyAboutHotelsCollectionCompleted(searchId, finished.scrapingStartedAt, finished.scrapingFinishedAt)
-      logger.info(`Collecting data finish. Scrap started at [${finished.scrapingStartedAt.toISOString()}], ` +
-        `scrap finished at [${finished.scrapingFinishedAt.toISOString()}].`);
+      const { scrapingStartedAt, scrapingFinishedAt } = await this.scrapActivityRepository.update(searchId, saved);
+      this.dataCollectionNotificationSender.notifyAboutHotelsCollectionCompleted(searchId, scrapingStartedAt, scrapingFinishedAt)
+      logger.info(`Collecting data finish. Scrap started at [${scrapingStartedAt.toISOString()}], ` +
+        `scrap finished at [${scrapingFinishedAt.toISOString()}].`);
+      if (expectedNumberOfParts) {
+        this.dataToProcessSender.sendHotelsSummary(searchId, expectedNumberOfParts, scrapingStartedAt, scrapingFinishedAt)
+      }
     }
   }
 

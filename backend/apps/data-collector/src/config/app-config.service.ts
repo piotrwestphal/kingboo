@@ -74,10 +74,6 @@ export class AppConfigService extends ConfigService<AppConfig> implements Firest
     return buildRmqOptions(this.config.dataToProcessMqClient);
   }
 
-  get userNotificationsMqClient(): RmqOptions {
-    return buildRmqOptions(this.config.userNotificationsMqClient);
-  }
-
   get mongoAddress(): string {
     return this.config.mongo.address;
   }

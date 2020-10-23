@@ -3,7 +3,6 @@ import { PriceParser } from './parser/price.parser';
 import { RawHotelDtoParser } from './raw-hotel-dto.parser';
 import { RawHotel } from '../core/interface/raw-hotel';
 import { RawHotelDto } from '@kb/model';
-import { CollectedHotelsMessage } from '@kb/model';
 
 export class MessageProcessor {
 
@@ -14,7 +13,7 @@ export class MessageProcessor {
   ) {
   }
 
-  processMessage({ searchId, rawHotels: rawHotelsDto }: CollectedHotelsMessage): Map<string, RawHotel> {
+  processMessage(searchId: string, rawHotelsDto: RawHotelDto[]): Map<string, RawHotel> {
     return rawHotelsDto.reduce((map: Map<string, RawHotel>, dto) => {
       const rawHotel = this.fromDto(searchId, dto);
       return map.set(rawHotel.hotelId, rawHotel);

@@ -1,5 +1,5 @@
 import { RawHotel } from '../../core/interface/raw-hotel';
-import { Hotel } from '../../core/model/hotel';
+import { Hotel } from '../../core/model/Hotel';
 
 export class HotelFactory {
   createNew({
@@ -25,11 +25,7 @@ export class HotelFactory {
       searchId,
       hotelId,
       name,
-      distanceFromCenterMeters,
-      districtName,
       coords,
-      hotelLink,
-      starRating,
       [{
         value: price,
         changedAt: collectedAt,
@@ -38,11 +34,15 @@ export class HotelFactory {
       [collectedAt],
       {
         price,
+        districtName,
+        distanceFromCenterMeters,
+        hotelLink,
         rate,
         secondaryRate,
         secondaryRateType,
         numberOfReviews,
         newlyAdded,
+        starRating,
         bonuses,
         rooms,
       },
