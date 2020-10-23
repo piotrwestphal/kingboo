@@ -10,7 +10,7 @@ export abstract class HotelRepository {
 
   abstract createAll(hotels: Hotel[]): Promise<Hotel[]>;
 
-  abstract updateAll(hotels: Hotel[]): Promise<Hotel[]>;
+  abstract updateAll(hotels: Hotel[]): Promise<number>;
 
   abstract findLastUpdatedGivenDaysAgo(now: Date, days: number): Promise<HotelIdentifier[]>;
 

@@ -79,19 +79,27 @@ export class MongoHotelRepository extends HotelRepository {
   }
 
   async createAll(hotels: Hotel[]): Promise<Hotel[]> {
-    const created = await this.model.insertMany(hotels);
+    const hotelsToSave = hotels.map(h => this.mapper.prepareForSave(h))
+    const created = await this.model.insertMany(hotelsToSave);
     return created.map(doc => this.fromDoc(doc));
   }
 
-  async updateAll(hotels: Hotel[]): Promise<Hotel[]> {
-    const updated = await Promise.all(hotels.map(hotel => this.model.findOneAndUpdate({
-        searchId: hotel.searchId,
-        hotelId: hotel.hotelId,
-      },
-      hotel as any, // TODO: remove `any` when @types/mongoose add proper types for sub documents
-      { new: true },
-    ).exec()));
-    return updated.map(doc => this.fromDoc(doc));
+  async updateAll(hotels: Hotel[]): Promise<number> {
+    const updateOps = hotels.map(h => this.mapper.prepareForSave(h))
+      .map(sh => ({
+        updateOne: {
+          filter: {
+            searchId: sh.searchId,
+            hotelId: sh.hotelId,
+          },
+          update: {
+            $set: sh,
+          },
+          upsert: true, // TODO: maybe merge create and update ops
+        }
+      }))
+    const writeResult = await this.model.bulkWrite(updateOps)
+    return writeResult.modifiedCount
   }
 
   async deleteMany(hotelIdentifiers: HotelIdentifier[]): Promise<number> {
@@ -140,5 +148,5 @@ export class MongoHotelRepository extends HotelRepository {
     }
   }
 
-  private fromDoc = (doc: HotelDocument) => this.mapper.toHotel(doc);
+  private fromDoc = (doc: HotelDocument) => this.mapper.fromDoc(doc);
 }

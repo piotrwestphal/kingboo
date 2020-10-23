@@ -59,8 +59,8 @@ export class HotelProcessor {
 
     if (updatedHotelsWithRaw.length) {
       const now5 = Date.now()
-      const updated = await this.hotelRepository.updateAll(updatedHotelsWithRaw);
-      logger.debug(`Hotels were updated for search id ${searchId}, hotel ids`, updated.map(h => h.hotelId));
+      await this.hotelRepository.updateAll(updatedHotelsWithRaw);
+      logger.debug(`Hotels were updated for search id ${searchId}, hotel ids`, updatedHotelsWithRaw.map(h => h.hotelId));
       logger.debug(`[${debugMarker}] Updating hotels in db last [${Date.now() - now5}] ms`);
     }
     this.progressMeasuringService.setProgress(searchId);
