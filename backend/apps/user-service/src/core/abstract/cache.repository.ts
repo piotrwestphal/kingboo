@@ -7,7 +7,7 @@ export abstract class CacheRepository<T> {
 
   abstract create(searchRequestCache: CacheData<T>): Promise<CacheData<T>>
 
-  abstract createOrUpdate(cacheData: CacheData<T>): Promise<CacheData<T>>
-
   abstract delete(searchId: string): Promise<boolean>
+
+  abstract deleteMany(searchIds: string[]): Promise<number>
 }

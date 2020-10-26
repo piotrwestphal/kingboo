@@ -6,6 +6,7 @@ import { TopHotelsCacheRepository } from '../../core/abstract/top-hotels-cache.r
 import { SearchDataMapper } from './search-data.mapper';
 import { SearchRequestDto, TopHotelsDto } from '@kb/model';
 import { CacheData } from '../../core/model/CacheData';
+import { TopHotelsCacheMaintainer } from '../top-hotels/top-hotels-cache.maintainer';
 
 export class SearchDataService {
 
@@ -13,6 +14,7 @@ export class SearchDataService {
     private readonly hotelsClient: HotelsClient,
     private readonly searchDataMapper: SearchDataMapper,
     private readonly searchRequestsClient: SearchRequestsClient,
+    private readonly topHotelsCacheMaintainer: TopHotelsCacheMaintainer,
     private readonly topHotelsCacheRepository: TopHotelsCacheRepository,
   ) {
   }
@@ -31,6 +33,7 @@ export class SearchDataService {
     })
     const searchDataList = await Promise.all(pendingSearchDataDto)
     logger.debug(`Search data loaded within [${Date.now() - now}] ms`);
+    this.topHotelsCacheMaintainer.cleanup(searchRequests.map(s => s.searchId))
     return {
       searchDataList,
     }

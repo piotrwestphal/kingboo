@@ -39,6 +39,16 @@ export class TopHotelsCacheMaintainer {
     }
   }
 
+  async cleanup(validSearchIds: string[]): Promise<void> {
+    const all = await this.topHotelsCacheRepository.findAll()
+    const notValidCacheIds = all.map(c => c.searchId)
+      .filter(id => !validSearchIds.includes(id));
+    const deletedCount = await this.topHotelsCacheRepository.deleteMany(notValidCacheIds)
+    if (deletedCount) {
+      logger.debug(`Deleted [${deletedCount}] top hotels cache items that were invalid`)
+    }
+  }
+
   private isMessageOld = (found: CacheData<TopHotelsDto>, timestamp: number) =>
     found.updatedAt.getTime() > timestamp
 }
