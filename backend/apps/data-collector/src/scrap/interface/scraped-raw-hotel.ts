@@ -1,5 +1,4 @@
 import { ScrapedRawRoom } from './scraped-raw-room';
-import { DebugValues } from './debug.values';
 
 export interface ScrapedRawHotel {
   // following parameters always exist
@@ -9,7 +8,6 @@ export interface ScrapedRawHotel {
   readonly distanceFromCenter: string;
   readonly coords: string;
   readonly hotelLink: string;
-  readonly debug: DebugValues;
   // following parameters might not be available
   readonly districtName: string | null;
   readonly rate: string | null;

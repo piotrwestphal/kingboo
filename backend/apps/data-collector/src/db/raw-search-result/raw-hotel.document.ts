@@ -1,5 +1,4 @@
 import { RawRoomDocument } from './raw-room.document';
-import { DebugValues } from '../../scrap/interface/debug.values';
 
 export interface RawHotelDocument {
   readonly hotelId: string;
@@ -21,5 +20,4 @@ export interface RawHotelDocument {
   readonly rooms: RawRoomDocument[] | null;
   // additional info
   readonly collectedAt: string;
-  readonly debug: DebugValues;
 }
