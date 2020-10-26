@@ -26,42 +26,37 @@ export class HotelProcessor {
 
   async processMessage(searchId: string, rawHotels: RawHotelDto[], debugMarker: number): Promise<void> {
     const rawHotelsById = this.messageProcessor.processMessage(searchId, rawHotels);
-    logger.debug(`[${debugMarker}] Process message last [${Date.now() - debugMarker}] ms`);
     const rawHotelIds = Array.from(rawHotelsById.keys());
     if (this.configService.saveResultAsJson) {
-      const now1 = Date.now()
       const pathToResult = await this.fileManager.saveDataAsJSON(Array.from(rawHotelsById.values()), `PROCESSED-${searchId}`);
       logger.debug(`Processed data was saved locally to [${pathToResult}]`);
-      logger.debug(`[${debugMarker}] Saving json last [${Date.now() - now1}] ms`);
     }
     logger.debug(`Processed message with hotel ids`, rawHotelIds);
-    const now2 = Date.now()
+    const now1 = Date.now()
     const foundHotels = await this.hotelRepository.findAllBySearchIdAndHotelId(searchId, Array.from(rawHotelsById.keys()));
-    logger.debug(`[${debugMarker}] Searching hotels last [${Date.now() - now2}] ms`);
+    logger.debug(`[${debugMarker}] Searching hotels last [${Date.now() - now1}] ms`);
 
     const hotelsToCreate = rawHotelIds
       .filter(hotelId => !foundHotels.has(hotelId))
       .map(hotelId => rawHotelsById.get(hotelId));
 
     if (hotelsToCreate.length) {
-      const now3 = Date.now()
+      const now2 = Date.now()
       const created = await this.hotelRepository.createAll(hotelsToCreate.map(h => this.hotelFactory.createNew(h)));
       logger.debug(`Hotels were created for search id ${searchId}, hotel ids`, created.map(h => h.hotelId));
-      logger.debug(`[${debugMarker}] Creating hotels in db last [${Date.now() - now3}] ms`);
+      logger.debug(`[${debugMarker}] Creating hotels last [${Date.now() - now2}] ms`);
     }
-    const now4 = Date.now()
     const updatedHotelsWithRaw = Array.from(foundHotels.keys()).map(hotelId => {
       const hotel = foundHotels.get(hotelId);
       const rawHotel = rawHotelsById.get(hotelId);
       return this.updateHotelWithRaw(hotel, rawHotel);
     });
-    logger.debug(`[${debugMarker}] Updating hotels with raw last [${Date.now() - now4}] ms`);
 
     if (updatedHotelsWithRaw.length) {
-      const now5 = Date.now()
+      const now3 = Date.now()
       await this.hotelRepository.updateAll(updatedHotelsWithRaw);
       logger.debug(`Hotels were updated for search id ${searchId}, hotel ids`, updatedHotelsWithRaw.map(h => h.hotelId));
-      logger.debug(`[${debugMarker}] Updating hotels in db last [${Date.now() - now5}] ms`);
+      logger.debug(`[${debugMarker}] Updating hotels last [${Date.now() - now3}] ms`);
     }
     this.progressMeasuringService.setProgress(searchId);
   }
