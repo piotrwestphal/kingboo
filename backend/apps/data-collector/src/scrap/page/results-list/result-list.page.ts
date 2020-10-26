@@ -6,7 +6,6 @@ interface AddressContainerData {
   distanceFromCenter: string;
   districtName: string;
   coords: string;
-  addressContainerType: string;
 }
 
 export class ResultListPage {
@@ -21,7 +20,6 @@ export class ResultListPage {
    *      This case of search request is called: 'standard search criteria'. 'rooms' will not be collected.
    * 2.   When the search request is for 2 persons with child or more than 2 persons or more than 1 room. 'rooms' will be collected.
    */
-  // TODO: clean up with prod logs
   public collectHotelsFromSearchResultList(): Promise<ScrapedRawHotel[]> {
     return this.browserService.evaluate<ScrapedRawHotel[]>(() => {
       // helper functions
@@ -38,78 +36,23 @@ export class ResultListPage {
         (container: Element, containerClassNames: string, elementClassNames: string): string | null =>
           getTextFromHtmlElementIfDefined(getElementFromContainer(container, containerClassNames, elementClassNames));
 
-      const getPrice = (searchResultContainer: Element): { price: string, priceContainerType: string } => {
-
+      const getPrice = (searchResultContainer: Element): string => {
         const newPriceContainer = getFirstElementByClass(searchResultContainer, 'prco-wrapper');
-        if (newPriceContainer) {
-          const price = getTextFromElement(newPriceContainer, 'bui-price-display__value');
-          return {
-            price,
-            priceContainerType: price ? `NEW` : `NEW (no price)`,
-          };
-        }
-
-        // in case of the standard search criteria
-        const priceWithTaxContainer = getFirstElementByClass(searchResultContainer, 'b_bigger_tag');
-        if (priceWithTaxContainer) {
-          const price = getTextFromElement(priceWithTaxContainer, 'price');
-          return {
-            price,
-            priceContainerType: price ? 'OLD - standard' : 'OLD - standard (no price)',
-          };
-        }
-
-        // in case when couple of rooms are taken into consideration
-        const multipleRoomsPriceWithTaxContainer = getFirstElementByClass(searchResultContainer, 'totalPrice');
-        if (multipleRoomsPriceWithTaxContainer) {
-          const onlyPriceWithoutRoomDescription = getFirstElementByClass(multipleRoomsPriceWithTaxContainer, 'sr_gs_price_total');
-          const price = onlyPriceWithoutRoomDescription
-            ? getTextFromElement(multipleRoomsPriceWithTaxContainer, 'sr_gs_price_total')
-            // in some cases price container has all info about prices as one string
-            : multipleRoomsPriceWithTaxContainer.firstChild.nodeValue; // take everything from target element without children elements content
-          return {
-            price,
-            priceContainerType: price ? 'OLD - multiple rooms' : 'OLD - multiple rooms (no price)',
-          };
-        }
-
-        return {
-          price: searchResultContainer.innerHTML.trim().replace(/\s/g, ' '),
-          priceContainerType: 'UNKNOWN',
-        };
+        return getTextFromElement(newPriceContainer, 'bui-price-display__value');
       };
 
       const extractFromAddressContainer = (searchResultContainer: Element): AddressContainerData => {
         const addressContainer = getFirstElementByClass(searchResultContainer, 'sr_card_address_line');
-        if (addressContainer) {
-          const districtLink = getFirstElementByClass(addressContainer, 'bui-link') as HTMLLinkElement;
-          // distance from center span has no class and there are couple [3] spans without classes in address container
-          // as well distance don't have unique attributes
-          const spansWithoutClass = addressContainer.querySelectorAll<HTMLSpanElement>('span:not([class])');
-          const textFromSpans = Array.from(spansWithoutClass).map(v => v.innerText);
-          const concatText = textFromSpans.length ? textFromSpans.reduce((c, p) => c + p) : null;
-          return {
-            distanceFromCenter: concatText,
-            districtName: districtLink.innerText,
-            coords: districtLink.getAttribute('data-coords'),
-            addressContainerType: 'NEW',
-          };
-        }
-        const addressContainerOld = getFirstElementByClass(searchResultContainer, 'address');
-        if (addressContainerOld) {
-          const districtLink = getFirstElementByClass(addressContainerOld, 'district_link') as HTMLLinkElement;
-          return {
-            distanceFromCenter: getTextFromElement(searchResultContainer, 'distfromdest jq_tooltip'),
-            districtName: districtLink.innerText,
-            coords: districtLink.getAttribute('data-coords'),
-            addressContainerType: 'OLD',
-          };
-        }
+        const districtLink = getFirstElementByClass(addressContainer, 'bui-link') as HTMLLinkElement;
+        // distance from center span has no class and there are couple [3] spans without classes in address container
+        // as well distance don't have unique attributes
+        const spansWithoutClass = addressContainer.querySelectorAll<HTMLSpanElement>('span:not([class])');
+        const textFromSpans = Array.from(spansWithoutClass).map(v => v.innerText);
+        const concatText = textFromSpans.length ? textFromSpans.reduce((c, p) => c + p) : null;
         return {
-          distanceFromCenter: null,
-          districtName: null,
-          coords: null,
-          addressContainerType: null,
+          distanceFromCenter: concatText,
+          districtName: districtLink.innerText,
+          coords: districtLink.getAttribute('data-coords'),
         };
       };
 
@@ -141,8 +84,7 @@ export class ResultListPage {
         // Sometimes other containers also appears like: Car Rental - they don't have name of hotel
         const name = getTextFromElement(searchResultContainer, 'sr-hotel__name');
         if (name) {
-          const { coords, districtName, distanceFromCenter, addressContainerType }
-            = extractFromAddressContainer(searchResultContainer);
+          const { coords, districtName, distanceFromCenter } = extractFromAddressContainer(searchResultContainer);
           const hotelLink = getHotelLink(searchResultContainer);
           const rate = getTextFromElement(searchResultContainer, 'bui-review-score__badge');
           const secondaryRateType = getTextFromElementIfContainerExist(
@@ -154,7 +96,7 @@ export class ResultListPage {
           const hotelNewlyAdded = getTextFromElement(searchResultContainer, 'new_hotel__badge');
 
           // Price
-          const { price, priceContainerType } = getPrice(searchResultContainer);
+          const price = getPrice(searchResultContainer);
           const tax = getTextFromElement(searchResultContainer, 'prd-taxes-and-fees-under-price');
 
           // Bonuses
@@ -208,10 +150,6 @@ export class ResultListPage {
             newlyAdded: hotelNewlyAdded,
             bonuses: hotelBonuses.length ? hotelBonuses : null,
             rooms: rooms.length ? rooms : null,
-            debug: {
-              addressContainerType,
-              priceContainerType,
-            }
           });
         }
       }

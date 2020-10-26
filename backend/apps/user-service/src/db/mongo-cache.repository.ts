@@ -30,17 +30,14 @@ export class MongoCacheRepository<T> extends CacheRepository<T> {
     return this.mapper.toCacheData(saved)
   }
 
-  async createOrUpdate(cacheData: CacheData<T>): Promise<CacheData<T>> {
-    const saveCache = this.mapper.prepareForSave(cacheData)
-    const found: CacheDocument<T> = await this.model.updateMany(
-      { searchId: cacheData.searchId },
-      saveCache,
-      { upsert: true }).exec()
-    return this.mapper.toCacheData(found)
-  }
-
   async delete(searchId: string): Promise<boolean> {
     const deleted = await this.model.deleteOne({ searchId: searchId }).exec();
     return !!deleted.deletedCount
+  }
+
+  async deleteMany(searchIds: string[]): Promise<number> {
+    const { deletedCount } = await this.model.deleteMany(
+      { searchId: { $in: searchIds } }).exec();
+    return deletedCount
   }
 }

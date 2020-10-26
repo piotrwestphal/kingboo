@@ -39,12 +39,19 @@ import { SearchRequestMessageConsumer } from './search-request-message.consumer'
       useFactory: (
         hotelsClient: HotelsClient,
         searchRequestsClient: SearchRequestsClient,
+        topHotelsCacheMaintainer: TopHotelsCacheMaintainer,
         topHotelsCacheRepository: TopHotelsCacheRepository,
       ) => {
         const mapper = new SearchDataMapper()
-        return new SearchDataService(hotelsClient, mapper, searchRequestsClient, topHotelsCacheRepository)
+        return new SearchDataService(
+          hotelsClient,
+          mapper,
+          searchRequestsClient,
+          topHotelsCacheMaintainer,
+          topHotelsCacheRepository,
+        )
       },
-      inject: [HotelsClient, SearchRequestsClient, TopHotelsCacheRepository]
+      inject: [HotelsClient, SearchRequestsClient, TopHotelsCacheMaintainer, TopHotelsCacheRepository]
     }],
 })
 export class AppModule {

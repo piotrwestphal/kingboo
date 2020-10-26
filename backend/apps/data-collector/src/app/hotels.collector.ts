@@ -10,7 +10,6 @@ import { logger } from '../logger';
 import { RawSearchResult } from '../core/model/RawSearchResult';
 import { RawHotel } from '../core/model/RawHotel';
 import { RawHotelMapper } from './mapper/raw-hotel.mapper';
-import { DebugValues } from '../scrap/interface/debug.values';
 
 interface HotelCollectionResult {
   readonly pagesCollected: number
@@ -85,8 +84,6 @@ export class HotelsCollector {
       const { scrapedRawHotels, nextPageButtonAvailable } = await this.scraperFacade.collectHotelsFromCurrentPage();
       const collectedAt = new Date().toISOString();
       const mappedRawHotels = scrapedRawHotels.map(h => RawHotelMapper.fromScrapedRawHotel(h, collectedAt));
-      logger.debug('Unique debug values for address container type: ', this.getUnique(mappedRawHotels, 'addressContainerType'))
-      logger.debug('Unique debug values for price container type: ', this.getUnique(mappedRawHotels, 'priceContainerType'))
       rawHotels.push(...mappedRawHotels);
       isNextPageButtonAvailable = nextPageButtonAvailable;
       currentHotelsCount += scrapedRawHotels.length;
@@ -116,7 +113,4 @@ export class HotelsCollector {
     this.dataCollectionNotificationSender.sendSearchPlaceIdentifier(searchId, collectedSearchPlaceIdentifier);
     return collectedSearchPlaceIdentifier;
   }
-
-  private getUnique = (rawHotels: RawHotel[], param: keyof DebugValues) =>
-    [...new Set(rawHotels.map(h => h.debug[param]))].join(', ')
 }
