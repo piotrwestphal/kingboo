@@ -1,5 +1,4 @@
 import React, { Dispatch, SetStateAction } from 'react';
-import { SearchType } from '../../core/SearchType';
 import { ToggleButton, ToggleButtonGroup } from '@material-ui/lab';
 import PersonIcon from '@material-ui/icons/Person';
 import RepeatIcon from '@material-ui/icons/Repeat';
@@ -10,6 +9,7 @@ import TodayIcon from '@material-ui/icons/Today';
 import ExpandLessIcon from '@material-ui/icons/ExpandLess';
 import { SortByOptions } from './sort-by.options';
 import { sortByValue } from './sort-by.value';
+import { SearchRequestType } from '../../core/SearchRequestType';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -20,8 +20,8 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 interface FiltersProps {
-  readonly type: SearchType | null;
-  readonly setType: Dispatch<SetStateAction<SearchType | null>>;
+  readonly type: SearchRequestType | null;
+  readonly setType: Dispatch<SetStateAction<SearchRequestType | null>>;
   readonly sortBy: SortByOptions;
   readonly setSortBy: Dispatch<SetStateAction<SortByOptions>>;
   readonly setReverse: Dispatch<SetStateAction<boolean>>;
@@ -52,11 +52,11 @@ export default function Toolbar({
       <ToggleButtonGroup aria-label='search type'
                          exclusive
                          value={type}
-                         onChange={(event, value: SearchType | null) => setType(value)}>
-        <ToggleButton value={SearchType.USER} aria-label="user">
+                         onChange={(event, value: SearchRequestType | null) => setType(value)}>
+        <ToggleButton value={SearchRequestType.USER} aria-label="user">
           <PersonIcon color='action'/>
         </ToggleButton>
-        <ToggleButton value={SearchType.CYCLIC} aria-label="cyclic">
+        <ToggleButton value={SearchRequestType.CYCLIC} aria-label="cyclic">
           <RepeatIcon color='action'/>
         </ToggleButton>
       </ToggleButtonGroup>

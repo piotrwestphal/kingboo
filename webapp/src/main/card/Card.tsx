@@ -1,24 +1,21 @@
 import React, { useState } from 'react';
 import { Card as MCard, Collapse, Divider } from '@material-ui/core';
-import { SearchDataDto } from '../../core/dto/search-data.dto';
 import CardContent from './CardContent';
-import CardHeader from './CardHeader';
-import CardParams from './CardParams';
+import CardHeader from './header/CardHeader';
 import CardActions from './CardActions';
+import { SearchData } from '../../core/search-data';
 import CardDetails from './CardDetails';
 
-export default function Card({ searchDataDto }: { searchDataDto: SearchDataDto }) {
+export default function Card({ searchData }: { searchData: SearchData }) {
   const [expanded, setExpanded] = useState(false);
   return (
     <MCard>
-      <CardHeader searchDataDto={searchDataDto} setExpanded={setExpanded}/>
+      <CardHeader searchData={searchData} setExpanded={setExpanded}/>
       <Divider/>
-      <CardParams searchDataDto={searchDataDto}/>
+      <CardDetails searchData={searchData}/>
       <Divider/>
       <Collapse in={expanded} timeout="auto" unmountOnExit>
-        <CardDetails searchDataDto={searchDataDto}/>
-        <Divider/>
-        <CardContent topHotels={searchDataDto.topHotels}/>
+        <CardContent searchData={searchData}/>
       </Collapse>
       {expanded && <Divider/>}
       <CardActions expanded={expanded} setExpanded={setExpanded}/>

@@ -2,13 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { createStyles, Divider, Grid, Theme } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from './card/Card';
-import { SearchDataDto } from '../core/dto/search-data.dto';
-import { SearchType } from '../core/SearchType';
 import Toolbar from './filter/Toolbar';
 import { common } from '@material-ui/core/colors';
 import { SortByOptions } from './filter/sort-by.options';
 import { sort } from '../util/sorter';
 import { sortByValue } from './filter/sort-by.value';
+import { SearchData } from '../core/search-data';
+import { SearchRequestType } from '../core/SearchRequestType';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -28,17 +28,17 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 interface SearchCardListProps {
-  readonly list: SearchDataDto[];
+  readonly list: SearchData[];
 }
 
 export default function CardList({ list: sourceList }: SearchCardListProps) {
   const classes = useStyles();
-  const [type, setType] = useState<SearchType | null>(null)
+  const [type, setType] = useState<SearchRequestType | null>(null)
   const [sortBy, setSortBy] = useState<SortByOptions>(sortByValue.place)
   const [reverse, setReverse] = useState<boolean>(false)
 
   const initialList = sort(sourceList, sortBy.primaryKey, sortBy.secondaryKey, reverse)
-  const [list, setList] = useState<SearchDataDto[]>(initialList)
+  const [list, setList] = useState<SearchData[]>(initialList)
 
   useEffect(() => {
     setList(() => {
@@ -62,7 +62,7 @@ export default function CardList({ list: sourceList }: SearchCardListProps) {
       <Grid container className={classes.list} spacing={1}>
         {list.map((searchData) =>
           <Grid key={searchData.searchId} item xs={12} md={6}>
-            <Card searchDataDto={searchData}/>
+            <Card searchData={searchData}/>
           </Grid>
         )}
       </Grid>
