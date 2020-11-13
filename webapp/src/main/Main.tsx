@@ -4,7 +4,6 @@ import { createStyles, Typography } from '@material-ui/core';
 import { useFetch } from '../useFetch';
 import { SearchDataPayload } from '../core/search-data.payload';
 import CardList from './CardList';
-import json from './../example.json'
 import { fromDto } from '../core/search-data.mapper';
 import { SearchDataDto } from '../core/dto/search-data.dto';
 
@@ -25,9 +24,6 @@ export default function Main() {
   const showLoading = <Typography>Loading...</Typography>
   const showError = <Typography>Error</Typography>
   const showNoRequests = <Typography>There are no search requests</Typography>
-
-  // console.log({ json });
-  // return (<div className={classes.main}><CardList list={(json as any).searchDataList.map((v: SearchDataDto) => fromDto(v))}/></div>)
 
   return (
     isLoading
