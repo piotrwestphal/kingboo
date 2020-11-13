@@ -1,14 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useReducer, useState } from 'react';
 import { createStyles, Divider, Grid, Theme } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from './card/Card';
 import Toolbar from './filter/Toolbar';
 import { common } from '@material-ui/core/colors';
-import { SortByOptions } from './filter/sort-by.options';
 import { sort } from '../util/sorter';
-import { sortByValue } from './filter/sort-by.value';
 import { SearchData } from '../core/search-data';
-import { SearchRequestType } from '../core/SearchRequestType';
+import { filterReducer, initialFilterState } from './filter/filter.reducer';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -33,30 +31,26 @@ interface SearchCardListProps {
 
 export default function CardList({ list: sourceList }: SearchCardListProps) {
   const classes = useStyles();
-  const [type, setType] = useState<SearchRequestType | null>(null)
-  const [sortBy, setSortBy] = useState<SortByOptions>(sortByValue.place)
-  const [reverse, setReverse] = useState<boolean>(false)
+  const [{ sortBy, filterBy, reverse }, filterDispatch] = useReducer(filterReducer, initialFilterState)
 
   const initialList = sort(sourceList, sortBy.primaryKey, sortBy.secondaryKey, reverse)
   const [list, setList] = useState<SearchData[]>(initialList)
 
   useEffect(() => {
     setList(() => {
-      const filteredList = type
-        ? sourceList.filter((v) => v.type === type)
+      const filteredList = filterBy
+        ? sourceList.filter((v) => v.type === filterBy)
         : sourceList
       return sort(filteredList, sortBy.primaryKey, sortBy.secondaryKey, reverse)
     })
-  }, [type, sortBy, reverse, sourceList])
+  }, [filterBy, sortBy, reverse, sourceList])
 
   return (
     <>
       <div className={classes.toolbarWrapper}>
-        <Toolbar type={type}
-                 setType={setType}
+        <Toolbar filterDispatch={filterDispatch}
                  sortBy={sortBy}
-                 setSortBy={setSortBy}
-                 setReverse={setReverse}/>
+                 filterBy={filterBy}/>
         <Divider/>
       </div>
       <Grid container className={classes.list} spacing={1}>

@@ -59,7 +59,7 @@ export default function DetailsContent({
       {row('Price rate: ', `${calculatedValues.priceRate}`)}
       {row('Rate: ', `${latestValues.rate}`)}
       {latestValues.secondaryRate && row('Secondary rate: ',
-        `${latestValues.secondaryRateType} - ${latestValues.secondaryRate}`)}
+        `${latestValues.secondaryRateType} [${latestValues.secondaryRate}]`)}
       {row('Number of reviews: ', `${latestValues.numberOfReviews}`)}
       {latestValues.bonuses && row('Bonuses: ', concatBonuses(latestValues.bonuses))}
       {latestValues.rooms?.map((r, i) => row('', concatRooms(r, i)))}

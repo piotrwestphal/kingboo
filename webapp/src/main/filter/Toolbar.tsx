@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction } from 'react';
+import React, { Dispatch } from 'react';
 import { ToggleButton, ToggleButtonGroup } from '@material-ui/lab';
 import PersonIcon from '@material-ui/icons/Person';
 import RepeatIcon from '@material-ui/icons/Repeat';
@@ -10,6 +10,7 @@ import ExpandLessIcon from '@material-ui/icons/ExpandLess';
 import { SortByOptions } from './sort-by.options';
 import { sortByValue } from './sort-by.value';
 import { SearchRequestType } from '../../core/SearchRequestType';
+import { FilterAction } from './filter.reducer';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -20,30 +21,29 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 interface FiltersProps {
-  readonly type: SearchRequestType | null;
-  readonly setType: Dispatch<SetStateAction<SearchRequestType | null>>;
+  readonly filterDispatch: Dispatch<FilterAction>
   readonly sortBy: SortByOptions;
-  readonly setSortBy: Dispatch<SetStateAction<SortByOptions>>;
-  readonly setReverse: Dispatch<SetStateAction<boolean>>;
+  readonly filterBy: SearchRequestType | null;
 }
 
 export default function Toolbar({
-                                  type,
-                                  setType,
+                                  filterDispatch,
+                                  filterBy,
                                   sortBy,
-                                  setSortBy,
-                                  setReverse,
                                 }: FiltersProps) {
   const classes = useStyles();
   const scrollUp = () => window.scrollTo(0, 0)
 
   const sortChange = (event: React.MouseEvent, value: SortByOptions) => {
     if (value) { // prevent null assignment
-      setSortBy(value)
-      setReverse(false)
+      filterDispatch({ type: 'sort', payload: { sortBy: value, reverse: false } })
     } else {
-      setReverse((current) => !current)
+      filterDispatch({ type: 'reverse' })
     }
+  }
+
+  const filterChange = (event: React.MouseEvent, value: SearchRequestType | null) => {
+    filterDispatch({type: 'filter', payload: value})
   }
   return (
     <Grid className={classes.container}
@@ -51,8 +51,8 @@ export default function Toolbar({
           container>
       <ToggleButtonGroup aria-label='search type'
                          exclusive
-                         value={type}
-                         onChange={(event, value: SearchRequestType | null) => setType(value)}>
+                         value={filterBy}
+                         onChange={filterChange}>
         <ToggleButton value={SearchRequestType.USER} aria-label="user">
           <PersonIcon color='action'/>
         </ToggleButton>
