@@ -32,7 +32,7 @@ jobs:
     steps:
       - uses: actions/checkout@v1
 
-      - uses: webfactory/ssh-agent@v0.2.0
+      - uses: webfactory/ssh-agent@master
         with:
           ssh-private-key: ${{ secrets.WESTUS01_KEY }}
 
