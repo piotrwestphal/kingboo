@@ -17,7 +17,6 @@ import PricesContent from './PricesContent';
 import { makeStyles } from '@material-ui/core/styles';
 import CloseIcon from '@material-ui/icons/Close';
 import OpenInNewIcon from '@material-ui/icons/OpenInNew';
-import clsx from 'clsx'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -26,10 +25,8 @@ const useStyles = makeStyles((theme: Theme) =>
       paddingBottom: theme.spacing(1),
       paddingRight: theme.spacing(2.5),
     },
-    tightLetters: {
-      letterSpacing: '-0.5px'
-    },
-    spaceRight: {
+    title: {
+      maxWidth: theme.spacing(27),
       marginRight: theme.spacing(2),
     },
     spaceLeft: {
@@ -37,7 +34,8 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     subtitleContainer: {
       marginTop: theme.spacing(1),
-      display: 'flex'
+      display: 'flex',
+      flexDirection: 'column'
     },
     closeButton: {
       position: 'absolute',
@@ -74,24 +72,27 @@ export default function DialogBody({
     }
   }
 
+  const conditionalDialogButton = (v: DialogView) =>
+    view !== v && <Button className={classes.spaceLeft}
+                          color='primary'
+                          onClick={() => setView(v)}>{v}</Button>
+
   return (
     <>
       <DialogTitle id="scroll-dialog-title"
                    disableTypography>
-        <Typography className={classes.spaceRight}
+        <Typography className={classes.title}
                     variant='body1'
                     color='textPrimary'>
           {name}
         </Typography>
-        <Box className={clsx(classes.subtitleContainer, classes.spaceRight)}>
-          {districtName && <Typography className={clsx(classes.tightLetters, classes.spaceRight)}
-                                       variant='body2'
+        <Box className={classes.subtitleContainer}>
+          {districtName && <Typography variant='body2'
                                        component='span'
                                        color='textSecondary'>
             District: {districtName}
           </Typography>}
-          <Typography className={clsx(classes.tightLetters, { [classes.spaceLeft]: districtName })}
-                      variant='body2'
+          <Typography variant='body2'
                       component='span'
                       color='textSecondary'>
             {distanceFromCenterMeters}m {districtName ? 'to center' : 'to search place'}
@@ -113,18 +114,8 @@ export default function DialogBody({
             <OpenInNewIcon/>
           </Button>
         </Link>
-        {view !== DialogView.PRICES &&
-        <Button className={classes.spaceLeft}
-                color='primary'
-                onClick={() => setView(DialogView.PRICES)}>
-          {DialogView.PRICES}
-        </Button>}
-        {view !== DialogView.DETAILS &&
-        <Button className={classes.spaceLeft}
-                color='primary'
-                onClick={() => setView(DialogView.DETAILS)}>
-          {DialogView.DETAILS}
-        </Button>}
+        {conditionalDialogButton(DialogView.DETAILS)}
+        {conditionalDialogButton(DialogView.PRICES)}
       </DialogActions>
     </>)
 }

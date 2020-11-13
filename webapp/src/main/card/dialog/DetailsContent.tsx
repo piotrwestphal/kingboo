@@ -2,6 +2,9 @@ import React from 'react'
 import { DialogContentProps } from './dialog.state'
 import { makeStyles } from '@material-ui/core/styles';
 import { Box, createStyles, DialogContent, Theme, Typography } from '@material-ui/core';
+import { HotelBonusesDto } from '../../../core/dto/hotel-bonuses.dto';
+import { HotelCalculatedValuesDto } from '../../../core/dto/hotel-calculated-values.dto';
+import { HotelRoomDto } from '../../../core/dto/hotel-room.dto';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -15,12 +18,13 @@ const useStyles = makeStyles((theme: Theme) =>
       marginRight: theme.spacing(1),
     },
     value: {
-      fontWeight: 500,
-      textAlign: 'right'
+      fontWeight: 400,
     },
   }),
 );
 
+// TODO: redesign
+// icons for hotel / apartment / newly added
 export default function DetailsContent({
                                          hotel: {
                                            latestValues,
@@ -45,26 +49,57 @@ export default function DetailsContent({
       </Typography>
     </Box>
 
-  // TODO: update hotel logic!!
   return (
     <DialogContent dividers>
+      {latestValues.newlyAdded && row('NEWLY ADDED', ``)}
       {row('Property type: ', `${latestValues.starRating ? 'Hotel' : 'Apartment'}`)}
       {latestValues.starRating && row('Star rating: ', `${latestValues.starRating}`)}
       {row('Price: ', `${latestValues.price} zł`)}
+      {row('', `${concatPrices(calculatedValues)}`)}
       {row('Price rate: ', `${calculatedValues.priceRate}`)}
-      {row('Avg price: ', `${calculatedValues.avgPrice} zł`)}
-      {row('Min price: ', `${calculatedValues.minPrice} zł`)}
-      {row('Max price: ', `${calculatedValues.maxPrice} zł`)}
       {row('Rate: ', `${latestValues.rate}`)}
+      {latestValues.secondaryRate && row('Secondary rate: ',
+        `${latestValues.secondaryRateType} [${latestValues.secondaryRate}]`)}
       {row('Number of reviews: ', `${latestValues.numberOfReviews}`)}
-      {row('Newly added: ', `${latestValues.newlyAdded}`)}
-      {row('Secondary rate type: ', `${latestValues.secondaryRateType}`)}
-      {row('Secondary rate: ', `${latestValues.secondaryRate}`)}
-      {row('Bonuses - breakfast: ', `${latestValues.bonuses?.breakfastIncluded}`)}
-      {row('Bonuses - cancel later: ', `${latestValues.bonuses?.cancelLater}`)}
-      {row('Bonuses - free cancellation: ', `${latestValues.bonuses?.freeCancellation}`)}
-      {row('Bonuses - no prepayment: ', `${latestValues.bonuses?.noPrepayment}`)}
-      {latestValues.rooms?.map(r => row('Rooms: ', Object.values(r).join(', ')))}
+      {latestValues.bonuses && row('Bonuses: ', concatBonuses(latestValues.bonuses))}
+      {latestValues.rooms?.map((r, i) => row('', concatRooms(r, i)))}
     </DialogContent>
   )
+}
+
+const concatPrices = (calculatedValues: HotelCalculatedValuesDto) => {
+  return `Avg [${calculatedValues.avgPrice}], ` +
+    `Min [${calculatedValues.minPrice}], ` +
+    `Max [${calculatedValues.maxPrice}]`
+}
+
+const concatRooms = ({ shortDescription, longDescription, beds, personCount, bonuses }: HotelRoomDto,
+                     index: number) => {
+  let base = `Room ${index + 1}: Short: [${shortDescription}], ` +
+    `Beds: [${beds}], ` +
+    `Person count: [${personCount}]`
+  if (longDescription) {
+    base = base.concat(`, Long: [${longDescription}]`)
+  }
+  if (bonuses) {
+    base = base.concat(`, Bonuses: ${concatBonuses(bonuses)}`)
+  }
+  return base
+}
+
+const concatBonuses = (bonuses: HotelBonusesDto) => {
+  const existingBonuses = []
+  if (bonuses.breakfastIncluded) {
+    existingBonuses.push('Breakfast')
+  }
+  if (bonuses.cancelLater) {
+    existingBonuses.push('Cancel later')
+  }
+  if (bonuses.freeCancellation) {
+    existingBonuses.push('Free cancellation')
+  }
+  if (bonuses.noPrepayment) {
+    existingBonuses.push('No prepayment')
+  }
+  return existingBonuses.join(', ')
 }

@@ -8,12 +8,6 @@ import InfoWrapper from '../../../common/InfoWrapper';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    root: {
-      paddingLeft: theme.spacing(5),
-      paddingRight: theme.spacing(5),
-      paddingTop: theme.spacing(2),
-      paddingBottom: theme.spacing(2),
-    },
     box: {
       display: 'flex',
       marginBottom: theme.spacing(0.5),
@@ -23,7 +17,6 @@ const useStyles = makeStyles((theme: Theme) =>
       marginBottom: theme.spacing(1),
     },
     date: {
-      width: theme.spacing(18),
       marginRight: theme.spacing(2),
     },
     valueColumn: {
@@ -45,7 +38,7 @@ export default function PricesContent({ hotel }: DialogContentProps) {
   const classes = useStyles()
 
   return (
-    <DialogContent className={classes.root} dividers>
+    <DialogContent dividers>
       <Box className={clsx(classes.box, classes.bottomSpace)}>
         <InfoWrapper title='The time when the price changed'>
           <Typography className={classes.date}

@@ -85,7 +85,7 @@ export class RawHotelDtoParser {
       longDescription,
       personCount,
       beds,
-      bonuses: this.mapBonuses(bonuses),
+      bonuses: this.parseBonuses(bonuses),
     };
   }
 
