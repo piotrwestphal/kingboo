@@ -12,10 +12,9 @@ export class AppUserNotificationHandler extends UserNotificationHandler {
   }
 
   async updateSearchRequestCache(searchId: string,
-                                 collectingTimes: CollectingTimesData,
                                  timestamp: number): Promise<void> {
     logger.debug(`There is no any effect here until async communication with frontend happen :). ` +
-      `Search id: [${searchId}], collecting times: [${collectingTimes}], timestamp ${timestamp}`)
+      `Search id: [${searchId}], timestamp ${timestamp}`)
   }
 
   updateTopHotelsCache(searchId: string,
