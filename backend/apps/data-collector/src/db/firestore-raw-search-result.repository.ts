@@ -4,8 +4,9 @@ import { RawSearchResult } from '../core/model/RawSearchResult';
 import { logger } from '../logger';
 import { RawSearchResultMapper } from './raw-search-result/raw-search-result.mapper';
 import { RawSearchResultDocument } from './raw-search-result/raw-search-result.document';
-import { Query } from '@google-cloud/firestore';
+import { Query, Timestamp } from '@google-cloud/firestore';
 import { LinksDocument } from './raw-search-result/links.document';
+import { RawHotel } from '../core/model/RawHotel';
 
 export class FirestoreRawSearchResultRepository extends RawSearchResultRepository {
 
@@ -26,8 +27,8 @@ export class FirestoreRawSearchResultRepository extends RawSearchResultRepositor
    */
   async create(rawSearchResult: RawSearchResult): Promise<void> {
     const rawSearchResultDocument = this.rawSearchResultMapper.fromRawSearchResult(rawSearchResult);
-    const newDocId = rawSearchResultDocument.docId
-    const linksDocument = this.extractLinks(newDocId, rawSearchResult)
+    const {docId: newDocId, createdAt} = rawSearchResultDocument
+    const linksDocument = this.extractLinks(newDocId, createdAt, rawSearchResult.hotels)
     try {
       const savedRawSearchResult = await this.firestoreClient.addToCollection(this.RAW_SEARCH_RESULTS_COLLECTION, newDocId, rawSearchResultDocument);
       const { docId: resultsDocId, searchId, searchPlaceIdentifier, collectingTimeSec, hotelsCount } = savedRawSearchResult.data();
@@ -87,15 +88,18 @@ export class FirestoreRawSearchResultRepository extends RawSearchResultRepositor
     })
   }
 
-  private extractLinks = (docId: string, rawSearchResult: RawSearchResult): LinksDocument => {
-    const links = rawSearchResult.hotels
+  private extractLinks = (docId: string,
+                          createdAt: Timestamp,
+                          rawHotels: RawHotel[]): LinksDocument => {
+    const links = rawHotels
       .reduce((prev, curr) => {
         prev[curr.hotelId] = curr.hotelLink
         return prev
       }, {} as Record<string, string>)
     return {
       docId,
-      links
+      createdAt,
+      links,
     }
   }
 }
