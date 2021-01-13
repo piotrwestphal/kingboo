@@ -1,4 +1,4 @@
-import { Model } from 'mongoose';
+import { FilterQuery, Model } from 'mongoose';
 import { CacheDocument } from './cache/search-request-cache.document';
 import { CacheData } from '../core/model/CacheData';
 import { CacheRepository } from '../core/abstract/cache.repository';
@@ -13,7 +13,7 @@ export class MongoCacheRepository<T> extends CacheRepository<T> {
   }
 
   async find(searchId: string): Promise<CacheData<T> | null> {
-    const found = await this.model.findOne({ searchId }).exec()
+    const found = await this.model.findOne({ searchId } as FilterQuery<CacheDocument<T>>).exec()
     return found
       ? this.mapper.toCacheData(found)
       : null

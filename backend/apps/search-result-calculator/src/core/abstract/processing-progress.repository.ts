@@ -4,11 +4,11 @@ import { ProcessingProgress } from '../interface/processing-progress';
 
 
 export abstract class ProcessingProgressRepository {
-  abstract async create<T extends ProcessingProgressType>(processingProgress: ProcessingProgress<T>): Promise<ConditionalProcessingProgress<T> | null>
+  abstract create<T extends ProcessingProgressType>(processingProgress: ProcessingProgress<T>): Promise<ConditionalProcessingProgress<T> | null>
 
-  abstract async findByType<T extends ProcessingProgressType>(searchId: string, type: T): Promise<ConditionalProcessingProgress<T>>
+  abstract findByType<T extends ProcessingProgressType>(searchId: string, type: T): Promise<ConditionalProcessingProgress<T>>
 
-  abstract async getQuantityOfType<T extends ProcessingProgressType>(searchId: string, type: T): Promise<number>
+  abstract getQuantityOfType<T extends ProcessingProgressType>(searchId: string, type: T): Promise<number>
 
-  abstract async deleteMany(searchId: string): Promise<number>
+  abstract deleteMany(searchId: string): Promise<number>
 }
