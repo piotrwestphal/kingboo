@@ -130,7 +130,7 @@ export class BrowserService {
 
   async wait(timeout: number): Promise<void> {
     try {
-      await this.page.waitFor(timeout);
+      await this.page.waitForTimeout(timeout);
     } catch (e) {
       this.logAndRethrow(`Error when waiting ${timeout} ms`, e);
     }
