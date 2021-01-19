@@ -1,12 +1,10 @@
 import { RawHotelDocument } from './raw-hotel.document';
-import Timestamp = FirebaseFirestore.Timestamp;
+import { FirestoreDocument } from '../firestore.document';
 
-export interface RawSearchResultDocument {
-  readonly docId: string;
+export interface RawSearchResultDocument extends FirestoreDocument {
   readonly searchId: string;
   readonly searchPlaceIdentifier: string;
   readonly collectingTimeSec: number;
   readonly hotelsCount: number;
   readonly hotels: RawHotelDocument[];
-  readonly createdAt: Timestamp;
 }
