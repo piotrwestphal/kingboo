@@ -12,6 +12,7 @@ import { ScrapActivityRepository } from '../core/abstract/scrap-activity.reposit
 import { ScrapActivityDocument } from './scrap-activity/scrap-activity.document';
 import { MongoScrapActivityRepository } from './mongo-scrap-activity.repository';
 import { ScrapActivityDocumentMapper } from './scrap-activity/scrap-activity-document.mapper';
+import { LinksMapper } from './links/links.mapper';
 
 @Module({
   imports: [
@@ -24,8 +25,9 @@ import { ScrapActivityDocumentMapper } from './scrap-activity/scrap-activity-doc
     {
       provide: RawSearchResultRepository,
       useFactory: (firestoreClient: FirestoreClient) => {
-        const mapper = new RawSearchResultMapper();
-        return new FirestoreRawSearchResultRepository(firestoreClient, mapper);
+        const linksMapper = new LinksMapper();
+        const rawSearchResultMapper = new RawSearchResultMapper();
+        return new FirestoreRawSearchResultRepository(firestoreClient, linksMapper, rawSearchResultMapper);
       },
       inject: [FirestoreClient],
     },

@@ -3,6 +3,7 @@ import DocumentSnapshot = FirebaseFirestore.DocumentSnapshot;
 import CollectionReference = FirebaseFirestore.CollectionReference;
 import DocumentReference = FirebaseFirestore.DocumentReference;
 import WriteBatch = FirebaseFirestore.WriteBatch;
+import { FirestoreDocument } from '../../../apps/data-collector/src/db/firestore.document';
 
 export class FirestoreClient {
   constructor(
@@ -18,7 +19,7 @@ export class FirestoreClient {
     return docRef.get();
   }
 
-  getCollection<T>(collection: string): CollectionReference<T> {
+  getCollection<T extends FirestoreDocument>(collection: string): CollectionReference<T> {
     return this.firestore.collection(collection) as CollectionReference<T>;
   }
 
