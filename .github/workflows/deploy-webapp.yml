@@ -19,27 +19,27 @@ jobs:
         with:
           node-version: '12.x'
 
-      - name: Use cache
-        uses: actions/cache@v1
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-webapp-ci-${{ hashFiles('webapp/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-webapp-ci-
-
-      - name: Install dependencies
-        working-directory: ./webapp
-        run: |
-          npm ci --silent
-
-      - name: Build package ready for gcp
-        working-directory: ./webapp
-        env:
-          NODE_ENV: 'production'
-          REACT_APP_USER_SERVICE_ADDRESS: ''
-        run: |
-          npm run build
-          mv build/* ../cloud/gcp/webapp/public
+#      - name: Use cache
+#        uses: actions/cache@v1
+#        with:
+#          path: ~/.npm
+#          key: ${{ runner.os }}-webapp-ci-${{ hashFiles('webapp/package-lock.json') }}
+#          restore-keys: |
+#            ${{ runner.os }}-webapp-ci-
+#
+#      - name: Install dependencies
+#        working-directory: ./webapp
+#        run: |
+#          npm ci --silent
+#
+#      - name: Build package ready for gcp
+#        working-directory: ./webapp
+#        env:
+#          NODE_ENV: 'production'
+#          REACT_APP_USER_SERVICE_ADDRESS: ''
+#        run: |
+#          npm run build
+#          mv build/* ../cloud/gcp/webapp/public
 
       - name: GCP authenticate as service account
         uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
@@ -47,7 +47,13 @@ jobs:
           project_id: ${{ secrets.GCLOUD_PROJECT }}
           service_account_key: ${{ secrets.GCP_SA_KEY }}
 
-      - name: Deploy to app engine
+      - name: Test jupi
         working-directory: ./cloud/gcp/webapp
         run: |
-          gcloud -q app deploy -v $GITHUB_SHA
+          gsutil cp gs://cassandra-secure-bundle/secure-connect-kingboo.zip .
+          ls -a
+
+#      - name: Deploy to app engine
+#        working-directory: ./cloud/gcp/webapp
+#        run: |
+#          gcloud -q app deploy -v $GITHUB_SHA
