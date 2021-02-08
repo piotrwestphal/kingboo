@@ -20,6 +20,7 @@ jobs:
           project_id: ${{ secrets.GCLOUD_PROJECT }}
           service_account_key: ${{ secrets.GCP_SA_KEY }}
 
+# TODO: path to zip as secret
       - name: Copy secure bundle from GCP bucket
         run: |
           gsutil cp gs://cassandra-secure-bundle/secure-connect-kingboo.zip ./backend/db/cassandra
