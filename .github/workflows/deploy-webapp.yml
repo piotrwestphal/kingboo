@@ -50,5 +50,4 @@ jobs:
       - name: Deploy to app engine
         working-directory: ./cloud/gcp/webapp
         run: |
-#          gcloud config set project ${{ secrets.GCLOUD_PROJECT }}
           gcloud -q app deploy -v $GITHUB_SHA
