@@ -41,6 +41,7 @@
     "amqp-connection-manager": "3.2.1",
     "amqplib": "0.6.0",
     "cache-manager": "3.4.0",
+    "cassandra-driver": "4.6.1",
     "humio-winston": "1.0.6",
     "mongoose": "5.11.11",
     "puppeteer": "5.5.0",
@@ -105,7 +106,9 @@
       "@kb/logger/(.*)": "<rootDir>/libs/logger/src/$1",
       "@kb/logger": "<rootDir>/libs/logger/src",
       "@kb/firestore/(.*)": "<rootDir>/libs/firestore/src/$1",
-      "@kb/firestore": "<rootDir>/libs/firestore/src"
+      "@kb/firestore": "<rootDir>/libs/firestore/src",
+      "@kb/cassandra/(.*)": "<rootDir>/libs/cassandra/src/$1",
+      "@kb/cassandra": "<rootDir>/libs/cassandra/src"
     }
   }
 }

@@ -53,6 +53,12 @@
       ],
       "@kb/firestore/*": [
         "libs/firestore/src/*"
+      ],
+      "@kb/cassandra": [
+        "libs/cassandra/src"
+      ],
+      "@kb/cassandra/*": [
+        "libs/cassandra/src/*"
       ]
     }
   },

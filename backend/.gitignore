@@ -1,2 +1,3 @@
 /output
 !/output/.gitkeep
+db/cassandra/*.zip

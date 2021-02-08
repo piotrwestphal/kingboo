@@ -39,7 +39,7 @@ import { OldScrapActivityRemover } from './scheduler/old-scrap-activity.remover'
   ],
   controllers: [
     AppController,
-    CollectingScenarioConsumer,
+    // CollectingScenarioConsumer,
   ],
 })
 export class AppModule {

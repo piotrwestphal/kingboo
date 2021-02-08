@@ -13,6 +13,7 @@ import { ScrapActivityDocument } from './scrap-activity/scrap-activity.document'
 import { MongoScrapActivityRepository } from './mongo-scrap-activity.repository';
 import { ScrapActivityDocumentMapper } from './scrap-activity/scrap-activity-document.mapper';
 import { LinksMapper } from './links/links.mapper';
+import { CassandraTemp } from './cassandra-temp';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { LinksMapper } from './links/links.mapper';
     ]),
   ],
   providers: [
+    CassandraTemp,
     {
       provide: RawSearchResultRepository,
       useFactory: (firestoreClient: FirestoreClient) => {

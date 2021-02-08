@@ -59,3 +59,6 @@ services:
       context: ./db/firestore
     ports:
       - 8555:8080
+
+  cassandra:
+    image: datastax/dse-server

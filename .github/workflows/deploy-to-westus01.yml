@@ -9,7 +9,23 @@ on:
       - '.github/workflows/deploy-to-westus01.yml'
 
 jobs:
+  copy_cassandra_secure_bundle:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+
+      - name: GCP authenticate as service account
+        uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
+        with:
+          project_id: ${{ secrets.GCLOUD_PROJECT }}
+          service_account_key: ${{ secrets.GCP_SA_KEY }}
+
+      - name: Copy secure bundle from GCP bucket
+        run: |
+          gsutil cp gs://cassandra-secure-bundle/secure-connect-kingboo.zip ./backend/db/cassandra
+
   publish_data-collector:
+    needs: [copy_cassandra_secure_bundle]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
