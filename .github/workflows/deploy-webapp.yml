@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - master
+      - develop
     paths:
       - 'webapp/**'
       - 'cloud/gcp/webapp/**'
@@ -43,12 +44,9 @@ jobs:
       - name: GCP authenticate as service account
         uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
         with:
-          version: '290.0.1'
-          service_account_email: ${{ secrets.GCP_SA_EMAIL }}
           service_account_key: ${{ secrets.GCP_SA_KEY }}
 
       - name: Deploy to app engine
         working-directory: ./cloud/gcp/webapp
         run: |
-          gcloud config set project ${{ secrets.GCLOUD_PROJECT }}
           gcloud -q app deploy -v $GITHUB_SHA
