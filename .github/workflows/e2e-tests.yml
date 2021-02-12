@@ -36,7 +36,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: ${{github.workspace}}/backend
-          file: ./kb-data-collector.Dockerfile
+          file: ${{github.workspace}}/backend/kb-data-collector.Dockerfile
           push: true
           tags: localhost:5000/piotrwest/kb-data-collector:test
 
