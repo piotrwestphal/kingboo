@@ -61,10 +61,10 @@ jobs:
 #          workdir: backend
 #          dockerfile: kb-data-collector.Dockerfile
 #
-#  run_data-collector_e2e:
-#    runs-on: ubuntu-latest
-#    needs: [publish_data-collector]
-#    services:
+  run_data-collector_e2e:
+    runs-on: ubuntu-latest
+    needs: [local_registry]
+    services:
 #      rabbitmq:
 #        image: rabbitmq:3-management-alpine
 #        env:
@@ -84,22 +84,22 @@ jobs:
 #        ports:
 #          - 27017:27017
 #
-#      data-collector:
-#        image: piotrwest/kb-data-collector:${{github.sha}}
-#        env:
-#          NODE_ENV: dev
-#          PORT: 8080
-#          LOG_LEVEL: debug
-#          MONGO_ADDRESS: mongodb://mongo:27017/dev
-#          FIRESTORE_PROJECT_ID: dev
-#          FIRESTORE_EMULATOR_HOST: firestore
-#          FIRESTORE_EMULATOR_PORT: 8080
-#          MQ_ADDRESS: amqp://dev:dev@rabbitmq:5672
-#          MQ_COLLECTING_SCENARIO_QUEUE_NAME: collecting-scenario
-#          MQ_DATA_COLLECTION_NOTIFICATIONS_QUEUE_NAME: data-collection-notifications
-#          MQ_DATA_TO_PROCESS_QUEUE_NAME: data-to-process
-#        ports:
-#          - 8080:8080
-#
-#    steps:
-#      - uses: actions/checkout@v2
+      data-collector:
+        image: localhost:5000/piotrwest/kb-data-collector:test
+        env:
+          NODE_ENV: dev
+          PORT: 8080
+          LOG_LEVEL: debug
+          MONGO_ADDRESS: mongodb://mongo:27017/dev
+          FIRESTORE_PROJECT_ID: dev
+          FIRESTORE_EMULATOR_HOST: firestore
+          FIRESTORE_EMULATOR_PORT: 8080
+          MQ_ADDRESS: amqp://dev:dev@rabbitmq:5672
+          MQ_COLLECTING_SCENARIO_QUEUE_NAME: collecting-scenario
+          MQ_DATA_COLLECTION_NOTIFICATIONS_QUEUE_NAME: data-collection-notifications
+          MQ_DATA_TO_PROCESS_QUEUE_NAME: data-to-process
+        ports:
+          - 8080:8080
+
+    steps:
+      - uses: actions/checkout@v2
