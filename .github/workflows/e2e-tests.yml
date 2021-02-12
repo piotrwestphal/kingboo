@@ -35,8 +35,8 @@ jobs:
       - name: Build and push to local registry
         uses: docker/build-push-action@v2
         with:
-          context: .
-          file: backend/kb-data-collector.Dockerfile
+          context: ./backend
+          file: Dockerfile
           push: true
           tags: localhost:5000/piotrwest/kb-data-collector:test
 
