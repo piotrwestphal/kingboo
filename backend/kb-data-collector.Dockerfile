@@ -14,13 +14,14 @@ ENTRYPOINT ["dumb-init", "--"]
 
 RUN npm i puppeteer
 
-WORKDIR /usr/src/app
-COPY package*.json ./
+#WORKDIR /usr/src/app
+COPY package*.json ./usr/src/app
 # skip puppeteer installation | npm install --ignore-scripts
-RUN npm install
-COPY . .
-RUN npm run build:dc
+RUN cd /usr/src/app && npm install
+#RUN npm install
+COPY . /usr/src/app
+RUN cd /usr/src/app && npm run build:dc
 
 EXPOSE 8080
-WORKDIR ./dist/apps/data-collector
-CMD ["node", "main"]
+#WORKDIR ./dist/apps/data-collector
+CMD ["node", "dist/apps/data-collector/main"]
