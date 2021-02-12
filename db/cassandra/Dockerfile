@@ -11,6 +11,8 @@ COPY *.cql /docker-entrypoint-initdb.d/
 # this is the script that will patch the already existing entrypoint from cassandra image
 COPY entrypoint.sh /
 
+RUN ["chmod", "777", "/entrypoint.sh"]
+
 # Override ENTRYPOINT, keep CMD
 ENTRYPOINT ["/entrypoint.sh"]
 CMD ["cassandra", "-f"]

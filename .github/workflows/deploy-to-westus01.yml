@@ -9,7 +9,7 @@ on:
       - '.github/workflows/deploy-to-westus01.yml'
 
 jobs:
-  copy_cassandra_secure_bundle:
+  publish_data-collector:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
@@ -20,16 +20,9 @@ jobs:
           project_id: ${{ secrets.GCLOUD_PROJECT }}
           service_account_key: ${{ secrets.GCP_SA_KEY }}
 
-# TODO: path to zip as secret
-      - name: Copy secure bundle from GCP bucket
+      - name: Copy cassandra secure bundle from GCP bucket
         run: |
-          gsutil cp gs://cassandra-secure-bundle/secure-connect-kingboo.zip ./backend/db/cassandra
-
-  publish_data-collector:
-    needs: [copy_cassandra_secure_bundle]
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v1
+          gsutil cp ${{ secrets.CASSANDRA_SECURE_BUNDLE_GS_URL }} ./backend/db/cassandra
 
       # takes branch name as a tag
       # in case of master takes 'latest'
