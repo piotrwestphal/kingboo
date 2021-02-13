@@ -12,10 +12,10 @@ ADD https://github.com/Yelp/dumb-init/releases/download/v1.2.0/dumb-init_1.2.0_a
 RUN chmod +x /usr/local/bin/dumb-init
 ENTRYPOINT ["dumb-init", "--"]
 
-RUN npm i puppeteer
+#RUN npm i puppeteer
 
 WORKDIR /usr/src/app
-COPY package*.json .
+COPY package*.json ./
 # skip puppeteer installation | npm install --ignore-scripts
 RUN npm install
 COPY . .
