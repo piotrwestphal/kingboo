@@ -35,14 +35,16 @@ jobs:
       - name: Build and push to local registry
         uses: docker/build-push-action@v2
         with:
-          context: ${{github.workspace}}/backend
-          file: ${{github.workspace}}/backend/kb-data-collector.Dockerfile
+          context: backend
+          file: backend/kb-data-collector.Dockerfile
           push: true
-          tags: localhost:5000/piotrwest/kb-data-collector:test
+          tags: localhost:5000/piotrwest/kb-data-collector:${{github.workflow}}
 
       - name: Inspect
         run: |
-          docker buildx imagetools inspect localhost:5000/piotrwest/kb-data-collector:test
+          docker image ls
+          docker ps -a
+          docker buildx imagetools inspect localhost:5000/piotrwest/kb-data-collector:${{github.workflow}}
 
 #  publish_data-collector:
 #    runs-on: ubuntu-latest
