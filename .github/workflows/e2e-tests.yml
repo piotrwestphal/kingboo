@@ -58,7 +58,7 @@ jobs:
           - 27017:27017
 
       data-collector:
-        image: piotrwest/kb-data-collector:${{env.DOCKER_TAG}}
+        image: piotrwest/kb-data-collector:$DOCKER_TAG
         env:
           NODE_ENV: dev
           PORT: 8080
