@@ -43,11 +43,10 @@ jobs:
         env:
           RABBITMQ_DEFAULT_USER: dev
           RABBITMQ_DEFAULT_PASS: dev
-        volumes:
-          - ./backend/mq/rmq-definitions.json:/etc/rabbitmq/definitions.json
         ports:
           - 15672:15672
           - 5672:5672
+        options: -v ${{ github.workspace }}/backend/mq/rmq-definitions.json:/etc/rabbitmq/definitions.json
 #
 #      firebase-test:
 #        image:
