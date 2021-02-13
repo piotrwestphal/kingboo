@@ -37,8 +37,6 @@ jobs:
   run_data-collector_e2e:
     runs-on: ubuntu-latest
     needs: [publish_data-collector]
-    env:
-      DOCKER_TAG: dc-e2e-tests
     services:
       rabbitmq:
         image: rabbitmq:3-management-alpine
@@ -59,7 +57,7 @@ jobs:
           - 27017:27017
 
       data-collector:
-        image: piotrwest/kb-data-collector:${{env.DOCKER_TAG}}
+        image: piotrwest/kb-data-collector:dc-e2e-tests
         env:
           NODE_ENV: dev
           PORT: 8080
