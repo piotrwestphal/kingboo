@@ -10,7 +10,8 @@ on:
   pull_request:
     branches:
       - master
-
+env:
+  DOCKER_TAG: ${{hashFiles(github.workflow)}}
 jobs:
   local_registry:
     runs-on: ubuntu-latest
@@ -38,13 +39,13 @@ jobs:
           context: backend
           file: backend/kb-data-collector.Dockerfile
           push: true
-          tags: localhost:5000/piotrwest/kb-data-collector:${{github.workflow}}
+          tags: localhost:5000/piotrwest/kb-data-collector:$DOCKER_TAG
 
       - name: Inspect
         run: |
           docker image ls
           docker ps -a
-          docker buildx imagetools inspect localhost:5000/piotrwest/kb-data-collector:${{github.workflow}}
+          docker buildx imagetools inspect localhost:5000/piotrwest/kb-data-collector:$DOCKER_TAG
 
 #  publish_data-collector:
 #    runs-on: ubuntu-latest
