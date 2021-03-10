@@ -51,8 +51,7 @@ jobs:
       - name: GCP authenticate as service account
         uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
         with:
-          version: '290.0.1'
-          service_account_email: ${{ secrets.GCP_SA_EMAIL }}
+          project_id: ${{ secrets.GCLOUD_PROJECT }}
           service_account_key: ${{ secrets.GCP_SA_KEY }}
 
       - name: Deploy service to app engine
@@ -71,7 +70,6 @@ jobs:
           sed -i 's#__MQ_ADDRESS__#'"$MQ_ADDRESS"'#' app.yaml
           sed -i 's#__SEARCH_REQUESTS_RESOURCE_ADDRESS__#'"$SEARCH_REQUESTS_RESOURCE_ADDRESS"'#' app.yaml
           sed -i 's#__HOTELS_RESOURCE_ADDRESS__#'"$HOTELS_RESOURCE_ADDRESS"'#' app.yaml
-          gcloud config set project ${{ secrets.GCLOUD_PROJECT }}
           gcloud -q app deploy -v $GITHUB_SHA
 
       - name: Deploy dispatch to app engine
