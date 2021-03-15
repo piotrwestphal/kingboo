@@ -2,7 +2,7 @@ const base = require('./package.json').jest;
 module.exports = {
   ...base,
   "rootDir": "./../../..",
-  "testRegex": ".e2e-spec.ts$",
+  "testRegex": ".spec-e2e.ts$",
   "roots": [
     "<rootDir>/libs/",
   ],
