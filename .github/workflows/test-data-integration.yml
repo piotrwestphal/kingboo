@@ -17,12 +17,8 @@ jobs:
         image: mtlynch/firestore-emulator
         env:
           FIRESTORE_PROJECT_ID: dev
-        ports:
-          - 8555:8080
       mongo:
         image: mongo
-        ports:
-          - 27017:27017
 
     steps:
       - uses: actions/checkout@v2
@@ -55,9 +51,9 @@ jobs:
           NODE_ENV: dev
           CORS_ORIGINS: ''
           FIRESTORE_PROJECT_ID: dev
-          FIRESTORE_EMULATOR_HOST: localhost
-          FIRESTORE_EMULATOR_PORT: 8555
-          MONGO_ADDRESS: mongodb://localhost:27017/dev
+          FIRESTORE_EMULATOR_HOST: firestore
+          FIRESTORE_EMULATOR_PORT: 8080
+          MONGO_ADDRESS: mongodb://mongo:27017/dev
           MQ_ADDRESS: mock
           MQ_COLLECTING_SCENARIO_QUEUE_NAME: mock
           MQ_DATA_COLLECTION_NOTIFICATIONS_QUEUE_NAME: mock
