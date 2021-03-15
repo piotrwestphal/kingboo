@@ -55,9 +55,9 @@ jobs:
           NODE_ENV: dev
           CORS_ORIGINS: ''
           FIRESTORE_PROJECT_ID: dev
-          FIRESTORE_EMULATOR_HOST: firestore
+          FIRESTORE_EMULATOR_HOST: localhost
           FIRESTORE_EMULATOR_PORT: 8555
-          MONGO_ADDRESS: mongodb://mongo:27017/dev
+          MONGO_ADDRESS: mongodb://localhost:27017/dev
           MQ_ADDRESS: mock
           MQ_COLLECTING_SCENARIO_QUEUE_NAME: mock
           MQ_DATA_COLLECTION_NOTIFICATIONS_QUEUE_NAME: mock
