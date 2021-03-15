@@ -115,12 +115,12 @@ describe('Data integration tests', () => {
       linksDocuments
     } = await firestoreRawSearchResultRepository.findBySearchId(mockSearchId);
 
-    rawSearchResultDocuments.forEach((v) => {
-      logger.debug(`Collected [rawSearchResultDocument] with searchId [${v.searchId}] from db`, v)
-    })
-
-    const { hotels, searchPlaceIdentifier } = rawSearchResultDocuments[0]
+    const { searchId, hotels, searchPlaceIdentifier } = rawSearchResultDocuments[0]
     const { links } = linksDocuments[0]
+
+    hotels.forEach((v) => {
+      logger.debug(`Collected [rawSearchResultDocument] with hotelId [${v.hotelId}] from db`, v)
+    })
 
     notEmpty(searchPlaceIdentifier)
     expect(searchPlaceIdentifier.includes('Warsaw')).toBeTruthy()
