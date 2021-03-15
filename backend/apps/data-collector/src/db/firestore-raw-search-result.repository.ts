@@ -4,7 +4,7 @@ import { RawSearchResult } from '../core/model/RawSearchResult';
 import { logger } from '../logger';
 import { RawSearchResultMapper } from './raw-search-result/raw-search-result.mapper';
 import { RawSearchResultDocument } from './raw-search-result/raw-search-result.document';
-import { Query } from '@google-cloud/firestore';
+import { Query, QuerySnapshot } from '@google-cloud/firestore';
 import { LinksDocument } from './links/links.document';
 import { FirestoreDocument } from './firestore.document';
 import { LinksMapper } from './links/links.mapper';
@@ -29,8 +29,8 @@ export class FirestoreRawSearchResultRepository extends RawSearchResultRepositor
    */
   async create(rawSearchResult: RawSearchResult): Promise<void> {
     const rawSearchResultDocument = this.rawSearchResultMapper.toDoc(rawSearchResult);
-    const { docId: newDocId, createdAt } = rawSearchResultDocument
-    const linksDocument = this.linksMapper.toDoc(newDocId, createdAt, rawSearchResult.hotels)
+    const { docId: newDocId, createdAt, searchId } = rawSearchResultDocument
+    const linksDocument = this.linksMapper.toDoc(newDocId, searchId, createdAt, rawSearchResult.hotels)
     try {
       const savedRawSearchResult = await this.firestoreClient.addToCollection(this.RAW_SEARCH_RESULTS_COLLECTION, newDocId, rawSearchResultDocument);
       const { docId: resultsDocId, searchId, searchPlaceIdentifier, collectingTimeSec, hotelsCount } = savedRawSearchResult.data();
@@ -59,7 +59,7 @@ export class FirestoreRawSearchResultRepository extends RawSearchResultRepositor
   private async deleteOlderThanGivenHoursFromCollection<T extends FirestoreDocument>(collectionName: string, hours: number): Promise<string[]> {
     const collectionRef = this.firestoreClient.getCollection<T>(collectionName);
     const offset = new Date(Date.now() - hours * this.HOUR);  // x hours ago
-    const oldDocsQuery = await collectionRef.where('createdAt', '<', offset)
+    const oldDocsQuery = collectionRef.where('createdAt', '<', offset)
     return new Promise((res) => {
       this.deleteInBatch(collectionName, oldDocsQuery, this.DELETE_BATCH_SIZE, res, [])
     })
@@ -88,4 +88,23 @@ export class FirestoreRawSearchResultRepository extends RawSearchResultRepositor
       this.deleteInBatch(collectionName, query, batchSize, resolve, deletedIds)
     })
   }
+
+  async findBySearchId(searchId: string): Promise<{
+    rawSearchResultDocuments: RawSearchResultDocument[],
+    linksDocuments: LinksDocument[]
+  }> {
+    const rawSearchResultsSnapshotPending = this.getFromCollectionById<RawSearchResultDocument>(this.RAW_SEARCH_RESULTS_COLLECTION, searchId);
+    const linksSnapshotPending = this.getFromCollectionById<LinksDocument>(this.LINKS_COLLECTION, searchId);
+    const [rawSearchResultsSnapshot, linksSnapshot] = await Promise.all([rawSearchResultsSnapshotPending, linksSnapshotPending]);
+    return {
+      rawSearchResultDocuments: rawSearchResultsSnapshot.docs.map(doc => doc.data()),
+      linksDocuments: linksSnapshot.docs.map(doc => doc.data())
+    }
+  }
+
+  private getFromCollectionById<T extends FirestoreDocument>(collectionName: string, searchId: string): Promise<QuerySnapshot<T>> {
+    const collectionRef = this.firestoreClient.getCollection<T>(collectionName)
+    return collectionRef.where('searchId', '==', searchId).get();
+  }
+
 }
