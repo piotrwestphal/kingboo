@@ -118,7 +118,6 @@ describe('Data integration tests', () => {
     } = await firestoreRawSearchResultRepository.findBySearchId(mockSearchId);
 
     logger.debug('Collected [rawSearchResultDocuments] from db', rawSearchResultDocuments)
-    logger.debug('Collected [linksDocuments] from db', linksDocuments)
 
     const { hotels, searchPlaceIdentifier } = rawSearchResultDocuments[0]
     const { links } = linksDocuments[0]
@@ -129,14 +128,13 @@ describe('Data integration tests', () => {
                       hotelId,
                       name,
                       price,
-                      tax,
                       distanceFromCenter,
                       districtName,
                       coords
                     }) => {
       notEmpty(name)
       notEmpty(price)
-      notEmpty(tax)
+      // notEmpty(tax)
       notEmpty(distanceFromCenter)
       notEmpty(districtName)
       notEmpty(coords)
