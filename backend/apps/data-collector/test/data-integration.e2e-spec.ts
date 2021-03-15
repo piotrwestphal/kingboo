@@ -85,12 +85,10 @@ describe('Data integration tests', () => {
     const mockSearchId = 'test1'
     const day = 24 * 60 * 60 * 1000
     const checkInDate = new Date(Date.now() + (7 * day))
-    console.log({ checkInDate })
     const checkOutDate = new Date(Date.now() + (10 * day))
-    console.log({ checkOutDate })
 
     const collectHotelsScenario: CollectHotelsScenario = {
-      resultsLimit: 50,
+      resultsLimit: 25,
       searchPlace: 'Warsaw',
       checkInDate: {
         year: checkInDate.getFullYear(),
@@ -117,7 +115,9 @@ describe('Data integration tests', () => {
       linksDocuments
     } = await firestoreRawSearchResultRepository.findBySearchId(mockSearchId);
 
-    logger.debug('Collected [rawSearchResultDocuments] from db', rawSearchResultDocuments)
+    rawSearchResultDocuments.forEach((v) => {
+      logger.debug(`Collected [rawSearchResultDocument] with searchId [${v.searchId}] from db`, v)
+    })
 
     const { hotels, searchPlaceIdentifier } = rawSearchResultDocuments[0]
     const { links } = linksDocuments[0]
