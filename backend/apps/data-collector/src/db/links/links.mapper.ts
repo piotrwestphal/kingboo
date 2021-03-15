@@ -4,6 +4,7 @@ import { LinksDocument } from './links.document';
 
 export class LinksMapper {
   toDoc(docId: string,
+        searchId: string,
         createdAt: Timestamp,
         rawHotels: RawHotel[]): LinksDocument {
     const links = rawHotels
@@ -13,6 +14,7 @@ export class LinksMapper {
       }, {} as Record<string, string>)
     return {
       docId,
+      searchId,
       createdAt,
       links,
     }

@@ -1,0 +1,59 @@
+name: e2e tests
+on:
+  push:
+    branches:
+      - create-e2e-test-for-data-integration
+    paths:
+      - 'backend/**'
+      - '.github/workflows/test-data-integration.yml'
+
+jobs:
+  run_e2e_test:
+    runs-on: ubuntu-latest
+    services:
+      firestore:
+        image: mtlynch/firestore-emulator
+        env:
+          FIRESTORE_PROJECT_ID: dev
+        ports:
+          - 8555:8080
+      mongo:
+        image: mongo
+        ports:
+          - 27017:27017
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+
+      - name: Use cache
+        uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-backend-ci-${{ hashFiles('backend/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-backend-ci-
+
+      - name: Install dependencies
+        working-directory: ./backend
+        run: |
+          npm ci --silent
+
+      - name: Build data-collector
+        working-directory: ./backend
+        run: |
+          npm run build:dc
+
+      - name: Run data integration tests
+        working-directory: ./backend
+        env:
+          NODE_ENV: dev
+          FIRESTORE_PROJECT_ID: dev
+          FIRESTORE_EMULATOR_HOST: firestore
+          FIRESTORE_EMULATOR_PORT: 8555
+          MONGO_ADDRESS: mongodb://mongo:27017/dev
+        run: |
+          npm run e2e:dc
