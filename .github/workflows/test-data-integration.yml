@@ -6,6 +6,8 @@ on:
     paths:
       - 'backend/**'
       - '.github/workflows/test-data-integration.yml'
+  schedule:
+    - cron: '0 8,20 * * *' # at 8.00 and at 20.00
 
 jobs:
   run_e2e_test:
@@ -51,6 +53,7 @@ jobs:
         working-directory: ./backend
         env:
           NODE_ENV: dev
+          CORS_ORIGINS: ''
           FIRESTORE_PROJECT_ID: dev
           FIRESTORE_EMULATOR_HOST: firestore
           FIRESTORE_EMULATOR_PORT: 8555
