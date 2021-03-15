@@ -58,5 +58,9 @@ jobs:
           FIRESTORE_EMULATOR_HOST: firestore
           FIRESTORE_EMULATOR_PORT: 8555
           MONGO_ADDRESS: mongodb://mongo:27017/dev
+          MQ_ADDRESS: mock
+          MQ_COLLECTING_SCENARIO_QUEUE_NAME: mock
+          MQ_DATA_COLLECTION_NOTIFICATIONS_QUEUE_NAME: mock
+          MQ_DATA_TO_PROCESS_QUEUE_NAME: mock
         run: |
           npm run e2e:dc
