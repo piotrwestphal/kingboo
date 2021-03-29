@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="10 seconds">
+    <property name="LOG_PATH" value="logs"/>
+    <include resource="org/springframework/boot/logging/logback/base.xml"/>
+    <logger name="com.kingboo" level="DEBUG"/>
+</configuration>
