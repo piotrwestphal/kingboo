@@ -150,7 +150,7 @@ export class ResultListPage {
             newlyAdded: hotelNewlyAdded,
             bonuses: hotelBonuses.length ? hotelBonuses : null,
             rooms: rooms.length ? rooms : null,
-            debug: distanceFromCenter ? getFirstElementByClass(searchResultContainer, 'sr_item_main_block').innerHTML: null,
+            debug: distanceFromCenter ? null : getFirstElementByClass(searchResultContainer, 'sr_item_main_block').innerHTML,
           });
         }
       }
