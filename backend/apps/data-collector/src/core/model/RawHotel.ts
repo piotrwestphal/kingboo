@@ -21,6 +21,7 @@ export class RawHotel {
     public readonly bonuses: string[] | null,
     public readonly rooms: RawRoom[] | null,
     public readonly collectedAt: string,
+    public readonly debug?: string,
   ) {
     this.hotelId = this.assignHotelId(name, coords);
   }
