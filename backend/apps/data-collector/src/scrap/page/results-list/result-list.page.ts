@@ -6,6 +6,7 @@ interface AddressContainerData {
   distanceFromCenter: string;
   districtName: string;
   coords: string;
+  debug?: string,
 }
 
 export class ResultListPage {
@@ -49,10 +50,16 @@ export class ResultListPage {
         const spansWithoutClass = addressContainer.querySelectorAll<HTMLSpanElement>('span:not([class])');
         const textFromSpans = Array.from(spansWithoutClass).map(v => v.innerText);
         const concatText = textFromSpans.length ? textFromSpans.reduce((c, p) => c + p) : null;
-        return {
+        return concatText ? {
           distanceFromCenter: concatText,
           districtName: districtLink.innerText,
           coords: districtLink.getAttribute('data-coords'),
+        } : {
+          distanceFromCenter: null,
+          districtName: districtLink.innerText,
+          coords: districtLink.getAttribute('data-coords'),
+          // remove if found bug
+          debug: addressContainer.innerHTML,
         };
       };
 
@@ -84,7 +91,7 @@ export class ResultListPage {
         // Sometimes other containers also appears like: Car Rental - they don't have name of hotel
         const name = getTextFromElement(searchResultContainer, 'sr-hotel__name');
         if (name) {
-          const { coords, districtName, distanceFromCenter } = extractFromAddressContainer(searchResultContainer);
+          const { coords, districtName, distanceFromCenter, debug } = extractFromAddressContainer(searchResultContainer);
           const hotelLink = getHotelLink(searchResultContainer);
           const rate = getTextFromElement(searchResultContainer, 'bui-review-score__badge');
           const secondaryRateType = getTextFromElementIfContainerExist(
@@ -150,6 +157,7 @@ export class ResultListPage {
             newlyAdded: hotelNewlyAdded,
             bonuses: hotelBonuses.length ? hotelBonuses : null,
             rooms: rooms.length ? rooms : null,
+            debug,
           });
         }
       }

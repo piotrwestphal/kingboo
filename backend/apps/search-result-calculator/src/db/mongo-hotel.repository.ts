@@ -7,6 +7,7 @@ import { HotelIdentifier } from '../core/interface/hotel-identifier';
 import { TopHotels } from '../core/interface/top-hotels';
 import { SimpleHotel } from '../core/interface/simple-hotel';
 import { NotFoundException } from '@nestjs/common';
+import { logger } from '../logger'
 
 const selectSimpleHotel: Record<keyof SimpleHotel & '_id', 1 | 0> = {
   searchId: 1,
@@ -113,25 +114,30 @@ export class MongoHotelRepository extends HotelRepository {
   async findTopHotelsBySearchIdOrFail(searchId: string,
                                       collectingStartedAt: string,
                                       collectingFinishedAt?: string): Promise<TopHotels> {
-    const findBySearchId = () => this.model.find({
+    const findBySearchId = (cond) => this.model.find({
       searchId,
       lastCollectedAt: dateRangeQuery(collectingStartedAt, collectingFinishedAt)
     })
-      .orFail(() => new NotFoundException(`Hotels with search id: ${searchId} not exist`))
+      // TODO: sometimes it fails - log some actions here
+      .orFail((err) => {
+        logger.error(`Error when searching for hotels by ${cond}`, err)
+        return new NotFoundException(
+          `Hotels with search id: ${searchId} and for range from ${collectingStartedAt} to ${collectingFinishedAt} not exist`)
+      })
       .select({ ...selectSimpleHotel })
       .limit(10);
-    const pendingBestPriceRate = findBySearchId().sort({
+    const pendingBestPriceRate = findBySearchId('priceRate').sort({
       'calculatedValues.priceRate': -1,
       'latestValues.price': 1
     }).exec();
-    const pendingCheapest = findBySearchId().sort({
+    const pendingCheapest = findBySearchId('price').sort({
       'latestValues.price': 1
     }).exec();
-    const pendingBestLocation = findBySearchId().sort({
+    const pendingBestLocation = findBySearchId('distance').sort({
       'distanceFromCenterMeters': 1,
       'latestValues.price': 1
     }).exec();
-    const pendingBestRate = findBySearchId().sort({
+    const pendingBestRate = findBySearchId('rate').sort({
       'latestValues.rate': -1,
       'latestValues.price': 1
     }).exec();
