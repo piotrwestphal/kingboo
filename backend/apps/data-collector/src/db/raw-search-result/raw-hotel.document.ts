@@ -17,4 +17,5 @@ export interface RawHotelDocument {
   readonly bonuses: string[] | null;
   readonly rooms: RawRoomDocument[] | null;
   readonly collectedAt: string;
+  readonly debug?: string;
 }

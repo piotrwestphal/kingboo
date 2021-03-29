@@ -40,6 +40,7 @@ export class RawSearchResultMapper {
                                bonuses,
                                rooms,
                                collectedAt,
+                               debug,
                              }: RawHotel): RawHotelDocument {
     return {
       hotelId,
@@ -58,6 +59,7 @@ export class RawSearchResultMapper {
       bonuses,
       rooms,
       collectedAt,
+      debug,
     };
   }
 }
