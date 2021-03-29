@@ -120,7 +120,8 @@ export class MongoHotelRepository extends HotelRepository {
     })
       // TODO: sometimes it fails - log some actions here
       .orFail((err) => {
-        logger.error(`Error when searching for hotels by ${cond}`, err)
+        logger.error(`Error when searching for hotels for search id: [${searchId}] and for range from ${collectingStartedAt} to ${collectingFinishedAt} ` +
+          `by ${cond}. Error ${err}`, err)
         return new NotFoundException(
           `Hotels with search id: ${searchId} and for range from ${collectingStartedAt} to ${collectingFinishedAt} not exist`)
       })
