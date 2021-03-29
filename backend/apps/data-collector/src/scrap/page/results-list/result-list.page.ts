@@ -54,6 +54,7 @@ export class ResultListPage {
           distanceFromCenter: concatText,
           districtName: districtLink.innerText,
           coords: districtLink.getAttribute('data-coords'),
+          debug: null,
         } : {
           distanceFromCenter: null,
           districtName: districtLink.innerText,
