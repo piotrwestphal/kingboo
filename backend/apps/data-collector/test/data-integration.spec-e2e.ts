@@ -129,13 +129,14 @@ describe('Data integration tests', () => {
                       name,
                       price,
                       distanceFromCenter,
+                      distanceFromCenterOrderIndex,
                       districtName,
                       coords
                     }) => {
       notEmpty(name)
       notEmpty(price)
-      // notEmpty(tax)
       notEmpty(distanceFromCenter)
+      notEmpty(distanceFromCenterOrderIndex)
       notEmpty(districtName)
       notEmpty(coords)
       expect(links[hotelId]).toBeDefined()
