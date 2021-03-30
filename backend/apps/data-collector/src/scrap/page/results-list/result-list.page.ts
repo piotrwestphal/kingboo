@@ -77,84 +77,86 @@ export class ResultListPage {
           : null;
       };
 
-      const hotels: ScrapedRawHotel[] = [];
-
       const searchResultsContainers = document.getElementsByClassName('sr_item sr_item_default');
-      for (const searchResultContainer of searchResultsContainers) {
-        // Sometimes other containers also appears like: Car Rental - they don't have name of hotel
-        const name = getTextFromElement(searchResultContainer, 'sr-hotel__name');
-        if (name) {
-          const { coords, districtName, distanceFromCenter } = extractFromAddressContainer(searchResultContainer);
-          const hotelLink = getHotelLink(searchResultContainer);
-          const rate = getTextFromElement(searchResultContainer, 'bui-review-score__badge');
-          const secondaryRateType = getTextFromElementIfContainerExist(
-            searchResultContainer, 'review-score-widget__14', 'review-score-widget__text');
-          const secondaryRate = getTextFromElementIfContainerExist(searchResultContainer,
-            'review-score-widget__14', 'review-score-badge');
-          const numberOfReviews = getTextFromElement(searchResultContainer, 'bui-review-score__text');
-          const starRating = extractStarsFromBadgesContainer(searchResultContainer)
-          const hotelNewlyAdded = getTextFromElement(searchResultContainer, 'new_hotel__badge');
+      return Array.from(searchResultsContainers)
+        .reduce((acc,
+                 searchResultContainer,
+                 idx) => {
+          // Sometimes other containers also appears like: Car Rental - they don't have name of hotel
+          const name = getTextFromElement(searchResultContainer, 'sr-hotel__name');
+          if (name) {
+            const { coords, districtName, distanceFromCenter } = extractFromAddressContainer(searchResultContainer);
+            const hotelLink = getHotelLink(searchResultContainer);
+            const rate = getTextFromElement(searchResultContainer, 'bui-review-score__badge');
+            const secondaryRateType = getTextFromElementIfContainerExist(
+              searchResultContainer, 'review-score-widget__14', 'review-score-widget__text');
+            const secondaryRate = getTextFromElementIfContainerExist(searchResultContainer,
+              'review-score-widget__14', 'review-score-badge');
+            const numberOfReviews = getTextFromElement(searchResultContainer, 'bui-review-score__text');
+            const starRating = extractStarsFromBadgesContainer(searchResultContainer)
+            const hotelNewlyAdded = getTextFromElement(searchResultContainer, 'new_hotel__badge');
 
-          // Price
-          const price = getPrice(searchResultContainer);
-          const tax = getTextFromElement(searchResultContainer, 'prd-taxes-and-fees-under-price');
+            // Price
+            const price = getPrice(searchResultContainer);
+            const tax = getTextFromElement(searchResultContainer, 'prd-taxes-and-fees-under-price');
 
-          // Bonuses
-          const groupRoomsContainer = getFirstElementByClass(searchResultContainer, 'sr_gr sr-group_recommendation');
-          const hotelBonuses: string[] = [];
-          const rooms: ScrapedRawRoom[] = [];
-          if (groupRoomsContainer) {
-            // in case of the search request different than the standard search criteria
-            const roomsContainers = searchResultContainer.getElementsByClassName('roomrow entire_row_clickable');
-            for (const roomContainer of roomsContainers) {
-              const containerWithBonuses = getFirstElementByClass(roomContainer, 'roomNameInner');
-              const bonusesElements = containerWithBonuses.getElementsByTagName('sup');
-              const bonuses = Array.from(bonusesElements).map(b => b.innerText);
-              const shortDescription = getTextFromElement(roomContainer, 'room_link');
-              const longDescription = getTextFromElement(roomContainer, 'c-unit-configuration');
-              const personCount = getTextFromElement(roomContainer, 'maxPersonsLeft');
-              const beds = getTextFromElement(roomContainer, 'c-beds-configuration');
-              rooms.push({
-                shortDescription,
-                longDescription,
-                personCount,
-                beds,
-                bonuses,
-              });
+            // Bonuses
+            const groupRoomsContainer = getFirstElementByClass(searchResultContainer, 'sr_gr sr-group_recommendation');
+            const hotelBonuses: string[] = [];
+            const rooms: ScrapedRawRoom[] = [];
+            if (groupRoomsContainer) {
+              // in case of the search request different than the standard search criteria
+              const roomsContainers = searchResultContainer.getElementsByClassName('roomrow entire_row_clickable');
+              for (const roomContainer of roomsContainers) {
+                const containerWithBonuses = getFirstElementByClass(roomContainer, 'roomNameInner');
+                const bonusesElements = containerWithBonuses.getElementsByTagName('sup');
+                const bonuses = Array.from(bonusesElements).map(b => b.innerText);
+                const shortDescription = getTextFromElement(roomContainer, 'room_link');
+                const longDescription = getTextFromElement(roomContainer, 'c-unit-configuration');
+                const personCount = getTextFromElement(roomContainer, 'maxPersonsLeft');
+                const beds = getTextFromElement(roomContainer, 'c-beds-configuration');
+                rooms.push({
+                  shortDescription,
+                  longDescription,
+                  personCount,
+                  beds,
+                  bonuses,
+                });
+              }
+            } else {
+              // in case of the standard search criteria
+              const freeCancellation = getTextFromElement(searchResultContainer, 'free-cancel-persuasion');
+              if (freeCancellation) {
+                hotelBonuses.push(freeCancellation);
+              }
+              const hotelBonusesUnderPrice = searchResultContainer.getElementsByClassName('sr_room_reinforcement');
+              for (const h of hotelBonusesUnderPrice) {
+                const hotelBonus = getTextFromHtmlElementIfDefined(h as HTMLElement);
+                hotelBonuses.push(hotelBonus);
+              }
             }
-          } else {
-            // in case of the standard search criteria
-            const freeCancellation = getTextFromElement(searchResultContainer, 'free-cancel-persuasion');
-            if (freeCancellation) {
-              hotelBonuses.push(freeCancellation);
-            }
-            const hotelBonusesUnderPrice = searchResultContainer.getElementsByClassName('sr_room_reinforcement');
-            for (const h of hotelBonusesUnderPrice) {
-              const hotelBonus = getTextFromHtmlElementIfDefined(h as HTMLElement);
-              hotelBonuses.push(hotelBonus);
-            }
+            acc.push({
+              name,
+              price,
+              tax,
+              distanceFromCenter,
+              distanceFromCenterOrderIndex: idx,
+              districtName,
+              coords,
+              hotelLink,
+              rate,
+              secondaryRateType,
+              secondaryRate,
+              numberOfReviews,
+              starRating,
+              newlyAdded: hotelNewlyAdded,
+              bonuses: hotelBonuses.length ? hotelBonuses : null,
+              rooms: rooms.length ? rooms : null,
+              // debug: 'will go straight to db',
+            })
+            return acc;
           }
-          hotels.push({
-            name,
-            price,
-            tax,
-            distanceFromCenter,
-            districtName,
-            coords,
-            hotelLink,
-            rate,
-            secondaryRateType,
-            secondaryRate,
-            numberOfReviews,
-            starRating,
-            newlyAdded: hotelNewlyAdded,
-            bonuses: hotelBonuses.length ? hotelBonuses : null,
-            rooms: rooms.length ? rooms : null,
-            debug: distanceFromCenter ? null : getFirstElementByClass(searchResultContainer, 'sr_item_main_block').innerHTML,
-          });
-        }
-      }
-      return hotels;
+        }, [] as ScrapedRawHotel[]);
     });
   }
 
