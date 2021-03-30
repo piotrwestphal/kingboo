@@ -7,6 +7,7 @@ export const LatestValuesSchema = new Schema<LatestValuesDocument>({
     price: Number,
     districtName: String,
     distanceFromCenterMeters: Number,
+    distanceFromCenterOrderIndex: Number,
     hotelLink: String,
     rate: Number,
     secondaryRate: Number,

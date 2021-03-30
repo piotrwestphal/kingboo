@@ -4,7 +4,8 @@ import { Bonuses } from './bonuses';
 export interface LatestValues {
   readonly price: number;
   readonly districtName: string | null;
-  readonly distanceFromCenterMeters: number;
+  readonly distanceFromCenterMeters: number | null;
+  readonly distanceFromCenterOrderIndex: number;
   readonly hotelLink: string;
   readonly rate: number;
   readonly secondaryRate: number | null;
