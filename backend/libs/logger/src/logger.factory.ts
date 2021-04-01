@@ -10,11 +10,12 @@ export const createLogger = ({
                              }: LoggerConfig) => {
   const additionalTransports: Transport[] = [];
   additionalTransports.push(new transports.File({
-    filename: `${logOutputFolder}/${appLabel}.log`,
+    filename: `${logOutputFolder}/${appLabel}-output.log`,
     level: 'debug',
   }));
   return new CommonLoggerService({
     logLevel,
+    appLabel,
     additionalTransports,
   });
 };
