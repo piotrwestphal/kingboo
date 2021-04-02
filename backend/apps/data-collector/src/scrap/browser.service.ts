@@ -1,5 +1,5 @@
 import * as puppeteer from 'puppeteer';
-import { Browser, ElementHandle, EvaluateFn, LaunchOptions, Page } from 'puppeteer';
+import { Browser, ElementHandle, EvaluateFn, LaunchOptions, Page, Response } from 'puppeteer';
 import { PageElement } from './interface/page-element';
 import { logger } from '../logger';
 
@@ -60,6 +60,12 @@ export class BrowserService {
       : null;
   }
 
+  getCurrentUrl(): String {
+    return this.browser
+      ? this.page.url()
+      : null;
+  }
+
   async closeBrowser(): Promise<void> {
     try {
       if (this.page) {
@@ -80,14 +86,15 @@ export class BrowserService {
     }
   }
 
-  async goToAddressAndProceedIfFail(url: string, timeout = 90000): Promise<void> {
+  async goToAddressAndProceedIfFail(url: string, timeout = 90000): Promise<Response | null> {
     try {
-      await this.page.goto(url, { timeout });
+      return this.page.goto(url, { timeout });
     } catch (e) {
       logger.error(`Waiting ${timeout / 1000}s for navigation after going to page [${url}]. ` +
         `Now stopping page loading. The browser might not display any content. Next steps could fail. ` +
         `Trying to proceed with process.`);
       await this.stopPageLoading();
+      return null;
     }
   }
 
