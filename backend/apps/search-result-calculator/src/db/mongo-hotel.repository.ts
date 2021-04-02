@@ -135,6 +135,7 @@ export class MongoHotelRepository extends HotelRepository {
       'latestValues.price': 1
     }).exec();
     const pendingBestLocation = findBySearchId('distance').sort({
+      'latestValues.distanceFromCenterMeters': 1,
       'latestValues.distanceFromCenterOrderIndex': 1,
     }).exec();
     const pendingBestRate = findBySearchId('rate').sort({
