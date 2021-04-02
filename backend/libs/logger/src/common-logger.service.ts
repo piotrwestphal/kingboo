@@ -5,7 +5,6 @@ import { LoggerService } from '@nestjs/common';
 
 interface LoggerOptions {
   readonly logLevel: string;
-  readonly appLabel: string;
   readonly additionalTransports: Transport[];
 }
 
@@ -15,10 +14,9 @@ export class CommonLoggerService implements LoggerService {
 
   constructor({
                 logLevel,
-                appLabel,
                 additionalTransports,
               }: LoggerOptions) {
-    this.logger = this.init(logLevel, appLabel, additionalTransports);
+    this.logger = this.init(logLevel, additionalTransports);
   }
 
   public debug(message: string, object?: any): void {
@@ -54,15 +52,14 @@ export class CommonLoggerService implements LoggerService {
     return message;
   };
 
-  private customPrint = (appLabel: string) => winston.format.printf(info =>
-    `${new Date().toISOString()} [${info.level.toUpperCase()}][${appLabel}] ${info.message}`);
+  private customPrint = () => winston.format.printf(info =>
+    `${new Date().toISOString()} [${info.level.toUpperCase()}] ${info.message}`);
 
   private init(logLevel: string,
-               appLabel: string,
                additionalTransports: Transport[]): Winston.Logger {
     return winston.createLogger({
       level: logLevel,
-      format: winston.format.combine(this.customPrint(appLabel)),
+      format: winston.format.combine(this.customPrint()),
       transports: [
         new winston.transports.Console(),
         ...additionalTransports,
