@@ -2,10 +2,43 @@ filebeat.inputs:
   - type: log
     enabled: true
     paths:
-      - /home/github-service/app/compose-output/*.log
+      - /home/github-service/app/compose-output/DC-output.log
     encoding: utf-8
     fields:
       type: kingboo
+      app: DC
+  - type: log
+    enabled: true
+    paths:
+      - /home/github-service/app/compose-output/SRC-output.log
+    encoding: utf-8
+    fields:
+      type: kingboo
+      app: SRC
+  - type: log
+    enabled: true
+    paths:
+      - /home/github-service/app/compose-output/SQM-output.log
+    encoding: utf-8
+    fields:
+      type: kingboo
+      app: SQM
+  - type: log
+    enabled: true
+    paths:
+      - /home/github-service/app/compose-output/US-output.log
+    encoding: utf-8
+    fields:
+      type: kingboo
+      app: US
+  - type: log
+    enabled: true
+    paths:
+      - /home/github-service/app/compose-output/DA-output.log
+    encoding: utf-8
+    fields:
+      type: kingboo
+      app: DA
 
 setup.template.settings:
   index.number_of_shards: 1

@@ -15,7 +15,6 @@ export const createLogger = ({
   }));
   return new CommonLoggerService({
     logLevel,
-    appLabel,
     additionalTransports,
   });
 };
