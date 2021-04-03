@@ -80,8 +80,7 @@ export class ResultListPage {
       const searchResultsContainers = document.getElementsByClassName('sr_item sr_item_default');
       return Array.from(searchResultsContainers)
         .reduce((acc,
-                 searchResultContainer,
-                 idx) => {
+                 searchResultContainer) => {
           // Sometimes other containers also appears like: Car Rental - they don't have name of hotel
           const name = getTextFromElement(searchResultContainer, 'sr-hotel__name');
           if (name) {
@@ -140,7 +139,6 @@ export class ResultListPage {
               price,
               tax,
               distanceFromCenter,
-              distanceFromCenterOrderIndex: idx,
               districtName,
               coords,
               hotelLink,
