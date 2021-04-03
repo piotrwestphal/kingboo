@@ -155,7 +155,7 @@ describe('Data integration tests', () => {
     // check if distance is ordered
     hotels.map(v => v.distanceFromCenter)
       .map(v => v.replace(/\D/g, ''))
-      .map((v) => parseInt(v, 10))
+      .map(v => parseInt(v, 10))
       .reduce((prev, curr) => {
         expect(prev <= curr).toBeTruthy()
         return curr
