@@ -80,6 +80,10 @@ describe('Data integration tests', () => {
     await app.init()
   });
 
+  beforeEach(async () => {
+    await firestoreRawSearchResultRepository.deleteOlderThanGivenHours(0);
+  })
+
   it('Scenario - 2 persons and 1 room', async (done) => {
     // given
     const mockSearchId = 'test1'
@@ -148,6 +152,14 @@ describe('Data integration tests', () => {
     expect(hotels.some(({ starRating }) => !!starRating)).toBeTruthy()
     expect(hotels.some(({ bonuses }) => !!bonuses)).toBeTruthy()
 
+    // check if distance is ordered
+    hotels.map(v => v.distanceFromCenter)
+      .map(v => v.replace(/\D/g, ''))
+      .map(v => parseInt(v, 10))
+      .reduce((prev, curr) => {
+        expect(prev <= curr).toBeTruthy()
+        return curr
+      })
     done()
   }, 120000);
 

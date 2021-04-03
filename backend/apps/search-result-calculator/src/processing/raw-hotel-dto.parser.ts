@@ -14,7 +14,7 @@ export class RawHotelDtoParser {
       return 100;
     }
     const rateWithoutDots = trimmedRate.replace(/\./g, '');
-    return parseInt(rateWithoutDots, 0) || null;
+    return parseInt(rateWithoutDots, 10) || null;
   }
 
   public parseNumberOfReviews = (numberOfReviews: string): number | null => parseInt(this.removeComma(numberOfReviews), 0) || null;

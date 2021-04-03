@@ -8,7 +8,6 @@ export class RawHotelMapper {
                                price,
                                tax,
                                distanceFromCenter,
-                               distanceFromCenterOrderIndex,
                                districtName,
                                coords,
                                hotelLink,
@@ -22,13 +21,14 @@ export class RawHotelMapper {
                                rooms,
                                debug,
                              }: ScrapedRawHotel,
+                             idx: number,
                              collectedAt: string): RawHotel {
     return new RawHotel(
       name,
       price,
       tax,
       distanceFromCenter,
-      distanceFromCenterOrderIndex,
+      idx,
       districtName,
       coords,
       hotelLink,
