@@ -7,6 +7,7 @@ export class MainPage {
   }
 
   public async extractSearchPlaceIdentifierFromInput(searchPlace: string): Promise<string> {
+    await this.browserService.wait(5000); // when typing text the input field losing focus and search place was cut off
     await this.browserService.typeText(MainPageElement.DESTINATION_INPUT, searchPlace);
     await this.browserService.waitForVisible(MainPageElement.AUTOCOMPLETE_LIST_CONTAINER, 15000);
     await this.browserService.click(MainPageElement.FIRST_ELEMENT_ON_AUTOCOMPLETE_LIST);
