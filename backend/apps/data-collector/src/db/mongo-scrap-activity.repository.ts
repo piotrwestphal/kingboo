@@ -15,13 +15,12 @@ export class MongoScrapActivityRepository extends ScrapActivityRepository {
     super();
   }
 
-  findLastUpdatedGivenDaysAgo(now: Date, days: number): Promise<string[]> {
+  async findLastUpdatedGivenDaysAgo(now: Date, days: number): Promise<string[]> {
     const offset = new Date(now.valueOf() - days * this.DAY); // x days ago
-    return this.model.find({
+    const found = await this.model.find({
       updatedAt: { $lte: offset },
-    })
-      .map(docs => docs.map(v => v.searchId))
-      .exec()
+    }).exec()
+    return found.map(v => v.searchId)
   }
 
   async update(searchId: string, scrapActivity: ScrapActivity): Promise<ScrapActivity> {
