@@ -27,9 +27,6 @@ export class HotelsScraper {
       'and list is sorted by "distance from center".');
     logger.debug(`Url from response: [${response.url()}].`)
 
-    const currentUrl = this.browserService.getCurrentUrl()
-    logger.debug(`Url: [${currentUrl}].`)
-
     logger.debug('Trying to handle security check if appears.');
     await this.resultPage.handleSecurityCheck();
 
