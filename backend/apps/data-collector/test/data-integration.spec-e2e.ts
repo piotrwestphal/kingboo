@@ -93,7 +93,7 @@ describe('Data integration tests', () => {
 
     const collectHotelsScenario: CollectHotelsScenario = {
       resultsLimit: 25,
-      searchPlace: 'Warsaw',
+      searchPlace: 'New York',
       checkInDate: {
         year: checkInDate.getFullYear(),
         month: checkInDate.getMonth() + 1,
@@ -127,7 +127,7 @@ describe('Data integration tests', () => {
     })
 
     notEmpty(searchPlaceIdentifier)
-    expect(searchPlaceIdentifier.includes('Warsaw')).toBeTruthy()
+    expect(searchPlaceIdentifier.includes('New York')).toBeTruthy()
     hotels.forEach(({
                       hotelId,
                       name,
