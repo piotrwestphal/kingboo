@@ -2,3 +2,6 @@ version: "3.7"
 services:
   data-collector:
     image: piotrwest/kb-data-collector:latest
+
+#  filebeat:
+#    image: docker.elastic.co/beats/filebeat-oss:7.12.0

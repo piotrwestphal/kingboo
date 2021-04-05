@@ -17,3 +17,10 @@ services:
       - ./../../../compose-output:/usr/src/app/dist/apps/search-result-calculator/output
     ports:
       - 8082:8080
+
+#  filebeat:
+#    env_file:
+#      - westus00.env
+#    volumes:
+#      - filebeat.yml:/etc/filebeat/filebeat.yml:ro
+#      - ./../../../compose-output:/var/log/apps:ro
