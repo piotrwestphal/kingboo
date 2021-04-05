@@ -2,9 +2,18 @@ filebeat.inputs:
   - type: log
     enabled: true
     paths:
-      - /home/github-service/app/compose-output/*.log
+      - /var/log/apps/SQM-output.log
     encoding: utf-8
     fields:
+      app: SQM
+      type: kingboo
+  - type: log
+    enabled: true
+    paths:
+      - /var/log/apps/SRC-output.log
+    encoding: utf-8
+    fields:
+      app: SRC
       type: kingboo
 
 setup.template.settings:
@@ -14,7 +23,7 @@ output:
   elasticsearch:
     hosts: ["https://cloud.humio.com:443/api/v1/ingest/elastic-bulk"]
     username: westus
-    password: 'HUMIO_TOKEN_HERE'
+    password: ${LOG_COLLECTOR_TOKEN}
     compression_level: 5
     bulk_max_size: 200
     worker: 1

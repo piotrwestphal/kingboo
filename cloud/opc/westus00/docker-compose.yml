@@ -5,3 +5,6 @@ services:
 
   search-result-calculator:
     image: piotrwest/kb-search-result-calculator:latest
+
+#  filebeat:
+#    image: docker.elastic.co/beats/filebeat-oss:7.12.0
