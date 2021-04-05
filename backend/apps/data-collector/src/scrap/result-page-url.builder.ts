@@ -37,7 +37,8 @@ export class ResultPageUrlBuilder {
     numberOfRooms,
     childrenAgeAtCheckout,
   }: ScenarioParams): string {
-    const encodedSearchPlaceIdentifier = encodeURIComponent(searchPlaceIdentifier);
+    // `%20` => `+` fix for ambiguous searches `New York, New York State, United States` perform search for `The State University of New York at New Paltz`
+    const encodedSearchPlaceIdentifier = encodeURIComponent(searchPlaceIdentifier).replace(/%20/g, "+")
     const searchPlaceParam = `${this.SEARCH_PLACE_KEY}${encodedSearchPlaceIdentifier}`;
     const checkinDateParams = this.combineDate(this.CHECKIN_PREFIX_PARAM, checkInDate);
     const checkoutDateParams = this.combineDate(this.CHECKOUT_PREFIX_PARAM, checkOutDate);

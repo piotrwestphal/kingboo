@@ -69,15 +69,12 @@ export class MongoHotelRepository extends HotelRepository {
       .exec();
   }
 
-  findLastUpdatedGivenDaysAgo(now: Date, days: number): Promise<HotelIdentifier[]> {
+  async findLastUpdatedGivenDaysAgo(now: Date, days: number): Promise<HotelIdentifier[]> {
     const offset = new Date(now.valueOf() - days * this.DAY); // x days ago
-    return this.model.find({
+    const found = await this.model.find({
       updatedAt: { $lte: offset },
-    }).limit(1000)
-      .map(docs => docs.map(({ searchId, hotelId }) => ({
-        searchId, hotelId
-      })))
-      .exec();
+    }).limit(1000).exec();
+    return found.map(({ searchId, hotelId }) => ({ searchId, hotelId }))
   }
 
   async createAll(hotels: Hotel[]): Promise<Hotel[]> {
@@ -119,9 +116,9 @@ export class MongoHotelRepository extends HotelRepository {
       lastCollectedAt: dateRangeQuery(collectingStartedAt, collectingFinishedAt)
     })
       // TODO: sometimes it fails - log some actions here
-      .orFail((err) => {
+      .orFail(() => {
         logger.error(`Error when searching for hotels for search id: [${searchId}] and for range from ${collectingStartedAt} to ${collectingFinishedAt} ` +
-          `by ${cond}. Error ${err}`, err)
+          `by ${cond}.`)
         return new NotFoundException(
           `Hotels with search id: ${searchId} and for range from ${collectingStartedAt} to ${collectingFinishedAt} not exist`)
       })

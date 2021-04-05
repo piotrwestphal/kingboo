@@ -1,7 +1,8 @@
 import * as puppeteer from 'puppeteer';
-import { Browser, ElementHandle, EvaluateFn, LaunchOptions, Page, Response } from 'puppeteer';
+import { Browser, ElementHandle, EvaluateFn, HTTPResponse, Page } from 'puppeteer';
 import { PageElement } from './interface/page-element';
 import { logger } from '../logger';
+import { PuppeteerLaunchOptions } from '../config/puppeteer/puppeteer-launch-options'
 
 export class BrowserService {
 
@@ -19,7 +20,7 @@ export class BrowserService {
     });
   }
 
-  async initBrowserAndOpenBlankPage(launchOptions: LaunchOptions): Promise<void> {
+  async initBrowserAndOpenBlankPage(launchOptions: PuppeteerLaunchOptions): Promise<void> {
     try {
       this.browser = await puppeteer.launch({
         ...launchOptions,
@@ -86,7 +87,7 @@ export class BrowserService {
     }
   }
 
-  async goToAddressAndProceedIfFail(url: string, timeout = 90000): Promise<Response | null> {
+  async goToAddressAndProceedIfFail(url: string, timeout = 90000): Promise<HTTPResponse | null> {
     try {
       return this.page.goto(url, { timeout });
     } catch (e) {

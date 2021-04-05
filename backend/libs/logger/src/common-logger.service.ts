@@ -1,11 +1,11 @@
 import * as Winston from 'winston';
 import * as winston from 'winston';
-import * as Transport from 'winston-transport';
+import { FileTransportInstance } from 'winston/lib/winston/transports'
 import { LoggerService } from '@nestjs/common';
 
 interface LoggerOptions {
   readonly logLevel: string;
-  readonly additionalTransports: Transport[];
+  readonly additionalTransports: FileTransportInstance[];
 }
 
 export class CommonLoggerService implements LoggerService {
@@ -56,7 +56,7 @@ export class CommonLoggerService implements LoggerService {
     `${new Date().toISOString()} [${info.level.toUpperCase()}] ${info.message}`);
 
   private init(logLevel: string,
-               additionalTransports: Transport[]): Winston.Logger {
+               additionalTransports: FileTransportInstance[]): Winston.Logger {
     return winston.createLogger({
       level: logLevel,
       format: winston.format.combine(this.customPrint()),
