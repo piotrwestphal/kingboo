@@ -3,10 +3,10 @@ import { AppConfig } from './app.config';
 import { RmqOptions } from '@nestjs/microservices';
 import { buildRmqOptions } from '@kb/rabbit';
 import { appConfigValidationSchemaMap } from './validation.schema';
-import { LaunchOptions } from 'puppeteer';
 import { EmulatorOptions, FirestoreConfigService } from '@kb/firestore';
 import { MongoConfigService } from '@kb/mongo';
 import { CommonLoggerService } from '@kb/logger';
+import { PuppeteerLaunchOptions } from './puppeteer/puppeteer-launch-options'
 
 export class AppConfigService extends ConfigService<AppConfig> implements FirestoreConfigService, MongoConfigService {
 
@@ -47,7 +47,7 @@ export class AppConfigService extends ConfigService<AppConfig> implements Firest
     return this.config.takeScreenshotOnError;
   }
 
-  get puppeteerLaunchOptions(): LaunchOptions {
+  get puppeteerLaunchOptions(): PuppeteerLaunchOptions {
     const {
       executablePath,
       headlessModeOff,
