@@ -2,7 +2,8 @@ import { DataCollectionNotificationSender } from '../core/abstract/data-collecti
 import { DataCollectionNotificationsMessagePattern } from '@kb/rabbit/message-pattern/DataCollectionNotificationsMessagePattern';
 import { SearchPlaceCollectionCompletedDto } from '@kb/model/mqmessage/data-collection-notification/search-place-collection-completed.dto';
 import { ClientProxy } from '@nestjs/microservices';
-import { MqMessage, CollectingTimesDto } from '@kb/model';
+import { CollectingTimesDto, MqMessage } from '@kb/model';
+import { SearchPlaceIdentifier } from '../core/interface/search-place-identifier'
 
 export class RmqDataCollectionNotificationSender extends DataCollectionNotificationSender {
 
@@ -12,10 +13,10 @@ export class RmqDataCollectionNotificationSender extends DataCollectionNotificat
     super();
   }
 
-  sendSearchPlaceIdentifier(searchId: string, searchPlaceIdentifier: string): void {
+  sendSearchPlaceIdentifier(searchId: string, searchPlaceIdentifier: SearchPlaceIdentifier): void {
     this.client.emit<void, MqMessage<SearchPlaceCollectionCompletedDto>>(
       DataCollectionNotificationsMessagePattern.SEARCH_PLACE_COLLECTION_COMPLETED,
-      { searchId, timestamp: Date.now(), data: {searchPlaceIdentifier} });
+      { searchId, timestamp: Date.now(), data: searchPlaceIdentifier });
   }
 
   notifyAboutHotelsCollectionCompleted(searchId: string, scrapingStartedAt: Date, scrapingFinishedAt: Date): void {

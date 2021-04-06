@@ -15,8 +15,8 @@ export class DataCollectionNotificationConsumer {
 
   @MessagePattern(DataCollectionNotificationsMessagePattern.SEARCH_PLACE_COLLECTION_COMPLETED)
   async handleSearchPlaceCollectionCompleted(
-    @Payload() { searchId, data: { searchPlaceIdentifier } }: MqMessage<SearchPlaceCollectionCompletedDto>): Promise<void> {
-    await this.searchRequestService.updateSearchPlaceIdentifier(searchId, searchPlaceIdentifier);
+    @Payload() { searchId, data }: MqMessage<SearchPlaceCollectionCompletedDto>): Promise<void> {
+    await this.searchRequestService.updateSearchPlaceIdentifier(searchId, data);
   }
 
   @MessagePattern(DataCollectionNotificationsMessagePattern.DATA_COLLECTION_FINISHED)

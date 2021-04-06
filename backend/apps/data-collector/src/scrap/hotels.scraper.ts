@@ -22,10 +22,9 @@ export class HotelsScraper {
     if (!enableStyles) {
       await this.browserService.enableStylesRequestInterception();
     }
-    const response = await this.browserService.goToAddressAndProceedIfFail(resultPageUrl);
+    await this.browserService.goToAddressAndProceedIfFail(resultPageUrl);
     logger.debug('Request page loaded. Default filter "show only available properties" is set ' +
       'and list is sorted by "distance from center".');
-    logger.debug(`Url from response: [${response.url()}].`)
 
     logger.debug('Trying to handle security check if appears.');
     await this.resultPage.handleSecurityCheck();

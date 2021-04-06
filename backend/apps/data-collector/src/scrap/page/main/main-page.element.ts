@@ -19,4 +19,24 @@ export class MainPageElement {
     selector: '.c-autocomplete.sb-destination > ul > li',
     description: MainPageElement.constructDescription('First element on autocomplete list'),
   };
+
+  public static readonly DEST_ID_INPUT: PageElement = {
+    selector: '#frm > input[name="dest_id"]',
+    description: MainPageElement.constructDescription('Destination id input'),
+  };
+
+  public static readonly DEST_TYPE_INPUT: PageElement = {
+    selector: '#frm > input[name="dest_type"]',
+    description: MainPageElement.constructDescription('Destination type input'),
+  };
+
+  public static readonly PLACE_ID_LAT_INPUT: PageElement = {
+    selector: '#frm > input[name="place_id_lat"]',
+    description: MainPageElement.constructDescription('Place id lat input'),
+  };
+
+  public static readonly PLACE_ID_LON_INPUT: PageElement = {
+    selector: '#frm > input[name="place_id_lon"]',
+    description: MainPageElement.constructDescription('Place id lon input'),
+  };
 }

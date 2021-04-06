@@ -10,6 +10,7 @@ import { logger } from '../logger';
 import { RawSearchResult } from '../core/model/RawSearchResult';
 import { RawHotel } from '../core/model/RawHotel';
 import { RawHotelMapper } from './mapper/raw-hotel.mapper';
+import { SearchPlaceIdentifier } from '../core/interface/search-place-identifier'
 
 interface HotelCollectionResult {
   readonly pagesCollected: number
@@ -105,7 +106,7 @@ export class HotelsCollector {
                                                                   {
                                                                     searchPlace,
                                                                     searchPlaceIdentifier,
-                                                                  }: CollectHotelsScenario): Promise<string> {
+                                                                  }: CollectHotelsScenario): Promise<SearchPlaceIdentifier> {
     if (searchPlaceIdentifier) {
       return searchPlaceIdentifier;
     }
