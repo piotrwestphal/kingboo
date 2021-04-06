@@ -1,11 +1,11 @@
 import { BrowserService } from './browser.service';
 import { CollectHotelsScenario } from '../core/interface/collect-hotels-scenario';
 import { SearchPlaceScraper } from './search-place.scraper';
-import { LaunchOptions } from 'puppeteer';
 import { HotelsScraper } from './hotels.scraper';
 import { ResultPageUrlBuilder } from './result-page-url.builder';
 import { logger } from '../logger';
 import { NextPageScrapResults } from './interface/next-page-scrap-results';
+import { PuppeteerLaunchOptions } from '../config/puppeteer/puppeteer-launch-options'
 
 export class ScraperFacade {
 
@@ -24,7 +24,7 @@ export class ScraperFacade {
   ) {
   }
 
-  public async initializeBrowser(launchOptions: LaunchOptions): Promise<void> {
+  public async initializeBrowser(launchOptions: PuppeteerLaunchOptions): Promise<void> {
     logger.debug(`Initializing browser with options`, launchOptions);
     await this.browserService.initBrowserAndOpenBlankPage(launchOptions);
 

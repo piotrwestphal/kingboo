@@ -13,10 +13,9 @@ export class MongoCyclicSearchRepository extends CyclicSearchRepository {
     super();
   }
 
-  findAll(): Promise<CyclicSearch[]> {
-    return this.model.find({})
-      .map(docs => docs.map(doc => this.fromDoc(doc)))
-      .exec();
+  async findAll(): Promise<CyclicSearch[]> {
+    const found = await this.model.find({}).exec()
+    return found.map(doc => this.fromDoc(doc))
   }
 
   findByCyclicId(cyclicId: string): Promise<CyclicSearch> {

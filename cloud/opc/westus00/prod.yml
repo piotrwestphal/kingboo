@@ -17,3 +17,13 @@ services:
       - ./../../../compose-output:/usr/src/app/dist/apps/search-result-calculator/output
     ports:
       - 8082:8080
+
+  filebeat:
+    image: docker.elastic.co/beats/filebeat-oss:7.12.0
+    # needs to override config file
+    command: filebeat -e -strict.perms=false
+    env_file:
+      - westus00.env
+    volumes:
+      - ./filebeat.yml:/usr/share/filebeat/filebeat.yml:ro
+      - ./../../../compose-output:/var/log/apps:ro

@@ -9,6 +9,7 @@ export class RawHotel {
     public readonly price: string,
     public readonly tax: string,
     public readonly distanceFromCenter: string,
+    public readonly distanceFromCenterOrderIndex: number,
     public readonly districtName: string,
     public readonly coords: string,
     public readonly hotelLink: string,
@@ -21,6 +22,7 @@ export class RawHotel {
     public readonly bonuses: string[] | null,
     public readonly rooms: RawRoom[] | null,
     public readonly collectedAt: string,
+    public readonly debug: string = null,
   ) {
     this.hotelId = this.assignHotelId(name, coords);
   }

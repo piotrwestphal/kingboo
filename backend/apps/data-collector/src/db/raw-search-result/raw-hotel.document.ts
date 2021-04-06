@@ -6,6 +6,7 @@ export interface RawHotelDocument {
   readonly price: string;
   readonly tax: string;
   readonly distanceFromCenter: string;
+  readonly distanceFromCenterOrderIndex: number;
   readonly districtName: string;
   readonly coords: string;
   readonly rate: string | null;
@@ -17,4 +18,5 @@ export interface RawHotelDocument {
   readonly bonuses: string[] | null;
   readonly rooms: RawRoomDocument[] | null;
   readonly collectedAt: string;
+  readonly debug: string | null;
 }

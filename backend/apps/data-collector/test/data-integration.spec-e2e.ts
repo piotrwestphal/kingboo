@@ -80,6 +80,10 @@ describe('Data integration tests', () => {
     await app.init()
   });
 
+  beforeEach(async () => {
+    await firestoreRawSearchResultRepository.deleteOlderThanGivenHours(0);
+  })
+
   it('Scenario - 2 persons and 1 room', async (done) => {
     // given
     const mockSearchId = 'test1'
@@ -89,7 +93,7 @@ describe('Data integration tests', () => {
 
     const collectHotelsScenario: CollectHotelsScenario = {
       resultsLimit: 25,
-      searchPlace: 'Warsaw',
+      searchPlace: 'New York',
       checkInDate: {
         year: checkInDate.getFullYear(),
         month: checkInDate.getMonth() + 1,
@@ -123,19 +127,20 @@ describe('Data integration tests', () => {
     })
 
     notEmpty(searchPlaceIdentifier)
-    expect(searchPlaceIdentifier.includes('Warsaw')).toBeTruthy()
+    expect(searchPlaceIdentifier.includes('New York')).toBeTruthy()
     hotels.forEach(({
                       hotelId,
                       name,
                       price,
                       distanceFromCenter,
+                      distanceFromCenterOrderIndex,
                       districtName,
                       coords
                     }) => {
       notEmpty(name)
       notEmpty(price)
-      // notEmpty(tax)
       notEmpty(distanceFromCenter)
+      notEmpty(distanceFromCenterOrderIndex)
       notEmpty(districtName)
       notEmpty(coords)
       expect(links[hotelId]).toBeDefined()
@@ -147,6 +152,14 @@ describe('Data integration tests', () => {
     expect(hotels.some(({ starRating }) => !!starRating)).toBeTruthy()
     expect(hotels.some(({ bonuses }) => !!bonuses)).toBeTruthy()
 
+    // check if distance is ordered
+    hotels.map(v => v.distanceFromCenter)
+      .map(v => v.replace(/\D/g, ''))
+      .map(v => parseInt(v, 10))
+      .reduce((prev, curr) => {
+        expect(prev <= curr).toBeTruthy()
+        return curr
+      })
     done()
   }, 120000);
 

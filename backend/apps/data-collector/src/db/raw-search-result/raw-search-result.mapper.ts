@@ -29,6 +29,7 @@ export class RawSearchResultMapper {
                                price,
                                tax,
                                distanceFromCenter,
+                               distanceFromCenterOrderIndex,
                                districtName,
                                coords,
                                rate,
@@ -40,6 +41,7 @@ export class RawSearchResultMapper {
                                bonuses,
                                rooms,
                                collectedAt,
+                               debug,
                              }: RawHotel): RawHotelDocument {
     return {
       hotelId,
@@ -47,6 +49,7 @@ export class RawSearchResultMapper {
       price,
       tax,
       distanceFromCenter,
+      distanceFromCenterOrderIndex,
       districtName,
       coords,
       rate,
@@ -58,6 +61,7 @@ export class RawSearchResultMapper {
       bonuses,
       rooms,
       collectedAt,
+      debug,
     };
   }
 }

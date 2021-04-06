@@ -8,6 +8,7 @@ export interface RawHotel {
   readonly name: string;
   readonly price: number | null;
   readonly distanceFromCenterMeters: number | null;
+  readonly distanceFromCenterOrderIndex: number;
   readonly coords: Coords;
   readonly hotelLink: string;
   readonly districtName: string | null;

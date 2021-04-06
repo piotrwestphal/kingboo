@@ -1,7 +1,8 @@
 import * as puppeteer from 'puppeteer';
-import { Browser, ElementHandle, EvaluateFn, LaunchOptions, Page } from 'puppeteer';
+import { Browser, ElementHandle, EvaluateFn, HTTPResponse, Page } from 'puppeteer';
 import { PageElement } from './interface/page-element';
 import { logger } from '../logger';
+import { PuppeteerLaunchOptions } from '../config/puppeteer/puppeteer-launch-options'
 
 export class BrowserService {
 
@@ -19,7 +20,7 @@ export class BrowserService {
     });
   }
 
-  async initBrowserAndOpenBlankPage(launchOptions: LaunchOptions): Promise<void> {
+  async initBrowserAndOpenBlankPage(launchOptions: PuppeteerLaunchOptions): Promise<void> {
     try {
       this.browser = await puppeteer.launch({
         ...launchOptions,
@@ -60,6 +61,12 @@ export class BrowserService {
       : null;
   }
 
+  getCurrentUrl(): String {
+    return this.browser
+      ? this.page.url()
+      : null;
+  }
+
   async closeBrowser(): Promise<void> {
     try {
       if (this.page) {
@@ -80,14 +87,15 @@ export class BrowserService {
     }
   }
 
-  async goToAddressAndProceedIfFail(url: string, timeout = 90000): Promise<void> {
+  async goToAddressAndProceedIfFail(url: string, timeout = 90000): Promise<HTTPResponse | null> {
     try {
-      await this.page.goto(url, { timeout });
+      return this.page.goto(url, { timeout });
     } catch (e) {
       logger.error(`Waiting ${timeout / 1000}s for navigation after going to page [${url}]. ` +
         `Now stopping page loading. The browser might not display any content. Next steps could fail. ` +
         `Trying to proceed with process.`);
       await this.stopPageLoading();
+      return null;
     }
   }
 

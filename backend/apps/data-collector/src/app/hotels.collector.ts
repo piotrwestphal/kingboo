@@ -83,7 +83,7 @@ export class HotelsCollector {
       // TODO: wrap with try catch
       const { scrapedRawHotels, nextPageButtonAvailable } = await this.scraperFacade.collectHotelsFromCurrentPage();
       const collectedAt = new Date().toISOString();
-      const mappedRawHotels = scrapedRawHotels.map(h => RawHotelMapper.fromScrapedRawHotel(h, collectedAt));
+      const mappedRawHotels = scrapedRawHotels.map((h, idx) => RawHotelMapper.fromScrapedRawHotel(h, idx, collectedAt));
       rawHotels.push(...mappedRawHotels);
       isNextPageButtonAvailable = nextPageButtonAvailable;
       currentHotelsCount += scrapedRawHotels.length;

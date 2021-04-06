@@ -16,4 +16,5 @@ export interface ScrapedRawHotel {
   readonly newlyAdded: string | null;
   readonly bonuses: string[] | null;
   readonly rooms: ScrapedRawRoom[] | null;
+  readonly debug?: string;
 }
