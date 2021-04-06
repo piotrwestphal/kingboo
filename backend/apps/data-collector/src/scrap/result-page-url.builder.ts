@@ -1,7 +1,6 @@
 import { CheckDate } from '../core/interface/check-date'
 
 interface ScenarioParams {
-  readonly searchPlace: string
   readonly checkOutDate: CheckDate
   readonly checkInDate: CheckDate
   readonly numberOfAdults: number
@@ -26,8 +25,6 @@ export class ResultPageUrlBuilder {
   private readonly NUMBER_OF_ROOMS_KEY = 'no_rooms='
   private readonly NUMBER_OF_CHILDREN_KEY = 'group_children='
   private readonly CHILDREN_AGE_KEY = 'age='
-  // add this param in order to fix ambiguous searches e.g. `New York, New York State, United States` perform search for `The State University of New York at New Paltz`
-  private readonly SEARCH_PLACE_RAW_KEY = 'ss_raw='
 
   private readonly SELECTED_PLN_CURRENCY = 'selected_currency=PLN'
   private readonly SORT_BY_DISTANCE_PARAM = 'order=distance_from_search'
@@ -35,7 +32,6 @@ export class ResultPageUrlBuilder {
 
   fromSearchPlaceIdentifierAndScenarioParams(searchPlaceIdentifier: string,
                                              {
-                                               searchPlace,
                                                checkOutDate,
                                                checkInDate,
                                                numberOfAdults,
@@ -50,7 +46,6 @@ export class ResultPageUrlBuilder {
     const numberOfRoomsParam = `${this.NUMBER_OF_ROOMS_KEY}${numberOfRooms}`
     const numberOfChildrenParam = `${this.NUMBER_OF_CHILDREN_KEY}${childrenAgeAtCheckout.length}`
     const childrenAgeParams = childrenAgeAtCheckout.map(v => `${this.CHILDREN_AGE_KEY}${v}`)
-    const searchPlaceRawParam = `${this.SEARCH_PLACE_RAW_KEY}${encodeURIComponent(searchPlace)}`
     const queryParams: string = [
       searchPlaceParam,
       ...checkinDateParams,
@@ -59,7 +54,6 @@ export class ResultPageUrlBuilder {
       numberOfRoomsParam,
       numberOfChildrenParam,
       ...childrenAgeParams,
-      searchPlaceRawParam,
       this.SELECTED_PLN_CURRENCY,
       this.SORT_BY_DISTANCE_PARAM,
       this.SHOW_ONLY_AVAILABLE_PROPERTIES_FILTER_PARAM,
