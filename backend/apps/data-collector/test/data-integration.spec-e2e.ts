@@ -127,7 +127,9 @@ describe('Data integration tests', () => {
     })
 
     notEmpty(searchPlaceIdentifier)
-    expect(searchPlaceIdentifier.includes('New York')).toBeTruthy()
+    expect(searchPlaceIdentifier.destination.includes('New York')).toBeTruthy()
+    expect(searchPlaceIdentifier.destId.includes('20088325')).toBeTruthy()
+    expect(searchPlaceIdentifier.destType.includes('city')).toBeTruthy()
     hotels.forEach(({
                       hotelId,
                       name,

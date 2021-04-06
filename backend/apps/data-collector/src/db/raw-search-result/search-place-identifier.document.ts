@@ -1,4 +1,4 @@
-export interface SearchPlaceCollectionCompletedDto {
+export interface SearchPlaceIdentifierDocument {
   readonly destination: string
   readonly destId: string
   readonly destType: string

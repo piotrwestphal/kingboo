@@ -9,6 +9,7 @@ import { logger } from '../../logger';
 import { SearchRequestType } from '../../core/model/SearchRequestType';
 import { SearchRequestMapper } from './search-request.mapper';
 import { SearchRequestDto, SearchRequestsDto } from '@kb/model';
+import { SearchPlaceIdentifier } from '../../core/interface/search-place-identifier'
 
 export class SearchRequestService {
 
@@ -44,7 +45,7 @@ export class SearchRequestService {
     return this.searchRequestFactory.createNew(SearchRequestType.CYCLIC, createSearchRequest);
   }
 
-  async updateSearchPlaceIdentifier(searchId: string, searchPlaceIdentifier: string): Promise<void> {
+  async updateSearchPlaceIdentifier(searchId: string, searchPlaceIdentifier: SearchPlaceIdentifier): Promise<void> {
     const found = await this.searchRequestRepository.findBySearchId(searchId);
     if (found) {
       const updated = found.updateSearchPlaceIdentifier(searchPlaceIdentifier);

@@ -4,7 +4,7 @@ export interface SearchDataDto {
   readonly searchId: string;
   readonly type: string;
   readonly searchPlace: string;
-  readonly searchPlaceIdentifier?: string;
+  readonly searchPlaceIdentifier: string | null;
   readonly checkInDate: string;
   readonly checkOutDate: string;
   readonly numberOfRooms: number;
