@@ -50,7 +50,7 @@ export class SearchRequestService {
     if (found) {
       const updated = found.updateSearchPlaceIdentifier(searchPlaceIdentifier);
       const saved = await this.searchRequestRepository.update(updated);
-      logger.info(`Successfully updated search place identifier [${saved.searchPlaceIdentifier}] for given search id [${searchId}]`);
+      logger.info(`Successfully updated search place identifier for given search id [${searchId}]. Saved search identifier:`, saved.searchPlaceIdentifier);
       logger.debug(`Updated search request`, saved);
     } else {
       logger.warn(`Unable to update search place identifier. Search request for given search id [${searchId}] not found`);
