@@ -14,7 +14,7 @@ export interface SaveSearchRequest {
   readonly numberOfAdults: number;
   readonly childrenAgeAtCheckout: number[];
 
-  readonly searchPlaceIdentifier: SaveSearchPlaceIdentifier;
+  readonly searchPlaceIdentifier: SaveSearchPlaceIdentifier | null;
   readonly nextSearchScheduledAt: Date;
   readonly collectingStartedAt: Date;
   readonly collectingFinishedAt: Date;
