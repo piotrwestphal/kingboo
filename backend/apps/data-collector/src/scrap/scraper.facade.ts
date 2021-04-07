@@ -6,6 +6,7 @@ import { ResultPageUrlBuilder } from './result-page-url.builder';
 import { logger } from '../logger';
 import { NextPageScrapResults } from './interface/next-page-scrap-results';
 import { PuppeteerLaunchOptions } from '../config/puppeteer/puppeteer-launch-options'
+import { SearchPlaceIdentifier } from '../core/interface/search-place-identifier'
 
 export class ScraperFacade {
 
@@ -37,17 +38,17 @@ export class ScraperFacade {
     logger.debug(`Initializing browser. User agent: `, userAgent);
   }
 
-  public prepareResultList(searchPlaceIdentifier: string,
+  public prepareResultList(searchPlaceIdentifier: SearchPlaceIdentifier,
                            collectHotelsScenario: CollectHotelsScenario,
                            enableStyles: boolean): Promise<number> {
-    logger.debug(`Building result page uri based on search place identifier [${searchPlaceIdentifier}]`);
+    logger.debug(`Building result page uri based on search place identifier:`, searchPlaceIdentifier);
     const resultPageUri = this.resultPageUrlBuilder.fromSearchPlaceIdentifierAndScenarioParams(searchPlaceIdentifier, collectHotelsScenario);
 
     logger.debug(`Preparing result list.`);
     return this.hotelsScraper.prepareResultList(resultPageUri, enableStyles);
   }
 
-  public collectSearchPlaceIdentifier(searchPlace: string): Promise<string> {
+  public collectSearchPlaceIdentifier(searchPlace: string): Promise<SearchPlaceIdentifier> {
     logger.debug(`Starting search place identifier collecting.`);
     return this.searchPlaceScraper.collectSearchPlaceIdentifier(this.HOMEPAGE_WITH_DEFAULT_CURRENCY_AND_LANGUAGE, searchPlace);
   }

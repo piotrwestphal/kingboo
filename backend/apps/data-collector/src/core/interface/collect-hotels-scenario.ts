@@ -1,4 +1,5 @@
 import { CheckDate } from './check-date';
+import { SearchPlaceIdentifier } from './search-place-identifier'
 
 export interface CollectHotelsScenario {
   readonly resultsLimit: number;
@@ -8,5 +9,5 @@ export interface CollectHotelsScenario {
   readonly numberOfRooms: number;
   readonly numberOfAdults: number;
   readonly childrenAgeAtCheckout: number[];
-  readonly searchPlaceIdentifier: string;
+  readonly searchPlaceIdentifier: SearchPlaceIdentifier | null;
 }

@@ -14,5 +14,11 @@ export interface CollectHotelsScenarioDto {
   readonly numberOfRooms: number;
   readonly numberOfAdults: number;
   readonly childrenAgeAtCheckout: number[];
-  readonly searchPlaceIdentifier: string;
+  readonly searchPlaceIdentifier: {
+    readonly destination: string
+    readonly destId: string
+    readonly destType: string
+    readonly placeIdLat: string
+    readonly placeIdLon: string
+  };
 }

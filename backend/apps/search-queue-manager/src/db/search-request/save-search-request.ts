@@ -1,3 +1,5 @@
+import { SaveSearchPlaceIdentifier } from './save-search-place-identifier'
+
 export interface SaveSearchRequest {
 
   readonly searchId: string;
@@ -12,7 +14,7 @@ export interface SaveSearchRequest {
   readonly numberOfAdults: number;
   readonly childrenAgeAtCheckout: number[];
 
-  readonly searchPlaceIdentifier: string;
+  readonly searchPlaceIdentifier: SaveSearchPlaceIdentifier | null;
   readonly nextSearchScheduledAt: Date;
   readonly collectingStartedAt: Date;
   readonly collectingFinishedAt: Date;
