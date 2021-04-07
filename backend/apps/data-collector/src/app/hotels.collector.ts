@@ -76,30 +76,32 @@ export class HotelsCollector {
   private async collectHotelAsLongAsConditionsMet(searchId: string,
                                                   totalPagesCount: number,
                                                   resultsLimit: number): Promise<HotelCollectionResult> {
-    const rawHotels = [];
-    let currentHotelsCount = 0;
-    let isNextPageButtonAvailable = totalPagesCount > 0;
-    let pagesCollected = 0;
+    const rawHotels = []
+    let currentHotelsCount = 0
+    let isNextPageButtonAvailable = totalPagesCount > 0
+    let pagesCollected = 0
+
     while (isNextPageButtonAvailable && resultsLimit > currentHotelsCount) {
       // TODO: wrap with try catch
-      const { scrapedRawHotels, nextPageButtonAvailable } = await this.scraperFacade.collectHotelsFromCurrentPage();
-      const collectedAt = new Date().toISOString();
-      const mappedRawHotels = scrapedRawHotels.map((h, idx) => RawHotelMapper.fromScrapedRawHotel(h, idx, collectedAt));
-      rawHotels.push(...mappedRawHotels);
-      isNextPageButtonAvailable = nextPageButtonAvailable;
-      currentHotelsCount += scrapedRawHotels.length;
+      const { scrapedRawHotels, nextPageButtonAvailable } = await this.scraperFacade.collectHotelsFromCurrentPage()
+      const collectedAt = new Date().toISOString()
+      const hotelIdx = (idx: number) => idx + currentHotelsCount
+      const mappedRawHotels = scrapedRawHotels.map((h, idx) => RawHotelMapper.fromScrapedRawHotel(h, hotelIdx(idx), collectedAt))
+      rawHotels.push(...mappedRawHotels)
+      isNextPageButtonAvailable = nextPageButtonAvailable
+      currentHotelsCount += scrapedRawHotels.length
       pagesCollected = ++pagesCollected
-      this.dataToProcessSender.sendHotelsPart(searchId, mappedRawHotels);
+      this.dataToProcessSender.sendHotelsPart(searchId, mappedRawHotels)
     }
     if (isNextPageButtonAvailable) {
-      logger.debug('Stop hotels scraping - results limit has reached.');
+      logger.debug('Stop hotels scraping - results limit has reached.')
     } else {
-      logger.debug('Stop hotels scraping - there is no more pages.');
+      logger.debug('Stop hotels scraping - there is no more pages.')
     }
     return {
       rawHotels,
       pagesCollected,
-    };
+    }
   }
 
   private async collectSearchPlaceIdentifierIfNotPresentAndNotify(searchId: string,
