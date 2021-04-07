@@ -15,16 +15,17 @@ export class MainPage {
     await this.browserService.click(MainPageElement.FIRST_ELEMENT_ON_AUTOCOMPLETE_LIST)
     await this.browserService.waitForHidden(MainPageElement.AUTOCOMPLETE_LIST_CONTAINER, 15000)
 
+    await this.browserService.wait(5000) // inputs values are not filled - trying to wait for propagation
     const destination = await this.browserService.getValueFromInput(MainPageElement.DESTINATION_INPUT.selector)
     const destId = await this.browserService.getValueFromInput(MainPageElement.DEST_ID_INPUT.selector)
     const destType = await this.browserService.getValueFromInput(MainPageElement.DEST_TYPE_INPUT.selector)
     const placeIdLat = await this.browserService.getValueFromInput(MainPageElement.PLACE_ID_LAT_INPUT.selector).catch((e) => {
       logger.error(`Selector [${MainPageElement.PLACE_ID_LAT_INPUT.description}] not found but proceeding`, e)
-      return null
+      return ""
     })
     const placeIdLon = await this.browserService.getValueFromInput(MainPageElement.PLACE_ID_LON_INPUT.selector).catch((e) => {
       logger.error(`Selector [${MainPageElement.PLACE_ID_LON_INPUT.description}] not found but proceeding`, e)
-      return null
+      return ""
     })
     return {
       destination,
