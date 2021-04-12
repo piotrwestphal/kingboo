@@ -45,11 +45,12 @@ export class ProgressMeasuringService {
     const eligibleToSummarize = partsCount === data.expectedNumberOfParts
     if (eligibleToSummarize) {
       const deletedCount = await this.processingProgressRepository.deleteMany(searchId)
-      logger.debug(`Deleted [${deletedCount}] processing progress elements (parts + summary)`)
+      logger.debug(`Deleted [${deletedCount}] processing progress elements (parts + summary) with search id [${searchId}]`)
       const { collectingStartedAt, collectingFinishedAt } = data
       this.userNotificationSender.notifyAboutHotelsProcessingFinished(searchId, collectingStartedAt, collectingFinishedAt)
     } else {
-      logger.debug(`Still waiting for all hotels parts with search id [${searchId}] to be processed`)
+      logger.debug(`Still waiting for all hotels parts (expected number of parts [${data.expectedNumberOfParts}]) ` +
+        `with search id [${searchId}] to be processed`)
     }
     return eligibleToSummarize
   }
