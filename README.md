@@ -39,3 +39,7 @@ Rename `prod.env.example` -> `prod.env` and fill in missing values
 `docker-compose -f docker-compose.yml -f docker-compose.prod.yml build`
 
 `docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d`
+
+####Architecture overview:
+
+![Kingboo Architecture](kingboo-arch.svg "Architecture Overview")
