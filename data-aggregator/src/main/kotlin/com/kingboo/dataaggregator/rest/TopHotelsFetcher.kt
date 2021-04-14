@@ -1,6 +1,6 @@
-package com.kingboo.dataaggregator
+package com.kingboo.dataaggregator.rest
 
-import com.kingboo.dataaggregator.CacheConfiguration.Companion.TOP_HOTELS_CACHE_NAME
+import com.kingboo.dataaggregator.cache.CacheConfiguration.Companion.TOP_HOTELS_CACHE_NAME
 import mu.KLogging
 import org.springframework.cache.annotation.Cacheable
 import org.springframework.stereotype.Component

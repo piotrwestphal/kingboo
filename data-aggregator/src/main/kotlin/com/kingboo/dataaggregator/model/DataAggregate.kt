@@ -1,4 +1,4 @@
-package com.kingboo.dataaggregator
+package com.kingboo.dataaggregator.model
 
 import com.google.cloud.firestore.annotation.DocumentId
 import com.google.cloud.spring.data.firestore.Document

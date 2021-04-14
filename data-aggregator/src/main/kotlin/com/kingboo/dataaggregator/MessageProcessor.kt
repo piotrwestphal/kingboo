@@ -1,27 +1,42 @@
 package com.kingboo.dataaggregator
 
+import com.kingboo.dataaggregator.model.*
 import mu.KLogging
 import org.springframework.context.annotation.Bean
 import org.springframework.stereotype.Component
+import java.util.*
 import java.util.function.Function
 
 @Component
 class MessageProcessor(
-    private val notificationConsumer: NotificationConsumer
+    private val messageHandler: MessageHandler,
 ) {
-
     private companion object : KLogging()
 
     @Bean
-    fun processMessage(): Function<String, String?> {
-        return Function<String, String?>(this::process)
+    fun processMessage(): Function<InboundMqPayload<Any>, OutboundMqPayload> {
+        return Function<InboundMqPayload<Any>, OutboundMqPayload>(this::process)
     }
 
-    private fun process(value: String): String {
-        // {pattern: HOTELS_COLLECTION_COMPLETED, data: {}}
-        // HOTELS_PROCESSING_COMPLETED
-        logger.debug { "Value: $value" }
-        notificationConsumer.run()
-        return "{'user':'halo'}"
+    private fun process(inboundPayload: InboundMqPayload<Any>): OutboundMqPayload {
+        logger.debug { "Inbound message: $inboundPayload" }
+        val (pattern, data) = inboundPayload
+        return when (pattern) {
+            InboundMqMessagePattern.HOTELS_PROCESSING_COMPLETED -> handleProcessedDataMessage(data)
+            else -> nothing()
+        }.also {
+            logger.debug { "Outbound message: $it" }
+        }
+    }
+
+    private fun handleProcessedDataMessage(payloadData: MqMessage<Any>): OutboundMqPayload {
+        val (searchId, timestamp) = payloadData
+        val collectingTimesDto =  payloadData.dataAsCollectingTimesDto()
+        val result = messageHandler.handle(searchId, timestamp, collectingTimesDto)
+        return nothing(searchId)
+    }
+
+    private fun nothing(searchId: String = "nothing"): OutboundMqPayload {
+        return OutboundMqPayload(data = MqMessage("aaa", Date().time, UserNotification("xxx")))
     }
 }

@@ -1,4 +1,4 @@
-package com.kingboo.dataaggregator
+package com.kingboo.dataaggregator.cache
 
 import mu.KLogging
 import org.springframework.cache.CacheManager
@@ -14,7 +14,7 @@ import org.springframework.scheduling.annotation.Scheduled
 @Configuration
 @EnableCaching
 @EnableScheduling
-class CacheConfiguration() {
+class CacheConfiguration {
 
     companion object : KLogging() {
         const val TOP_HOTELS_CACHE_NAME = "top-hotels"
@@ -25,11 +25,5 @@ class CacheConfiguration() {
     @Bean
     fun cacheManager(): CacheManager {
         return ConcurrentMapCacheManager(TOP_HOTELS_CACHE_NAME, SEARCH_REQUEST_CACHE_NAME)
-    }
-
-    @CacheEvict(allEntries = true, value = [TOP_HOTELS_CACHE_NAME, SEARCH_REQUEST_CACHE_NAME])
-    @Scheduled(fixedDelay = CACHE_EXPIRATION_TIME)
-    fun reportCacheEvict() {
-        logger.info("Flush cache [$TOP_HOTELS_CACHE_NAME, $SEARCH_REQUEST_CACHE_NAME]")
     }
 }

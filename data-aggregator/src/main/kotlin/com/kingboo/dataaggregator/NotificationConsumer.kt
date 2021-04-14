@@ -1,16 +1,17 @@
 package com.kingboo.dataaggregator
 
+import com.kingboo.dataaggregator.cache.CacheMaintainer
+import com.kingboo.dataaggregator.db.DataAggregateRepository
+import com.kingboo.dataaggregator.rest.SearchRequestFetcher
+import com.kingboo.dataaggregator.rest.TopHotelsFetcher
 import mu.KLogging
 import org.springframework.cache.CacheManager
-import org.springframework.context.annotation.Bean
-import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Component
-import java.util.function.Consumer
 
 @Component
 class NotificationConsumer(
     private val cacheManager: CacheManager,
-    private val repository: TempDataRepository,
+    private val repository: DataAggregateRepository,
     private val searchRequestFetcher: SearchRequestFetcher,
     private val topHotelsFetcher: TopHotelsFetcher,
     private val cacheMaintainer: CacheMaintainer,
@@ -21,13 +22,6 @@ class NotificationConsumer(
         const val COLLECTING_STARTED_AT_KEY = "collectingStartedAt"
         const val COLLECTING_FINISHED_AT_KEY = "collectingFinishedAt"
     }
-
-//    @Bean
-//    fun receive(): Consumer<String> =
-//        Consumer { any ->
-//            logger.info { "Received message from rabbit: $any" }
-//            notificationProducer.send("dupa")
-//        }
 
 //    @Scheduled(fixedDelay = 10000, initialDelay = 10000)
     fun run() {
