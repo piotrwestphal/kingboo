@@ -122,6 +122,7 @@ describe('Data integration tests', () => {
     const { hotels, searchPlaceIdentifier } = rawSearchResultDocuments[0]
     const { links } = linksDocuments[0]
 
+    logger.debug(`Collected following search place identifier: `, searchPlaceIdentifier)
     hotels.forEach((v) => {
       logger.debug(`Collected [rawSearchResultDocument] with hotelId [${v.hotelId}] from db`, v)
     })
