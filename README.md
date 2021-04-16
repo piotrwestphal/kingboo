@@ -40,10 +40,10 @@ Rename `prod.env.example` -> `prod.env` and fill in missing values
 
 `docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d`
 
-#### Architecture overview:
+#### Architecture:
 
 ![Kingboo Architecture Overview](kingboo-arch-overview.svg "Architecture Overview")
 
-#### Current architecture implementation:
+#### Prod environment architecture implementation:
 
 ![Kingboo Architecture Implementation](kingboo-arch.svg "Architecture implementation")

@@ -13,6 +13,8 @@ services:
     env_file:
       - westus00.env
       - ./../opc.env
+    environment:
+      LOG_LEVEL: info
     volumes:
       - ./../../../compose-output:/usr/src/app/dist/apps/search-result-calculator/output
 

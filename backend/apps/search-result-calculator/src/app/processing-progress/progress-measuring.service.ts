@@ -17,7 +17,7 @@ export class ProgressMeasuringService {
       searchId,
       type: ProcessingProgressType.PART
     })
-    logger.debug(`Created hotels part with search id ${created.searchId}`)
+    logger.info(`Created hotels part with search id ${created.searchId}`)
     const foundSummary = await this.processingProgressRepository.findByType(searchId, ProcessingProgressType.SUMMARY)
     if (foundSummary) {
       const summarized = await this.determineProgress(searchId, foundSummary.data)
@@ -33,10 +33,10 @@ export class ProgressMeasuringService {
       type: ProcessingProgressType.SUMMARY,
       data
     })
-    logger.debug(`Created hotels summary with search id ${searchId}`)
+    logger.info(`Created hotels summary with search id ${searchId}`)
     const summarized = await this.determineProgress(created.searchId, created.data)
     if (summarized) {
-      logger.debug(`All hotels parts for search id [${searchId}] were processed and the progress could be summarized`)
+      logger.info(`All hotels parts for search id [${searchId}] were processed and the progress could be summarized`)
     }
   }
 
