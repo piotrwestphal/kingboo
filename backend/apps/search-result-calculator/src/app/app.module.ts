@@ -1,5 +1,4 @@
 import { Module } from '@nestjs/common';
-import { TopHotelsController } from './top-hotels.controller';
 import { HotelProcessor } from './hotels/hotel.processor';
 import { DbModule } from '../db/db.module';
 import { MqModule } from '../mq/mq.module';
@@ -16,8 +15,6 @@ import { MessageProcessor } from '../processing/message.processor';
 import { logger } from '../logger';
 import { ScheduleModule } from '@nestjs/schedule';
 import { OldHotelsRemover } from './scheduler/old-hotels.remover';
-import { HotelsController } from './hotels.controller';
-import { HotelsService } from './hotels/hotels.service';
 import { ProgressMeasuringService } from './processing-progress/progress-measuring.service';
 import { DataUpdateSender } from '../core/abstract/data-update.sender';
 import { ProcessingProgressRepository } from '../core/abstract/processing-progress.repository';
@@ -31,13 +28,10 @@ import { ProcessingProgressRepository } from '../core/abstract/processing-progre
     ScheduleModule.forRoot(),
   ],
   controllers: [
-    TopHotelsController,
-    HotelsController,
     DataToProcessConsumer,
   ],
   providers: [
     OldHotelsRemover,
-    HotelsService,
     {
       provide: ProgressMeasuringService,
       useFactory: (
