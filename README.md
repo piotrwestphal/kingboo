@@ -44,6 +44,6 @@ Rename `prod.env.example` -> `prod.env` and fill in missing values
 
 ![Kingboo Architecture Overview](kingboo-arch-overview.svg "Architecture Overview")
 
-#### Prod environment architecture implementation:
+#### Architecture implementation on a production environment:
 
 ![Kingboo Architecture Implementation](kingboo-arch.svg "Architecture implementation")
