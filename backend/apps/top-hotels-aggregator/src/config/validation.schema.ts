@@ -6,6 +6,7 @@ import { RabbitOptions, rabbitValidationSchemaMap } from '@kb/rabbit'
 import { firestoreValidationObjectSchema } from '@kb/firestore'
 
 export const appConfigValidationSchemaMap: SchemaMap<AppConfig> = {
+  topHotelsSelectLimit: Joi.number().required(),
   firestore: firestoreValidationObjectSchema.required(),
   mongo: Joi.object<MongoOptions>(mongoValidationSchemaMap).required(),
   userNotificationsMqClient: Joi.object<RabbitOptions>(rabbitValidationSchemaMap).required(),
