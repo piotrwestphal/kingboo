@@ -1,4 +1,4 @@
-import { AppConfig } from '../src/config/app.config';
+import { AppConfig } from '../src/config/app.config'
 
 export const prodConfig = (env: NodeJS.ProcessEnv): AppConfig =>
   ({
@@ -32,4 +32,4 @@ export const prodConfig = (env: NodeJS.ProcessEnv): AppConfig =>
         }
       },
     },
-  });
+  })

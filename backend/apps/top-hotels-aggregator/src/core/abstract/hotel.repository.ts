@@ -1,4 +1,4 @@
-import { SimpleHotel } from '../interface/simple-hotel';
+import { SimpleHotel } from '../interface/simple-hotel'
 import { SortedByOption } from '../interface/sorted-by-option'
 
 export abstract class HotelRepository {
@@ -6,5 +6,5 @@ export abstract class HotelRepository {
                          collectingStartedAt: string,
                          collectingFinishedAt: string | null,
                          sortedBy: SortedByOption[],
-                         limit: number): Promise<SimpleHotel[]>;
+                         limit: number): Promise<SimpleHotel[]>
 }

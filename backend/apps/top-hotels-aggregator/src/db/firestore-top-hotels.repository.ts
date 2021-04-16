@@ -24,7 +24,7 @@ export class FirestoreTopHotelsRepository extends TopHotelsRepository {
     try {
       const savedRawSearchResult = await this.firestoreClient.addToCollection(this.TOP_HOTELS_COLLECTION, topHotelsDoc)
       const { docId, bestLocation, bestPriceRate, bestRate, cheapest } = savedRawSearchResult.data()
-      logger.info(`Created [${this.TOP_HOTELS_COLLECTION}] with doc id [${docId}]`);
+      logger.info(`Created [${this.TOP_HOTELS_COLLECTION}] with doc id [${docId}]`)
       logger.debug(`Details of created [${this.TOP_HOTELS_COLLECTION}]`, {
         searchId,
         collectingStartedAt,
@@ -35,7 +35,7 @@ export class FirestoreTopHotelsRepository extends TopHotelsRepository {
           bestRate: bestRate.length,
           bestLocation: bestLocation.length,
         },
-      });
+      })
     } catch (err) {
       logger.error(`Error when adding [${this.TOP_HOTELS_COLLECTION}] with searchId [${searchId}] to collection`, err)
     }

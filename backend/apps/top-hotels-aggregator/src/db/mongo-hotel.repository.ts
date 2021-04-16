@@ -32,7 +32,7 @@ export class MongoHotelRepository extends HotelRepository {
     private readonly mapper: HotelDocumentMapper,
     private readonly model: Model<HotelDocument>,
   ) {
-    super();
+    super()
   }
 
   async findTopHotels(searchId: string,

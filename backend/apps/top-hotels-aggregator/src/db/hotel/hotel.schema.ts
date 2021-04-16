@@ -1,7 +1,7 @@
-import { Schema } from 'mongoose';
+import { Schema } from 'mongoose'
 import { HotelDocument } from './hotel.document'
 
-export const HotelSchemaKey = 'hotel';
+export const HotelSchemaKey = 'hotel'
 
 export const HotelSchema = new Schema<HotelDocument>({
     searchId: String,
@@ -21,4 +21,4 @@ export const HotelSchema = new Schema<HotelDocument>({
       createdAt: true,
       updatedAt: true,
     },
-  });
+  })

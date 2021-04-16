@@ -1,9 +1,9 @@
-import { Module } from '@nestjs/common';
-import { AppConfigService } from '../config/app-config.service';
-import { FirestoreClient, FirestoreModule } from '@kb/firestore';
-import { MongoModule } from '@kb/mongo';
-import { Model } from 'mongoose';
-import { getModelToken } from '@nestjs/mongoose';
+import { Module } from '@nestjs/common'
+import { AppConfigService } from '../config/app-config.service'
+import { FirestoreClient, FirestoreModule } from '@kb/firestore'
+import { MongoModule } from '@kb/mongo'
+import { Model } from 'mongoose'
+import { getModelToken } from '@nestjs/mongoose'
 import { HotelRepository } from '../core/abstract/hotel.repository'
 import { HotelDocumentMapper } from './hotel/hotel-document.mapper'
 import { HotelDocument } from './hotel/hotel.document'
