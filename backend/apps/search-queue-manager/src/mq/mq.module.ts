@@ -5,6 +5,8 @@ import { RmqUserNotificationSender } from './rmq-user-notification.sender'
 import { AppConfigService } from '../config/app-config.service'
 import { CollectingScenarioSender } from '../core/abstract/collecting-scenario.sender'
 import { RmqCollectingScenarioSender } from './rmq-collecting-scenario.sender'
+import { DataUpdateSender } from '../core/abstract/data-update.sender'
+import { RmqDataUpdateSender } from './rmq-data-update.sender'
 
 @Module({
   providers: [
@@ -17,6 +19,14 @@ import { RmqCollectingScenarioSender } from './rmq-collecting-scenario.sender'
       inject: [AppConfigService],
     },
     {
+      provide: DataUpdateSender,
+      useFactory: (config: AppConfigService) => {
+        const clientProxy = ClientProxyFactory.create(config.dataUpdatesMqClient)
+        return new RmqDataUpdateSender(clientProxy)
+      },
+      inject: [AppConfigService],
+    },
+    {
       provide: UserNotificationSender,
       useFactory: (config: AppConfigService) => {
         const clientProxy = ClientProxyFactory.create(config.userNotificationsMqClient)
@@ -25,7 +35,7 @@ import { RmqCollectingScenarioSender } from './rmq-collecting-scenario.sender'
       inject: [AppConfigService],
     },
   ],
-  exports: [UserNotificationSender, CollectingScenarioSender],
+  exports: [CollectingScenarioSender, DataUpdateSender, UserNotificationSender],
 })
 export class MqModule {
 }

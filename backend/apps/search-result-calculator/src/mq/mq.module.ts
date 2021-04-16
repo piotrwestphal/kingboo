@@ -9,7 +9,7 @@ import { RmqDataUpdateSender } from './rmq-data-update.sender'
     {
       provide: DataUpdateSender,
       useFactory: (config: AppConfigService) => {
-        const clientProxy = ClientProxyFactory.create(config.userNotificationsMqClient)
+        const clientProxy = ClientProxyFactory.create(config.dataUpdatesMqClient)
         return new RmqDataUpdateSender(clientProxy)
       },
       inject: [AppConfigService],

@@ -1,7 +1,7 @@
 import { SearchRequestDto } from '@kb/model'
 
 export abstract class UserNotificationSender {
-  abstract notifyAboutCreatedUserSearchRequest(userId: string, searchId: string, dto: SearchRequestDto): void
+  abstract notifyAboutCreatedUserSearchRequest(searchId: string, dto: SearchRequestDto): void
 
   abstract notifyAboutCreatedCyclicSearchRequest(searchId: string, dto: SearchRequestDto): void
 

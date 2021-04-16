@@ -1,5 +1,5 @@
 import { UserNotificationHandler } from '../core/abstract/user-notification.handler'
-import { logger } from '../logger'
+import { SearchRequestDto } from '@kb/model'
 
 export class AppUserNotificationHandler extends UserNotificationHandler {
 
@@ -7,9 +7,18 @@ export class AppUserNotificationHandler extends UserNotificationHandler {
     super()
   }
 
-  async updateSearchRequestCache(searchId: string,
-                                 timestamp: number): Promise<void> {
-    logger.debug(`There is no any effect here until async communication with frontend happen :). ` +
-      `Search id: [${searchId}], timestamp ${timestamp}`)
+  updateSearchRequest(searchId: string, searchRequestDto: SearchRequestDto): Promise<void> {
+    // TODO: implement
+    return Promise.resolve(undefined);
+  }
+
+  deleteSearchRequest(searchId: string): Promise<void> {
+    // TODO: implement
+    return Promise.resolve(undefined);
+  }
+
+  updateTopHotels(searchId: string): Promise<void> {
+    // TODO: implement
+    return Promise.resolve(undefined);
   }
 }

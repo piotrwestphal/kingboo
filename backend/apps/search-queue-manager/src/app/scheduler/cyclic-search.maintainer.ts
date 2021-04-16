@@ -5,14 +5,16 @@ import { SearchRequestRepository } from '../../core/abstract/search-request.repo
 import { SearchRequestType } from '../../core/model/SearchRequestType'
 import { CyclicSearchRepository } from '../../core/abstract/cyclic-search.repository'
 import { UserNotificationSender } from '../../core/abstract/user-notification.sender'
+import { DataUpdateSender } from '../../core/abstract/data-update.sender'
 
 @Injectable()
 export class CyclicSearchMaintainer {
 
   constructor(
     private readonly cyclicSearchRepository: CyclicSearchRepository,
+    private readonly dataUpdateSender: DataUpdateSender,
     private readonly searchRequestRepository: SearchRequestRepository,
-    private readonly dataUpdateSender: UserNotificationSender,
+    private readonly userNotificationSender: UserNotificationSender,
   ) {
   }
 
@@ -29,7 +31,8 @@ export class CyclicSearchMaintainer {
     const toDelete = reqsBelongingToCyclicSearch.filter(v => !v.found).map(v => v.searchId)
     if (toDelete.length) {
       const deletedCount = await this.searchRequestRepository.deleteMany(toDelete)
-      toDelete.map(v => this.dataUpdateSender.notifyAboutDeletedCyclicSearchRequest(v))
+      toDelete.map(v => this.userNotificationSender.notifyAboutDeletedCyclicSearchRequest(v))
+      toDelete.map(v => this.dataUpdateSender.notifyAboutDeletedSearchRequest(v))
       logger.info(`[${deletedCount}] cyclic search requests with ids [${toDelete}] were ` +
         `deleted due to not belonging to any search cycle`)
     }

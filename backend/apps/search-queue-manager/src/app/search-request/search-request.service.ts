@@ -18,7 +18,7 @@ export class SearchRequestService {
     private readonly searchRequestFactory: SearchRequestFactory,
     private readonly searchRequestMapper: SearchRequestMapper,
     private readonly searchRequestRepository: SearchRequestRepository,
-    private readonly dataUpdateSender: UserNotificationSender,
+    private readonly userNotificationSender: UserNotificationSender,
   ) {
   }
 
@@ -38,7 +38,7 @@ export class SearchRequestService {
     const searchRequest = this.searchRequestFactory.createNew(SearchRequestType.USER, createSearchRequest)
     const saved = await this.saveSearchRequest(searchRequest)
     const searchRequestDto = this.searchRequestMapper.toDto(saved)
-    this.dataUpdateSender.notifyAboutCreatedUserSearchRequest(userId, saved.searchId, searchRequestDto)
+    this.userNotificationSender.notifyAboutCreatedUserSearchRequest(saved.searchId, searchRequestDto)
     return this.searchRequestMapper.toDto(saved)
   }
 
@@ -69,7 +69,7 @@ export class SearchRequestService {
         `started at [${collectingStartedAt}] finished at [${collectingFinishedAt}]`)
       logger.debug(`Updated search request`, saved)
       const searchRequestDto = this.searchRequestMapper.toDto(saved)
-      this.dataUpdateSender.notifyAboutFinishedCollecting(searchId, searchRequestDto)
+      this.userNotificationSender.notifyAboutFinishedCollecting(searchId, searchRequestDto)
     } else {
       logger.warn(`Unable to update collecting progress. Search request for given search id [${searchId}] not found`)
     }

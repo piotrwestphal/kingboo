@@ -20,15 +20,10 @@ export const prodConfig = (env: NodeJS.ProcessEnv): AppConfig =>
         queue: env.MQ_DATA_TO_PROCESS_QUEUE_NAME,
       },
     },
-    userNotificationsMqClient: {
+    dataUpdatesMqClient: {
       address: env.MQ_ADDRESS,
       queueDefinition: {
-        queue: env.MQ_USER_NOTIFICATIONS_QUEUE_NAME,
-        queueOptions: {
-          arguments: {
-            'x-message-ttl': parseInt(env.MQ_USER_NOTIFICATIONS_QUEUE_MESSAGE_TTL, 10),
-          }
-        }
+        queue: env.MQ_DATA_UPDATES_QUEUE_NAME,
       },
     },
   });

@@ -8,4 +8,5 @@ export const appConfigValidationSchemaMap: SchemaMap<AppConfig> = {
   mongo: Joi.object<MongoOptions>(mongoValidationSchemaMap).required(),
   collectingScenarioMqClient: Joi.object<RabbitOptions>(rabbitValidationSchemaMap).required(),
   userNotificationsMqClient: Joi.object<RabbitOptions>(rabbitValidationSchemaMap).required(),
+  dataUpdatesMqClient: Joi.object<RabbitOptions>(rabbitValidationSchemaMap).required(),
 };

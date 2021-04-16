@@ -1,7 +1,7 @@
 import { Controller } from '@nestjs/common'
 import { Ctx, MessagePattern, Payload, RmqContext } from '@nestjs/microservices'
 import { UserNotificationsMessagePattern } from '@kb/rabbit/message-pattern/UserNotificationsMessagePattern'
-import { MqMessage, SearchRequestDto, UserSearchRequestDto } from '@kb/model'
+import { MqMessage, SearchRequestDto } from '@kb/model'
 import { logger } from '../logger'
 import { UserNotificationHandler } from '../core/abstract/user-notification.handler'
 import { mqAck } from '@kb/rabbit'
@@ -14,36 +14,27 @@ export class SearchRequestMessageConsumer {
   ) {
   }
 
-  // TODO: is CollectingTimesData needed?
-  @MessagePattern(UserNotificationsMessagePattern.HOTELS_COLLECTION_COMPLETED)
-  async handleHotelsCollectionCompleted(@Payload() { searchId, timestamp, data }: MqMessage<SearchRequestDto>,
-                                        @Ctx() ctx: RmqContext): Promise<void> {
-    logger.info(`Receive ${ctx.getPattern()} message with search id [${searchId}]`, data)
-    await this.userNotificationHandler.updateSearchRequestCache(searchId, timestamp)
-    mqAck(ctx)
-  }
-
-  @MessagePattern(UserNotificationsMessagePattern.SEARCH_REQUEST_CREATED)
-  async handleSearchRequestCreated(@Payload() { searchId, timestamp, data }: MqMessage<UserSearchRequestDto>,
+  @MessagePattern(UserNotificationsMessagePattern.SEARCH_REQUEST_UPDATED)
+  async handleSearchRequestUpdated(@Payload() { searchId, data }: MqMessage<SearchRequestDto>,
                                    @Ctx() ctx: RmqContext): Promise<void> {
-    logger.info(`Receive ${ctx.getPattern()} message with search id [${searchId}]`, data)
-    await this.userNotificationHandler.updateSearchRequestCache(searchId, timestamp)
+    logger.debug(`Receive ${ctx.getPattern()} message with search id [${searchId}] and payload`, data)
+    await this.userNotificationHandler.updateSearchRequest(searchId, data)
     mqAck(ctx)
   }
 
-  @MessagePattern(UserNotificationsMessagePattern.CYCLIC_SEARCH_REQUEST_CREATED)
-  async handleCyclicSearchRequestCreated(@Payload() { searchId, timestamp, }: MqMessage<SearchRequestDto>,
-                                         @Ctx() ctx: RmqContext): Promise<void> {
-    logger.info(`Receive ${ctx.getPattern()} message with search id [${searchId}]`)
-    await this.userNotificationHandler.updateSearchRequestCache(searchId, timestamp)
+  @MessagePattern(UserNotificationsMessagePattern.SEARCH_REQUEST_DELETED)
+  async handleSearchRequestDeleted(@Payload() { searchId }: MqMessage,
+                                   @Ctx() ctx: RmqContext): Promise<void> {
+    logger.debug(`Receive ${ctx.getPattern()} message with search id [${searchId}]`)
+    await this.userNotificationHandler.deleteSearchRequest(searchId)
     mqAck(ctx)
   }
 
-  @MessagePattern(UserNotificationsMessagePattern.CYCLIC_SEARCH_REQUEST_DELETED)
-  async handleCyclicSearchRequestDeleted(@Payload() { searchId, timestamp, }: MqMessage,
-                                         @Ctx() ctx: RmqContext): Promise<void> {
-    logger.info(`Receive ${ctx.getPattern()} message with search id [${searchId}]`)
-    await this.userNotificationHandler.updateSearchRequestCache(searchId, timestamp)
+  @MessagePattern(UserNotificationsMessagePattern.TOP_HOTELS_UPDATED)
+  async handleTopHotelsUpdated(@Payload() { searchId }: MqMessage,
+                               @Ctx() ctx: RmqContext): Promise<void> {
+    logger.debug(`Receive ${ctx.getPattern()} message with search id [${searchId}]`)
+    await this.userNotificationHandler.updateTopHotels(searchId)
     mqAck(ctx)
   }
 }

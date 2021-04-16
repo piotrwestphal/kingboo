@@ -5,6 +5,7 @@ const mqAddress = (env) => env.MQ_ADDRESS;
 const consumerQueueName = (env) => env.MQ_DATA_COLLECTION_NOTIFICATIONS_QUEUE_NAME;
 const collectingScenarioQueue = (env) => env.MQ_COLLECTING_SCENARIO_QUEUE_NAME;
 const userNotificationsQueue = (env) => env.MQ_USER_NOTIFICATIONS_QUEUE_NAME;
+const dataUpdatesQueue = (env) => env.MQ_DATA_UPDATES_QUEUE_NAME;
 
 export const devConfig = (env: NodeJS.ProcessEnv): AppConfig =>
   ({
@@ -26,6 +27,13 @@ export const devConfig = (env: NodeJS.ProcessEnv): AppConfig =>
       queueDefinition: {
         queue: collectingScenarioQueue(env),
         queueOptions: retrieveRMQQueueOptions(collectingScenarioQueue(env)),
+      },
+    },
+    dataUpdatesMqClient: {
+      address: mqAddress(env),
+      queueDefinition: {
+        queue: dataUpdatesQueue(env),
+        queueOptions: retrieveRMQQueueOptions(dataUpdatesQueue(env)),
       },
     },
     userNotificationsMqClient: {

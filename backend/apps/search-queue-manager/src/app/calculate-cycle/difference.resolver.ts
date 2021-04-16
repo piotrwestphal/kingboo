@@ -5,11 +5,13 @@ import { ConflictException } from '@nestjs/common'
 import { SearchRequestService } from '../search-request/search-request.service'
 import { UserNotificationSender } from '../../core/abstract/user-notification.sender'
 import { SearchRequestMapper } from '../search-request/search-request.mapper'
+import { DataUpdateSender } from '../../core/abstract/data-update.sender'
 
 export class DifferenceResolver {
 
   constructor(
-    private readonly dataUpdateSender: UserNotificationSender,
+    private readonly dataUpdateSender: DataUpdateSender,
+    private readonly userNotificationSender: UserNotificationSender,
     private readonly searchRequestMapper: SearchRequestMapper,
     private readonly searchRequestRepository: SearchRequestRepository,
     private readonly searchRequestService: SearchRequestService,
@@ -37,7 +39,8 @@ export class DifferenceResolver {
     if (deletedCount) {
       logger.info(`[${deletedCount}] search requests were deleted`)
       logger.debug(`Deleted requests search ids:`, searchIds)
-      searchIds.map(v => this.dataUpdateSender.notifyAboutDeletedCyclicSearchRequest(v))
+      searchIds.map(v => this.userNotificationSender.notifyAboutDeletedCyclicSearchRequest(v))
+      searchIds.map(v => this.dataUpdateSender.notifyAboutDeletedSearchRequest(v))
     }
   }
 
@@ -57,7 +60,7 @@ export class DifferenceResolver {
     const searchRequestsDtos = created.filter(Boolean).map(v => this.searchRequestMapper.toDto(v))
     const searchIds = searchRequestsDtos.map(v => v.searchId)
     logger.info(`[${searchIds.length}] of [${searchRequests.length}] search requests were created`)
-    searchRequestsDtos.map(v => this.dataUpdateSender.notifyAboutCreatedCyclicSearchRequest(v.searchId, v))
+    searchRequestsDtos.map(v => this.userNotificationSender.notifyAboutCreatedCyclicSearchRequest(v.searchId, v))
     logger.debug(`Search ids of created search requests`, searchIds)
   }
 }

@@ -5,6 +5,7 @@ import { AppConfigService } from '../config/app-config.service'
 import { SortedByOption } from '../core/interface/sorted-by-option'
 import { logger } from '../logger'
 import { TopHotels } from '../core/interface/top-hotels'
+import { UserNotificationSender } from '../core/abstract/user-notification.sender'
 
 const sortBy = {
   bestPriceRate: [
@@ -28,6 +29,7 @@ export class TopHotelsService {
   constructor(
     private readonly config: AppConfigService,
     private readonly hotelRepository: HotelRepository,
+    private readonly userNotificationSender: UserNotificationSender,
     private readonly topHotelsRepository: TopHotelsRepository,
   ) {
   }
@@ -36,6 +38,7 @@ export class TopHotelsService {
     try {
       const topHotels = await this.getTopHotels(searchId, collectingStartedAt, collectingFinishedAt)
       await this.topHotelsRepository.create(searchId, collectingStartedAt, collectingFinishedAt, topHotels)
+      this.userNotificationSender.notifyAboutTopHotelsUpdate(searchId)
     } catch (err) {
       logger.error(`Error when updating [top-hotels] searchId [${searchId}] ` +
         `collectingStartedAt [${collectingStartedAt}] collectingFinishedAt [${collectingFinishedAt}]`)

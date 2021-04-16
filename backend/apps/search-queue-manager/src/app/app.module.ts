@@ -29,6 +29,7 @@ import { DifferenceResolver } from './calculate-cycle/difference.resolver'
 import { CyclicSearchMaintainer } from './scheduler/cyclic-search.maintainer'
 import { logger } from '../logger'
 import { SearchRequestMapper } from './search-request/search-request.mapper'
+import { DataUpdateSender } from '../core/abstract/data-update.sender'
 
 @Module({
   imports: [
@@ -63,7 +64,7 @@ import { SearchRequestMapper } from './search-request/search-request.mapper'
       provide: SearchRequestService,
       useFactory: (
         collectingScenarioSender: CollectingScenarioSender,
-        dataUpdateSender: UserNotificationSender,
+        userNotificationSender: UserNotificationSender,
         searchRequestMapper: SearchRequestMapper,
         searchRequestRepository: SearchRequestRepository,
       ) => {
@@ -74,7 +75,7 @@ import { SearchRequestMapper } from './search-request/search-request.mapper'
           searchRequestFactory,
           searchRequestMapper,
           searchRequestRepository,
-          dataUpdateSender,
+          userNotificationSender,
         );
       },
       inject: [CollectingScenarioSender, UserNotificationSender, SearchRequestMapper, SearchRequestRepository],
@@ -83,7 +84,8 @@ import { SearchRequestMapper } from './search-request/search-request.mapper'
       provide: CycleCalculator,
       useFactory: (
         cyclicSearchRepository: CyclicSearchRepository,
-        dataUpdateSender: UserNotificationSender,
+        dataUpdateSender: DataUpdateSender,
+        userNotificationSender: UserNotificationSender,
         searchRequestMapper: SearchRequestMapper,
         searchRequestRepository: SearchRequestRepository,
         searchRequestService: SearchRequestService,
@@ -93,6 +95,7 @@ import { SearchRequestMapper } from './search-request/search-request.mapper'
         const differenceFinder = new DifferenceFinder();
         const differenceResolver = new DifferenceResolver(
           dataUpdateSender,
+          userNotificationSender,
           searchRequestMapper,
           searchRequestRepository,
           searchRequestService,
@@ -107,7 +110,7 @@ import { SearchRequestMapper } from './search-request/search-request.mapper'
           searchRequestService,
         );
       },
-      inject: [CyclicSearchRepository, UserNotificationSender, SearchRequestMapper, SearchRequestRepository, SearchRequestService],
+      inject: [CyclicSearchRepository, DataUpdateSender, UserNotificationSender, SearchRequestMapper, SearchRequestRepository, SearchRequestService],
     },
   ],
   controllers: [
