@@ -1,4 +1,4 @@
-import { CacheData } from '../model/CacheData';
+import { CacheData } from '../model/CacheData'
 
 export abstract class CacheRepository<T> {
   abstract find(searchId: string): Promise<CacheData<T> | null>

@@ -1,10 +1,10 @@
-import { Injectable } from '@nestjs/common';
-import { CollectingTimesData } from '../../core/interface/collecting-times.data';
-import { logger } from '../../logger';
-import { CacheData } from '../../core/model/CacheData';
-import { SearchRequestsClient } from '../../core/abstract/search-requests.client';
-import { SearchRequestCacheRepository } from '../../core/abstract/search-request-cache.repository';
-import { SearchRequestDto } from '@kb/model';
+import { Injectable } from '@nestjs/common'
+import { CollectingTimesData } from '../../core/interface/collecting-times.data'
+import { logger } from '../../logger'
+import { CacheData } from '../../core/model/CacheData'
+import { SearchRequestsClient } from '../../core/abstract/search-requests.client'
+import { SearchRequestCacheRepository } from '../../core/abstract/search-request-cache.repository'
+import { SearchRequestDto } from '@kb/model'
 
 @Injectable()
 export class SearchRequestCacheMaintainer {

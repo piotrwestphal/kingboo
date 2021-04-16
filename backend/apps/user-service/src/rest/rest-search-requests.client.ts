@@ -1,17 +1,17 @@
-import { SearchRequestsClient } from '../core/abstract/search-requests.client';
-import { HttpService } from '@nestjs/common';
-import { AppConfigService } from '../config/app-config.service';
-import { SearchRequestDto, SearchRequestsDto } from '@kb/model';
-import { catchError, map } from 'rxjs/operators';
-import { logger } from '../logger';
-import { of } from 'rxjs';
+import { SearchRequestsClient } from '../core/abstract/search-requests.client'
+import { HttpService } from '@nestjs/common'
+import { AppConfigService } from '../config/app-config.service'
+import { SearchRequestDto, SearchRequestsDto } from '@kb/model'
+import { catchError, map } from 'rxjs/operators'
+import { logger } from '../logger'
+import { of } from 'rxjs'
 
 export class RestSearchRequestsClient extends SearchRequestsClient {
   constructor(
     private readonly config: AppConfigService,
     private readonly httpService: HttpService,
   ) {
-    super();
+    super()
   }
 
   getSearchRequest(searchId: string): Promise<SearchRequestDto | null> {

@@ -22,5 +22,4 @@ export const devConfig = (env: NodeJS.ProcessEnv): AppConfig =>
       },
     },
     searchRequestsResourceAddress: env.SEARCH_REQUESTS_RESOURCE_ADDRESS,
-    hotelsResourceAddress: env.HOTELS_RESOURCE_ADDRESS,
   });

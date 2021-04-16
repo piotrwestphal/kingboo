@@ -1,8 +1,8 @@
-import { FilterQuery, Model } from 'mongoose';
-import { CacheDocument } from './cache/search-request-cache.document';
-import { CacheData } from '../core/model/CacheData';
-import { CacheRepository } from '../core/abstract/cache.repository';
-import { CacheDocumentMapper } from './cache/cache-document.mapper';
+import { FilterQuery, Model } from 'mongoose'
+import { CacheDocument } from './cache/search-request-cache.document'
+import { CacheData } from '../core/model/CacheData'
+import { CacheRepository } from '../core/abstract/cache.repository'
+import { CacheDocumentMapper } from './cache/cache-document.mapper'
 
 export class MongoCacheRepository<T> extends CacheRepository<T> {
   constructor(
@@ -31,13 +31,13 @@ export class MongoCacheRepository<T> extends CacheRepository<T> {
   }
 
   async delete(searchId: string): Promise<boolean> {
-    const deleted = await this.model.deleteOne({ searchId: searchId }).exec();
+    const deleted = await this.model.deleteOne({ searchId: searchId }).exec()
     return !!deleted.deletedCount
   }
 
   async deleteMany(searchIds: string[]): Promise<number> {
     const { deletedCount } = await this.model.deleteMany(
-      { searchId: { $in: searchIds } }).exec();
+      { searchId: { $in: searchIds } }).exec()
     return deletedCount
   }
 }

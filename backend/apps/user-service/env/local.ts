@@ -21,5 +21,4 @@ export const localConfig: AppConfig = {
     },
   },
   searchRequestsResourceAddress: 'http://localhost:38081',
-  hotelsResourceAddress: 'http://localhost:38082',
 };

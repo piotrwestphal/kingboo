@@ -1,5 +1,5 @@
-import { Schema } from 'mongoose';
-import { CacheDocument } from './search-request-cache.document';
+import { Schema } from 'mongoose'
+import { CacheDocument } from './search-request-cache.document'
 
 export const CacheSchema = new Schema<CacheDocument<any>>({
     searchId: String,
@@ -13,4 +13,4 @@ export const CacheSchema = new Schema<CacheDocument<any>>({
       createdAt: true,
       updatedAt: true,
     }
-  });
+  })
