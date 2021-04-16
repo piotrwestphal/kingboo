@@ -42,7 +42,7 @@ export class ProgressMeasuringService {
 
   private async determineProgress(searchId: string, data: HotelsSummaryData): Promise<boolean> {
     const partsCount = await this.processingProgressRepository.getQuantityOfType(searchId, ProcessingProgressType.PART)
-    const eligibleToSummarize = partsCount === data.expectedNumberOfParts
+    const eligibleToSummarize = partsCount >= data.expectedNumberOfParts
     if (eligibleToSummarize) {
       const deletedCount = await this.processingProgressRepository.deleteMany(searchId)
       logger.debug(`Deleted [${deletedCount}] processing progress elements (parts + summary) with search id [${searchId}]`)

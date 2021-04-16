@@ -31,6 +31,8 @@ services:
   search-result-calculator:
     env_file:
       - dev.env
+    environment:
+      LOG_LEVEL: info
     volumes:
       - ./compose-output:/usr/src/app/dist/apps/search-result-calculator/output
       - ./tools/wait-for-it.sh:/wait-for-it.sh

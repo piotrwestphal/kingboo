@@ -53,6 +53,8 @@ export class SearchRequestService {
       const saved = await this.searchRequestRepository.update(updated)
       logger.info(`Successfully updated search place identifier for given search id [${searchId}]. Saved search identifier:`, saved.searchPlaceIdentifier)
       logger.debug(`Updated search request`, saved)
+      const searchRequestDto = this.searchRequestMapper.toDto(saved)
+      this.userNotificationSender.notifyAboutCollectedSearchIdentifier(saved.searchId, searchRequestDto)
     } else {
       logger.warn(`Unable to update search place identifier. Search request for given search id [${searchId}] not found`)
     }

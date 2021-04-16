@@ -16,6 +16,11 @@ export class RmqUserNotificationSender extends UserNotificationSender {
       { data: dto, searchId, timestamp: Date.now() })
   }
 
+  notifyAboutCollectedSearchIdentifier(searchId: string, dto: SearchRequestDto): void {
+    this.client.emit<void, MqMessage<SearchRequestDto>>(UserNotificationsMessagePattern.SEARCH_REQUEST_UPDATED,
+      { data: dto, searchId, timestamp: Date.now() })
+  }
+
   notifyAboutCreatedCyclicSearchRequest(searchId: string, dto: SearchRequestDto): void {
     this.client.emit<void, MqMessage<SearchRequestDto>>(UserNotificationsMessagePattern.SEARCH_REQUEST_UPDATED,
       { data: dto, searchId, timestamp: Date.now() })
