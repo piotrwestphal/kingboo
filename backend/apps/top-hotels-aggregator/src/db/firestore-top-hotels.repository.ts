@@ -1,9 +1,9 @@
 import { TopHotelsDocumentMapper } from './top-hotels/top-hotels-document.mapper'
 import { TopHotelsRepository } from '../core/abstract/top-hotels.repository'
 import { FirestoreClient } from '@kb/firestore'
-import { TopHotels } from '../core/interface/top-hotels'
 import { logger } from '../logger'
 import { TopHotelsDocument } from './top-hotels/top-hotels.document'
+import { TopHotelsDto } from '@kb/model'
 
 export class FirestoreTopHotelsRepository extends TopHotelsRepository {
 
@@ -19,7 +19,7 @@ export class FirestoreTopHotelsRepository extends TopHotelsRepository {
   async create(searchId: string,
                collectingStartedAt: string,
                collectingFinishedAt: string,
-               topHotels: TopHotels): Promise<void> {
+               topHotels: TopHotelsDto): Promise<void> {
     const topHotelsDoc = this.mapper.toDoc(searchId, collectingStartedAt, collectingFinishedAt, topHotels)
     try {
       const savedRawSearchResult = await this.firestoreClient.addToCollection(this.TOP_HOTELS_COLLECTION, topHotelsDoc)

@@ -1,10 +1,10 @@
-import { TopHotels } from '../interface/top-hotels'
+import { TopHotelsDto } from '@kb/model'
 
 export abstract class TopHotelsRepository {
   abstract create(searchId: string,
                   collectingStartedAt: string,
                   collectingFinishedAt: string,
-                  topHotels: TopHotels): Promise<void>
+                  topHotels: TopHotelsDto): Promise<void>
 
   abstract delete(searchId: string): Promise<void>
 }

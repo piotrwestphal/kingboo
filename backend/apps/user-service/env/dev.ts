@@ -9,8 +9,12 @@ export const devConfig = (env: NodeJS.ProcessEnv): AppConfig =>
     nodeEnv: env.NODE_ENV as 'dev',
     port: env.PORT ? parseInt(env.PORT, 10) : 8080,
     corsOrigins: env.CORS_ORIGINS,
-    mongo: {
-      address: env.MONGO_ADDRESS,
+    firestore: {
+      projectId: env.FIRESTORE_PROJECT_ID,
+      emulator: {
+        host: env.FIRESTORE_EMULATOR_HOST,
+        port: parseInt(env.FIRESTORE_EMULATOR_PORT, 10),
+      },
     },
     mqConsumer: {
       address: mqAddress(env),

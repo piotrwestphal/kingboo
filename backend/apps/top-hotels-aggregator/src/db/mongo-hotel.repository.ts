@@ -1,12 +1,12 @@
-import { SimpleHotel } from '../core/interface/simple-hotel'
 import { HotelRepository } from '../core/abstract/hotel.repository'
 import { Model } from 'mongoose'
 import { HotelDocument } from './hotel/hotel.document'
 import { SortedByOption } from '../core/interface/sorted-by-option'
 import { HotelDocumentMapper } from './hotel/hotel-document.mapper'
 import { SimpleHotelDocument } from './hotel/simple-hotel.document'
+import { SimpleHotelDto } from '@kb/model'
 
-const selectSimpleHotel: Record<keyof SimpleHotel & '_id', 1 | 0> = {
+const selectSimpleHotel: Record<keyof SimpleHotelDto & '_id', 1 | 0> = {
   searchId: 1,
   hotelId: 1,
   name: 1,
@@ -39,7 +39,7 @@ export class MongoHotelRepository extends HotelRepository {
                       collectingStartedAt: string,
                       collectingFinishedAt: string | null,
                       sortedBy: SortedByOption[],
-                      limit: number): Promise<SimpleHotel[]> {
+                      limit: number): Promise<SimpleHotelDto[]> {
     const sort = sortedBy.reduce((prev, { value, order }) => {
       return {
         ...prev,

@@ -1,6 +1,6 @@
 import { TopHotelsDocument } from './top-hotels.document'
-import { TopHotels } from '../../core/interface/top-hotels'
 import { Timestamp } from '@google-cloud/firestore'
+import { TopHotelsDto } from '@kb/model'
 
 export class TopHotelsDocumentMapper {
 
@@ -13,7 +13,7 @@ export class TopHotelsDocumentMapper {
       cheapest,
       bestRate,
       bestLocation,
-    }: TopHotels): TopHotelsDocument {
+    }: TopHotelsDto): TopHotelsDocument {
     return {
       searchId,
       docId: searchId,

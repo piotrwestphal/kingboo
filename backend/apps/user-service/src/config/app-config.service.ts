@@ -2,9 +2,9 @@ import { ConfigService } from '@kb/config'
 import { AppConfig } from './app.config'
 import { appConfigValidationSchemaMap } from './validation.schema'
 import { CommonLoggerService } from '@kb/logger'
-import { MongoConfigService } from '@kb/mongo'
+import { EmulatorOptions, FirestoreConfigService } from '@kb/firestore'
 
-export class AppConfigService extends ConfigService<AppConfig> implements MongoConfigService {
+export class AppConfigService extends ConfigService<AppConfig> implements FirestoreConfigService {
 
   constructor(appConfig: AppConfig, logger: CommonLoggerService) {
     super(appConfig, appConfigValidationSchemaMap, logger)
@@ -14,7 +14,19 @@ export class AppConfigService extends ConfigService<AppConfig> implements MongoC
     return this.config.searchRequestsResourceAddress
   }
 
-  get mongoAddress(): string {
-    return this.config.mongo.address
+  get projectId(): string {
+    return this.config.firestore.projectId
+  }
+
+  get clientEmail(): string {
+    return this.config.firestore.clientEmail
+  }
+
+  get clientKey(): string {
+    return this.config.firestore.clientKey
+  }
+
+  get emulator(): EmulatorOptions {
+    return this.config.firestore.emulator
   }
 }

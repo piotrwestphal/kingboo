@@ -9,9 +9,8 @@ import { RestModule } from '../rest/rest.module'
 import { DbModule } from '../db/db.module'
 import { SearchRequestsClient } from '../core/abstract/search-requests.client'
 import { SearchDataMapper } from './search-data/search-data.mapper'
-import { SearchRequestMessageConsumer } from './search-request-message.consumer'
-import { AppUserNotificationHandler } from './app-user-notification.handler'
-import { UserNotificationHandler } from '../core/abstract/user-notification.handler'
+import { UserNotificationsConsumer } from './user-notifications.consumer'
+import { UserNotificationHandler } from './user-notification.handler'
 
 @Module({
   imports: [
@@ -19,12 +18,9 @@ import { UserNotificationHandler } from '../core/abstract/user-notification.hand
     DbModule,
     RestModule,
   ],
-  controllers: [SearchDataController, SearchRequestMessageConsumer],
+  controllers: [SearchDataController, UserNotificationsConsumer],
   providers: [
-    {
-      provide: UserNotificationHandler,
-      useFactory: () => new AppUserNotificationHandler(),
-    },
+    UserNotificationHandler,
     {
       provide: SearchDataService,
       useFactory: (

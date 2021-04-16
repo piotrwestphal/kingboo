@@ -1,20 +1,25 @@
 import { Module } from '@nestjs/common'
 import { AppConfigService } from '../config/app-config.service'
-import { MongoModule } from '@kb/mongo'
-import { CacheSchema } from './cache/cache.schema'
-
-const TopHotelsCacheSchemaKey = 'topHotelsCache'
+import { FirestoreClient, FirestoreModule } from '@kb/firestore'
+import { FirestoreTopHotelsRepository } from './firestore-top-hotels.repository'
+import { TopHotelsRepository } from '../core/abstract/top-hotels.repository'
+import { TopHotelsDocumentMapper } from './top-hotels-document.mapper'
 
 @Module({
   imports: [
-    MongoModule.register({ configClass: AppConfigService }, [
-      { name: TopHotelsCacheSchemaKey, schema: CacheSchema },
-    ]),
+    FirestoreModule.register({ configClass: AppConfigService }),
   ],
   providers: [
+    {
+      provide: TopHotelsRepository,
+      useFactory: (firestoreClient: FirestoreClient) => {
+        const mapper = new TopHotelsDocumentMapper()
+        return new FirestoreTopHotelsRepository(firestoreClient, mapper)
+      },
+      inject: [FirestoreClient],
+    },
   ],
-  exports: [
-  ],
+  exports: [TopHotelsRepository],
 })
 export class DbModule {
 }

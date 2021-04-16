@@ -4,8 +4,8 @@ import { HotelRepository } from '../core/abstract/hotel.repository'
 import { AppConfigService } from '../config/app-config.service'
 import { SortedByOption } from '../core/interface/sorted-by-option'
 import { logger } from '../logger'
-import { TopHotels } from '../core/interface/top-hotels'
 import { UserNotificationSender } from '../core/abstract/user-notification.sender'
+import { TopHotelsDto } from '@kb/model'
 
 const sortBy = {
   bestPriceRate: [
@@ -49,7 +49,7 @@ export class TopHotelsService {
     return this.topHotelsRepository.delete(searchId)
   }
 
-  private async getTopHotels(searchId: string, collectingStartedAt: string, collectingFinishedAt: string): Promise<TopHotels> {
+  private async getTopHotels(searchId: string, collectingStartedAt: string, collectingFinishedAt: string): Promise<TopHotelsDto> {
     const limit = this.config.topHotelsSelectLimit
     const pendingResults = [
       sortBy.bestPriceRate,

@@ -1,11 +1,8 @@
-import { UserNotificationHandler } from '../core/abstract/user-notification.handler'
 import { SearchRequestDto } from '@kb/model'
+import { Injectable } from '@nestjs/common'
 
-export class AppUserNotificationHandler extends UserNotificationHandler {
-
-  constructor() {
-    super()
-  }
+@Injectable()
+export class UserNotificationHandler {
 
   updateSearchRequest(searchId: string, searchRequestDto: SearchRequestDto): Promise<void> {
     // TODO: implement

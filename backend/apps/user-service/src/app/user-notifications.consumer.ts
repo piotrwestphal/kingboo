@@ -3,11 +3,11 @@ import { Ctx, MessagePattern, Payload, RmqContext } from '@nestjs/microservices'
 import { UserNotificationsMessagePattern } from '@kb/rabbit/message-pattern/UserNotificationsMessagePattern'
 import { MqMessage, SearchRequestDto } from '@kb/model'
 import { logger } from '../logger'
-import { UserNotificationHandler } from '../core/abstract/user-notification.handler'
 import { mqAck } from '@kb/rabbit'
+import { UserNotificationHandler } from './user-notification.handler'
 
 @Controller()
-export class SearchRequestMessageConsumer {
+export class UserNotificationsConsumer {
 
   constructor(
     private readonly userNotificationHandler: UserNotificationHandler
