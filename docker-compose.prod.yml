@@ -35,3 +35,9 @@ services:
       - prod.env
     volumes:
       - ./compose-output:/usr/src/app/dist/apps/search-result-calculator/output
+
+  top-hotels-aggregator:
+    env_file:
+      - prod.env
+    volumes:
+      - ./compose-output:/usr/src/app/dist/apps/top-hotels-aggregator/output

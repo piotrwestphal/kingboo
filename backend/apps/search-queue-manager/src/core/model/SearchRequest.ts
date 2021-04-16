@@ -1,5 +1,5 @@
-import { InconsistencyException } from '../exception/InconsistencyException';
-import { SearchRequestType } from './SearchRequestType';
+import { InconsistencyException } from '../exception/InconsistencyException'
+import { SearchRequestType } from './SearchRequestType'
 import { SearchPlaceIdentifier } from '../interface/search-place-identifier'
 
 type SearchRequestValues = Omit<SearchRequest,
@@ -61,7 +61,7 @@ export class SearchRequest {
       collectingStartedAt,
       collectingFinishedAt,
       collectingCount,
-    );
+    )
   }
 
   scheduleNextSearch(now: Date): SearchRequest {

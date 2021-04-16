@@ -1,19 +1,19 @@
-import { CalculatedValues } from '../../core/interface/calculated-values';
-import { PriceChange } from '../../core/interface/price-change';
+import { CalculatedValues } from '../../core/interface/calculated-values'
+import { ValueChange } from '@kb/model'
 
 interface RepeatedValue {
-  readonly value: number;
-  readonly occurrenceCount: number;
+  readonly value: number
+  readonly occurrenceCount: number
 }
 
 export class PriceCalculator {
-  calculate(currentPrice: number, priceChanges: PriceChange[]): CalculatedValues {
+  calculate(currentPrice: number, priceChanges: ValueChange<number>[]): CalculatedValues {
     const pricesWithCurrentPrice: RepeatedValue[] = priceChanges.map(
       v => ({
         value: v.value,
         occurrenceCount: v.occurrenceCount
-      })).concat({ value: currentPrice, occurrenceCount: 1 });
-    const { avg, min, max } = this.calcBasicPriceValues(pricesWithCurrentPrice);
+      })).concat({ value: currentPrice, occurrenceCount: 1 })
+    const { avg, min, max } = this.calcBasicPriceValues(pricesWithCurrentPrice)
     return {
       minPrice: min,
       maxPrice: max,
@@ -25,15 +25,15 @@ export class PriceCalculator {
   }
 
   private calcBasicPriceValues(values: RepeatedValue[]): { min: number, max: number, avg: number } {
-    const averagePrice = this.calcAvgValue(values);
+    const averagePrice = this.calcAvgValue(values)
     const prices = values.map(v => v.value)
-    const min = Math.min(...prices);
-    const max = Math.max(...prices);
+    const min = Math.min(...prices)
+    const max = Math.max(...prices)
     return {
       min,
       max,
       avg: this.roundToTwoDecimalPlaces(averagePrice),
-    };
+    }
   }
 
   private calcAvgValue = (values: RepeatedValue[]): number => {
@@ -44,11 +44,11 @@ export class PriceCalculator {
 
   private calcPriceRate = (lastPrice: number, maxPrice: number): number => {
     if (lastPrice === maxPrice) {
-      return 0;
+      return 0
     }
-    const percent = ((maxPrice - lastPrice) / maxPrice) * 100;
-    return Math.round(percent * 100) / 100;
+    const percent = ((maxPrice - lastPrice) / maxPrice) * 100
+    return Math.round(percent * 100) / 100
   }
 
-  private roundToTwoDecimalPlaces = (value: number): number => Math.round(value * 100) / 100;
+  private roundToTwoDecimalPlaces = (value: number): number => Math.round(value * 100) / 100
 }

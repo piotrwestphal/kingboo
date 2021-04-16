@@ -1,6 +1,6 @@
-import { CacheDocument } from './search-request-cache.document';
-import { SaveCache } from './save-cache';
-import { CacheData } from '../../core/model/CacheData';
+import { CacheDocument } from './search-request-cache.document'
+import { SaveCache } from './save-cache'
+import { CacheData } from '../../core/model/CacheData'
 
 export class CacheDocumentMapper {
   toCacheData<T>({
@@ -30,6 +30,6 @@ export class CacheDocumentMapper {
       collectingStartedAt,
       collectingFinishedAt,
       data,
-    };
+    }
   }
 }

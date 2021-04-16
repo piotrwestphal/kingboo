@@ -1,14 +1,14 @@
-import { UserNotificationSender } from '../../core/abstract/user-notification.sender';
-import { ProcessingProgressRepository } from '../../core/abstract/processing-progress.repository';
-import { ProcessingProgressType } from '../../core/processing-actvity.type';
-import { logger } from '../../logger';
-import { HotelsSummaryData } from '../../core/interface/hotels-summary-data';
+import { DataUpdateSender } from '../../core/abstract/data-update.sender'
+import { ProcessingProgressRepository } from '../../core/abstract/processing-progress.repository'
+import { ProcessingProgressType } from '../../core/processing-actvity.type'
+import { logger } from '../../logger'
+import { HotelsSummaryData } from '../../core/interface/hotels-summary-data'
 
 export class ProgressMeasuringService {
 
   constructor(
     private readonly processingProgressRepository: ProcessingProgressRepository,
-    private readonly userNotificationSender: UserNotificationSender,
+    private readonly dataUpdateSender: DataUpdateSender,
   ) {
   }
 
@@ -47,7 +47,7 @@ export class ProgressMeasuringService {
       const deletedCount = await this.processingProgressRepository.deleteMany(searchId)
       logger.debug(`Deleted [${deletedCount}] processing progress elements (parts + summary) with search id [${searchId}]`)
       const { collectingStartedAt, collectingFinishedAt } = data
-      this.userNotificationSender.notifyAboutHotelsProcessingFinished(searchId, collectingStartedAt, collectingFinishedAt)
+      this.dataUpdateSender.notifyAboutHotelsProcessingFinished(searchId, collectingStartedAt, collectingFinishedAt)
     } else {
       logger.debug(`Still waiting for all hotels parts (expected number of parts [${data.expectedNumberOfParts}]) ` +
         `with search id [${searchId}] to be processed`)

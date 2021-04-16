@@ -1,8 +1,8 @@
-import { AppConfig } from '../src/config/app.config';
-import { retrieveRMQQueueOptions } from '@kb/rabbit';
+import { AppConfig } from '../src/config/app.config'
+import { retrieveRMQQueueOptions } from '@kb/rabbit'
 
-const mqAddress = (env) => env.MQ_ADDRESS;
-const consumerQueueName = (env) => env.MQ_USER_NOTIFICATIONS_QUEUE_NAME;
+const mqAddress = (env) => env.MQ_ADDRESS
+const consumerQueueName = (env) => env.MQ_USER_NOTIFICATIONS_QUEUE_NAME
 
 export const devConfig = (env: NodeJS.ProcessEnv): AppConfig =>
   ({
@@ -22,4 +22,4 @@ export const devConfig = (env: NodeJS.ProcessEnv): AppConfig =>
       },
     },
     searchRequestsResourceAddress: env.SEARCH_REQUESTS_RESOURCE_ADDRESS,
-  });
+  })

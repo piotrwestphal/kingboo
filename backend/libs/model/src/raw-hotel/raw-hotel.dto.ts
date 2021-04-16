@@ -1,9 +1,9 @@
-import { RawRoomDto } from '@kb/model';
+import { RawRoomDto } from '@kb/model'
 
 export interface RawHotelDto {
-  readonly hotelId: string;
-  readonly name: string;
-  readonly price: string;
+  readonly hotelId: string
+  readonly name: string
+  readonly price: string
   readonly tax: string;
   readonly distanceFromCenter: string;
   readonly distanceFromCenterOrderIndex: number;

@@ -1,5 +1,5 @@
-import { RawSearchResult } from '../../core/model/RawSearchResult';
-import { RawHotel } from '../../core/model/RawHotel';
+import { RawSearchResult } from '../../core/model/RawSearchResult'
+import { RawHotel } from '../../core/model/RawHotel'
 import { RawHotelDocument } from './raw-hotel.document';
 import { RawSearchResultDocument } from './raw-search-result.document';
 import { Timestamp } from '@google-cloud/firestore';

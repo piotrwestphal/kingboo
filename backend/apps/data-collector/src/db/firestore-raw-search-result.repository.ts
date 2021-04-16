@@ -1,51 +1,50 @@
-import { FirestoreClient } from '@kb/firestore';
-import { RawSearchResultRepository } from '../core/abstract/raw-search-result.repository';
-import { RawSearchResult } from '../core/model/RawSearchResult';
-import { logger } from '../logger';
-import { RawSearchResultMapper } from './raw-search-result/raw-search-result.mapper';
-import { RawSearchResultDocument } from './raw-search-result/raw-search-result.document';
-import { Query, QuerySnapshot } from '@google-cloud/firestore';
-import { LinksDocument } from './links/links.document';
-import { FirestoreDocument } from './firestore.document';
-import { LinksMapper } from './links/links.mapper';
+import { FirestoreClient, FirestoreDocument } from '@kb/firestore'
+import { RawSearchResultRepository } from '../core/abstract/raw-search-result.repository'
+import { RawSearchResult } from '../core/model/RawSearchResult'
+import { logger } from '../logger'
+import { RawSearchResultMapper } from './raw-search-result/raw-search-result.mapper'
+import { RawSearchResultDocument } from './raw-search-result/raw-search-result.document'
+import { Query, QuerySnapshot } from '@google-cloud/firestore'
+import { LinksDocument } from './links/links.document'
+import { LinksMapper } from './links/links.mapper'
 
 export class FirestoreRawSearchResultRepository extends RawSearchResultRepository {
 
-  private readonly HOUR = 60 * 60 * 1000;
-  private readonly RAW_SEARCH_RESULTS_COLLECTION = 'raw-search-results';
-  private readonly LINKS_COLLECTION = 'hotel-links';
-  private readonly DELETE_BATCH_SIZE = 10;
+  private readonly HOUR = 60 * 60 * 1000
+  private readonly RAW_SEARCH_RESULTS_COLLECTION = 'raw-search-results'
+  private readonly LINKS_COLLECTION = 'hotel-links'
+  private readonly DELETE_BATCH_SIZE = 10
 
   constructor(
     private readonly firestoreClient: FirestoreClient,
     private readonly linksMapper: LinksMapper,
     private readonly rawSearchResultMapper: RawSearchResultMapper,
   ) {
-    super();
+    super()
   }
 
   /**
    * Save raw search results (without links) and links to separate collections
    */
   async create(rawSearchResult: RawSearchResult): Promise<void> {
-    const rawSearchResultDocument = this.rawSearchResultMapper.toDoc(rawSearchResult);
+    const rawSearchResultDocument = this.rawSearchResultMapper.toDoc(rawSearchResult)
     const { docId: newDocId, createdAt, searchId } = rawSearchResultDocument
     const linksDocument = this.linksMapper.toDoc(newDocId, searchId, createdAt, rawSearchResult.hotels)
     try {
-      const savedRawSearchResult = await this.firestoreClient.addToCollection(this.RAW_SEARCH_RESULTS_COLLECTION, newDocId, rawSearchResultDocument);
-      const { docId: resultsDocId, searchId, searchPlaceIdentifier, collectingTimeSec, hotelsCount } = savedRawSearchResult.data();
-      logger.info(`Created raw search result with doc id [${resultsDocId}]`);
+      const savedRawSearchResult = await this.firestoreClient.addToCollection(this.RAW_SEARCH_RESULTS_COLLECTION, rawSearchResultDocument)
+      const { docId: resultsDocId, searchId, searchPlaceIdentifier, collectingTimeSec, hotelsCount } = savedRawSearchResult.data()
+      logger.info(`Created raw search result with doc id [${resultsDocId}]`)
       logger.debug(`Details of created raw search result`, {
         searchId,
         searchPlaceIdentifier,
         collectingTimeSec,
         hotelsCount,
-      });
-      const savedLinks = await this.firestoreClient.addToCollection(this.LINKS_COLLECTION, newDocId, linksDocument)
+      })
+      const savedLinks = await this.firestoreClient.addToCollection(this.LINKS_COLLECTION, linksDocument)
       const { docId: linksDocId, links } = savedLinks.data()
-      logger.info(`Created links with id [${linksDocId}]. Links count: [${Object.keys(links).length}]`);
+      logger.info(`Created links with id [${linksDocId}]. Links count: [${Object.keys(links).length}]`)
     } catch (err) {
-      logger.error(`Error when adding raw search result with searchId [${rawSearchResult.searchId}] to collection`, err);
+      logger.error(`Error when adding raw search result with searchId [${rawSearchResult.searchId}] to collection`, err)
     }
   }
 
@@ -53,12 +52,12 @@ export class FirestoreRawSearchResultRepository extends RawSearchResultRepositor
     const pendingDeleteResults = this.deleteOlderThanGivenHoursFromCollection<RawSearchResultDocument>(this.RAW_SEARCH_RESULTS_COLLECTION, hours)
     const pendingDeleteLinks = this.deleteOlderThanGivenHoursFromCollection<LinksDocument>(this.LINKS_COLLECTION, hours)
     const [deletedResultIds] = await Promise.all([pendingDeleteResults, pendingDeleteLinks])
-    return deletedResultIds;
+    return deletedResultIds
   }
 
   private async deleteOlderThanGivenHoursFromCollection<T extends FirestoreDocument>(collectionName: string, hours: number): Promise<string[]> {
-    const collectionRef = this.firestoreClient.getCollection<T>(collectionName);
-    const offset = new Date(Date.now() - hours * this.HOUR);  // x hours ago
+    const collectionRef = this.firestoreClient.getCollection<T>(collectionName)
+    const offset = new Date(Date.now() - hours * this.HOUR)  // x hours ago
     const oldDocsQuery = collectionRef.where('createdAt', '<', offset)
     return new Promise((res) => {
       this.deleteInBatch(collectionName, oldDocsQuery, this.DELETE_BATCH_SIZE, res, [])
@@ -80,7 +79,7 @@ export class FirestoreRawSearchResultRepository extends RawSearchResultRepositor
     await batch.commit()
     const deletedIds = snapshot.docs
       .map((v) => v.id)
-      .concat(currentlyDeletedIds);
+      .concat(currentlyDeletedIds)
     logger.debug(`Deleted [${snapshot.size}] items from [${collectionName}] collection`)
     // Recurse on the next process tick, to avoid
     // exploding the stack.
@@ -93,9 +92,9 @@ export class FirestoreRawSearchResultRepository extends RawSearchResultRepositor
     rawSearchResultDocuments: RawSearchResultDocument[],
     linksDocuments: LinksDocument[]
   }> {
-    const rawSearchResultsSnapshotPending = this.getFromCollectionById<RawSearchResultDocument>(this.RAW_SEARCH_RESULTS_COLLECTION, searchId);
-    const linksSnapshotPending = this.getFromCollectionById<LinksDocument>(this.LINKS_COLLECTION, searchId);
-    const [rawSearchResultsSnapshot, linksSnapshot] = await Promise.all([rawSearchResultsSnapshotPending, linksSnapshotPending]);
+    const rawSearchResultsSnapshotPending = this.getFromCollectionById<RawSearchResultDocument>(this.RAW_SEARCH_RESULTS_COLLECTION, searchId)
+    const linksSnapshotPending = this.getFromCollectionById<LinksDocument>(this.LINKS_COLLECTION, searchId)
+    const [rawSearchResultsSnapshot, linksSnapshot] = await Promise.all([rawSearchResultsSnapshotPending, linksSnapshotPending])
     return {
       rawSearchResultDocuments: rawSearchResultsSnapshot.docs.map(doc => doc.data()),
       linksDocuments: linksSnapshot.docs.map(doc => doc.data())
@@ -104,7 +103,7 @@ export class FirestoreRawSearchResultRepository extends RawSearchResultRepositor
 
   private getFromCollectionById<T extends FirestoreDocument>(collectionName: string, searchId: string): Promise<QuerySnapshot<T>> {
     const collectionRef = this.firestoreClient.getCollection<T>(collectionName)
-    return collectionRef.where('searchId', '==', searchId).get();
+    return collectionRef.where('searchId', '==', searchId).get()
   }
 
 }

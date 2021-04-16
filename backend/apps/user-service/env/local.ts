@@ -1,8 +1,8 @@
-import { retrieveRMQQueueOptions } from '@kb/rabbit';
-import { AppConfig } from '../src/config/app.config';
+import { retrieveRMQQueueOptions } from '@kb/rabbit'
+import { AppConfig } from '../src/config/app.config'
 
-const mqAddress = 'amqp://dev:dev@localhost:5672';
-const consumerQueueName = 'user-notifications';
+const mqAddress = 'amqp://dev:dev@localhost:5672'
+const consumerQueueName = 'user-notifications'
 
 export const localConfig: AppConfig = {
   nodeEnv: 'local',
@@ -21,4 +21,4 @@ export const localConfig: AppConfig = {
     },
   },
   searchRequestsResourceAddress: 'http://localhost:38081',
-};
+}

@@ -5,11 +5,11 @@ import { ConfigModule } from '@kb/config'
 import { AppConfigService } from '../config/app-config.service'
 import { getEnvironments } from '../config/environments'
 import { logger } from '../logger'
-import { RestModule } from '../rest/rest.module';
-import { DbModule } from '../db/db.module';
-import { SearchRequestsClient } from '../core/abstract/search-requests.client';
-import { SearchDataMapper } from './search-data/search-data.mapper';
-import { SearchRequestMessageConsumer } from './search-request-message.consumer';
+import { RestModule } from '../rest/rest.module'
+import { DbModule } from '../db/db.module'
+import { SearchRequestsClient } from '../core/abstract/search-requests.client'
+import { SearchDataMapper } from './search-data/search-data.mapper'
+import { SearchRequestMessageConsumer } from './search-request-message.consumer'
 import { AppUserNotificationHandler } from './app-user-notification.handler'
 import { UserNotificationHandler } from '../core/abstract/user-notification.handler'
 

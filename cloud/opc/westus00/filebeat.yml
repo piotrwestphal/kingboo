@@ -15,6 +15,14 @@ filebeat.inputs:
     fields:
       app: SRC
       type: kingboo
+  - type: log
+    enabled: true
+    paths:
+      - /var/log/apps/THA-output.log
+    encoding: utf-8
+    fields:
+      app: THA
+      type: kingboo
 
 setup.template.settings:
   index.number_of_shards: 1

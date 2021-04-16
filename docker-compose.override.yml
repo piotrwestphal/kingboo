@@ -35,8 +35,14 @@ services:
       - ./compose-output:/usr/src/app/dist/apps/search-result-calculator/output
       - ./tools/wait-for-it.sh:/wait-for-it.sh
     command: ["/wait-for-it.sh", "rabbitmq:5672", "-t", "60", "--", "node", "main"]
-    ports:
-      - 38082:8080
+
+  top-hotels-aggregator:
+    env_file:
+      - dev.env
+    volumes:
+      - ./compose-output:/usr/src/app/dist/apps/top-hotels-aggregator/output
+      - ./tools/wait-for-it.sh:/wait-for-it.sh
+    command: ["/wait-for-it.sh", "rabbitmq:5672", "-t", "60", "--", "node", "main"]
 
   rabbitmq:
     image: rabbitmq:3-management-alpine

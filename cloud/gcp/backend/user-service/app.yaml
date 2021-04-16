@@ -1,5 +1,5 @@
 service: user-service
-runtime: nodejs12
+runtime: nodejs14
 instance_class: F1
 env_variables:
   NODE_ENV: prod
@@ -11,9 +11,8 @@ env_variables:
   MQ_ADDRESS: "__MQ_ADDRESS__"
   MONGO_ADDRESS: "__MONGO_ADDRESS__"
   MQ_USER_NOTIFICATIONS_QUEUE_NAME: user-notifications
-  MQ_USER_NOTIFICATIONS_QUEUE_MESSAGE_TTL: 86400000
+  MQ_USER_NOTIFICATIONS_QUEUE_MESSAGE_TTL: 60000
   SEARCH_REQUESTS_RESOURCE_ADDRESS: "__SEARCH_REQUESTS_RESOURCE_ADDRESS__"
-  HOTELS_RESOURCE_ADDRESS: "__HOTELS_RESOURCE_ADDRESS__"
 
 automatic_scaling:
   min_instances: 0

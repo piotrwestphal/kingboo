@@ -1,13 +1,13 @@
-import { SearchRequestType } from '../model/SearchRequestType';
+import { SearchRequestType } from '../model/SearchRequestType'
 
 export interface SearchIdentifierComponents {
-  readonly type: SearchRequestType;
-  readonly searchPlace: string;
-  readonly checkInDate: Date;
-  readonly checkOutDate: Date;
-  readonly numberOfRooms: number;
-  readonly numberOfAdults: number;
-  readonly childrenAgeAtCheckout: number[];
-  readonly updateFrequencyMinutes: number;
-  readonly resultsLimit: number;
+  readonly type: SearchRequestType
+  readonly searchPlace: string
+  readonly checkInDate: Date
+  readonly checkOutDate: Date
+  readonly numberOfRooms: number
+  readonly numberOfAdults: number
+  readonly childrenAgeAtCheckout: number[]
+  readonly updateFrequencyMinutes: number
+  readonly resultsLimit: number
 }

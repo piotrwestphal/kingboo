@@ -1,5 +1,5 @@
-import { SearchDataDto } from '@kb/model';
+import { SearchDataDto } from '@kb/model'
 
 export interface SearchDataPayload {
-  readonly searchDataList: SearchDataDto[];
+  readonly searchDataList: SearchDataDto[]
 }

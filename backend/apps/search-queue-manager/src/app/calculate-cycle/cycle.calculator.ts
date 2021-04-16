@@ -1,6 +1,6 @@
-import { CyclicSearch } from '../../core/model/CyclicSearch';
-import { CycleStartFinder } from './cycle-start.finder';
-import { CreateSearchRequestMapper } from '../search-request/create-search-request.mapper';
+import { CyclicSearch } from '../../core/model/CyclicSearch'
+import { CycleStartFinder } from './cycle-start.finder'
+import { CreateSearchRequestMapper } from '../search-request/create-search-request.mapper'
 import { CyclicSearchRepository } from '../../core/abstract/cyclic-search.repository';
 import { SearchRequestRepository } from '../../core/abstract/search-request.repository';
 import { SearchRequestService } from '../search-request/search-request.service';

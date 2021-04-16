@@ -1,6 +1,6 @@
-import * as Joi from '@hapi/joi';
-import { SchemaMap } from '@hapi/joi';
-import { CreateSearchRequest } from './create-search-request';
+import * as Joi from '@hapi/joi'
+import { SchemaMap } from '@hapi/joi'
+import { CreateSearchRequest } from './create-search-request'
 
 export const createSearchRequestValidationSchemaMap: SchemaMap<CreateSearchRequest> = {
   updateFrequencyMinutes: Joi.number().required(),
@@ -11,5 +11,5 @@ export const createSearchRequestValidationSchemaMap: SchemaMap<CreateSearchReque
   numberOfRooms: Joi.number().required(),
   numberOfAdults: Joi.number().required(),
   childrenAgeAtCheckout: Joi.array().items(Joi.number()),
-};
+}
 

@@ -1,7 +1,5 @@
-import { Document } from 'mongoose';
+import { Document } from 'mongoose'
+import { ValueChange } from '@kb/model'
 
-export interface PriceChangeDocument extends Document {
-  readonly value: number;
-  readonly occurrenceCount: number;
-  readonly changedAt: string;
+export interface PriceChangeDocument extends ValueChange<number>, Document {
 }

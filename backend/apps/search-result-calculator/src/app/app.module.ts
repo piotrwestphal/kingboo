@@ -19,7 +19,7 @@ import { OldHotelsRemover } from './scheduler/old-hotels.remover';
 import { HotelsController } from './hotels.controller';
 import { HotelsService } from './hotels/hotels.service';
 import { ProgressMeasuringService } from './processing-progress/progress-measuring.service';
-import { UserNotificationSender } from '../core/abstract/user-notification.sender';
+import { DataUpdateSender } from '../core/abstract/data-update.sender';
 import { ProcessingProgressRepository } from '../core/abstract/processing-progress.repository';
 
 @Module({
@@ -42,11 +42,11 @@ import { ProcessingProgressRepository } from '../core/abstract/processing-progre
       provide: ProgressMeasuringService,
       useFactory: (
         processingProgressRepository: ProcessingProgressRepository,
-        userNotificationSender: UserNotificationSender,
+        dataUpdateSender: DataUpdateSender,
       ) => {
-        return new ProgressMeasuringService(processingProgressRepository, userNotificationSender)
+        return new ProgressMeasuringService(processingProgressRepository, dataUpdateSender)
       },
-      inject: [ProcessingProgressRepository, UserNotificationSender]
+      inject: [ProcessingProgressRepository, DataUpdateSender]
     },
     {
       provide: HotelProcessor,

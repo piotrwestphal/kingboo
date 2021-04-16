@@ -1,4 +1,4 @@
-import { AppConfig } from '../src/config/app.config';
+import { AppConfig } from '../src/config/app.config'
 
 export const prodConfig = (env: NodeJS.ProcessEnv): AppConfig =>
   ({
@@ -41,4 +41,4 @@ export const prodConfig = (env: NodeJS.ProcessEnv): AppConfig =>
         queue: env.MQ_DATA_TO_PROCESS_QUEUE_NAME,
       },
     },
-  });
+  })

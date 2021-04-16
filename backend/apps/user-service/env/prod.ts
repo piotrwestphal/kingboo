@@ -1,4 +1,4 @@
-import { AppConfig } from '../src/config/app.config';
+import { AppConfig } from '../src/config/app.config'
 
 export const prodConfig = (env: NodeJS.ProcessEnv): AppConfig =>
   ({
@@ -22,4 +22,4 @@ export const prodConfig = (env: NodeJS.ProcessEnv): AppConfig =>
       },
     },
     searchRequestsResourceAddress: env.SEARCH_REQUESTS_RESOURCE_ADDRESS,
-  });
+  })

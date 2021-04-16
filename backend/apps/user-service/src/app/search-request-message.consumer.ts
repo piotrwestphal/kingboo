@@ -36,14 +36,14 @@ export class SearchRequestMessageConsumer {
                                          @Ctx() ctx: RmqContext): Promise<void> {
     logger.info(`Receive ${ctx.getPattern()} message with search id [${searchId}]`)
     await this.userNotificationHandler.updateSearchRequestCache(searchId, timestamp)
-    mqAck(ctx);
+    mqAck(ctx)
   }
 
   @MessagePattern(UserNotificationsMessagePattern.CYCLIC_SEARCH_REQUEST_DELETED)
   async handleCyclicSearchRequestDeleted(@Payload() { searchId, timestamp, }: MqMessage,
                                          @Ctx() ctx: RmqContext): Promise<void> {
-    logger.info(`Receive ${ctx.getPattern()} message with search id [${searchId}]`);
+    logger.info(`Receive ${ctx.getPattern()} message with search id [${searchId}]`)
     await this.userNotificationHandler.updateSearchRequestCache(searchId, timestamp)
-    mqAck(ctx);
+    mqAck(ctx)
   }
 }

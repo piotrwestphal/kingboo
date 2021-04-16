@@ -1,8 +1,8 @@
-import { Cron, CronExpression } from '@nestjs/schedule';
-import { Injectable } from '@nestjs/common';
-import { RawSearchResultRepository } from '../../core/abstract/raw-search-result.repository';
-import { AppConfigService } from '../../config/app-config.service';
-import { logger } from '../../logger';
+import { Cron, CronExpression } from '@nestjs/schedule'
+import { Injectable } from '@nestjs/common'
+import { RawSearchResultRepository } from '../../core/abstract/raw-search-result.repository'
+import { AppConfigService } from '../../config/app-config.service'
+import { logger } from '../../logger'
 
 @Injectable()
 export class ObsoleteResultsSearcher {

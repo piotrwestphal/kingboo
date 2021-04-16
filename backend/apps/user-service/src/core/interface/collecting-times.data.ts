@@ -1,4 +1,4 @@
 export interface CollectingTimesData {
-  readonly collectingStartedAt: string;
-  readonly collectingFinishedAt: string;
+  readonly collectingStartedAt: string
+  readonly collectingFinishedAt: string
 }

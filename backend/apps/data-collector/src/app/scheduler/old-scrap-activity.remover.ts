@@ -1,7 +1,7 @@
-import { Injectable } from '@nestjs/common';
-import { Cron, CronExpression } from '@nestjs/schedule';
-import { logger } from '../../logger';
-import { ScrapActivityRepository } from '../../core/abstract/scrap-activity.repository';
+import { Injectable } from '@nestjs/common'
+import { Cron, CronExpression } from '@nestjs/schedule'
+import { logger } from '../../logger'
+import { ScrapActivityRepository } from '../../core/abstract/scrap-activity.repository'
 import { AppConfigService } from '../../config/app-config.service';
 
 @Injectable()

@@ -1,5 +1,5 @@
-import { SearchDataDto, SearchRequestDto, TopHotelsDto } from '@kb/model';
-import { CacheData } from '../../core/model/CacheData';
+import { SearchDataDto, SearchRequestDto, TopHotelsDto } from '@kb/model'
+import { CacheData } from '../../core/model/CacheData'
 
 export class SearchDataMapper {
   toDto({

@@ -1,4 +1,4 @@
-import { ShortDate } from '../../core/interface/short-date';
+import { ShortDate } from '../../core/interface/short-date'
 
 export interface UserCreateSearchRequest {
   readonly updateFrequencyMinutes: number;

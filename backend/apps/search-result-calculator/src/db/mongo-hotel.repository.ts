@@ -1,12 +1,12 @@
-import { HotelRepository } from '../core/abstract/hotel.repository';
-import { Hotel } from '../core/model/Hotel';
-import { Model } from 'mongoose';
-import { HotelDocumentMapper } from './hotel/hotel-document.mapper';
-import { HotelDocument } from './hotel/document/hotel.document';
-import { HotelIdentifier } from '../core/interface/hotel-identifier';
-import { TopHotels } from '../core/interface/top-hotels';
-import { SimpleHotel } from '../core/interface/simple-hotel';
-import { NotFoundException } from '@nestjs/common';
+import { HotelRepository } from '../core/abstract/hotel.repository'
+import { Hotel } from '../core/model/Hotel'
+import { Model } from 'mongoose'
+import { HotelDocumentMapper } from './hotel/hotel-document.mapper'
+import { HotelDocument } from './hotel/document/hotel.document'
+import { HotelIdentifier } from '../core/interface/hotel-identifier'
+import { TopHotels } from '../core/interface/top-hotels'
+import { SimpleHotel } from '../core/interface/simple-hotel'
+import { NotFoundException } from '@nestjs/common'
 import { logger } from '../logger'
 
 const selectSimpleHotel: Record<keyof SimpleHotel & '_id', 1 | 0> = {
@@ -31,13 +31,13 @@ const dateRangeQuery = (startDate: string, endDate?: string) => {
 
 export class MongoHotelRepository extends HotelRepository {
 
-  private readonly DAY = 24 * 60 * 60 * 1000;
+  private readonly DAY = 24 * 60 * 60 * 1000
 
   constructor(
     private readonly mapper: HotelDocumentMapper,
     private readonly model: Model<HotelDocument>,
   ) {
-    super();
+    super()
   }
 
   async findAllBySearchIdAndHotelId(searchId: string, hotelIds: string[]): Promise<Map<string, Hotel>> {
@@ -46,15 +46,15 @@ export class MongoHotelRepository extends HotelRepository {
       hotelId: {
         $in: hotelIds,
       },
-    }).exec();
-    const hotelIdByHotel = new Map<string, Hotel>();
+    }).exec()
+    const hotelIdByHotel = new Map<string, Hotel>()
     if (hotelsDocs?.length > 0) {
       return hotelsDocs.reduce((map, hotelDoc) => {
-        const hotel = this.fromDoc(hotelDoc);
-        return map.set(hotelDoc.hotelId, hotel);
-      }, hotelIdByHotel);
+        const hotel = this.fromDoc(hotelDoc)
+        return map.set(hotelDoc.hotelId, hotel)
+      }, hotelIdByHotel)
     }
-    return hotelIdByHotel;
+    return hotelIdByHotel
   }
 
   findAllBySearchId(searchId: string,
@@ -66,21 +66,21 @@ export class MongoHotelRepository extends HotelRepository {
     })
       .select({ ...selectSimpleHotel })
       .sort({ distanceFromCenterMeters: 1 })
-      .exec();
+      .exec()
   }
 
   async findLastUpdatedGivenDaysAgo(now: Date, days: number): Promise<HotelIdentifier[]> {
-    const offset = new Date(now.valueOf() - days * this.DAY); // x days ago
+    const offset = new Date(now.valueOf() - days * this.DAY) // x days ago
     const found = await this.model.find({
       updatedAt: { $lte: offset },
-    }).limit(1000).exec();
+    }).limit(1000).exec()
     return found.map(({ searchId, hotelId }) => ({ searchId, hotelId }))
   }
 
   async createAll(hotels: Hotel[]): Promise<Hotel[]> {
     const hotelsToSave = hotels.map(h => this.mapper.prepareForSave(h))
-    const created = await this.model.insertMany(hotelsToSave);
-    return created.map(doc => this.fromDoc(doc));
+    const created = await this.model.insertMany(hotelsToSave)
+    return created.map(doc => this.fromDoc(doc))
   }
 
   async updateAll(hotels: Hotel[]): Promise<number> {
@@ -103,9 +103,9 @@ export class MongoHotelRepository extends HotelRepository {
 
   async deleteMany(hotelIdentifiers: HotelIdentifier[]): Promise<number> {
     const pendingDeletions = hotelIdentifiers.map(({ searchId, hotelId }) =>
-      this.model.deleteOne({ searchId, hotelId }).exec());
-    const deleted = await Promise.all(pendingDeletions);
-    return deleted.length;
+      this.model.deleteOne({ searchId, hotelId }).exec())
+    const deleted = await Promise.all(pendingDeletions)
+    return deleted.length
   }
 
   async findTopHotelsBySearchIdOrFail(searchId: string,
@@ -114,30 +114,28 @@ export class MongoHotelRepository extends HotelRepository {
     const findBySearchId = (cond) => this.model.find({
       searchId,
       lastCollectedAt: dateRangeQuery(collectingStartedAt, collectingFinishedAt)
+    }).orFail(() => {
+      logger.error(`Error when searching for hotels for search id: [${searchId}] and for range from ${collectingStartedAt} to ${collectingFinishedAt} ` +
+        `by ${cond}.`)
+      return new NotFoundException(
+        `Hotels with search id: ${searchId} and for range from ${collectingStartedAt} to ${collectingFinishedAt} not exist`)
     })
-      // TODO: sometimes it fails - log some actions here
-      .orFail(() => {
-        logger.error(`Error when searching for hotels for search id: [${searchId}] and for range from ${collectingStartedAt} to ${collectingFinishedAt} ` +
-          `by ${cond}.`)
-        return new NotFoundException(
-          `Hotels with search id: ${searchId} and for range from ${collectingStartedAt} to ${collectingFinishedAt} not exist`)
-      })
       .select({ ...selectSimpleHotel })
-      .limit(10);
+      .limit(10)
     const pendingBestPriceRate = findBySearchId('priceRate').sort({
       'calculatedValues.priceRate': -1,
       'latestValues.price': 1
-    }).exec();
+    }).exec()
     const pendingCheapest = findBySearchId('price').sort({
       'latestValues.price': 1
-    }).exec();
+    }).exec()
     const pendingBestLocation = findBySearchId('distance').sort({
       'latestValues.distanceFromCenterOrderIndex': 1,
-    }).exec();
+    }).exec()
     const pendingBestRate = findBySearchId('rate').sort({
       'latestValues.rate': -1,
       'latestValues.price': 1
-    }).exec();
+    }).exec()
     const [
       bestPriceRate,
       cheapest,
@@ -152,5 +150,5 @@ export class MongoHotelRepository extends HotelRepository {
     }
   }
 
-  private fromDoc = (doc: HotelDocument) => this.mapper.fromDoc(doc);
+  private fromDoc = (doc: HotelDocument) => this.mapper.fromDoc(doc)
 }
