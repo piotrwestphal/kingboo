@@ -58,7 +58,7 @@ export class MongoHotelRepository extends HotelRepository {
           update: {
             $set: sh,
           },
-          upsert: true, // TODO: maybe merge create and update ops
+          upsert: true,
         }
       }))
     const writeResult = await this.model.bulkWrite(updateOps)
