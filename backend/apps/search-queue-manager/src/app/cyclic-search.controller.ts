@@ -16,8 +16,8 @@ export class CyclicSearchController {
     return this.cyclicSearchService.createCyclicSearch(createCyclicSearch);
   }
 
-  @Delete(':cyclicId')
-  async delete(@Param('cyclicId') cyclicId: string): Promise<HttpStatus> {
+  @Delete(':cyclic_id')
+  async delete(@Param('cyclic_id') cyclicId: string): Promise<HttpStatus> {
     await this.cyclicSearchService.deleteCyclicSearch(cyclicId);
     return HttpStatus.OK;
   }

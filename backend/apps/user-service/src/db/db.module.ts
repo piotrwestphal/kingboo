@@ -1,47 +1,25 @@
-import { Module } from '@nestjs/common';
-import { AppConfigService } from '../config/app-config.service';
-import { getModelToken } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
-import { MongoModule } from '@kb/mongo';
-import { TopHotelsCacheRepository } from '../core/abstract/top-hotels-cache.repository';
-import { MongoCacheRepository } from './mongo-cache.repository';
-import { CacheDocument } from './cache/search-request-cache.document';
-import { TopHotelsDto } from '@kb/model';
-import { CacheDocumentMapper } from './cache/cache-document.mapper';
-import { CacheSchema } from './cache/cache.schema';
-
-// const SearchRequestCacheSchemaKey = 'searchRequestCache'
-const TopHotelsCacheSchemaKey = 'topHotelsCache'
+import { Module } from '@nestjs/common'
+import { AppConfigService } from '../config/app-config.service'
+import { FirestoreClient, FirestoreModule } from '@kb/firestore'
+import { FirestoreTopHotelsRepository } from './firestore-top-hotels.repository'
+import { TopHotelsRepository } from '../core/abstract/top-hotels.repository'
+import { TopHotelsDocumentMapper } from './top-hotels-document.mapper'
 
 @Module({
   imports: [
-    MongoModule.register({ configClass: AppConfigService }, [
-      // { name: SearchRequestCacheSchemaKey, schema: CacheSchema },
-      { name: TopHotelsCacheSchemaKey, schema: CacheSchema },
-    ]),
+    FirestoreModule.register({ configClass: AppConfigService }),
   ],
   providers: [
-    // {
-    //   provide: SearchRequestCacheRepository,
-    //   useFactory: (model: Model<CacheDocument<SearchRequestDto>>) => {
-    //     const mapper = new CacheDocumentMapper();
-    //     return new MongoCacheRepository(mapper, model);
-    //   },
-    //   inject: [getModelToken(SearchRequestCacheSchemaKey)],
-    // },
     {
-      provide: TopHotelsCacheRepository,
-      useFactory: (model: Model<CacheDocument<TopHotelsDto>>) => {
-        const mapper = new CacheDocumentMapper();
-        return new MongoCacheRepository(mapper, model);
+      provide: TopHotelsRepository,
+      useFactory: (firestoreClient: FirestoreClient) => {
+        const mapper = new TopHotelsDocumentMapper()
+        return new FirestoreTopHotelsRepository(firestoreClient, mapper)
       },
-      inject: [getModelToken(TopHotelsCacheSchemaKey)],
+      inject: [FirestoreClient],
     },
   ],
-  exports: [
-    // SearchRequestCacheRepository,
-    TopHotelsCacheRepository,
-  ],
+  exports: [TopHotelsRepository],
 })
 export class DbModule {
 }

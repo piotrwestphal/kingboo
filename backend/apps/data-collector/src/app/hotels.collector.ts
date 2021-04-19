@@ -82,7 +82,6 @@ export class HotelsCollector {
     let pagesCollected = 0
 
     while (isNextPageButtonAvailable && resultsLimit > currentHotelsCount) {
-      // TODO: wrap with try catch
       const { scrapedRawHotels, nextPageButtonAvailable } = await this.scraperFacade.collectHotelsFromCurrentPage()
       const collectedAt = new Date().toISOString()
       const hotelIdx = (idx: number) => idx + currentHotelsCount

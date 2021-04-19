@@ -13,10 +13,17 @@ services:
     env_file:
       - westus00.env
       - ./../opc.env
+    environment:
+      LOG_LEVEL: info
     volumes:
       - ./../../../compose-output:/usr/src/app/dist/apps/search-result-calculator/output
-    ports:
-      - 8082:8080
+
+  top-hotels-aggregator:
+    env_file:
+      - westus00.env
+      - ./../opc.env
+    volumes:
+      - ./../../../compose-output:/usr/src/app/dist/apps/top-hotels-aggregator/output
 
   filebeat:
     image: docker.elastic.co/beats/filebeat-oss:7.12.0

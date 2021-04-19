@@ -1,4 +1,4 @@
 export interface TimestampsDocument {
-    createdAt: string;
-    updatedAt: string;
+    createdAt: string
+    updatedAt: string
 }

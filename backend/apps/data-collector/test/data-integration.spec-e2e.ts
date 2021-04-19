@@ -117,7 +117,7 @@ describe('Data integration tests', () => {
     const {
       rawSearchResultDocuments,
       linksDocuments
-    } = await firestoreRawSearchResultRepository.findBySearchId(mockSearchId);
+    } = await firestoreRawSearchResultRepository.find(mockSearchId);
 
     const { hotels, searchPlaceIdentifier } = rawSearchResultDocuments[0]
     const { links } = linksDocuments[0]

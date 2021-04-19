@@ -1,4 +1,4 @@
-import { Schema } from 'mongoose';
+import { Schema } from 'mongoose'
 import { SearchPlaceIdentifierDocument } from './search-place-identifier.document'
 
 export const SearchPlaceIdentifierSchema = new Schema<SearchPlaceIdentifierDocument>({
@@ -11,4 +11,4 @@ export const SearchPlaceIdentifierSchema = new Schema<SearchPlaceIdentifierDocum
   {
     _id: false,
     versionKey: false,
-  });
+  })

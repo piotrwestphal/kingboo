@@ -1,4 +1,4 @@
-import { SearchRequest } from '../model/SearchRequest';
+import { SearchRequest } from '../model/SearchRequest'
 import { SearchRequestType } from '../model/SearchRequestType';
 
 export abstract class SearchRequestRepository {

@@ -5,6 +5,7 @@ const mqAddress = 'amqp://dev:dev@localhost:5672';
 const consumerQueueName = 'data-collection-notifications';
 const collectingScenarioQueue = 'collecting-scenario';
 const userNotificationsQueue = 'user-notifications';
+const dataUpdatesQueue = 'data-updates';
 
 export const localConfig: AppConfig = {
   nodeEnv: 'local',
@@ -25,6 +26,13 @@ export const localConfig: AppConfig = {
     queueDefinition: {
       queue: collectingScenarioQueue,
       queueOptions: retrieveRMQQueueOptions(collectingScenarioQueue),
+    },
+  },
+  dataUpdatesMqClient: {
+    address: mqAddress,
+    queueDefinition: {
+      queue: dataUpdatesQueue,
+      queueOptions: retrieveRMQQueueOptions(dataUpdatesQueue),
     },
   },
   userNotificationsMqClient: {

@@ -1,9 +1,9 @@
-import { DataCollectorService } from '../core/abstract/data-collector.service';
-import { CollectHotelsScenario } from '../core/interface/collect-hotels-scenario';
-import { Injectable } from '@nestjs/common';
-import { ScrapActivityRepository } from '../core/abstract/scrap-activity.repository';
-import { ScrapActivity } from '../core/model/ScrapActivity';
-import { HotelsCollector } from './hotels.collector';
+import { DataCollectorService } from '../core/abstract/data-collector.service'
+import { CollectHotelsScenario } from '../core/interface/collect-hotels-scenario'
+import { Injectable } from '@nestjs/common'
+import { ScrapActivityRepository } from '../core/abstract/scrap-activity.repository'
+import { ScrapActivity } from '../core/model/ScrapActivity'
+import { HotelsCollector } from './hotels.collector'
 import { logger } from '../logger';
 import { DataCollectionNotificationSender } from '../core/abstract/data-collection-notification.sender';
 import { DataToProcessSender } from '../core/abstract/data-to-process.sender';

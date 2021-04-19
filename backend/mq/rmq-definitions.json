@@ -43,7 +43,7 @@
       "durable": true,
       "auto_delete": false,
       "arguments": {
-        "x-message-ttl": 86400000,
+        "x-message-ttl": 60000,
         "x-queue-type": "classic"
       }
     },
@@ -67,6 +67,15 @@
     },
     {
       "name": "collecting-scenario",
+      "vhost": "/",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {
+        "x-queue-type": "classic"
+      }
+    },
+    {
+      "name": "data-updates",
       "vhost": "/",
       "durable": true,
       "auto_delete": false,
