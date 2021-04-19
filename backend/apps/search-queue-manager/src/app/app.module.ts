@@ -44,6 +44,7 @@ import { DataUpdateSender } from '../core/abstract/data-update.sender'
     FreeRequestSearcher,
     ObsoleteRequestSearcher,
     SearchRequestMapper,
+    CreateSearchRequestMapper,
     {
       provide: CyclicSearchService,
       useFactory: (
@@ -83,6 +84,7 @@ import { DataUpdateSender } from '../core/abstract/data-update.sender'
     {
       provide: CycleCalculator,
       useFactory: (
+        createSearchRequestMapper: CreateSearchRequestMapper,
         cyclicSearchRepository: CyclicSearchRepository,
         dataUpdateSender: DataUpdateSender,
         userNotificationSender: UserNotificationSender,
@@ -90,7 +92,6 @@ import { DataUpdateSender } from '../core/abstract/data-update.sender'
         searchRequestRepository: SearchRequestRepository,
         searchRequestService: SearchRequestService,
       ) => {
-        const createSearchRequestMapper = new CreateSearchRequestMapper();
         const cycleStartFinder = new CycleStartFinder();
         const differenceFinder = new DifferenceFinder();
         const differenceResolver = new DifferenceResolver(
@@ -110,7 +111,15 @@ import { DataUpdateSender } from '../core/abstract/data-update.sender'
           searchRequestService,
         );
       },
-      inject: [CyclicSearchRepository, DataUpdateSender, UserNotificationSender, SearchRequestMapper, SearchRequestRepository, SearchRequestService],
+      inject: [
+        CreateSearchRequestMapper,
+        CyclicSearchRepository,
+        DataUpdateSender,
+        UserNotificationSender,
+        SearchRequestMapper,
+        SearchRequestRepository,
+        SearchRequestService,
+      ],
     },
   ],
   controllers: [

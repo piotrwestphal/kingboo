@@ -11,6 +11,7 @@ import { SearchRequestsClient } from '../core/abstract/search-requests.client'
 import { SearchDataMapper } from './search-data/search-data.mapper'
 import { UserNotificationsConsumer } from './user-notifications.consumer'
 import { UserNotificationHandler } from './user-notification.handler'
+import { TopHotelsRepository } from '../core/abstract/top-hotels.repository'
 
 @Module({
   imports: [
@@ -25,14 +26,16 @@ import { UserNotificationHandler } from './user-notification.handler'
       provide: SearchDataService,
       useFactory: (
         searchRequestsClient: SearchRequestsClient,
+        topHotelsRepository: TopHotelsRepository,
       ) => {
         const mapper = new SearchDataMapper()
         return new SearchDataService(
           mapper,
           searchRequestsClient,
+          topHotelsRepository,
         )
       },
-      inject: [SearchRequestsClient]
+      inject: [SearchRequestsClient, TopHotelsRepository]
     }],
 })
 export class AppModule {
