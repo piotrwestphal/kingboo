@@ -1,6 +1,5 @@
-import React from 'react';
-import { Avatar, createStyles, Theme } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+import { Avatar, createStyles, Theme } from '@material-ui/core'
+import { makeStyles } from '@material-ui/core/styles'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -9,14 +8,14 @@ const useStyles = makeStyles((theme: Theme) =>
       fontWeight: 'bold'
     },
   }),
-);
+)
 
 interface HeaderAvatarProps {
   readonly name: string
 }
 
 export default function HeaderAvatar({ name }: HeaderAvatarProps) {
-  const classes = useStyles();
+  const classes = useStyles()
 
   const createAvatarName = (searchPlace: string): string => {
     const divided = searchPlace.split(' ')

@@ -12,7 +12,7 @@ jobs:
   publish_search-queue-manager:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
 
       # takes branch name as a tag
       # in case of master takes 'latest'
@@ -29,7 +29,7 @@ jobs:
   publish_search-result-calculator:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
 
       # takes branch name as a tag
       # in case of master takes 'latest'
@@ -43,11 +43,28 @@ jobs:
           workdir: backend
           dockerfile: kb-search-result-calculator.Dockerfile
 
-  deploy_search-queue-manager_and_search-result-calculator:
-    needs: [publish_search-queue-manager, publish_search-result-calculator]
+  publish_top-hotels-aggregator:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
+
+      # takes branch name as a tag
+      # in case of master takes 'latest'
+      # in case of PR takes $GITHUB_SH
+      - name: Publish top-hotels-aggregator to registry
+        uses: elgohr/Publish-Docker-Github-Action@master
+        with:
+          name: piotrwest/kb-top-hotels-aggregator
+          username: ${{ secrets.DOCKER_USER }}
+          password: ${{ secrets.DOCKER_PASS }}
+          workdir: backend
+          dockerfile: kb-top-hotels-aggregator.Dockerfile
+
+  deploy_search-queue-manager_and_search-result-calculator:
+    needs: [publish_search-queue-manager, publish_search-result-calculator, publish_top-hotels-aggregator]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
 
       - uses: webfactory/ssh-agent@master
         with:

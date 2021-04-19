@@ -1,16 +1,17 @@
-import React, { Dispatch } from 'react';
-import { ToggleButton, ToggleButtonGroup } from '@material-ui/lab';
-import PersonIcon from '@material-ui/icons/Person';
-import RepeatIcon from '@material-ui/icons/Repeat';
-import { makeStyles } from '@material-ui/core/styles';
-import { Button, createStyles, Grid, Theme } from '@material-ui/core';
-import SortByAlphaIcon from '@material-ui/icons/SortByAlpha';
-import TodayIcon from '@material-ui/icons/Today';
-import ExpandLessIcon from '@material-ui/icons/ExpandLess';
-import { SortByOptions } from './sort-by.options';
-import { sortByValue } from './sort-by.value';
-import { SearchRequestType } from '../../core/SearchRequestType';
-import { FilterAction } from './filter.reducer';
+import { Dispatch } from 'react'
+import * as React from 'react'
+import { ToggleButton, ToggleButtonGroup } from '@material-ui/lab'
+import PersonIcon from '@material-ui/icons/Person'
+import RepeatIcon from '@material-ui/icons/Repeat'
+import { makeStyles } from '@material-ui/core/styles'
+import { Button, createStyles, Grid, Theme } from '@material-ui/core'
+import SortByAlphaIcon from '@material-ui/icons/SortByAlpha'
+import TodayIcon from '@material-ui/icons/Today'
+import ExpandLessIcon from '@material-ui/icons/ExpandLess'
+import { SortByOptions } from './sort-by.options'
+import { sortByValue } from './sort-by.value'
+import { SearchRequestType } from '../../core/SearchRequestType'
+import { FilterAction } from './filter.reducer'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -18,12 +19,12 @@ const useStyles = makeStyles((theme: Theme) =>
       padding: theme.spacing(0.3),
     },
   }),
-);
+)
 
 interface FiltersProps {
   readonly filterDispatch: Dispatch<FilterAction>
-  readonly sortBy: SortByOptions;
-  readonly filterBy: SearchRequestType | null;
+  readonly sortBy: SortByOptions
+  readonly filterBy: SearchRequestType | null
 }
 
 export default function Toolbar({
@@ -31,7 +32,7 @@ export default function Toolbar({
                                   filterBy,
                                   sortBy,
                                 }: FiltersProps) {
-  const classes = useStyles();
+  const classes = useStyles()
   const scrollUp = () => window.scrollTo(0, 0)
 
   const sortChange = (event: React.MouseEvent, value: SortByOptions) => {

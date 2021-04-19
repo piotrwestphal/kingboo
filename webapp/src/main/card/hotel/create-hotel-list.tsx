@@ -1,7 +1,6 @@
-import { TopHotelsDto } from '../../../core/dto/top-hotels.dto';
-import { SimpleHotelDto } from '../../../core/dto/simple-hotel.dto';
-import React from 'react';
-import HotelList from './HotelList';
+import { TopHotelsDto } from '../../../core/dto/top-hotels.dto'
+import { SimpleHotelDto } from '../../../core/dto/simple-hotel.dto'
+import HotelList from './HotelList'
 
 const priceRateValue = (h: SimpleHotelDto) => `${Math.round(h.calculatedValues.priceRate)}`
 const priceRateKey = 'Price rt'

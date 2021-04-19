@@ -1,15 +1,15 @@
-import React, { createElement, Dispatch, SetStateAction } from 'react';
-import { bindMenu } from 'material-ui-popup-state';
-import { createStyles, Link, ListItemIcon, Menu, MenuItem, Theme, Typography } from '@material-ui/core';
-import OpenInNewIcon from '@material-ui/icons/OpenInNew';
-import DetailsIcon from '@material-ui/icons/Details';
-import { makeStyles } from '@material-ui/core/styles';
-import { SimpleHotelDto } from '../../../core/dto/simple-hotel.dto';
-import { PopupState } from 'material-ui-popup-state/core';
-import { OverridableComponent } from '@material-ui/core/OverridableComponent';
-import { SvgIconTypeMap } from '@material-ui/core/SvgIcon/SvgIcon';
-import MonetizationOnIcon from '@material-ui/icons/MonetizationOn';
-import { DialogState, DialogView } from '../dialog/dialog.state';
+import { createElement, Dispatch, SetStateAction } from 'react'
+import { bindMenu } from 'material-ui-popup-state'
+import { createStyles, Link, ListItemIcon, Menu, MenuItem, Theme, Typography } from '@material-ui/core'
+import OpenInNewIcon from '@material-ui/icons/OpenInNew'
+import DetailsIcon from '@material-ui/icons/Details'
+import { makeStyles } from '@material-ui/core/styles'
+import { SimpleHotelDto } from '../../../core/dto/simple-hotel.dto'
+import { PopupState } from 'material-ui-popup-state/core'
+import { OverridableComponent } from '@material-ui/core/OverridableComponent'
+import { SvgIconTypeMap } from '@material-ui/core/SvgIcon/SvgIcon'
+import MonetizationOnIcon from '@material-ui/icons/MonetizationOn'
+import { DialogState, DialogView } from '../dialog/dialog.state'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme: Theme) =>
       marginRight: theme.spacing(1),
     },
   }),
-);
+)
 
 type HotelMenuProps = {
   readonly hotel: SimpleHotelDto
@@ -60,11 +60,11 @@ export default function HotelMenu({
           anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
           {...bindMenu(popupState)}>
       {menuItem(DialogView.DETAILS, DetailsIcon, () => {
-        setDialog({ open: true, initialView: DialogView.DETAILS });
+        setDialog({ open: true, initialView: DialogView.DETAILS })
         popupState.close()
       })}
       {menuItem(DialogView.PRICES, MonetizationOnIcon, () => {
-        setDialog({ open: true, initialView: DialogView.PRICES });
+        setDialog({ open: true, initialView: DialogView.PRICES })
         popupState.close()
       })}
       <Link color='primary'
