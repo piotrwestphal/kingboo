@@ -1,10 +1,9 @@
-import React from 'react'
 import { DialogContentProps } from './dialog.state'
-import { makeStyles } from '@material-ui/core/styles';
-import { Box, createStyles, DialogContent, Theme, Typography } from '@material-ui/core';
-import { HotelBonusesDto } from '../../../core/dto/hotel-bonuses.dto';
-import { HotelCalculatedValuesDto } from '../../../core/dto/hotel-calculated-values.dto';
-import { HotelRoomDto } from '../../../core/dto/hotel-room.dto';
+import { makeStyles } from '@material-ui/core/styles'
+import { Box, createStyles, DialogContent, Theme, Typography } from '@material-ui/core'
+import { HotelBonusesDto } from '../../../core/dto/hotel-bonuses.dto'
+import { HotelCalculatedValuesDto } from '../../../core/dto/hotel-calculated-values.dto'
+import { HotelRoomDto } from '../../../core/dto/hotel-room.dto'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -21,7 +20,7 @@ const useStyles = makeStyles((theme: Theme) =>
       fontWeight: 400,
     },
   }),
-);
+)
 
 // TODO: redesign
 // icons for hotel / apartment / newly added

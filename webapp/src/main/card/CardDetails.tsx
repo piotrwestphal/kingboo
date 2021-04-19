@@ -1,8 +1,7 @@
-import React from 'react'
-import { CardContent, createStyles, Theme } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
-import { SearchData } from '../../core/search-data';
-import Block from './Block';
+import { CardContent, createStyles, Theme } from '@material-ui/core'
+import { makeStyles } from '@material-ui/core/styles'
+import { SearchData } from '../../core/search-data'
+import Block from './Block'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -13,7 +12,7 @@ const useStyles = makeStyles((theme: Theme) =>
       paddingBottom: theme.spacing(0),
     },
   }),
-);
+)
 
 interface CardDetailsProps {
   readonly searchData: SearchData
@@ -28,7 +27,7 @@ export default function CardDetails({
                                         resultsLimit,
                                       }
                                     }: CardDetailsProps) {
-  const classes = useStyles();
+  const classes = useStyles()
   return (
     <CardContent className={classes.container}>
       <Block description='Rooms'

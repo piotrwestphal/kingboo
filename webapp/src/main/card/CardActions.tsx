@@ -1,10 +1,10 @@
-import React, { Dispatch, SetStateAction } from 'react'
-import { CardActions as MCardActions, createStyles, IconButton, Theme } from '@material-ui/core';
-import EditIcon from '@material-ui/icons/Edit';
-import DeleteIcon from '@material-ui/icons/Delete';
-import clsx from 'clsx';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import { makeStyles } from '@material-ui/core/styles';
+import { Dispatch, SetStateAction } from 'react'
+import { CardActions as MCardActions, createStyles, IconButton, Theme } from '@material-ui/core'
+import EditIcon from '@material-ui/icons/Edit'
+import DeleteIcon from '@material-ui/icons/Delete'
+import clsx from 'clsx'
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
+import { makeStyles } from '@material-ui/core/styles'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -27,7 +27,7 @@ const useStyles = makeStyles((theme: Theme) =>
       transform: 'rotate(180deg)',
     },
   }),
-);
+)
 
 interface SearchActionsProps {
   readonly expanded: boolean
@@ -35,7 +35,7 @@ interface SearchActionsProps {
 }
 
 export default function CardActions({ expanded, setExpanded }: SearchActionsProps) {
-  const classes = useStyles();
+  const classes = useStyles()
   return (
     <MCardActions className={classes.root} disableSpacing>
       <IconButton className={classes.action}

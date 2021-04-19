@@ -1,10 +1,9 @@
-import React from 'react'
-import { Box, Container, createStyles, Divider, Theme, Typography } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
-import { SimpleHotelDto } from '../../../core/dto/simple-hotel.dto';
+import { Box, Container, createStyles, Divider, Theme, Typography } from '@material-ui/core'
+import { makeStyles } from '@material-ui/core/styles'
+import { SimpleHotelDto } from '../../../core/dto/simple-hotel.dto'
 import clsx from 'clsx'
-import InfoWrapper from '../../../common/InfoWrapper';
-import Hotel from './Hotel';
+import InfoWrapper from '../../../common/InfoWrapper'
+import Hotel from './Hotel'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -43,20 +42,20 @@ const useStyles = makeStyles((theme: Theme) =>
       fontSize: theme.spacing(2.5),
     },
   }),
-);
+)
 
 interface SearchContentItemProps {
-  readonly hotels: SimpleHotelDto[];
-  readonly title: string;
-  readonly primaryValue: (h: SimpleHotelDto) => string | number;
-  readonly primaryKey: string;
-  readonly primaryTooltip: string;
-  readonly secondaryValue: (h: SimpleHotelDto) => string | number;
-  readonly secondaryKey: string;
-  readonly secondaryTooltip: string;
-  readonly tertiaryValue: (h: SimpleHotelDto) => string | number;
-  readonly tertiaryKey: string;
-  readonly tertiaryTooltip: string;
+  readonly hotels: SimpleHotelDto[]
+  readonly title: string
+  readonly primaryValue: (h: SimpleHotelDto) => string | number
+  readonly primaryKey: string
+  readonly primaryTooltip: string
+  readonly secondaryValue: (h: SimpleHotelDto) => string | number
+  readonly secondaryKey: string
+  readonly secondaryTooltip: string
+  readonly tertiaryValue: (h: SimpleHotelDto) => string | number
+  readonly tertiaryKey: string
+  readonly tertiaryTooltip: string
 }
 
 export default function HotelList({

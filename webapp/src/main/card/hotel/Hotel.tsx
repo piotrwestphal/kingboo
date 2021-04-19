@@ -1,12 +1,12 @@
-import React, { useState } from 'react'
-import { createStyles, Dialog, Typography } from '@material-ui/core';
-import { SimpleHotelDto } from '../../../core/dto/simple-hotel.dto';
-import { makeStyles } from '@material-ui/core/styles';
-import PopupState, { bindTrigger } from 'material-ui-popup-state';
+import { useRef, useEffect, useState } from 'react'
+import { createStyles, Dialog, Typography } from '@material-ui/core'
+import { SimpleHotelDto } from '../../../core/dto/simple-hotel.dto'
+import { makeStyles } from '@material-ui/core/styles'
+import PopupState, { bindTrigger } from 'material-ui-popup-state'
 import clsx from 'clsx'
-import DialogBody from '../dialog/DialogBody';
-import HotelMenu from './HotelMenu';
-import { DialogState } from '../dialog/dialog.state';
+import DialogBody from '../dialog/DialogBody'
+import HotelMenu from './HotelMenu'
+import { DialogState } from '../dialog/dialog.state'
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -17,7 +17,7 @@ const useStyles = makeStyles(() =>
       fontWeight: 400,
     },
   }),
-);
+)
 
 interface HotelProps {
   readonly hotel: SimpleHotelDto
@@ -27,15 +27,15 @@ export default function Hotel({ hotel }: HotelProps) {
   const classes = useStyles()
   const [{ initialView, open }, setDialog] = useState<DialogState>({ open: false })
 
-  const descriptionElementRef = React.useRef<HTMLElement>(null);
-  React.useEffect(() => {
+  const descriptionElementRef = useRef<HTMLElement>(null)
+  useEffect(() => {
     if (open) {
-      const { current: descriptionElement } = descriptionElementRef;
+      const { current: descriptionElement } = descriptionElementRef
       if (descriptionElement !== null) {
-        descriptionElement.focus();
+        descriptionElement.focus()
       }
     }
-  }, [open]);
+  }, [open])
 
   return (
     <>

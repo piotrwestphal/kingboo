@@ -1,10 +1,9 @@
-import React from 'react'
 import { DialogContentProps } from './dialog.state'
-import { Box, createStyles, DialogContent, Divider, Theme, Typography } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
-import { formatToSecondary } from '../../../util/date-formatter';
+import { Box, createStyles, DialogContent, Divider, Theme, Typography } from '@material-ui/core'
+import { makeStyles } from '@material-ui/core/styles'
+import { formatToSecondary } from '../../../util/date-formatter'
 import clsx from 'clsx'
-import InfoWrapper from '../../../common/InfoWrapper';
+import InfoWrapper from '../../../common/InfoWrapper'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -32,7 +31,7 @@ const useStyles = makeStyles((theme: Theme) =>
       textAlign: 'right'
     }
   }),
-);
+)
 
 export default function PricesContent({ hotel }: DialogContentProps) {
   const classes = useStyles()
