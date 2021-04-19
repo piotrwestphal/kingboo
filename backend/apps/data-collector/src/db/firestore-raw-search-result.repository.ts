@@ -88,7 +88,7 @@ export class FirestoreRawSearchResultRepository extends RawSearchResultRepositor
     })
   }
 
-  async findBySearchId(searchId: string): Promise<{
+  async find(searchId: string): Promise<{
     rawSearchResultDocuments: RawSearchResultDocument[],
     linksDocuments: LinksDocument[]
   }> {
@@ -105,5 +105,4 @@ export class FirestoreRawSearchResultRepository extends RawSearchResultRepositor
     const collectionRef = this.firestoreClient.getCollection<T>(collectionName)
     return collectionRef.where('searchId', '==', searchId).get()
   }
-
 }

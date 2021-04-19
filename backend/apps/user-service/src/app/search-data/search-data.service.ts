@@ -2,12 +2,14 @@ import { SearchDataPayload } from './search-data.payload'
 import { SearchRequestsClient } from '../../core/abstract/search-requests.client'
 import { logger } from '../../logger'
 import { SearchDataMapper } from './search-data.mapper'
+import { TopHotelsRepository } from '../../core/abstract/top-hotels.repository'
 
 export class SearchDataService {
 
   constructor(
     private readonly searchDataMapper: SearchDataMapper,
     private readonly searchRequestsClient: SearchRequestsClient,
+    private readonly topHotelsRepository: TopHotelsRepository,
   ) {
   }
 
@@ -20,7 +22,8 @@ export class SearchDataService {
           `'collectingStartedAt' does not exist`)
         return this.searchDataMapper.toDto(searchRequestDto, null)
       }
-      return this.searchDataMapper.toDto(searchRequestDto, null)
+      const topHotels = await this.topHotelsRepository.find(searchRequestDto.searchId)
+      return this.searchDataMapper.toDto(searchRequestDto, topHotels)
     })
     const searchDataList = await Promise.all(pendingSearchDataDto)
     logger.debug(`Search data loaded within [${Date.now() - now}] ms`)
