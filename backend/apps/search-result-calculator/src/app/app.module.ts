@@ -35,12 +35,12 @@ import { ProcessingProgressRepository } from '../core/abstract/processing-progre
     {
       provide: ProgressMeasuringService,
       useFactory: (
-        processingProgressRepository: ProcessingProgressRepository,
         dataUpdateSender: DataUpdateSender,
+        processingProgressRepository: ProcessingProgressRepository,
       ) => {
-        return new ProgressMeasuringService(processingProgressRepository, dataUpdateSender)
+        return new ProgressMeasuringService(dataUpdateSender, processingProgressRepository)
       },
-      inject: [ProcessingProgressRepository, DataUpdateSender]
+      inject: [DataUpdateSender, ProcessingProgressRepository]
     },
     {
       provide: HotelProcessor,
