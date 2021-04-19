@@ -15,21 +15,21 @@ export class SearchDataMapper {
           updateFrequencyMinutes,
           collectingFinishedAt,
         }: SearchRequestDto,
-        topHotels: TopHotelsDto): SearchDataDto {
+        topHotels: TopHotelsDto | null): SearchDataDto {
     return {
       searchId,
       type,
       resultsLimit,
       searchPlace,
-      destination,
       checkInDate,
       checkOutDate,
       numberOfRooms,
       numberOfAdults,
       childrenAgeAtCheckout,
       updateFrequencyMinutes,
+      destination,
       collectingFinishedAt,
-      topHotels: topHotels ?? null,
+      topHotels: topHotels,
     }
   }
 }
