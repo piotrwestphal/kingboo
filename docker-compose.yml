@@ -24,6 +24,12 @@ services:
       dockerfile: kb-search-result-calculator.Dockerfile
     image: kb-search-result-calculator
 
+  top-hotels-aggregator:
+    build:
+      context: ./backend
+      dockerfile: kb-top-hotels-aggregator.Dockerfile
+    image: kb-top-hotels-aggregator
+
   webapp:
     build:
       context: ./webapp

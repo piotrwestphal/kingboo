@@ -1,5 +1,5 @@
 interface FoundDifferences {
-  readonly searchIdsToCreate: string[];
+  readonly searchIdsToCreate: string[]
   readonly searchIdsToDelete: string[];
   readonly differencesFound: boolean;
 }

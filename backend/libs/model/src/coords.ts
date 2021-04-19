@@ -1,4 +1,4 @@
 export interface Coords {
-    readonly lat: number;
-    readonly lon: number;
+    readonly lat: number
+    readonly lon: number
 }

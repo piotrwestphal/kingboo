@@ -1,6 +1,6 @@
-import { SearchRequestDto } from '@kb/model';
+import { SearchRequestDto } from '@kb/model'
 
 export abstract class SearchRequestsClient {
-  abstract getSearchRequest(searchId: string): Promise<SearchRequestDto | null>;
-  abstract getSearchRequests(): Promise<SearchRequestDto[]>;
+  abstract getSearchRequest(searchId: string): Promise<SearchRequestDto | null>
+  abstract getSearchRequests(): Promise<SearchRequestDto[]>
 }

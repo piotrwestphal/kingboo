@@ -1,5 +1,4 @@
-import { SearchDataDto, SearchRequestDto, TopHotelsDto } from '@kb/model';
-import { CacheData } from '../../core/model/CacheData';
+import { SearchDataDto, SearchRequestDto, TopHotelsDto } from '@kb/model'
 
 export class SearchDataMapper {
   toDto({
@@ -7,7 +6,7 @@ export class SearchDataMapper {
           type,
           resultsLimit,
           searchPlace,
-          searchPlaceIdentifier: { destination },
+          destination,
           checkInDate,
           checkOutDate,
           numberOfRooms,
@@ -16,21 +15,21 @@ export class SearchDataMapper {
           updateFrequencyMinutes,
           collectingFinishedAt,
         }: SearchRequestDto,
-        topHotelsCache?: CacheData<TopHotelsDto>): SearchDataDto {
+        topHotels: TopHotelsDto | null): SearchDataDto {
     return {
       searchId,
       type,
       resultsLimit,
       searchPlace,
-      searchPlaceIdentifier: destination,
       checkInDate,
       checkOutDate,
       numberOfRooms,
       numberOfAdults,
       childrenAgeAtCheckout,
       updateFrequencyMinutes,
-      collectingFinishedAt: topHotelsCache?.collectingFinishedAt || collectingFinishedAt,
-      topHotels: topHotelsCache?.data || null,
+      destination,
+      collectingFinishedAt,
+      topHotels,
     }
   }
 }

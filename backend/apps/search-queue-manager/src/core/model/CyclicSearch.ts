@@ -42,13 +42,13 @@ export class CyclicSearch {
       nightsOfStay,
       beginSearchDaysBefore,
       cyclicSearchRequests,
-    );
+    )
   }
 
 
   updateCyclicSearchRequests(cyclicSearchIds: string[]): CyclicSearch {
-    this.cyclicSearchRequests.length = 0;
-    this.cyclicSearchRequests.push(...cyclicSearchIds);
-    return this;
+    this.cyclicSearchRequests.length = 0
+    this.cyclicSearchRequests.push(...cyclicSearchIds)
+    return this
   }
 }

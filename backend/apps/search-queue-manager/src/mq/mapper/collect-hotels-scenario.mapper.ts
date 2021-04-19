@@ -1,5 +1,5 @@
-import { SearchRequest } from '../../core/model/SearchRequest';
-import { CollectHotelsScenarioMessage } from '@kb/model/mqmessage/collect-hotels-scenario.message';
+import { SearchRequest } from '../../core/model/SearchRequest'
+import { CollectHotelsScenarioMessage } from '@kb/model/mqmessage/collect-hotels-scenario.message'
 
 export class CollectHotelsScenarioMapper {
   static fromSearchRequest({
@@ -36,6 +36,6 @@ export class CollectHotelsScenarioMapper {
       },
       updateFrequencyMinutes,
       timestamp: Date.now(),
-    };
+    }
   }
 }

@@ -1,6 +1,6 @@
-import { UserCreateSearchRequest } from './user-create-search-request';
-import { CreateSearchRequest } from './create-search-request';
-import { ShortDate } from '../../core/interface/short-date';
+import { UserCreateSearchRequest } from './user-create-search-request'
+import { CreateSearchRequest } from './create-search-request'
+import { ShortDate } from '../../core/interface/short-date'
 
 type CreateSearchRequestWithoutCheckDates = Omit<CreateSearchRequest, 'checkInDate' | 'checkOutDate'>
 
@@ -14,7 +14,7 @@ export class CreateSearchRequestMapper {
       ...rest,
       checkInDate: this.mapShortDate(checkInDate),
       checkOutDate: this.mapShortDate(checkOutDate),
-    };
+    }
   }
 
   fromCyclicSearch({
@@ -36,8 +36,8 @@ export class CreateSearchRequestMapper {
       childrenAgeAtCheckout,
       checkInDate,
       checkOutDate,
-    };
+    }
   }
 
-  private mapShortDate = ({ year, month, day }: ShortDate): Date => new Date(year, (month - 1), day);
+  private mapShortDate = ({ year, month, day }: ShortDate): Date => new Date(year, (month - 1), day)
 }

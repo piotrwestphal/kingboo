@@ -3,7 +3,7 @@ import { retrieveRMQQueueOptions } from '@kb/rabbit';
 
 const mqAddress = (env) => env.MQ_ADDRESS;
 const consumerQueueName = (env) => env.MQ_DATA_TO_PROCESS_QUEUE_NAME;
-const userNotificationsQueue = (env) => env.MQ_USER_NOTIFICATIONS_QUEUE_NAME;
+const dataUpdatesQueue = (env) => env.MQ_DATA_UPDATES_QUEUE_NAME;
 
 export const devConfig = (env: NodeJS.ProcessEnv): AppConfig =>
   ({
@@ -24,11 +24,11 @@ export const devConfig = (env: NodeJS.ProcessEnv): AppConfig =>
         queueOptions: retrieveRMQQueueOptions(consumerQueueName(env)),
       },
     },
-    userNotificationsMqClient: {
+    dataUpdatesMqClient: {
       address: mqAddress(env),
       queueDefinition: {
-        queue: userNotificationsQueue(env),
-        queueOptions: retrieveRMQQueueOptions(userNotificationsQueue(env)),
+        queue: dataUpdatesQueue(env),
+        queueOptions: retrieveRMQQueueOptions(dataUpdatesQueue(env)),
       },
     },
   });

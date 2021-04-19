@@ -9,15 +9,7 @@ export interface SearchRequestDto {
   readonly numberOfRooms: number
   readonly numberOfAdults: number
   readonly childrenAgeAtCheckout: number[]
-  readonly searchPlaceIdentifier: null | {
-    readonly destination: string
-    readonly destId: string
-    readonly destType: string
-    readonly placeIdLat: string
-    readonly placeIdLon: string
-  }
-  readonly nextSearchScheduledAt: string
+  readonly destination: string | null
   readonly collectingStartedAt: string | null
   readonly collectingFinishedAt: string | null
-  readonly collectingCount: number
 }

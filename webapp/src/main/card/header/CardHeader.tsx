@@ -30,7 +30,7 @@ export default function CardHeader({
                                      searchData: {
                                        type,
                                        searchPlace,
-                                       searchPlaceIdentifier,
+                                       destination,
                                        stayDate,
                                      },
                                      setExpanded,
@@ -41,7 +41,7 @@ export default function CardHeader({
     <MCardHeader onClick={() => setExpanded((current) => !current)}
                  classes={{ root: classes.rootOverride, avatar: classes.avatarOverride }}
                  avatar={<HeaderAvatar name={searchPlace}/>}
-                 title={<HeaderTitle title={searchPlace} subtitle={searchPlaceIdentifier}/>}
+                 title={<HeaderTitle title={searchPlace} subtitle={destination}/>}
                  subheader={<Typography className={classes.subheader}
                                         color="secondary"
                                         variant="body2"
