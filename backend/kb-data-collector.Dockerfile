@@ -20,5 +20,4 @@ COPY . .
 RUN npm run build:dc
 
 EXPOSE 8080
-WORKDIR ./dist/apps/data-collector
-CMD ["node", "main"]
+CMD ["node", "dist/apps/data-collector/main"]

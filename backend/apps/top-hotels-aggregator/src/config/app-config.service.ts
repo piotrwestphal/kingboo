@@ -29,8 +29,8 @@ export class AppConfigService extends ConfigService<AppConfig> implements MongoC
     return this.config.firestore.projectId
   }
 
-  get serviceAccountKeyJson(): string {
-    return this.config.firestore.serviceAccountKeyJson
+  get keyFilename(): string {
+    return this.config.firestore.keyFilename
   }
 
   get emulator(): EmulatorOptions {

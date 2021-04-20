@@ -5,5 +5,4 @@ RUN npm ci --silent
 COPY . .
 RUN npm run build:tha
 EXPOSE 8080
-WORKDIR ./dist/apps/top-hotels-aggregator
-CMD ["node", "main"]
+CMD ["node", "dist/apps/top-hotels-aggregator/main"]
