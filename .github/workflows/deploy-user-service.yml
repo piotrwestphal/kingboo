@@ -73,7 +73,6 @@ jobs:
           sed -i 's#__LOG_COLLECTOR_TOKEN__#'"$LOG_COLLECTOR_TOKEN"'#' app.yaml
           sed -i 's#__MQ_ADDRESS__#'"$MQ_ADDRESS"'#' app.yaml
           sed -i 's#__SEARCH_REQUESTS_RESOURCE_ADDRESS__#'"$SEARCH_REQUESTS_RESOURCE_ADDRESS"'#' app.yaml
-          echo $FIRESTORE_CLIENT_KEY
           gcloud -q app deploy -v $GITHUB_SHA
 
       - name: Deploy dispatch to app engine
