@@ -5,5 +5,5 @@ export interface FirestoreConfigService {
   env: NodeEnv
   emulator: EmulatorOptions
   projectId: string
-  serviceAccountKeyJson: string
+  keyFilename: string
 }

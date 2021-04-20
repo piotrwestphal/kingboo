@@ -48,6 +48,13 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - name: Create firestore service accont key json
+        working-directory: ./backend
+        env:
+          FIRESTORE_SERVICE_ACCOUNT_KEY_JSON: ${{ secrets.FIRESTORE_SERVICE_ACCOUNT_KEY_JSON }}
+        run: |
+          echo "$FIRESTORE_SERVICE_ACCOUNT_KEY_JSON" >> db/firestore/service-account-key.json
+
       # takes branch name as a tag
       # in case of master takes 'latest'
       # in case of PR takes $GITHUB_SH
@@ -60,7 +67,7 @@ jobs:
           workdir: backend
           dockerfile: kb-top-hotels-aggregator.Dockerfile
 
-  deploy_search-queue-manager_and_search-result-calculator:
+  deploy_all_services:
     needs: [publish_search-queue-manager, publish_search-result-calculator, publish_top-hotels-aggregator]
     runs-on: ubuntu-latest
     steps:
@@ -75,8 +82,6 @@ jobs:
           CORS_ORIGINS: ${{ secrets.CORS_ORIGINS }}
           LOG_COLLECTOR_TOKEN: ${{ secrets.LOG_COLLECTOR_TOKEN }}
           FIRESTORE_PROJECT_ID: ${{ secrets.FIRESTORE_PROJECT_ID }}
-          FIRESTORE_SERVICE_ACCOUNT_KEY_JSON: ${{ secrets.FIRESTORE_SERVICE_ACCOUNT_KEY_JSON }}
-          FIRESTORE_CLIENT_KEY: ${{ secrets.FIRESTORE_CLIENT_KEY }}
           MONGO_ADDRESS: ${{ secrets.MONGO_ADDRESS }}
           MQ_ADDRESS: ${{ secrets.MQ_ADDRESS }}
         run: |
@@ -89,8 +94,6 @@ jobs:
             echo "CORS_ORIGINS=$CORS_ORIGINS" >> westus00.env
             echo "LOG_COLLECTOR_TOKEN=$LOG_COLLECTOR_TOKEN" >> westus00.env
             echo "FIRESTORE_PROJECT_ID=$FIRESTORE_PROJECT_ID" >> westus00.env
-            echo "FIRESTORE_SERVICE_ACCOUNT_KEY_JSON=$FIRESTORE_SERVICE_ACCOUNT_KEY_JSON" >> westus00.env
-            echo "FIRESTORE_CLIENT_KEY=$FIRESTORE_CLIENT_KEY" >> westus00.env
             echo "MQ_ADDRESS=$MQ_ADDRESS" >> westus00.env
             echo "MONGO_ADDRESS=$MONGO_ADDRESS" >> westus00.env
             docker-compose pull

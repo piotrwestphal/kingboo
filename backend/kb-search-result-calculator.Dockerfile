@@ -5,5 +5,4 @@ RUN npm ci --silent
 COPY . .
 RUN npm run build:src
 EXPOSE 8080
-WORKDIR ./dist/apps/search-result-calculator
-CMD ["node", "main"]
+CMD ["node", "dist/apps/search-result-calculator/main"]

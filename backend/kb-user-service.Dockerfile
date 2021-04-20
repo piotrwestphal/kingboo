@@ -5,5 +5,4 @@ RUN npm ci --silent
 COPY . .
 RUN npm run build:us
 EXPOSE 8080
-WORKDIR ./dist/apps/user-service
-CMD ["node", "main"]
+CMD ["node", "dist/apps/user-service/main"]

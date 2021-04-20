@@ -1,9 +1,9 @@
 import { Firestore } from '@google-cloud/firestore';
 
 export const createFirestore = (projectId: string,
-                                serviceAccountKeyJson: string): Firestore => new Firestore({
+                                keyFilename: string): Firestore => new Firestore({
   projectId,
-  credentials: JSON.parse(serviceAccountKeyJson),
+  keyFilename,
 });
 
 export const createFirestoreForDevPurposes = (projectId: string,
