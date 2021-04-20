@@ -16,7 +16,8 @@ export const prodConfig = (env: NodeJS.ProcessEnv): AppConfig =>
     firestore: {
       projectId: env.FIRESTORE_PROJECT_ID,
       clientEmail: env.FIRESTORE_CLIENT_EMAIL,
-      clientKey: JSON.parse(`"${env.FIRESTORE_CLIENT_KEY}"`),
+      // fix for difference in setting env variable in app engine and github actions
+      clientKey: env.FIRESTORE_CLIENT_KEY.replace(/\\n/g, '\n')
     },
     mongo: {
       address: env.MONGO_ADDRESS,
