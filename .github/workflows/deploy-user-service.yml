@@ -18,13 +18,6 @@ jobs:
         with:
           node-version: '14.x'
 
-      - name: Create firestore service accont key json
-        working-directory: ./backend
-        env:
-          FIRESTORE_SERVICE_ACCOUNT_KEY_JSON: ${{ secrets.FIRESTORE_SERVICE_ACCOUNT_KEY_JSON }}
-        run: |
-          echo "$FIRESTORE_SERVICE_ACCOUNT_KEY_JSON" >> db/firestore/service-account-key.json
-
       - name: Use cache
         uses: actions/cache@v2
         with:
@@ -67,12 +60,16 @@ jobs:
           CORS_ORIGINS: ${{ secrets.CORS_ORIGINS }}
           LOG_COLLECTOR_TOKEN: ${{ secrets.LOG_COLLECTOR_TOKEN }}
           FIRESTORE_PROJECT_ID: ${{ secrets.FIRESTORE_PROJECT_ID }}
+          FIRESTORE_CLIENT_EMAIL: ${{ secrets.FIRESTORE_CLIENT_EMAIL }}
+          FIRESTORE_CLIENT_KEY: ${{ secrets.FIRESTORE_CLIENT_KEY }}
           MONGO_ADDRESS: ${{ secrets.MONGO_ADDRESS }}
           MQ_ADDRESS: ${{ secrets.MQ_ADDRESS }}
           SEARCH_REQUESTS_RESOURCE_ADDRESS: ${{ secrets.SEARCH_REQUESTS_RESOURCE_ADDRESS }}
         run: |
           sed -i 's#__CORS_ORIGINS__#'"$CORS_ORIGINS"'#' app.yaml
           sed -i 's#__FIRESTORE_PROJECT_ID__#'"$FIRESTORE_PROJECT_ID"'#' app.yaml
+          sed -i 's#__FIRESTORE_CLIENT_EMAIL__#'"$FIRESTORE_CLIENT_EMAIL"'#' app.yaml
+          sed -i 's#__FIRESTORE_CLIENT_KEY__#'"$FIRESTORE_CLIENT_KEY"'#' app.yaml
           sed -i 's#__LOG_COLLECTOR_TOKEN__#'"$LOG_COLLECTOR_TOKEN"'#' app.yaml
           sed -i 's#__MQ_ADDRESS__#'"$MQ_ADDRESS"'#' app.yaml
           sed -i 's#__SEARCH_REQUESTS_RESOURCE_ADDRESS__#'"$SEARCH_REQUESTS_RESOURCE_ADDRESS"'#' app.yaml

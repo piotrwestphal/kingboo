@@ -7,7 +7,8 @@ export const prodConfig = (env: NodeJS.ProcessEnv): AppConfig =>
     corsOrigins: env.CORS_ORIGINS,
     firestore: {
       projectId: env.FIRESTORE_PROJECT_ID,
-      keyFilename: 'db/firestore/service-account-key.json',
+      clientEmail: env.FIRESTORE_CLIENT_EMAIL,
+      clientKey: JSON.parse(`"${env.FIRESTORE_CLIENT_KEY}"`),
     },
     mqConsumer: {
       address: env.MQ_ADDRESS,
