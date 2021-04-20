@@ -11,8 +11,7 @@ export class FirestoreModule {
         const firestore = configService.env === 'prod'
           ? createFirestore(
             configService.projectId,
-            configService.clientEmail,
-            configService.clientKey)
+            configService.serviceAccountKeyJson)
           : createFirestoreForDevPurposes(
             configService.projectId,
             configService.emulator.host,
