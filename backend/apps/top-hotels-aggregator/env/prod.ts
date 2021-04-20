@@ -8,8 +8,7 @@ export const prodConfig = (env: NodeJS.ProcessEnv): AppConfig =>
     topHotelsSelectLimit: parseInt(env.TOP_HOTELS_SELECT_LIMIT, 10),
     firestore: {
       projectId: env.FIRESTORE_PROJECT_ID,
-      clientEmail: env.FIRESTORE_CLIENT_EMAIL,
-      clientKey: JSON.parse(`"${env.FIRESTORE_CLIENT_KEY}"`),
+      serviceAccountKeyJson: env.FIRESTORE_SERVICE_ACCOUNT_KEY_JSON,
     },
     mongo: {
       address: env.MONGO_ADDRESS,
