@@ -19,8 +19,12 @@ export class AppConfigService extends ConfigService<AppConfig> implements Firest
     return this.config.firestore.projectId;
   }
 
-  get keyFilename(): string {
-    return this.config.firestore.keyFilename;
+  get clientEmail(): string {
+    return this.config.firestore.clientEmail;
+  }
+
+  get clientKey(): string {
+    return this.config.firestore.clientKey;
   }
 
   get emulator(): EmulatorOptions {

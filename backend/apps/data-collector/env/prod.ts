@@ -15,7 +15,8 @@ export const prodConfig = (env: NodeJS.ProcessEnv): AppConfig =>
     },
     firestore: {
       projectId: env.FIRESTORE_PROJECT_ID,
-      keyFilename: 'db/firestore/service-account-key.json',
+      clientEmail: env.FIRESTORE_CLIENT_EMAIL,
+      clientKey: JSON.parse(`"${env.FIRESTORE_CLIENT_KEY}"`),
     },
     mongo: {
       address: env.MONGO_ADDRESS,
