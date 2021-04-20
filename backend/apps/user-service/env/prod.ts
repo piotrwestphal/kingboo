@@ -8,7 +8,7 @@ export const prodConfig = (env: NodeJS.ProcessEnv): AppConfig =>
     firestore: {
       projectId: env.FIRESTORE_PROJECT_ID,
       clientEmail: env.FIRESTORE_CLIENT_EMAIL,
-      clientKey: JSON.parse(`"${env.FIRESTORE_CLIENT_KEY}"`),
+      clientKey: env.FIRESTORE_CLIENT_KEY,
     },
     mqConsumer: {
       address: env.MQ_ADDRESS,

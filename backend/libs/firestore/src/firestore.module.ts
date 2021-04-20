@@ -8,6 +8,7 @@ export class FirestoreModule {
     const firestoreClientProvider = {
       provide: FirestoreClient,
       useFactory: (configService: T): FirestoreClient => {
+        console.log('CLIENTKEY: ', configService.clientKey)
         const firestore = configService.env === 'prod'
           ? createFirestore(
             configService.projectId,
