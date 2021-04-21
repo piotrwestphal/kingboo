@@ -6,5 +6,5 @@ export interface FirestoreConfigService {
   emulator: EmulatorOptions
   projectId: string
   clientEmail: string
-  clientKey: string
+  rawClientKey: string
 }
