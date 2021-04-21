@@ -90,7 +90,7 @@ jobs:
             echo "LOG_COLLECTOR_TOKEN=$LOG_COLLECTOR_TOKEN" >> westus00.env
             echo "FIRESTORE_PROJECT_ID=$FIRESTORE_PROJECT_ID" >> westus00.env
             echo "FIRESTORE_CLIENT_EMAIL=$FIRESTORE_CLIENT_EMAIL" >> westus00.env
-            echo "FIRESTORE_CLIENT_KEY=$FIRESTORE_CLIENT_KEY" >> westus010.env
+            echo "FIRESTORE_CLIENT_KEY=$FIRESTORE_CLIENT_KEY" >> westus00.env
             echo "MQ_ADDRESS=$MQ_ADDRESS" >> westus00.env
             echo "MONGO_ADDRESS=$MONGO_ADDRESS" >> westus00.env
             docker-compose pull

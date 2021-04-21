@@ -16,6 +16,8 @@ export class SearchDataService {
   async getSearchData(): Promise<SearchDataPayload> {
     const now = Date.now()
     const searchRequests = await this.searchRequestsClient.getSearchRequests()
+    logger.debug(`Search requests fetched within [${Date.now() - now}] ms`)
+    const now2 = Date.now()
     const pendingSearchDataDto = searchRequests.map(async (searchRequestDto) => {
       if (!searchRequestDto.collectingStartedAt) {
         logger.warn(`Search request with search id [${searchRequestDto.searchId}] has never been collected - ` +
@@ -23,6 +25,7 @@ export class SearchDataService {
         return this.searchDataMapper.toDto(searchRequestDto, null)
       }
       const topHotels = await this.topHotelsRepository.find(searchRequestDto.searchId)
+      logger.debug(`Top hotels for search id [${searchRequestDto.searchId}] found within [${Date.now() - now2}] ms`)
       return this.searchDataMapper.toDto(searchRequestDto, topHotels)
     })
     const searchDataList = await Promise.all(pendingSearchDataDto)

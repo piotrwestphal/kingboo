@@ -22,8 +22,8 @@ export class AppConfigService extends ConfigService<AppConfig> implements Firest
     return this.config.firestore.clientEmail;
   }
 
-  get clientKey(): string {
-    return this.config.firestore.clientKey;
+  get rawClientKey(): string {
+    return this.config.firestore.rawClientKey;
   }
 
   get emulator(): EmulatorOptions {
