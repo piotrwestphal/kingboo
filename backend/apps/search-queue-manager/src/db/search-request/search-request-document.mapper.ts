@@ -2,6 +2,8 @@ import { SearchRequestDocument } from './search-request.document';
 import { SearchRequest } from '../../core/model/SearchRequest';
 import { SaveSearchRequest } from './save-search-request';
 import { SearchRequestType } from '../../core/model/SearchRequestType';
+import { SearchPlaceIdentifier } from '../../core/interface/search-place-identifier'
+import { SearchPlaceIdentifierDocument } from './search-place-identifier.document'
 
 export class SearchRequestDocumentMapper {
   toSearchRequest({
@@ -32,12 +34,31 @@ export class SearchRequestDocumentMapper {
       numberOfRooms,
       numberOfAdults,
       childrenAgeAtCheckout,
-      searchPlaceIdentifier,
+      searchPlaceIdentifier:
+        searchPlaceIdentifier
+          ? this.fromSearchPlaceIdentifierDoc(searchPlaceIdentifier)
+          : null,
       nextSearchScheduledAt: new Date(nextSearchScheduledAt),
       collectingStartedAt: collectingStartedAt ? new Date(collectingStartedAt) : null,
       collectingFinishedAt: collectingFinishedAt ? new Date(collectingFinishedAt) : null,
       collectingCount: collectingCount ?? 0,
     });
+  }
+
+  private fromSearchPlaceIdentifierDoc({
+                                         destination,
+                                         destId,
+                                         destType,
+                                         placeIdLat,
+                                         placeIdLon,
+                                       }: SearchPlaceIdentifierDocument): SearchPlaceIdentifier {
+    return {
+      destination,
+      destId,
+      destType,
+      placeIdLat,
+      placeIdLon
+    }
   }
 
   prepareForSave({
