@@ -12,6 +12,7 @@ export const CyclicSearchSchema = new Schema<CyclicSearchDocument>({
     numberOfAdults: Number,
     childrenAgeAtCheckout: [Number],
     dayOfTheWeek: Number,
+    offsetDays: Number,
     nightsOfStay: Number,
     beginSearchDaysBefore: Number,
     cyclicSearchRequests: [String],

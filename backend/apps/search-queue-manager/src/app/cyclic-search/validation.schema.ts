@@ -10,6 +10,7 @@ export const cyclicSearchValidationSchemaMap: SchemaMap<CreateCyclicSearch> = {
   numberOfAdults: Joi.number().required(),
   childrenAgeAtCheckout: Joi.array().items(Joi.number()),
   dayOfTheWeek: Joi.number().required(),
+  offsetDays: Joi.number().required(),
   nightsOfStay: Joi.number().required(),
   beginSearchDaysBefore: Joi.number().required(),
 };
