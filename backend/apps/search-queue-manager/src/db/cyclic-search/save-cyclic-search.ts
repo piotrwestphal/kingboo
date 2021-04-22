@@ -10,6 +10,7 @@ export interface SaveCyclicSearch {
   readonly childrenAgeAtCheckout: number[]
 
   readonly dayOfTheWeek: number
+  readonly offsetDays: number
   readonly nightsOfStay: number
   readonly beginSearchDaysBefore: number
   readonly cyclicSearchRequests: string[]

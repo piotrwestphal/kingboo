@@ -8,13 +8,13 @@ describe('PriceParser: ', () => {
 
     it('should calculate check in days [1]', () => {
       // given
-      const now = new Date(2020, 3, 21); // tuesday
+      const startCycleDay = new Date(2020, 3, 21); // tuesday
       const cycleDaysInterval = 7; // every week
       const startCycleDayOfTheWeek = 1; // monday
       const beginSearchDaysBefore = 14;
 
       // when
-      const result = calculator.findStartDaysOfWeekCycles(now, cycleDaysInterval, startCycleDayOfTheWeek, beginSearchDaysBefore);
+      const result = calculator.findStartDaysOfWeekCycles(startCycleDay, cycleDaysInterval, startCycleDayOfTheWeek, beginSearchDaysBefore);
 
       // then
       const first = result[0];
@@ -29,13 +29,13 @@ describe('PriceParser: ', () => {
 
     it('should calculate check in days [2]', () => {
       // given
-      const now = new Date(2020, 3, 21); // tuesday
+      const startCycleDay = new Date(2020, 3, 21); // tuesday
       const cycleDaysInterval = 7; // every week
       const startCycleDayOfTheWeek = 2; // tuesday
       const beginSearchDaysBefore = 21;
 
       // when
-      const result = calculator.findStartDaysOfWeekCycles(now, cycleDaysInterval, startCycleDayOfTheWeek, beginSearchDaysBefore);
+      const result = calculator.findStartDaysOfWeekCycles(startCycleDay, cycleDaysInterval, startCycleDayOfTheWeek, beginSearchDaysBefore);
 
       // then
       const first = result[0];

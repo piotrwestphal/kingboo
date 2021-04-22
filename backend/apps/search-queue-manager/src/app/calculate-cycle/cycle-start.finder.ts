@@ -2,13 +2,13 @@ import { TimeHelper } from '@kb/util';
 
 export class CycleStartFinder {
 
-  findStartDaysOfWeekCycles(nowWithoutHours: Date,
+  findStartDaysOfWeekCycles(startCycleDate: Date,
                             cycleDaysInterval: number,
                             startCycleDayOfTheWeek: number,
                             beginSearchDaysBefore: number): Date[] {
-    const currentDayOfTheWeek = nowWithoutHours.getDay();
+    const currentDayOfTheWeek = startCycleDate.getDay();
     const nearestDayOfTheWeek = this.findNearestDayOfTheWeek(currentDayOfTheWeek, startCycleDayOfTheWeek);
-    const nearestCycleStartDate = TimeHelper.addDays(nowWithoutHours, nearestDayOfTheWeek);
+    const nearestCycleStartDate = TimeHelper.addDays(startCycleDate, nearestDayOfTheWeek);
 
     const cyclesCount = Math.floor(beginSearchDaysBefore / cycleDaysInterval);
     const dates: Date[] = [nearestCycleStartDate];
