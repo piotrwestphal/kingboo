@@ -18,6 +18,10 @@ export class FirestoreClient {
     return docRef.get();
   }
 
+  getAll<T>(documentReferences: Array<DocumentReference<T>>): Promise<Array<DocumentSnapshot<T>>> {
+    return this.firestore.getAll(...documentReferences) as Promise<Array<DocumentSnapshot<T>>>
+  }
+
   getCollection<T extends FirestoreDocument>(collection: string): CollectionReference<T> {
     return this.firestore.collection(collection) as CollectionReference<T>;
   }

@@ -3,6 +3,7 @@ import { SearchRequestsClient } from '../../core/abstract/search-requests.client
 import { logger } from '../../logger'
 import { SearchDataMapper } from './search-data.mapper'
 import { TopHotelsRepository } from '../../core/abstract/top-hotels.repository'
+import { SearchDataDto, SearchRequestDto } from '@kb/model'
 
 export class SearchDataService {
 
@@ -17,21 +18,29 @@ export class SearchDataService {
     const now = Date.now()
     const searchRequests = await this.searchRequestsClient.getSearchRequests()
     logger.debug(`Search requests fetched within [${Date.now() - now}] ms`)
-    const now2 = Date.now()
-    const pendingSearchDataDto = searchRequests.map(async (searchRequestDto) => {
-      if (!searchRequestDto.collectingStartedAt) {
-        logger.warn(`Search request with search id [${searchRequestDto.searchId}] has never been collected - ` +
-          `'collectingStartedAt' does not exist`)
-        return this.searchDataMapper.toDto(searchRequestDto, null)
-      }
-      const topHotels = await this.topHotelsRepository.find(searchRequestDto.searchId)
-      logger.debug(`Top hotels for search id [${searchRequestDto.searchId}] found within [${Date.now() - now2}] ms`)
-      return this.searchDataMapper.toDto(searchRequestDto, topHotels)
-    })
-    const searchDataList = await Promise.all(pendingSearchDataDto)
+    const [collected, notCollectedEvenOnce] = this.divideByCollectingState(searchRequests)
+    const withTopHotels = await this.findAndCombine(collected)
+    const withoutTopHotels = notCollectedEvenOnce.map(v => this.searchDataMapper.toDto(v, null))
     logger.debug(`Search data loaded within [${Date.now() - now}] ms`)
     return {
-      searchDataList,
+      searchDataList: withTopHotels.concat(withoutTopHotels)
     }
+  }
+
+  private async findAndCombine(searchRequests: SearchRequestDto[]): Promise<SearchDataDto[]> {
+    const searchIds = searchRequests.map(v => v.searchId)
+    const topHotels = await this.topHotelsRepository.findAllBySearchIds(searchIds)
+    return searchRequests.map((v, i) => this.searchDataMapper.toDto(v, topHotels[i]))
+  }
+
+  private divideByCollectingState(searchRequests: SearchRequestDto[]): [SearchRequestDto[], SearchRequestDto[]] {
+    return searchRequests.reduce(([collected, notCollectedEvenOnce], dto) => {
+      if (dto.collectingStartedAt) {
+        collected.push(dto)
+      } else {
+        notCollectedEvenOnce.push(dto)
+      }
+      return [collected, notCollectedEvenOnce]
+    }, [[], []] as [SearchRequestDto[], SearchRequestDto[]])
   }
 }
