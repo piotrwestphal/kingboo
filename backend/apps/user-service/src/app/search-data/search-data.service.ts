@@ -29,7 +29,7 @@ export class SearchDataService {
 
   private async findAndCombine(searchRequests: SearchRequestDto[]): Promise<SearchDataDto[]> {
     const searchIds = searchRequests.map(v => v.searchId)
-    const topHotels = await this.topHotelsRepository.findAllBySearchIds(searchIds)
+    const topHotels = await this.topHotelsRepository.findBySearchIds(searchIds)
     return searchRequests.map((v, i) => this.searchDataMapper.toDto(v, topHotels[i]))
   }
 

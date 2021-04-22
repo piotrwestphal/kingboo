@@ -15,7 +15,7 @@ export class FirestoreTopHotelsRepository extends TopHotelsRepository {
     super()
   }
 
-  async findAllBySearchIds(searchIds: string[]): Promise<TopHotelsDto[]> {
+  async findBySearchIds(searchIds: string[]): Promise<TopHotelsDto[]> {
     const collectionRef = this.firestoreClient.getCollection<TopHotelsDocument>(this.TOP_HOTELS_COLLECTION)
     const toFind = searchIds.map(v => collectionRef.doc(v))
     const snapshots = await this.firestoreClient.getAll(toFind)
