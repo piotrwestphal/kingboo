@@ -15,10 +15,11 @@ export class FirestoreTopHotelsRepository extends TopHotelsRepository {
     super()
   }
 
-  async findBySearchIds(searchIds: string[]): Promise<TopHotelsDto[]> {
+  async findBySearchId(searchId: string): Promise<TopHotelsDto | null> {
     const collectionRef = this.firestoreClient.getCollection<TopHotelsDocument>(this.TOP_HOTELS_COLLECTION)
-    const toFind = searchIds.map(v => collectionRef.doc(v))
-    const snapshots = await this.firestoreClient.getAll(toFind)
-    return snapshots.map(v => this.topHotelsDocumentMapper.fromDoc(v.data()))
+    const snapshot = await collectionRef.doc(searchId).get()
+    return snapshot.exists
+      ? this.topHotelsDocumentMapper.fromDoc(snapshot.data())
+      : null
   }
 }
