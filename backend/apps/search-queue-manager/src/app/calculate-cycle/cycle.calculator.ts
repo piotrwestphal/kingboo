@@ -25,10 +25,9 @@ export class CycleCalculator {
 
   async calculate(cyclicSearch: CyclicSearch): Promise<void> {
     const nowWithoutHours = TimeHelper.clearHours(new Date());
-    const { dayOfTheWeek, beginSearchDaysBefore, offsetDays } = cyclicSearch;
-    const startCycleDate = TimeHelper.addDays(nowWithoutHours, offsetDays)
     const cycleDaysInterval = 7; // every week
-    const checkInDates = this.cycleStartFinder.findStartDaysOfWeekCycles(startCycleDate, cycleDaysInterval, dayOfTheWeek, beginSearchDaysBefore);
+    const { dayOfTheWeek, beginSearchDaysBefore } = cyclicSearch;
+    const checkInDates = this.cycleStartFinder.findStartDaysOfWeekCycles(nowWithoutHours, cycleDaysInterval, dayOfTheWeek, beginSearchDaysBefore);
 
     const currentSearchRequests = checkInDates.map(checkInDate => this.buildCyclicSearchRequest(cyclicSearch, checkInDate));
     const currentSearchIds = currentSearchRequests.map(v => v.searchId);
