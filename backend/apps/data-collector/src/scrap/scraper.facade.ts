@@ -28,6 +28,7 @@ export class ScraperFacade {
   public async initializeBrowser(launchOptions: PuppeteerLaunchOptions): Promise<void> {
     logger.debug(`Initializing browser with options`, launchOptions)
     await this.browserService.initBrowserAndOpenBlankPage(launchOptions)
+    await this.browserService.enableDebugInterception() // TODO: remove
 
     logger.debug(`Set page size`, this.DEFAULT_RESOLUTION)
     await this.browserService.setPageSize(this.DEFAULT_RESOLUTION)

@@ -124,7 +124,8 @@ describe('Data integration tests', () => {
 
     logger.debug(`Collected following search place identifier: `, searchPlaceIdentifier)
     hotels.forEach((v) => {
-      logger.debug(`Collected [rawSearchResultDocument] with hotelId [${v.hotelId}] from db`, v)
+      // DEBUG purposes
+      // logger.debug(`Collected [rawSearchResultDocument] with hotelId [${v.hotelId}] from db`, v)
     })
 
     notEmpty(searchPlaceIdentifier)
