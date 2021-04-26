@@ -39,4 +39,9 @@ export class MainPageElement {
     selector: '#frm > input[name="place_id_lon"]',
     description: MainPageElement.constructDescription('Place id lon input'),
   };
+
+  public static readonly SUBMIT_BUTTON: PageElement = {
+    selector: '#frm div.xp__button',
+    description: MainPageElement.constructDescription('Submit button'),
+  };
 }

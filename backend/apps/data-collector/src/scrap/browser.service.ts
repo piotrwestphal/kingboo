@@ -1,5 +1,5 @@
 import * as puppeteer from 'puppeteer';
-import { Browser, ElementHandle, EvaluateFn, HTTPResponse, Page } from 'puppeteer';
+import { Browser, ElementHandle, EvaluateFn, HTTPRequest, HTTPResponse, Page } from 'puppeteer';
 import { PageElement } from './interface/page-element';
 import { logger } from '../logger';
 import { PuppeteerLaunchOptions } from '../config/puppeteer/puppeteer-launch-options'
@@ -35,14 +35,27 @@ export class BrowserService {
   }
 
   async enableStylesRequestInterception(): Promise<void> {
-    await this.page.setRequestInterception(true);
-    this.page.on('request', (req) => {
+    // await this.page.setRequestInterception(true); // TODO
+    this.page.on('request', (req: HTTPRequest) => {
       if (req.resourceType() === 'image' || req.resourceType() === 'font' || req.resourceType() === 'stylesheet') {
         req.abort();
       } else {
-        req.continue();
+        req.continue()
       }
     });
+  }
+
+  async enableDebugInterception(): Promise<void> {
+    await this.page.setRequestInterception(true);
+    this.page.on('request', (req: HTTPRequest) => {
+      if (req.resourceType() === 'document' && req.url().includes('searchresults')) {
+        // DEBUG purposes
+        logger.debug('Search results url: ', req.url())
+        req.continue()
+      } else {
+        req.continue()
+      }
+    })
   }
 
   async getUserAgent(): Promise<string> {
