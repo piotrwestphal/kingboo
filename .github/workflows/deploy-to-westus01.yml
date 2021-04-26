@@ -2,7 +2,7 @@ name: Deploy to westus01
 on:
   push:
     branches:
-      - master
+      - main
     paths:
       - 'backend/**'
       - 'cloud/opc/westus01/**'
@@ -52,7 +52,7 @@ jobs:
             uptime
             cd ~/app
             git fetch
-            git reset --hard origin/master
+            git reset --hard origin/main
             cd cloud/opc/westus01
             echo "CORS_ORIGINS=$CORS_ORIGINS" >> westus01.env
             echo "LOG_COLLECTOR_TOKEN=$LOG_COLLECTOR_TOKEN" >> westus01.env

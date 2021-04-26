@@ -2,7 +2,7 @@ name: Deploy to westus00
 on:
   push:
     branches:
-      - master
+      - main
     paths:
       - 'backend/**'
       - 'cloud/opc/westus00/**'
@@ -15,7 +15,7 @@ jobs:
       - uses: actions/checkout@v2
 
       # takes branch name as a tag
-      # in case of master takes 'latest'
+      # in case of main takes 'latest'
       # in case of PR takes $GITHUB_SH
       - name: Publish search-queue-manager to registry
         uses: elgohr/Publish-Docker-Github-Action@master
@@ -32,7 +32,7 @@ jobs:
       - uses: actions/checkout@v2
 
       # takes branch name as a tag
-      # in case of master takes 'latest'
+      # in case of main takes 'latest'
       # in case of PR takes $GITHUB_SH
       - name: Publish search-result-calculator to registry
         uses: elgohr/Publish-Docker-Github-Action@master
@@ -49,7 +49,7 @@ jobs:
       - uses: actions/checkout@v2
 
       # takes branch name as a tag
-      # in case of master takes 'latest'
+      # in case of main takes 'latest'
       # in case of PR takes $GITHUB_SH
       - name: Publish top-hotels-aggregator to registry
         uses: elgohr/Publish-Docker-Github-Action@master
@@ -84,7 +84,7 @@ jobs:
             uptime
             cd ~/app
             git fetch
-            git reset --hard origin/master
+            git reset --hard origin/main
             cd cloud/opc/westus00
             echo "CORS_ORIGINS=$CORS_ORIGINS" >> westus00.env
             echo "LOG_COLLECTOR_TOKEN=$LOG_COLLECTOR_TOKEN" >> westus00.env

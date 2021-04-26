@@ -2,7 +2,7 @@ name: Test webapp
 on:
   pull_request:
     branches:
-      - master
+      - main
 
 jobs:
   test_webapp:
