@@ -36,13 +36,13 @@ export class BrowserService {
 
   async enableStylesRequestInterception(): Promise<void> {
     // await this.page.setRequestInterception(true); // TODO
-    this.page.on('request', (req: HTTPRequest) => {
-      if (req.resourceType() === 'image' || req.resourceType() === 'font' || req.resourceType() === 'stylesheet') {
-        req.abort();
-      } else {
-        req.continue()
-      }
-    });
+    // this.page.on('request', (req: HTTPRequest) => {
+    //   if (req.resourceType() === 'image' || req.resourceType() === 'font' || req.resourceType() === 'stylesheet') {
+    //     req.abort();
+    //   } else {
+    //     req.continue()
+    //   }
+    // });
   }
 
   async enableDebugInterception(): Promise<void> {
