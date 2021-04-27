@@ -1,15 +1,16 @@
-import { ToggleButton, ToggleButtonGroup } from '@material-ui/lab';
-import StarsIcon from '@material-ui/icons/Stars';
-import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
-import ThumbUpIcon from '@material-ui/icons/ThumbUp';
-import LocationCityIcon from '@material-ui/icons/LocationCity';
-import { Box } from '@material-ui/core';
-import React, { Dispatch, SetStateAction } from 'react';
-import { TopHotelsDto } from '../../../core/dto/top-hotels.dto';
+import { ToggleButton, ToggleButtonGroup } from '@material-ui/lab'
+import StarsIcon from '@material-ui/icons/Stars'
+import AttachMoneyIcon from '@material-ui/icons/AttachMoney'
+import ThumbUpIcon from '@material-ui/icons/ThumbUp'
+import LocationCityIcon from '@material-ui/icons/LocationCity'
+import { Box } from '@material-ui/core'
+import { Dispatch, SetStateAction } from 'react'
+import * as React from 'react'
+import { TopHotelsDto } from '../../../core/dto/top-hotels.dto'
 
 interface HotelsSelectorProps {
-  readonly className: string;
-  readonly selectedHotels: keyof TopHotelsDto;
+  readonly className: string
+  readonly selectedHotels: keyof TopHotelsDto
   readonly selectHotels: Dispatch<SetStateAction<keyof TopHotelsDto>>
 }
 

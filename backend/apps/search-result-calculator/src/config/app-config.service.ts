@@ -24,7 +24,7 @@ export class AppConfigService extends ConfigService<AppConfig> implements MongoC
     return this.config.hotelsWithoutUpdateStorageDays;
   }
 
-  get userNotificationsMqClient(): RmqOptions {
-    return buildRmqOptions(this.config.userNotificationsMqClient);
+  get dataUpdatesMqClient(): RmqOptions {
+    return buildRmqOptions(this.config.dataUpdatesMqClient);
   }
 }

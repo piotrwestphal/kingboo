@@ -12,14 +12,14 @@ jobs:
   deploy_user-service:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
 
-      - uses: actions/setup-node@v1
+      - uses: actions/setup-node@v2
         with:
-          node-version: '12.x'
+          node-version: '14.x'
 
       - name: Use cache
-        uses: actions/cache@v1
+        uses: actions/cache@v2
         with:
           path: ~/.npm
           key: ${{ runner.os }}-backend-ci-${{ hashFiles('backend/package-lock.json') }}
@@ -49,7 +49,7 @@ jobs:
           mv target-package.json package.json
 
       - name: GCP authenticate as service account
-        uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
+        uses: google-github-actions/setup-gcloud@master
         with:
           project_id: ${{ secrets.GCLOUD_PROJECT }}
           service_account_key: ${{ secrets.GCP_SA_KEY }}
@@ -59,17 +59,20 @@ jobs:
         env:
           CORS_ORIGINS: ${{ secrets.CORS_ORIGINS }}
           LOG_COLLECTOR_TOKEN: ${{ secrets.LOG_COLLECTOR_TOKEN }}
+          FIRESTORE_PROJECT_ID: ${{ secrets.FIRESTORE_PROJECT_ID }}
+          FIRESTORE_CLIENT_EMAIL: ${{ secrets.FIRESTORE_CLIENT_EMAIL }}
+          FIRESTORE_CLIENT_KEY: ${{ secrets.FIRESTORE_CLIENT_KEY }}
           MONGO_ADDRESS: ${{ secrets.MONGO_ADDRESS }}
           MQ_ADDRESS: ${{ secrets.MQ_ADDRESS }}
           SEARCH_REQUESTS_RESOURCE_ADDRESS: ${{ secrets.SEARCH_REQUESTS_RESOURCE_ADDRESS }}
-          HOTELS_RESOURCE_ADDRESS: ${{ secrets.HOTELS_RESOURCE_ADDRESS }}
         run: |
           sed -i 's#__CORS_ORIGINS__#'"$CORS_ORIGINS"'#' app.yaml
+          sed -i 's#__FIRESTORE_PROJECT_ID__#'"$FIRESTORE_PROJECT_ID"'#' app.yaml
+          sed -i 's#__FIRESTORE_CLIENT_EMAIL__#'"$FIRESTORE_CLIENT_EMAIL"'#' app.yaml
+          sed -i 's#__FIRESTORE_CLIENT_KEY__#'"$FIRESTORE_CLIENT_KEY"'#' app.yaml
           sed -i 's#__LOG_COLLECTOR_TOKEN__#'"$LOG_COLLECTOR_TOKEN"'#' app.yaml
-          sed -i 's#__MONGO_ADDRESS__#'"$MONGO_ADDRESS"'#' app.yaml
           sed -i 's#__MQ_ADDRESS__#'"$MQ_ADDRESS"'#' app.yaml
           sed -i 's#__SEARCH_REQUESTS_RESOURCE_ADDRESS__#'"$SEARCH_REQUESTS_RESOURCE_ADDRESS"'#' app.yaml
-          sed -i 's#__HOTELS_RESOURCE_ADDRESS__#'"$HOTELS_RESOURCE_ADDRESS"'#' app.yaml
           gcloud -q app deploy -v $GITHUB_SHA
 
       - name: Deploy dispatch to app engine

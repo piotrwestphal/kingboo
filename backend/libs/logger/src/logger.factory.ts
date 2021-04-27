@@ -1,33 +1,19 @@
 import { transports } from 'winston';
-import HumioTransport from 'humio-winston';
 import { CommonLoggerService } from './common-logger.service';
 import { LoggerConfig } from './logger.config';
-import * as Transport from 'winston-transport';
+import { FileTransportInstance } from 'winston/lib/winston/transports'
 
 export const createLogger = ({
                                logLevel,
                                appLabel,
                                logOutputFolder,
-                               logCollectorToken,
                              }: LoggerConfig) => {
-  const additionalTransports: Transport[] = [];
+  const additionalTransports: FileTransportInstance[] = [];
   additionalTransports.push(new transports.File({
-    filename: `${logOutputFolder}/${appLabel}-error.log`,
-    level: 'error',
-  }));
-  additionalTransports.push(new transports.File({
-    filename: `${logOutputFolder}/${appLabel}-combined.log`,
+    filename: `${logOutputFolder}/${appLabel}-output.log`,
     level: 'debug',
   }));
-  if (logCollectorToken) {
-    const humioTransport = new HumioTransport({
-      ingestToken: logCollectorToken,
-      tags: { app: appLabel },
-    }) as unknown;
-    additionalTransports.push(humioTransport as Transport);
-  }
   return new CommonLoggerService({
-    appLabel,
     logLevel,
     additionalTransports,
   });

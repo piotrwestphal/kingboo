@@ -3,7 +3,7 @@ import { AppConfig } from '../src/config/app.config';
 
 const mqAddress = 'amqp://dev:dev@localhost:5672';
 const consumerQueueName = 'data-to-process';
-const userNotificationsQueue = 'user-notifications';
+const dataUpdatesQueue = 'data-updates';
 
 export const localConfig: AppConfig = {
   nodeEnv: 'local',
@@ -23,11 +23,11 @@ export const localConfig: AppConfig = {
       queueOptions: retrieveRMQQueueOptions(consumerQueueName),
     },
   },
-  userNotificationsMqClient: {
+  dataUpdatesMqClient: {
     address: mqAddress,
     queueDefinition: {
-      queue: userNotificationsQueue,
-      queueOptions: retrieveRMQQueueOptions(userNotificationsQueue),
+      queue: dataUpdatesQueue,
+      queueOptions: retrieveRMQQueueOptions(dataUpdatesQueue),
     },
   },
 };

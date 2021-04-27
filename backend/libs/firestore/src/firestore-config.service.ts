@@ -1,10 +1,10 @@
-import { NodeEnv } from '@kb/config';
-import { EmulatorOptions } from '@kb/firestore/emulator-options';
+import { NodeEnv } from '@kb/config'
+import { EmulatorOptions } from '@kb/firestore/emulator-options'
 
 export interface FirestoreConfigService {
-  env: NodeEnv;
-  emulator: EmulatorOptions;
-  projectId: string;
-  clientEmail: string;
-  clientKey: string;
+  env: NodeEnv
+  emulator: EmulatorOptions
+  projectId: string
+  clientEmail: string
+  rawClientKey: string
 }

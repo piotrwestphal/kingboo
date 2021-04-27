@@ -9,5 +9,5 @@ export const appConfigValidationSchemaMap: SchemaMap<AppConfig> = {
   saveResultAsJson: Joi.boolean().required(),
   mongo: Joi.object<MongoOptions>(mongoValidationSchemaMap).required(),
   hotelsWithoutUpdateStorageDays: Joi.number().required(),
-  userNotificationsMqClient: Joi.object<RabbitOptions>(rabbitValidationSchemaMap).required(),
+  dataUpdatesMqClient: Joi.object<RabbitOptions>(rabbitValidationSchemaMap).required(),
 };

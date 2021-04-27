@@ -2,7 +2,7 @@ version: "3.7"
 services:
   search-queue-manager:
     volumes:
-      - ./../../../compose-output:/usr/src/app/dist/apps/search-queue-manager/output
+      - ./../../../compose-output:/usr/src/app/output
     env_file:
       - westus00.env
       - ./../opc.env
@@ -13,7 +13,24 @@ services:
     env_file:
       - westus00.env
       - ./../opc.env
+    environment:
+      LOG_LEVEL: info
     volumes:
-      - ./../../../compose-output:/usr/src/app/dist/apps/search-result-calculator/output
-    ports:
-      - 8082:8080
+      - ./../../../compose-output:/usr/src/app/output
+
+  top-hotels-aggregator:
+    env_file:
+      - westus00.env
+      - ./../opc.env
+    volumes:
+      - ./../../../compose-output:/usr/src/app/output
+
+  filebeat:
+    image: docker.elastic.co/beats/filebeat-oss:7.12.0
+    # needs to override config file
+    command: filebeat -e -strict.perms=false
+    env_file:
+      - westus00.env
+    volumes:
+      - ./filebeat.yml:/usr/share/filebeat/filebeat.yml:ro
+      - ./../../../compose-output:/var/log/apps:ro

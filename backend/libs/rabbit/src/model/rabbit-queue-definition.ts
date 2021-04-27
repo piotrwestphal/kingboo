@@ -1,7 +1,7 @@
-import { RabbitQueueOptions } from './rabbit-queue-options';
+import { RabbitQueueOptions } from './rabbit-queue-options'
 
 export interface RabbitQueueDefinition {
-  queue: string;
+  queue: string
   prefetchCount?: number;
   noAck?: boolean;
   queueOptions?: RabbitQueueOptions;

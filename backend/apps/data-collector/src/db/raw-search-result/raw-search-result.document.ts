@@ -1,10 +1,10 @@
-import { RawHotelDocument } from './raw-hotel.document';
-import { FirestoreDocument } from '../firestore.document';
+import { RawHotelDocument } from './raw-hotel.document'
+import { SearchPlaceIdentifierDocument } from './search-place-identifier.document'
+import { FirestoreDocument } from '@kb/firestore'
 
 export interface RawSearchResultDocument extends FirestoreDocument {
-  readonly searchId: string;
-  readonly searchPlaceIdentifier: string;
-  readonly collectingTimeSec: number;
-  readonly hotelsCount: number;
-  readonly hotels: RawHotelDocument[];
+  readonly searchPlaceIdentifier: SearchPlaceIdentifierDocument
+  readonly collectingTimeSec: number
+  readonly hotelsCount: number
+  readonly hotels: RawHotelDocument[]
 }

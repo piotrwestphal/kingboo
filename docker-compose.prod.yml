@@ -4,19 +4,19 @@ services:
     env_file:
       - prod.env
     volumes:
-      - ./compose-output:/usr/src/app/dist/apps/user-service/output
+      - ./compose-output:/usr/src/app/output
 
   search-queue-manager:
     env_file:
       - prod.env
     volumes:
-      - ./compose-output:/usr/src/app/dist/apps/search-queue-manager/output
+      - ./compose-output:/usr/src/app/output
 
   data-collector:
     env_file:
       - prod.env
     volumes:
-      - ./compose-output:/usr/src/app/dist/apps/data-collector/output
+      - ./compose-output:/usr/src/app/output
 
 #  data-collector-b:
 #    build:
@@ -28,10 +28,16 @@ services:
 #    environment:
 #      APP_LABEL: DCB
 #    volumes:
-#      - ./compose-output:/usr/src/app/dist/apps/data-collector/output
+#      - ./compose-output:/usr/src/app/output
 
   search-result-calculator:
     env_file:
       - prod.env
     volumes:
-      - ./compose-output:/usr/src/app/dist/apps/search-result-calculator/output
+      - ./compose-output:/usr/src/app/output
+
+  top-hotels-aggregator:
+    env_file:
+      - prod.env
+    volumes:
+      - ./compose-output:/usr/src/app/output

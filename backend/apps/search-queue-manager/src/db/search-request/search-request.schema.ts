@@ -1,5 +1,6 @@
 import { Schema } from 'mongoose';
 import { SearchRequestDocument } from './search-request.document';
+import { SearchPlaceIdentifierSchema } from './search-place-identifier.schema'
 
 export const SearchRequestSchemaKey = 'searchRequest';
 
@@ -16,7 +17,7 @@ export const SearchRequestSchema = new Schema<SearchRequestDocument>({
     numberOfAdults: Number,
     childrenAgeAtCheckout: [Number],
 
-    searchPlaceIdentifier: String,
+    searchPlaceIdentifier: SearchPlaceIdentifierSchema,
     nextSearchScheduledAt: Date,
     collectingStartedAt: Date,
     collectingFinishedAt: Date,

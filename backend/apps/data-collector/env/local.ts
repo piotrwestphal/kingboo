@@ -1,10 +1,10 @@
-import { retrieveRMQQueueOptions } from '@kb/rabbit';
-import { AppConfig } from '../src/config/app.config';
+import { retrieveRMQQueueOptions } from '@kb/rabbit'
+import { AppConfig } from '../src/config/app.config'
 
-const mqAddress = 'amqp://dev:dev@localhost:5672';
-const consumerQueueName = 'collecting-scenario';
-const dataCollectionNotificationsQueue = 'data-collection-notifications';
-const dataToProcessQueue = 'data-to-process';
+const mqAddress = 'amqp://dev:dev@localhost:5672'
+const consumerQueueName = 'collecting-scenario'
+const dataCollectionNotificationsQueue = 'data-collection-notifications'
+const dataToProcessQueue = 'data-to-process'
 
 export const localConfig: AppConfig = {
   nodeEnv: 'local',
@@ -17,7 +17,7 @@ export const localConfig: AppConfig = {
   puppeteer: {
     headlessModeOff: true,
     enableStylesOnResultsPage: false,
-    executablePath: './node_modules/puppeteer/.local-chromium/mac-818858/chrome-mac/Chromium.app/Contents/MacOS/Chromium',
+    executablePath: './node_modules/puppeteer/.local-chromium/mac-856583/chrome-mac/Chromium.app/Contents/MacOS/Chromium',
     slowMoMs: 0,
     devtoolsTurnedOn: false,
   },
@@ -54,4 +54,4 @@ export const localConfig: AppConfig = {
       queueOptions: retrieveRMQQueueOptions(dataToProcessQueue),
     },
   },
-};
+}

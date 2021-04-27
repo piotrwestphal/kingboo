@@ -1,7 +1,8 @@
 import * as puppeteer from 'puppeteer';
-import { Browser, ElementHandle, EvaluateFn, LaunchOptions, Page } from 'puppeteer';
+import { Browser, ElementHandle, EvaluateFn, HTTPRequest, HTTPResponse, Page } from 'puppeteer';
 import { PageElement } from './interface/page-element';
 import { logger } from '../logger';
+import { PuppeteerLaunchOptions } from '../config/puppeteer/puppeteer-launch-options'
 
 export class BrowserService {
 
@@ -19,7 +20,7 @@ export class BrowserService {
     });
   }
 
-  async initBrowserAndOpenBlankPage(launchOptions: LaunchOptions): Promise<void> {
+  async initBrowserAndOpenBlankPage(launchOptions: PuppeteerLaunchOptions): Promise<void> {
     try {
       this.browser = await puppeteer.launch({
         ...launchOptions,
@@ -28,24 +29,33 @@ export class BrowserService {
       const pages = await this.browser.pages();
       this.page = pages[0];
       await this.page.setUserAgent('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 Safari/537.36');
-      // TODO: below line could be removed if err not happen again
-      this.page.on('error', (err) => {
-        this.logAndRethrow('Something wrong happen during scraping. Check if there is no memory or CPU issue!! ', err);
-      });
     } catch (e) {
       this.logAndRethrow(`Error when initializing browser and opening blank page.`, e);
     }
   }
 
   async enableStylesRequestInterception(): Promise<void> {
+    // await this.page.setRequestInterception(true); // TODO
+    // this.page.on('request', (req: HTTPRequest) => {
+    //   if (req.resourceType() === 'image' || req.resourceType() === 'font' || req.resourceType() === 'stylesheet') {
+    //     req.abort();
+    //   } else {
+    //     req.continue()
+    //   }
+    // });
+  }
+
+  async enableDebugInterception(): Promise<void> {
     await this.page.setRequestInterception(true);
-    this.page.on('request', (req) => {
-      if (req.resourceType() === 'image' || req.resourceType() === 'font' || req.resourceType() === 'stylesheet') {
-        req.abort();
+    this.page.on('request', (req: HTTPRequest) => {
+      if (req.resourceType() === 'document' && req.url().includes('searchresults')) {
+        // DEBUG purposes
+        logger.debug('Search results url: ', req.url())
+        req.continue()
       } else {
-        req.continue();
+        req.continue()
       }
-    });
+    })
   }
 
   async getUserAgent(): Promise<string> {
@@ -57,6 +67,12 @@ export class BrowserService {
   async getPages(): Promise<Page[]> {
     return this.browser
       ? this.browser.pages()
+      : null;
+  }
+
+  getCurrentUrl(): String {
+    return this.browser
+      ? this.page.url()
       : null;
   }
 
@@ -80,14 +96,15 @@ export class BrowserService {
     }
   }
 
-  async goToAddressAndProceedIfFail(url: string, timeout = 90000): Promise<void> {
+  async goToAddressAndProceedIfFail(url: string, timeout = 90000): Promise<HTTPResponse | null> {
     try {
-      await this.page.goto(url, { timeout });
+      return this.page.goto(url, { timeout });
     } catch (e) {
       logger.error(`Waiting ${timeout / 1000}s for navigation after going to page [${url}]. ` +
         `Now stopping page loading. The browser might not display any content. Next steps could fail. ` +
         `Trying to proceed with process.`);
       await this.stopPageLoading();
+      return null;
     }
   }
 

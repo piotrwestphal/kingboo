@@ -1,11 +1,11 @@
-import React, { useState } from 'react'
-import { Box, CardContent as MCardContent, createStyles, Theme, Typography } from '@material-ui/core';
-import { TopHotelsDto } from '../../core/dto/top-hotels.dto';
-import { makeStyles } from '@material-ui/core/styles';
-import { createHotelList } from './hotel/create-hotel-list';
-import { SearchData } from '../../core/search-data';
-import HotelsSelector from './content/HotelsSelector';
-import Block from './Block';
+import { useState } from 'react'
+import { Box, CardContent as MCardContent, createStyles, Theme, Typography } from '@material-ui/core'
+import { TopHotelsDto } from '../../core/dto/top-hotels.dto'
+import { makeStyles } from '@material-ui/core/styles'
+import { createHotelList } from './hotel/create-hotel-list'
+import { SearchData } from '../../core/search-data'
+import HotelsSelector from './content/HotelsSelector'
+import Block from './Block'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -24,10 +24,10 @@ const useStyles = makeStyles((theme: Theme) =>
       marginRight: theme.spacing(3),
     },
   }),
-);
+)
 
 interface SearchContentProps {
-  readonly searchData: SearchData;
+  readonly searchData: SearchData
 }
 
 export default function CardContent({
@@ -36,7 +36,7 @@ export default function CardContent({
                                         topHotels
                                       }
                                     }: SearchContentProps) {
-  const classes = useStyles();
+  const classes = useStyles()
   const [item, setItem] = useState<keyof TopHotelsDto>('bestPriceRate')
 
   const empty =

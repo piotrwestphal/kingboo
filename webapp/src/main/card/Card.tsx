@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Card as MCard, Collapse, Divider } from '@material-ui/core';
 import CardContent from './CardContent';
 import CardHeader from './header/CardHeader';

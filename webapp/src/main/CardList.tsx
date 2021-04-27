@@ -1,12 +1,12 @@
-import React, { useEffect, useReducer, useState } from 'react';
-import { createStyles, Divider, Grid, Theme } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
-import Card from './card/Card';
-import Toolbar from './filter/Toolbar';
-import { common } from '@material-ui/core/colors';
-import { sort } from '../util/sorter';
-import { SearchData } from '../core/search-data';
-import { filterReducer, initialFilterState } from './filter/filter.reducer';
+import { useEffect, useReducer, useState } from 'react'
+import { createStyles, Divider, Grid, Theme } from '@material-ui/core'
+import { makeStyles } from '@material-ui/core/styles'
+import Card from './card/Card'
+import Toolbar from './filter/Toolbar'
+import { common } from '@material-ui/core/colors'
+import { sort } from '../util/sorter'
+import { SearchData } from '../core/search-data'
+import { filterReducer, initialFilterState } from './filter/filter.reducer'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -23,14 +23,14 @@ const useStyles = makeStyles((theme: Theme) =>
       }
     }
   }),
-);
+)
 
 interface SearchCardListProps {
-  readonly list: SearchData[];
+  readonly list: SearchData[]
 }
 
 export default function CardList({ list: sourceList }: SearchCardListProps) {
-  const classes = useStyles();
+  const classes = useStyles()
   const [{ sortBy, filterBy, reverse }, filterDispatch] = useReducer(filterReducer, initialFilterState)
 
   const initialList = sort(sourceList, sortBy.primaryKey, sortBy.secondaryKey, reverse)
@@ -61,5 +61,5 @@ export default function CardList({ list: sourceList }: SearchCardListProps) {
         )}
       </Grid>
     </>
-  );
+  )
 }

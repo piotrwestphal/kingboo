@@ -12,7 +12,7 @@ export class FirestoreModule {
           ? createFirestore(
             configService.projectId,
             configService.clientEmail,
-            configService.clientKey)
+            configService.rawClientKey)
           : createFirestoreForDevPurposes(
             configService.projectId,
             configService.emulator.host,

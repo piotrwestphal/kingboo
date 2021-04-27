@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useState } from 'react';
+import { Dispatch, SetStateAction, useState } from 'react'
 import {
   Box,
   Button,
@@ -9,14 +9,14 @@ import {
   Link,
   Theme,
   Typography
-} from '@material-ui/core';
-import { DialogState, DialogView } from './dialog.state';
-import { SimpleHotelDto } from '../../../core/dto/simple-hotel.dto';
-import DetailsContent from './DetailsContent';
-import PricesContent from './PricesContent';
-import { makeStyles } from '@material-ui/core/styles';
-import CloseIcon from '@material-ui/icons/Close';
-import OpenInNewIcon from '@material-ui/icons/OpenInNew';
+} from '@material-ui/core'
+import { DialogState, DialogView } from './dialog.state'
+import { SimpleHotelDto } from '../../../core/dto/simple-hotel.dto'
+import DetailsContent from './DetailsContent'
+import PricesContent from './PricesContent'
+import { makeStyles } from '@material-ui/core/styles'
+import CloseIcon from '@material-ui/icons/Close'
+import OpenInNewIcon from '@material-ui/icons/OpenInNew'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -45,7 +45,7 @@ const useStyles = makeStyles((theme: Theme) =>
       top: theme.spacing(0.5),
     },
   }),
-);
+)
 
 
 interface DialogProps {
@@ -59,7 +59,7 @@ export default function DialogBody({
                                      initialView,
                                      setDialog,
                                    }: DialogProps) {
-  const classes = useStyles();
+  const classes = useStyles()
   const { name, latestValues: { districtName, distanceFromCenterMeters, hotelLink } } = hotel
   const [view, setView] = useState<DialogView>(initialView)
 

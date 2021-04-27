@@ -1,5 +1,5 @@
-import React, { ReactElement } from 'react';
-import { Tooltip } from '@material-ui/core';
+import { ReactElement } from 'react'
+import { Tooltip } from '@material-ui/core'
 
 interface InfoWrapperProps {
   readonly children: ReactElement

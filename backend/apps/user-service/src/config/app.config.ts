@@ -1,7 +1,6 @@
-import { CommonConfig } from '@kb/config';
-import { MongoConfig } from '@kb/mongo';
+import { CommonConfig } from '@kb/config'
+import { FirestoreConfig } from '@kb/firestore'
 
-export interface AppConfig extends CommonConfig, MongoConfig {
-  readonly searchRequestsResourceAddress: string;
-  readonly hotelsResourceAddress: string;
+export interface AppConfig extends CommonConfig, FirestoreConfig {
+  readonly searchRequestsResourceAddress: string
 }

@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
-import { logger } from '../../../../search-queue-manager/src/logger';
 import { HotelRepository } from '../../core/abstract/hotel.repository';
 import { AppConfigService } from '../../config/app-config.service';
+import { logger } from '../../logger'
 
 @Injectable()
 export class OldHotelsRemover {

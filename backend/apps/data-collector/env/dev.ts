@@ -1,10 +1,10 @@
-import { AppConfig } from '../src/config/app.config';
-import { retrieveRMQQueueOptions } from '@kb/rabbit';
+import { AppConfig } from '../src/config/app.config'
+import { retrieveRMQQueueOptions } from '@kb/rabbit'
 
-const mqAddress = (env) => env.MQ_ADDRESS;
-const consumerQueueName = (env) => env.MQ_COLLECTING_SCENARIO_QUEUE_NAME;
-const dataCollectionNotificationsQueue = (env) => env.MQ_DATA_COLLECTION_NOTIFICATIONS_QUEUE_NAME;
-const dataToProcessQueue = (env) => env.MQ_DATA_TO_PROCESS_QUEUE_NAME;
+const mqAddress = (env) => env.MQ_ADDRESS
+const consumerQueueName = (env) => env.MQ_COLLECTING_SCENARIO_QUEUE_NAME
+const dataCollectionNotificationsQueue = (env) => env.MQ_DATA_COLLECTION_NOTIFICATIONS_QUEUE_NAME
+const dataToProcessQueue = (env) => env.MQ_DATA_TO_PROCESS_QUEUE_NAME
 
 export const devConfig = (env: NodeJS.ProcessEnv): AppConfig =>
   ({
@@ -52,4 +52,4 @@ export const devConfig = (env: NodeJS.ProcessEnv): AppConfig =>
         queueOptions: retrieveRMQQueueOptions(dataToProcessQueue(env)),
       },
     },
-  });
+  })

@@ -1,12 +1,14 @@
-import { AppConfig } from '../src/config/app.config';
+import { AppConfig } from '../src/config/app.config'
 
 export const prodConfig = (env: NodeJS.ProcessEnv): AppConfig =>
   ({
     nodeEnv: env.NODE_ENV as 'prod',
     port: env.PORT ? parseInt(env.PORT, 10) : 8080,
     corsOrigins: env.CORS_ORIGINS,
-    mongo: {
-      address: env.MONGO_ADDRESS,
+    firestore: {
+      projectId: env.FIRESTORE_PROJECT_ID,
+      clientEmail: env.FIRESTORE_CLIENT_EMAIL,
+      rawClientKey: env.FIRESTORE_CLIENT_KEY,
     },
     mqConsumer: {
       address: env.MQ_ADDRESS,
@@ -22,5 +24,4 @@ export const prodConfig = (env: NodeJS.ProcessEnv): AppConfig =>
       },
     },
     searchRequestsResourceAddress: env.SEARCH_REQUESTS_RESOURCE_ADDRESS,
-    hotelsResourceAddress: env.HOTELS_RESOURCE_ADDRESS,
-  });
+  })

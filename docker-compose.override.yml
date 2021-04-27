@@ -4,9 +4,9 @@ services:
     env_file:
       - dev.env
     volumes:
-      - ./compose-output:/usr/src/app/dist/apps/user-service/output
+      - ./compose-output:/usr/src/app/output
       - ./tools/wait-for-it.sh:/wait-for-it.sh
-    command: ["/wait-for-it.sh", "rabbitmq:5672", "-t", "60", "--", "node", "main"]
+    command: ["/wait-for-it.sh", "rabbitmq:5672", "-t", "60", "--", "node", "dist/apps/user-service/main"]
     ports:
       - 38080:8080
 
@@ -14,9 +14,9 @@ services:
     env_file:
       - dev.env
     volumes:
-      - ./compose-output:/usr/src/app/dist/apps/search-queue-manager/output
+      - ./compose-output:/usr/src/app/output
       - ./tools/wait-for-it.sh:/wait-for-it.sh
-    command: ["/wait-for-it.sh", "rabbitmq:5672", "-t", "60", "--", "node", "main"]
+    command: ["/wait-for-it.sh", "rabbitmq:5672", "-t", "60", "--", "node", "dist/apps/search-queue-manager/main"]
     ports:
       - 38081:8080
 
@@ -24,19 +24,27 @@ services:
     env_file:
       - dev.env
     volumes:
-      - ./compose-output:/usr/src/app/dist/apps/data-collector/output
+      - ./compose-output:/usr/src/app/output
       - ./tools/wait-for-it.sh:/wait-for-it.sh
-    command: ["/wait-for-it.sh", "rabbitmq:5672", "-t", "60", "--", "node", "main"]
+    command: ["/wait-for-it.sh", "rabbitmq:5672", "-t", "60", "--", "node", "dist/apps/data-collector/main"]
 
   search-result-calculator:
     env_file:
       - dev.env
+    environment:
+      LOG_LEVEL: info
     volumes:
-      - ./compose-output:/usr/src/app/dist/apps/search-result-calculator/output
+      - ./compose-output:/usr/src/app/output
       - ./tools/wait-for-it.sh:/wait-for-it.sh
-    command: ["/wait-for-it.sh", "rabbitmq:5672", "-t", "60", "--", "node", "main"]
-    ports:
-      - 38082:8080
+    command: ["/wait-for-it.sh", "rabbitmq:5672", "-t", "60", "--", "node", "dist/apps/search-result-calculator/main"]
+
+  top-hotels-aggregator:
+    env_file:
+      - dev.env
+    volumes:
+      - ./compose-output:/usr/src/app/output
+      - ./tools/wait-for-it.sh:/wait-for-it.sh
+    command: ["/wait-for-it.sh", "rabbitmq:5672", "-t", "60", "--", "node", "dist/apps/top-hotels-aggregator/main"]
 
   rabbitmq:
     image: rabbitmq:3-management-alpine

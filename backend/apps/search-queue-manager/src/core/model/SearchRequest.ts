@@ -1,5 +1,6 @@
-import { InconsistencyException } from '../exception/InconsistencyException';
-import { SearchRequestType } from './SearchRequestType';
+import { InconsistencyException } from '../exception/InconsistencyException'
+import { SearchRequestType } from './SearchRequestType'
+import { SearchPlaceIdentifier } from '../interface/search-place-identifier'
 
 type SearchRequestValues = Omit<SearchRequest,
   'updateSearchPlaceIdentifier'
@@ -19,7 +20,7 @@ export class SearchRequest {
     public readonly numberOfRooms: number,
     public readonly numberOfAdults: number,
     public readonly childrenAgeAtCheckout: number[],
-    public searchPlaceIdentifier: string | null,
+    public searchPlaceIdentifier: SearchPlaceIdentifier | null,
     public nextSearchScheduledAt: Date,
     public collectingStartedAt: Date | null,
     public collectingFinishedAt: Date | null,
@@ -60,7 +61,7 @@ export class SearchRequest {
       collectingStartedAt,
       collectingFinishedAt,
       collectingCount,
-    );
+    )
   }
 
   scheduleNextSearch(now: Date): SearchRequest {
@@ -69,10 +70,9 @@ export class SearchRequest {
     return this;
   }
 
-  updateSearchPlaceIdentifier(searchPlaceIdentifier: string): SearchRequest {
+  updateSearchPlaceIdentifier(searchPlaceIdentifier: SearchPlaceIdentifier): SearchRequest {
     if (this.searchPlaceIdentifier) {
-      throw new InconsistencyException(`Search place identifier for searchId [${this.searchId}] already exists. ` +
-        `Incoming [${searchPlaceIdentifier}], existing [${this.searchPlaceIdentifier}]`);
+      throw new InconsistencyException(`Search place identifier for searchId [${this.searchId}] already exists`);
     }
     this.searchPlaceIdentifier = searchPlaceIdentifier;
     return this;

@@ -1,10 +1,10 @@
-import React, { Dispatch, SetStateAction } from 'react';
-import { CardHeader as MCardHeader, createStyles, Theme, Typography } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
-import { SearchData } from '../../../core/search-data';
-import HeaderAvatar from './HeaderAvatar';
-import HeaderTitle from './HeaderTitle';
-import HeaderAction from './HeaderAction';
+import { Dispatch, SetStateAction } from 'react'
+import { CardHeader as MCardHeader, createStyles, Theme, Typography } from '@material-ui/core'
+import { makeStyles } from '@material-ui/core/styles'
+import { SearchData } from '../../../core/search-data'
+import HeaderAvatar from './HeaderAvatar'
+import HeaderTitle from './HeaderTitle'
+import HeaderAction from './HeaderAction'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme: Theme) =>
       fontWeight: 400,
     },
   }),
-);
+)
 
 interface SearchHeaderProps {
   readonly searchData: SearchData
@@ -30,18 +30,18 @@ export default function CardHeader({
                                      searchData: {
                                        type,
                                        searchPlace,
-                                       searchPlaceIdentifier,
+                                       destination,
                                        stayDate,
                                      },
                                      setExpanded,
                                    }: SearchHeaderProps) {
-  const classes = useStyles();
+  const classes = useStyles()
 
   return (
     <MCardHeader onClick={() => setExpanded((current) => !current)}
                  classes={{ root: classes.rootOverride, avatar: classes.avatarOverride }}
                  avatar={<HeaderAvatar name={searchPlace}/>}
-                 title={<HeaderTitle title={searchPlace} subtitle={searchPlaceIdentifier}/>}
+                 title={<HeaderTitle title={searchPlace} subtitle={destination}/>}
                  subheader={<Typography className={classes.subheader}
                                         color="secondary"
                                         variant="body2"

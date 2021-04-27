@@ -1,21 +1,17 @@
-import { Module } from '@nestjs/common';
-import { SearchDataController } from './search-data.controller';
-import { SearchDataService } from './search-data/search-data.service';
-import { ConfigModule } from '@kb/config';
-import { AppConfigService } from '../config/app-config.service';
-import { getEnvironments } from '../config/environments';
-import { logger } from '../logger';
-import { ProcessedDataMessageConsumer } from './processed-data-message.consumer';
-import { RestModule } from '../rest/rest.module';
-import { DbModule } from '../db/db.module';
-import { TopHotelsCacheRepository } from '../core/abstract/top-hotels-cache.repository';
-import { HotelsClient } from '../core/abstract/hotels.client';
-import { SearchRequestsClient } from '../core/abstract/search-requests.client';
-import { SearchDataMapper } from './search-data/search-data.mapper';
-import { UserNotificationHandler } from '../core/abstract/user-notification.handler';
-import { AppUserNotificationHandler } from './app-user-notification.handler';
-import { TopHotelsCacheMaintainer } from './top-hotels/top-hotels-cache.maintainer';
-import { SearchRequestMessageConsumer } from './search-request-message.consumer';
+import { Module } from '@nestjs/common'
+import { SearchDataController } from './search-data.controller'
+import { SearchDataService } from './search-data/search-data.service'
+import { ConfigModule } from '@kb/config'
+import { AppConfigService } from '../config/app-config.service'
+import { getEnvironments } from '../config/environments'
+import { logger } from '../logger'
+import { RestModule } from '../rest/rest.module'
+import { DbModule } from '../db/db.module'
+import { SearchRequestsClient } from '../core/abstract/search-requests.client'
+import { SearchDataMapper } from './search-data/search-data.mapper'
+import { UserNotificationsConsumer } from './user-notifications.consumer'
+import { UserNotificationHandler } from './user-notification.handler'
+import { TopHotelsRepository } from '../core/abstract/top-hotels.repository'
 
 @Module({
   imports: [
@@ -23,35 +19,23 @@ import { SearchRequestMessageConsumer } from './search-request-message.consumer'
     DbModule,
     RestModule,
   ],
-  controllers: [SearchDataController, ProcessedDataMessageConsumer, SearchRequestMessageConsumer],
+  controllers: [SearchDataController, UserNotificationsConsumer],
   providers: [
-    // SearchRequestCacheMaintainer,
-    TopHotelsCacheMaintainer,
-    {
-      provide: UserNotificationHandler,
-      useFactory: (
-        topHotelsCacheMaintainer: TopHotelsCacheMaintainer,
-      ) => new AppUserNotificationHandler(topHotelsCacheMaintainer),
-      inject: [TopHotelsCacheMaintainer],
-    },
+    UserNotificationHandler,
     {
       provide: SearchDataService,
       useFactory: (
-        hotelsClient: HotelsClient,
         searchRequestsClient: SearchRequestsClient,
-        topHotelsCacheMaintainer: TopHotelsCacheMaintainer,
-        topHotelsCacheRepository: TopHotelsCacheRepository,
+        topHotelsRepository: TopHotelsRepository,
       ) => {
         const mapper = new SearchDataMapper()
         return new SearchDataService(
-          hotelsClient,
           mapper,
           searchRequestsClient,
-          topHotelsCacheMaintainer,
-          topHotelsCacheRepository,
+          topHotelsRepository,
         )
       },
-      inject: [HotelsClient, SearchRequestsClient, TopHotelsCacheMaintainer, TopHotelsCacheRepository]
+      inject: [SearchRequestsClient, TopHotelsRepository]
     }],
 })
 export class AppModule {

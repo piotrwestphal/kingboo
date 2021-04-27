@@ -107,6 +107,15 @@
         "tsConfigPath": "libs/firestore/tsconfig.lib.json"
       }
     },
+    "top-hotels-aggregator": {
+      "type": "application",
+      "root": "apps/top-hotels-aggregator",
+      "entryFile": "main",
+      "sourceRoot": "apps/top-hotels-aggregator/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/top-hotels-aggregator/tsconfig.app.json"
+      }
+    },
     "cassandra": {
       "type": "library",
       "root": "libs/cassandra",

@@ -1,7 +1,7 @@
-import { Schema } from 'mongoose';
-import { CyclicSearchDocument } from './cyclic-search.document';
+import { Schema } from 'mongoose'
+import { CyclicSearchDocument } from './cyclic-search.document'
 
-export const CyclicSearchSchemaKey = 'cyclicSearch';
+export const CyclicSearchSchemaKey = 'cyclicSearch'
 
 export const CyclicSearchSchema = new Schema<CyclicSearchDocument>({
     cyclicId: String,
@@ -22,4 +22,4 @@ export const CyclicSearchSchema = new Schema<CyclicSearchDocument>({
       createdAt: true,
       updatedAt: true,
     },
-  });
+  })
