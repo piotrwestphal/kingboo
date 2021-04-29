@@ -21,15 +21,11 @@ export const localConfig: AppConfig = {
     slowMoMs: 0,
     devtoolsTurnedOn: false,
   },
-  firestore: {
-    projectId: 'dev',
-    emulator: {
-      host: 'localhost',
-      port: 8555,
-    },
-  },
-  mongo: {
-    address: 'mongodb://127.0.0.1:27017/dev'
+  cassandra: {
+    local: {
+      contactPoint: 'localhost',
+      localDataCenter: 'datacenter1',
+    }
   },
   mqConsumer: {
     address: mqAddress,

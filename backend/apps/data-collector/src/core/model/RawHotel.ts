@@ -1,10 +1,8 @@
 import { RawRoom } from './RawRoom';
 
 export class RawHotel {
-
-  public readonly hotelId: string;
-
   constructor(
+    public readonly hotelId: string,
     public readonly name: string,
     public readonly price: string,
     public readonly tax: string,
@@ -24,11 +22,5 @@ export class RawHotel {
     public readonly collectedAt: string,
     public readonly debug: string = null,
   ) {
-    this.hotelId = this.assignHotelId(name, coords);
   }
-
-  private assignHotelId = (name: string, coords: string) => {
-    return Buffer.from(`${name}${coords ? coords : ''}`)
-      .toString('base64');
-  };
 }

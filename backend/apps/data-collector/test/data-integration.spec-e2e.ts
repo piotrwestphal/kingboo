@@ -13,7 +13,6 @@ import { DataToProcessSender } from '../src/core/abstract/data-to-process.sender
 import { RawSearchResultRepository } from '../src/core/abstract/raw-search-result.repository';
 import { DbModule } from '../src/db/db.module';
 import { CollectHotelsScenario } from '../src/core/interface/collect-hotels-scenario';
-import { FirestoreRawSearchResultRepository } from '../src/db/firestore-raw-search-result.repository';
 
 class MockDataCollectionNotificationSender {
   notifyAboutHotelsCollectionCompleted() {
@@ -44,9 +43,9 @@ const notEmpty = (value: any) => {
 describe('Data integration tests', () => {
   let app;
   let dataCollectorService: DataCollectorService;
-  let firestoreRawSearchResultRepository: FirestoreRawSearchResultRepository;
+  let rawSearchResultRepository: RawSearchResultRepository;
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [
         ConfigModule.register(getEnvironments(), { configClass: AppConfigService, logger }),
@@ -76,12 +75,15 @@ describe('Data integration tests', () => {
 
     app = moduleFixture.createNestApplication()
     dataCollectorService = moduleFixture.get(DataCollectorService)
-    firestoreRawSearchResultRepository = moduleFixture.get(RawSearchResultRepository)
+    rawSearchResultRepository = moduleFixture.get(RawSearchResultRepository)
     await app.init()
   });
 
   beforeEach(async () => {
-    await firestoreRawSearchResultRepository.deleteOlderThanGivenHours(0);
+    // TODO: create cassandra keyspace
+    // TODO: create cassandra table
+    // TODO: afterEach delete cassandra table
+    await rawSearchResultRepository.deleteOlderThanGivenHours(0);
   })
 
   it('Scenario - 2 persons and 1 room', async (done) => {
@@ -115,12 +117,9 @@ describe('Data integration tests', () => {
 
     // then
     const {
-      rawSearchResultDocuments,
-      linksDocuments
-    } = await firestoreRawSearchResultRepository.find(mockSearchId);
-
-    const { hotels, searchPlaceIdentifier } = rawSearchResultDocuments[0]
-    const { links } = linksDocuments[0]
+      hotels,
+      searchPlaceIdentifier,
+    } = await rawSearchResultRepository.find(mockSearchId);
 
     logger.debug(`Collected following search place identifier: `, searchPlaceIdentifier)
     hotels.forEach((v) => {
@@ -139,7 +138,8 @@ describe('Data integration tests', () => {
                       distanceFromCenter,
                       distanceFromCenterOrderIndex,
                       districtName,
-                      coords
+                      coords,
+                      hotelLink
                     }) => {
       notEmpty(name)
       notEmpty(price)
@@ -147,7 +147,7 @@ describe('Data integration tests', () => {
       notEmpty(distanceFromCenterOrderIndex)
       notEmpty(districtName)
       notEmpty(coords)
-      expect(links[hotelId]).toBeDefined()
+      expect(hotelLink).toBeDefined()
     })
     expect(hotels.some(({ rate }) => !!rate)).toBeTruthy()
     expect(hotels.some(({ secondaryRateType }) => !!secondaryRateType)).toBeTruthy()

@@ -4,8 +4,7 @@ import { AppConfig } from './app.config';
 import { RabbitOptions, rabbitValidationSchemaMap } from '@kb/rabbit';
 import { PuppeteerOptions } from './puppeteer/puppeteer-options';
 import { puppeteerSchemaMap } from './puppeteer/validation.schema';
-import { firestoreValidationObjectSchema } from '@kb/firestore';
-import { MongoOptions, mongoValidationSchemaMap } from '@kb/mongo';
+import { cassandraValidationObjectSchema } from '@kb/cassandra'
 
 export const appConfigValidationSchemaMap: SchemaMap<AppConfig> = {
   takeScreenshotOnError: Joi.boolean().required(),
@@ -15,6 +14,5 @@ export const appConfigValidationSchemaMap: SchemaMap<AppConfig> = {
   puppeteer: Joi.object<PuppeteerOptions>(puppeteerSchemaMap).required(),
   dataCollectionNotificationsMqClient: Joi.object<RabbitOptions>(rabbitValidationSchemaMap).required(),
   dataToProcessMqClient: Joi.object<RabbitOptions>(rabbitValidationSchemaMap).required(),
-  firestore: firestoreValidationObjectSchema.required(),
-  mongo: Joi.object<MongoOptions>(mongoValidationSchemaMap).required(),
+  cassandra: cassandraValidationObjectSchema.required(),
 };

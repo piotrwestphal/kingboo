@@ -1,8 +1,7 @@
 import { RawSearchResult } from '../../core/model/RawSearchResult'
+import { RawSearchResultDocument } from './raw-search-result.document'
 import { RawHotel } from '../../core/model/RawHotel'
-import { RawHotelDocument } from './raw-hotel.document';
-import { RawSearchResultDocument } from './raw-search-result.document';
-import { Timestamp } from '@google-cloud/firestore';
+import { RawHotelDocument } from './raw-hotel.document'
 
 export class RawSearchResultMapper {
   toDoc({
@@ -10,58 +9,31 @@ export class RawSearchResultMapper {
           searchPlaceIdentifier,
           collectingTimeSec,
           hotelsCount,
-          hotels,
-        }: RawSearchResult): RawSearchResultDocument {
+        }: RawSearchResult,
+        hotels: RawHotelDocument[]): RawSearchResultDocument {
     return {
-      docId: `${searchId}_${Date.now()}`,
       searchId,
       searchPlaceIdentifier,
       collectingTimeSec,
       hotelsCount,
-      hotels: hotels.map(h => this.toRawHotelDocument(h)),
-      createdAt: Timestamp.now(),
-    };
+      hotels,
+      createdAt: new Date(),
+    }
   }
 
-  private toRawHotelDocument({
-                               hotelId,
-                               name,
-                               price,
-                               tax,
-                               distanceFromCenter,
-                               distanceFromCenterOrderIndex,
-                               districtName,
-                               coords,
-                               rate,
-                               secondaryRate,
-                               secondaryRateType,
-                               numberOfReviews,
-                               starRating,
-                               newlyAdded,
-                               bonuses,
-                               rooms,
-                               collectedAt,
-                               debug,
-                             }: RawHotel): RawHotelDocument {
-    return {
-      hotelId,
-      name,
-      price,
-      tax,
-      distanceFromCenter,
-      distanceFromCenterOrderIndex,
-      districtName,
-      coords,
-      rate,
-      secondaryRate,
-      secondaryRateType,
-      numberOfReviews,
-      starRating,
-      newlyAdded,
-      bonuses,
-      rooms,
-      collectedAt,
-      debug,
-    };
+  fromDoc({
+            searchId,
+            searchPlaceIdentifier,
+            hotelsCount,
+            collectingTimeSec,
+          }: RawSearchResultDocument,
+          hotels: RawHotel[]) {
+    return new RawSearchResult(
+      searchId,
+      searchPlaceIdentifier,
+      hotels,
+      hotelsCount,
+      collectingTimeSec,
+    )
   }
 }

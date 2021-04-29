@@ -13,12 +13,10 @@ jobs:
   run_e2e_test:
     runs-on: ubuntu-latest
     services:
-      firestore:
-        image: mtlynch/firestore-emulator
-        env:
-          FIRESTORE_PROJECT_ID: dev
+      cassandra:
+        image: cassandra:latest
         ports:
-          - 8555:8080
+          - 9042:9042
       mongo:
         image: mongo
         ports:
@@ -54,10 +52,7 @@ jobs:
         env:
           NODE_ENV: dev
           CORS_ORIGINS: ''
-          FIRESTORE_PROJECT_ID: dev
-          FIRESTORE_EMULATOR_HOST: localhost
-          FIRESTORE_EMULATOR_PORT: 8555
-          MONGO_ADDRESS: mongodb://localhost:27017/dev
+          ASTRA_CONTACT_POINT: localhost
           MQ_ADDRESS: mock
           MQ_COLLECTING_SCENARIO_QUEUE_NAME: mock
           MQ_DATA_COLLECTION_NOTIFICATIONS_QUEUE_NAME: mock

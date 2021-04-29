@@ -13,13 +13,12 @@ export const prodConfig = (env: NodeJS.ProcessEnv): AppConfig =>
       headlessModeOff: env.PUPPETEER_HEADLESS_MODE_OFF === 'true',
       enableStylesOnResultsPage: env.PUPPETEER_ENABLE_STYLES_ON_RESULTS_PAGE === 'true',
     },
-    firestore: {
-      projectId: env.FIRESTORE_PROJECT_ID,
-      clientEmail: env.FIRESTORE_CLIENT_EMAIL,
-      rawClientKey: env.FIRESTORE_CLIENT_KEY,
-    },
-    mongo: {
-      address: env.MONGO_ADDRESS,
+    cassandra: {
+      cloud: {
+        secureConnectBundlePath: './db/cassandra/secure-connect-kingboo.zip',
+        username: env.ASTRA_DB_USERNAME,
+        password: env.ASTRA_DB_PASSWORD,
+      }
     },
     mqConsumer: {
       address: env.MQ_ADDRESS,

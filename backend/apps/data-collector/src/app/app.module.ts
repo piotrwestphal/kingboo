@@ -1,7 +1,6 @@
 import { Module } from '@nestjs/common'
 import { AppController } from './app.controller'
 import { MqModule } from '../mq/mq.module'
-import { CollectingScenarioConsumer } from './collecting-scenario.consumer'
 import { ScrapModule } from '../scrap/scrap.module'
 import { ConfigModule } from '@kb/config'
 import { getEnvironments } from '../config/environments'
@@ -14,7 +13,6 @@ import { logger } from '../logger'
 import { ScheduleModule } from '@nestjs/schedule'
 import { ObsoleteResultsSearcher } from './scheduler/obsolete-results.searcher'
 import { HotelsCollector } from './hotels.collector'
-import { OldScrapActivityRemover } from './scheduler/old-scrap-activity.remover'
 
 @Module({
   imports: [
@@ -26,7 +24,6 @@ import { OldScrapActivityRemover } from './scheduler/old-scrap-activity.remover'
   ],
   providers: [
     ObsoleteResultsSearcher,
-    OldScrapActivityRemover,
     {
       provide: FileManager,
       useFactory: () => new FileManager(logger),

@@ -1,15 +1,14 @@
-import { CommonConfig } from '@kb/config';
-import { RabbitOptions } from '@kb/rabbit';
-import { PuppeteerOptions } from './puppeteer/puppeteer-options';
-import { FirestoreConfig } from '@kb/firestore';
-import { MongoConfig } from '@kb/mongo';
+import { CommonConfig } from '@kb/config'
+import { RabbitOptions } from '@kb/rabbit'
+import { PuppeteerOptions } from './puppeteer/puppeteer-options'
+import { CassandraConfig } from '@kb/cassandra'
 
-export interface AppConfig extends CommonConfig, FirestoreConfig, MongoConfig {
-  readonly rawSearchResultRetentionHours: number;
-  readonly scrapActivitiesWithoutUpdateRetentionDays: number;
-  readonly saveRawResultAsJson: boolean;
-  readonly takeScreenshotOnError: boolean;
-  readonly puppeteer: PuppeteerOptions;
-  readonly dataCollectionNotificationsMqClient: RabbitOptions;
-  readonly dataToProcessMqClient: RabbitOptions;
+export interface AppConfig extends CommonConfig, CassandraConfig {
+  readonly rawSearchResultRetentionHours: number
+  readonly scrapActivitiesWithoutUpdateRetentionDays: number
+  readonly saveRawResultAsJson: boolean
+  readonly takeScreenshotOnError: boolean
+  readonly puppeteer: PuppeteerOptions
+  readonly dataCollectionNotificationsMqClient: RabbitOptions
+  readonly dataToProcessMqClient: RabbitOptions
 }

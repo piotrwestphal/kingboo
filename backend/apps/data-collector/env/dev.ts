@@ -19,15 +19,11 @@ export const devConfig = (env: NodeJS.ProcessEnv): AppConfig =>
       headlessModeOff: false,
       enableStylesOnResultsPage: false,
     },
-    firestore: {
-      projectId: env.FIRESTORE_PROJECT_ID,
-      emulator: {
-        host: env.FIRESTORE_EMULATOR_HOST,
-        port: parseInt(env.FIRESTORE_EMULATOR_PORT, 10),
-      },
-    },
-    mongo: {
-      address: env.MONGO_ADDRESS,
+    cassandra: {
+      local: {
+        contactPoint: env.ASTRA_CONTACT_POINT,
+        localDataCenter: 'datacenter1',
+      }
     },
     mqConsumer: {
       address: mqAddress(env),
