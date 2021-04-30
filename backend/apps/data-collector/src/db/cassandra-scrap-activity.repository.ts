@@ -21,12 +21,12 @@ export class CassandraScrapActivityRepository extends ScrapActivityRepository {
     const { scrapingStartedAt, scrapingFinishedAt } = this.mapper.toDoc(scrapActivity)
     const retentionTimeSec = this.config.scrapActivitiesWithoutUpdateRetentionDays * this.DAY_IN_SECONDS
     await this.cassandraClient.execute(
-      `INSERT INTO kingboo.scrap_activity ("searchId", "scrapingStartedAt", "scrapingFinishedAt")
+      `INSERT INTO scrap_activity ("searchId", "scrapingStartedAt", "scrapingFinishedAt")
        VALUES (:searchId, :scrapingStartedAt, :scrapingFinishedAt) USING TTL :ttl;`,
       { searchId, scrapingStartedAt, scrapingFinishedAt, ttl: retentionTimeSec })
     const result = await this.cassandraClient.findFirst<ScrapActivityDocument>(
       `SELECT *
-       from kingboo.scrap_activity
+       from scrap_activity
        WHERE "searchId" = :searchId
        LIMIT :count;`,
       { searchId, count: 1 })

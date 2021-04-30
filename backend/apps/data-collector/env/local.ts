@@ -22,6 +22,7 @@ export const localConfig: AppConfig = {
     devtoolsTurnedOn: false,
   },
   cassandra: {
+    keyspace: 'kingboo',
     local: {
       contactPoint: 'localhost',
       localDataCenter: 'datacenter1',

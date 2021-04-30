@@ -1,4 +1,5 @@
 export interface CassandraOptions {
+  readonly keyspace: string
   readonly cloud?: {
     readonly secureConnectBundlePath: string
     readonly username: string

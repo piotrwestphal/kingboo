@@ -49,6 +49,10 @@ export class AppConfigService extends ConfigService<AppConfig> implements Cassan
     return this.config.puppeteer.enableStylesOnResultsPage;
   }
 
+  get cassandraKeyspace() {
+    return this.config.cassandra.keyspace
+  }
+
   get cassandraCloud() {
     return this.config.cassandra.cloud
   }

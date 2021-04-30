@@ -1,4 +1,4 @@
-import { DynamicModule, Module } from '@nestjs/common';
+import { DynamicModule, Module } from '@nestjs/common'
 import { CassandraConfigType } from '@kb/cassandra/cassandra-config.type'
 import { CassandraConfigService } from '@kb/cassandra/cassandra-config.service'
 import { createCassandra, createCassandraForDevPurposes } from '@kb/cassandra/create-cassandra'
@@ -14,13 +14,13 @@ export class CassandraModule {
       provide: CassandraClient,
       useFactory: async (configService: T): Promise<CassandraClient> => {
         const cassandra = configService.env === 'prod'
-          ? createCassandra(configService.cassandraCloud)
-          : createCassandraForDevPurposes(configService.cassandraLocal);
+          ? createCassandra(configService.cassandraKeyspace, configService.cassandraCloud)
+          : createCassandraForDevPurposes(configService.cassandraKeyspace, configService.cassandraLocal)
         const connectedCassandra = await connectToCassandra(cassandra, logger)
-        return new CassandraClient(connectedCassandra);
+        return new CassandraClient(connectedCassandra)
       },
       inject: [configClass],
-    };
+    }
     return {
       module: CassandraModule,
       providers: [
@@ -29,6 +29,6 @@ export class CassandraModule {
       exports: [
         CassandraClient,
       ],
-    };
+    }
   }
 }

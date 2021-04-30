@@ -46,10 +46,9 @@ CREATE TYPE kingboo.raw_hotel(
 
 CREATE TABLE kingboo.scrap_activity
 (
-    "searchId"           text,
+    "searchId"           text PRIMARY KEY,
     "scrapingStartedAt"  timestamp,
-    "scrapingFinishedAt" timestamp,
-    PRIMARY KEY ("searchId")
+    "scrapingFinishedAt" timestamp
 );
 
 CREATE TABLE kingboo.raw_search_result

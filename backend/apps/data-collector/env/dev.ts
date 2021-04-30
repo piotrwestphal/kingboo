@@ -20,6 +20,7 @@ export const devConfig = (env: NodeJS.ProcessEnv): AppConfig =>
       enableStylesOnResultsPage: false,
     },
     cassandra: {
+      keyspace: env.ASTRA_DB_KEYSPACE,
       local: {
         contactPoint: env.ASTRA_CONTACT_POINT,
         localDataCenter: 'datacenter1',

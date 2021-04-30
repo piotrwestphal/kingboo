@@ -14,6 +14,7 @@ export const prodConfig = (env: NodeJS.ProcessEnv): AppConfig =>
       enableStylesOnResultsPage: env.PUPPETEER_ENABLE_STYLES_ON_RESULTS_PAGE === 'true',
     },
     cassandra: {
+      keyspace: env.ASTRA_DB_KEYSPACE,
       cloud: {
         secureConnectBundlePath: './db/cassandra/secure-connect-kingboo.zip',
         username: env.ASTRA_DB_USERNAME,

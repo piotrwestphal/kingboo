@@ -3,6 +3,7 @@ import { ObjectSchema } from '@hapi/joi'
 import { CassandraOptions } from '@kb/cassandra/cassandra-options'
 
 export const cassandraValidationObjectSchema: ObjectSchema<CassandraOptions> = Joi.object<CassandraOptions>({
+  keyspace: Joi.string().required(),
   cloud: Joi.object<CassandraOptions['cloud']>({
     secureConnectBundlePath: Joi.string().required(),
     username: Joi.string().required(),

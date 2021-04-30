@@ -2,7 +2,8 @@ import { Client, policies } from 'cassandra-driver';
 import { CassandraOptions } from '@kb/cassandra/cassandra-options'
 import ConstantReconnectionPolicy = policies.reconnection.ConstantReconnectionPolicy
 
-export const createCassandra = ({
+export const createCassandra = (keyspace: string,
+                                {
                                   secureConnectBundlePath,
                                   username,
                                   password
@@ -13,10 +14,11 @@ export const createCassandra = ({
       username,
       password,
     },
-
+    keyspace,
   })
 
-export const createCassandraForDevPurposes = ({
+export const createCassandraForDevPurposes = (keyspace: string,
+                                              {
                                                 contactPoint,
                                                 localDataCenter,
                                               }: CassandraOptions['local']): Client =>
@@ -25,5 +27,6 @@ export const createCassandraForDevPurposes = ({
     localDataCenter,
     policies: {
       reconnection: new ConstantReconnectionPolicy(5000)
-    }
+    },
+    keyspace,
   })
