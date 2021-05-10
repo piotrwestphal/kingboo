@@ -34,10 +34,6 @@ jobs:
         working-directory: ./db/cassandra
         run: |
           curl https://downloads.datastax.com/enterprise/cqlsh-6.8.5-bin.tar.gz --output cqlsh-bin.tar.gz
-#          tar -xzvf cqlsh-bin.tar.gz cqlsh-6.8.5 -C cqlsh
-#          ls -a
-#          cd cqlsh
-#          ls -a
           tar --extract --file=cqlsh-bin.tar.gz cqlsh-6.8.5 -C cqlsh
 
       - name: Use cache
