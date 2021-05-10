@@ -34,7 +34,7 @@ jobs:
         working-directory: ./db/cassandra
         run: |
           curl https://downloads.datastax.com/enterprise/cqlsh-6.8.5-bin.tar.gz --output cqlsh-bin.tar.gz
-          tar -xzvf cqlsh-bin.tar.gz -C /cqlsh
+          tar -xzvf cqlsh-bin.tar.gz -C cqlsh .
 
       - name: Create cassandra tables
         working-directory: ./db/cassandra
