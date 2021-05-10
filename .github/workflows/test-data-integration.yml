@@ -44,7 +44,12 @@ jobs:
         run: |
           npm run build:dc
 
-      - name: Create cassandra tables
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+        with:
+          python-version: '2.7'
+
+        - name: Create cassandra tables
         working-directory: ./db/cassandra
         run: |
           pip install -U cqlsh
