@@ -38,10 +38,10 @@ jobs:
           tar -xzvf cqlsh-bin.tar.gz -C /cqlsh
 
       - name: Create cassandra tables
-        working-directory: ./db/cassandra/cqlsh/bin/
+        working-directory: ./db/cassandra
         run: |
-          cqlsh --version
-          cqlsh -f ./01_init.cql
+          /cqlsh/bin/cqlsh --version
+          /cqlsh/bin/cqlsh -f ./01_init.cql
 
       - name: Use cache
         uses: actions/cache@v2
