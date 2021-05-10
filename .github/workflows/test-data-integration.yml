@@ -34,6 +34,8 @@ jobs:
         working-directory: ./db/cassandra
         run: |
           curl https://downloads.datastax.com/enterprise/cqlsh-5.1.tar.gz
+          ls -a
+          ll
           tar -xzvf cqlsh-5.1.tar.gz
           cqlsh --version
           cqlsh --help
