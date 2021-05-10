@@ -1,5 +1,5 @@
 import { Client, policies } from 'cassandra-driver';
-import { CassandraOptions } from '@kb/cassandra/cassandra-options'
+import { CassandraOptions } from './cassandra-options'
 import ConstantReconnectionPolicy = policies.reconnection.ConstantReconnectionPolicy
 
 export const createCassandra = (keyspace: string,

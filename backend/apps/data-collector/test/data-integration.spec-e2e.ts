@@ -47,7 +47,7 @@ describe('Data integration tests', () => {
   let dataCollectorService: DataCollectorService;
   let rawSearchResultRepository: CassandraRawSearchResultRepository;
 
-  beforeAll(async () => {
+  beforeEach(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [
         ConfigModule.register(getEnvironments(), { configClass: AppConfigService, logger }),
@@ -82,10 +82,7 @@ describe('Data integration tests', () => {
   });
 
   beforeEach(async () => {
-    // TODO: create cassandra keyspace
-    // TODO: create cassandra table
-    // TODO: afterEach delete cassandra table
-    await rawSearchResultRepository.deleteAll();
+    await rawSearchResultRepository.deleteAll()
   })
 
   it('Scenario - 2 persons and 1 room', async (done) => {
@@ -170,7 +167,7 @@ describe('Data integration tests', () => {
     done()
   }, 120000);
 
-  afterAll(async () => {
+  afterEach(async () => {
     await app.close()
   });
 });

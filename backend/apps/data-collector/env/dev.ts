@@ -11,8 +11,8 @@ export const devConfig = (env: NodeJS.ProcessEnv): AppConfig =>
     nodeEnv: env.NODE_ENV as 'dev',
     port: env.PORT ? parseInt(env.PORT, 10) : 8080,
     corsOrigins: env.CORS_ORIGINS,
-    rawSearchResultRetentionHours: 720,
-    scrapActivitiesWithoutUpdateRetentionHours: 7,
+    rawSearchResultRetentionHours: 24,
+    scrapActivitiesWithoutUpdateRetentionHours: 72,
     saveRawResultAsJson: true,
     takeScreenshotOnError: true,
     puppeteer: {

@@ -1,15 +1,15 @@
 import { DynamicModule, Module, OnModuleDestroy } from '@nestjs/common'
-import { CassandraConfigService } from '@kb/cassandra/cassandra-config.service'
-import { createCassandra, createCassandraForDevPurposes } from '@kb/cassandra/create-cassandra'
-import { CassandraWrapper } from '@kb/cassandra/cassandra-wrapper'
-import { connectToCassandra } from '@kb/cassandra/cassandra.connector'
+import { CassandraConfigService } from './cassandra-config.service'
+import { createCassandra, createCassandraForDevPurposes } from './create-cassandra'
+import { CassandraWrapper } from './cassandra-wrapper'
+import { connectToCassandra } from './cassandra.connector'
 import { Client, mapping } from 'cassandra-driver'
-import { CassandraModuleOptions } from '@kb/cassandra/cassandra-module-options'
-import { CassandraMapperOption } from '@kb/cassandra/cassandra-mapper-option'
+import { CassandraModuleOptions } from './cassandra-module-options'
+import { CassandraMapperOption } from './cassandra-mapper-option'
+import { CassandraClient } from './cassandra.client'
 import Mapper = mapping.Mapper
 import ModelOptions = mapping.ModelOptions
 import UnderscoreCqlToCamelCaseMappings = mapping.UnderscoreCqlToCamelCaseMappings
-import { CassandraClient } from '@kb/cassandra/cassandra.client'
 
 const createBaseMapper = (cassandraClient: Client, cassandraMapperOptions: CassandraMapperOption[]): Mapper => {
   const modelOptions = cassandraMapperOptions.reduce((prev, curr) => (({

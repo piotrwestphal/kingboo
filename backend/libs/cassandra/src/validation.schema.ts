@@ -1,6 +1,6 @@
 import * as Joi from '@hapi/joi'
 import { ObjectSchema } from '@hapi/joi'
-import { CassandraOptions } from '@kb/cassandra/cassandra-options'
+import { CassandraOptions } from './cassandra-options'
 
 export const cassandraValidationObjectSchema: ObjectSchema<CassandraOptions> = Joi.object<CassandraOptions>({
   keyspace: Joi.string().required(),

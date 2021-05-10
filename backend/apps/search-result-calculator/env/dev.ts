@@ -11,7 +11,7 @@ export const devConfig = (env: NodeJS.ProcessEnv): AppConfig =>
     port: env.PORT ? parseInt(env.PORT, 10) : 8080,
     corsOrigins: env.CORS_ORIGINS,
     saveResultAsJson: true,
-    hotelsWithoutUpdateRetentionHours: 7,
+    hotelsWithoutUpdateRetentionHours: 168,
     mongo: {
       address: env.MONGO_ADDRESS,
     },

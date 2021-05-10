@@ -1,5 +1,5 @@
-import { CassandraConfigService } from '@kb/cassandra/cassandra-config.service'
-import { CassandraConfig } from '@kb/cassandra/cassandra.config'
+import { CassandraConfigService } from './cassandra-config.service'
+import { CassandraConfig } from './cassandra.config'
 import { CommonLoggerService } from '@kb/logger'
 
 export interface CassandraConfigType<T extends CassandraConfigService> {
