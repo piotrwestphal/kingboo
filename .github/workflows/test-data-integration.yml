@@ -36,12 +36,6 @@ jobs:
           curl https://downloads.datastax.com/enterprise/cqlsh-6.8.5-bin.tar.gz --output cqlsh-bin.tar.gz
           tar -xzvf cqlsh-bin.tar.gz
 
-      - name: Create cassandra tables
-        working-directory: ./db/cassandra
-        run: |
-          cqlsh-6.8.5/bin/cqlsh --version
-          cqlsh-6.8.5/bin/cqlsh -f ./01_init.cql
-
       - name: Use cache
         uses: actions/cache@v2
         with:
@@ -60,7 +54,11 @@ jobs:
         run: |
           npm run build:dc
 
-
+      - name: Create cassandra tables
+        working-directory: ./db/cassandra
+        run: |
+          cqlsh-6.8.5/bin/cqlsh --version
+          cqlsh-6.8.5/bin/cqlsh -f ./01_init.cql
 
       - name: Run data integration tests
         working-directory: ./backend
