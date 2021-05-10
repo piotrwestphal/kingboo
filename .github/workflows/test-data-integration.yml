@@ -1,28 +1,20 @@
 name: e2e tests
 on:
-  push:
+  pull_request:
     branches:
       - main
-    paths:
-      - 'backend/**'
-      - '.github/workflows/test-data-integration.yml'
+
   schedule:
-    - cron: '0 3,9,15,21 * * *' # run at 9.00 and at 21.00
+    - cron: '0 3,9,15,21 * * *' # run at 3.00, 9.00, 15.00 and 21.00
 
 jobs:
   run_e2e_test:
     runs-on: ubuntu-latest
     services:
-      firestore:
-        image: mtlynch/firestore-emulator
-        env:
-          FIRESTORE_PROJECT_ID: dev
+      cassandra:
+        image: cassandra:latest
         ports:
-          - 8555:8080
-      mongo:
-        image: mongo
-        ports:
-          - 27017:27017
+          - 9042:9042
 
     steps:
       - uses: actions/checkout@v2
@@ -30,6 +22,17 @@ jobs:
       - uses: actions/setup-node@v2
         with:
           node-version: '14'
+
+      - uses: actions/setup-python@v2
+        with:
+          python-version: '2.7'
+
+      - name: Install cqlsh
+        working-directory: ./db/cassandra
+        run: |
+          curl https://downloads.datastax.com/enterprise/cqlsh-6.8.5-bin.tar.gz --output cqlsh-bin.tar.gz
+          tar -xzvf cqlsh-bin.tar.gz
+          mv cqlsh-6.8.5/* cqlsh
 
       - name: Use cache
         uses: actions/cache@v2
@@ -49,15 +52,18 @@ jobs:
         run: |
           npm run build:dc
 
+      - name: Create cassandra tables
+        working-directory: ./db/cassandra
+        run: |
+          cqlsh/bin/cqlsh -f ./01_init.cql
+
       - name: Run data integration tests
         working-directory: ./backend
         env:
           NODE_ENV: dev
           CORS_ORIGINS: ''
-          FIRESTORE_PROJECT_ID: dev
-          FIRESTORE_EMULATOR_HOST: localhost
-          FIRESTORE_EMULATOR_PORT: 8555
-          MONGO_ADDRESS: mongodb://localhost:27017/dev
+          ASTRA_DB_KEYSPACE: kingboo
+          ASTRA_CONTACT_POINT: localhost
           MQ_ADDRESS: mock
           MQ_COLLECTING_SCENARIO_QUEUE_NAME: mock
           MQ_DATA_COLLECTION_NOTIFICATIONS_QUEUE_NAME: mock

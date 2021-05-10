@@ -67,3 +67,9 @@ services:
       context: ./db/firestore
     ports:
       - 8555:8080
+
+  cassandra:
+    build:
+      context: ./db/cassandra
+    ports:
+      - 9042:9042

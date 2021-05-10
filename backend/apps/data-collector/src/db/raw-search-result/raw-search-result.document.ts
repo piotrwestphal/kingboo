@@ -1,10 +1,11 @@
+import { SearchPlaceIdentifier } from '../../core/interface/search-place-identifier'
 import { RawHotelDocument } from './raw-hotel.document'
-import { SearchPlaceIdentifierDocument } from './search-place-identifier.document'
-import { FirestoreDocument } from '@kb/firestore'
 
-export interface RawSearchResultDocument extends FirestoreDocument {
-  readonly searchPlaceIdentifier: SearchPlaceIdentifierDocument
+export interface RawSearchResultDocument {
+  readonly searchId: string
+  readonly searchPlaceIdentifier: SearchPlaceIdentifier
   readonly collectingTimeSec: number
   readonly hotelsCount: number
   readonly hotels: RawHotelDocument[]
+  readonly createdAt: Date
 }

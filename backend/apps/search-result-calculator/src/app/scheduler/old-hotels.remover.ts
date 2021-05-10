@@ -3,6 +3,7 @@ import { Cron, CronExpression } from '@nestjs/schedule';
 import { HotelRepository } from '../../core/abstract/hotel.repository';
 import { AppConfigService } from '../../config/app-config.service';
 import { logger } from '../../logger'
+import { TimeHelper } from '@kb/util'
 
 @Injectable()
 export class OldHotelsRemover {
@@ -19,12 +20,12 @@ export class OldHotelsRemover {
   async removeOldHotels() {
     logger.debug(`Triggering job [remove-old-hotels]`);
     const now = new Date();
-    const days = this.appConfigService.hotelsWithoutUpdateStorageDays;
-    const found = await this.hotelRepository.findLastUpdatedGivenDaysAgo(now, days);
+    const retentionDaysInMs = this.appConfigService.hotelsWithoutUpdateRetentionHours * TimeHelper.HOUR_IN_SEC;
+    const found = await this.hotelRepository.findLastUpdatedGivenMsAgo(now, retentionDaysInMs);
     if (found.length) {
       const deletedCount = await this.hotelRepository.deleteMany(found);
       logger.info(`[${deletedCount}] hotels were deleted due to lack of updates for ` +
-        `[${days}] days`);
+        `[${retentionDaysInMs}] days`);
       logger.debug('Deleted hotels identifiers: ', found);
     }
   }

@@ -9,6 +9,7 @@ export interface RawHotelDocument {
   readonly distanceFromCenterOrderIndex: number
   readonly districtName: string
   readonly coords: string
+  readonly hotelLink: string
   readonly rate: string | null
   readonly secondaryRateType: string | null
   readonly secondaryRate: string | null

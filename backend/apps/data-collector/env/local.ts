@@ -11,8 +11,8 @@ export const localConfig: AppConfig = {
   port: 8080,
   corsOrigins: 'http://localhost:3000', // separate multiple origins by comma
   saveRawResultAsJson: true,
-  rawSearchResultRetentionHours: 720,
-  scrapActivitiesWithoutUpdateRetentionDays: 7,
+  rawSearchResultRetentionHours: 24,
+  scrapActivitiesWithoutUpdateRetentionHours: 72,
   takeScreenshotOnError: true,
   puppeteer: {
     headlessModeOff: true,
@@ -21,15 +21,12 @@ export const localConfig: AppConfig = {
     slowMoMs: 0,
     devtoolsTurnedOn: false,
   },
-  firestore: {
-    projectId: 'dev',
-    emulator: {
-      host: 'localhost',
-      port: 8555,
-    },
-  },
-  mongo: {
-    address: 'mongodb://127.0.0.1:27017/dev'
+  cassandra: {
+    keyspace: 'kingboo',
+    local: {
+      contactPoint: 'localhost',
+      localDataCenter: 'datacenter1',
+    }
   },
   mqConsumer: {
     address: mqAddress,
