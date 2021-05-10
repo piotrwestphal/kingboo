@@ -2,7 +2,7 @@ name: Deploy user-service
 on:
   push:
     branches:
-      - master
+      - main
     paths:
       - 'backend/**'
       - 'cloud/gcp/backend/**'

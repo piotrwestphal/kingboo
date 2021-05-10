@@ -2,7 +2,7 @@ name: Deploy webapp
 on:
   push:
     branches:
-      - master
+      - main
     paths:
       - 'webapp/**'
       - 'cloud/gcp/webapp/**'
