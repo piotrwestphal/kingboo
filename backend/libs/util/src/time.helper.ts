@@ -1,5 +1,6 @@
 export class TimeHelper {
   public static readonly HOUR_IN_SEC = 60 * 60
+  public static readonly HOUR_IN_MS = 60 * 60 * 1000
   public static readonly MINUTE_IN_MS = 60 * 1000
   public static readonly DAY_IN_MS = 24 * 60 * 60 * 1000
   public static getDiffTimeInSeconds = (refTimeMs: number): number => Math.round((Date.now() - refTimeMs) / 1000)
