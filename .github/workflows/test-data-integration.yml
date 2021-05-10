@@ -47,10 +47,6 @@ jobs:
       - name: Create cassandra tables
         working-directory: ./db/cassandra
         run: |
-          pip --version
-          sudo apt update
-          sudo apt install python-pip
-          pip --version
           pip install -U cqlsh
           cqlsh --help
 
