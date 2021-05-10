@@ -30,14 +30,11 @@ jobs:
         with:
           python-version: '2.7'
 
-      - name: Download and extract "cqlsh"
+      - name: Install cqlsh
         working-directory: ./db/cassandra
         run: |
           curl https://downloads.datastax.com/enterprise/cqlsh-6.8.5-bin.tar.gz --output cqlsh-bin.tar.gz
-          tar --extract --file=cqlsh-bin.tar.gz cqlsh-6.8.5 --directory cqlsh
-          ls -a
-          cd cqlsh
-          ls -a
+          tar -xzvf cqlsh-bin.tar.gz
 
       - name: Use cache
         uses: actions/cache@v2
@@ -60,8 +57,7 @@ jobs:
       - name: Create cassandra tables
         working-directory: ./db/cassandra
         run: |
-          cqlsh/bin/cqlsh --version
-          cqlsh/bin/cqlsh -f ./01_init.cql
+          cqlsh-6.8.5/bin/cqlsh -f ./01_init.cql
 
       - name: Run data integration tests
         working-directory: ./backend
