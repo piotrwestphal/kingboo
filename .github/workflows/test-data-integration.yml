@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - main
+      - cassandra-poc
     paths:
       - 'backend/**'
       - '.github/workflows/test-data-integration.yml'
@@ -34,6 +35,7 @@ jobs:
         run: |
           curl https://downloads.datastax.com/enterprise/cqlsh-6.8.5-bin.tar.gz --output cqlsh-bin.tar.gz
           tar -xzvf cqlsh-bin.tar.gz
+          mv cqlsh-6.8.5/* cqlsh
 
       - name: Use cache
         uses: actions/cache@v2
