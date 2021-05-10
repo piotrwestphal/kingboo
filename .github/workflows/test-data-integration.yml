@@ -3,7 +3,6 @@ on:
   push:
     branches:
       - main
-      - cassandra-poc
     paths:
       - 'backend/**'
       - '.github/workflows/test-data-integration.yml'
