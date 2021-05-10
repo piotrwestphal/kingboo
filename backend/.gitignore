@@ -1,4 +1,3 @@
 /output
 !/output/.gitkeep
-secure-connect-kingboo.zip
-service-account-key.json
+db/cassandra/*.zip

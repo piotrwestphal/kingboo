@@ -1,8 +1,9 @@
-import { ScrapedRawHotel } from '../../scrap/interface/scraped-raw-hotel';
-import { RawHotel } from '../../core/model/RawHotel';
-import { RawHotelDto } from '@kb/model';
+import { ScrapedRawHotel } from '../../scrap/interface/scraped-raw-hotel'
+import { RawHotel } from '../../core/model/RawHotel'
+import { RawHotelDto } from '@kb/model'
 
 export class RawHotelMapper {
+
   static fromScrapedRawHotel({
                                name,
                                price,
@@ -23,7 +24,9 @@ export class RawHotelMapper {
                              }: ScrapedRawHotel,
                              idx: number,
                              collectedAt: string): RawHotel {
+    const hotelId = this.assignHotelId(name, coords)
     return new RawHotel(
+      hotelId,
       name,
       price,
       tax,
@@ -42,7 +45,7 @@ export class RawHotelMapper {
       rooms,
       collectedAt,
       debug,
-    );
+    )
   }
 
   static toDto({
@@ -84,6 +87,11 @@ export class RawHotelMapper {
       bonuses,
       rooms,
       collectedAt,
-    };
+    }
+  }
+
+  private static assignHotelId = (name: string, coords: string) => {
+    return Buffer.from(`${name}${coords ? coords : ''}`)
+      .toString('base64')
   }
 }

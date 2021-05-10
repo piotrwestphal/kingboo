@@ -115,6 +115,15 @@
       "compilerOptions": {
         "tsConfigPath": "apps/top-hotels-aggregator/tsconfig.app.json"
       }
+    },
+    "cassandra": {
+      "type": "library",
+      "root": "libs/cassandra",
+      "entryFile": "index",
+      "sourceRoot": "libs/cassandra/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/cassandra/tsconfig.lib.json"
+      }
     }
   }
 }

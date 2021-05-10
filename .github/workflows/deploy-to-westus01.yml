@@ -13,12 +13,26 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+
+      - name: GCP authenticate as service account
+        uses: google-github-actions/setup-gcloud@master
+        with:
+          project_id: ${{ secrets.GCLOUD_PROJECT }}
+          service_account_key: ${{ secrets.GCP_SA_KEY }}
+
+      - name: Copy cassandra secure bundle from GCP bucket
+        run: |
+          gsutil cp ${{ secrets.CASSANDRA_SECURE_BUNDLE_GS_URL }} ./backend/db/cassandra
+
       - uses: docker/setup-buildx-action@v1
       - uses: docker/login-action@v1
         with:
           username: ${{ secrets.DOCKER_USER }}
           password: ${{ secrets.DOCKER_PASS }}
 
+      # takes branch name as a tag
+      # in case of main takes 'latest'
+      # in case of PR takes $GITHUB_SH
       - name: Publish data-collector to registry
         id: docker_build
         uses: docker/build-push-action@v2
@@ -42,11 +56,10 @@ jobs:
         env:
           CORS_ORIGINS: ${{ secrets.CORS_ORIGINS }}
           LOG_COLLECTOR_TOKEN: ${{ secrets.LOG_COLLECTOR_TOKEN }}
-          FIRESTORE_PROJECT_ID: ${{ secrets.FIRESTORE_PROJECT_ID }}
-          FIRESTORE_CLIENT_EMAIL: ${{ secrets.FIRESTORE_CLIENT_EMAIL }}
-          FIRESTORE_CLIENT_KEY: ${{ secrets.FIRESTORE_CLIENT_KEY }}
+          ASTRA_DB_KEYSPACE: ${{ secrets.ASTRA_DB_KEYSPACE }}
+          ASTRA_DB_USERNAME: ${{ secrets.ASTRA_DB_USERNAME }}
+          ASTRA_DB_PASSWORD: ${{ secrets.ASTRA_DB_PASSWORD }}
           MQ_ADDRESS: ${{ secrets.MQ_ADDRESS }}
-          MONGO_ADDRESS: ${{ secrets.MONGO_ADDRESS }}
         run: |
           ssh -T -o StrictHostKeyChecking=no -l ${{ secrets.WESTUS01_USER }} ${{ secrets.WESTUS01_HOST }} << EOF
             uptime
@@ -56,11 +69,10 @@ jobs:
             cd cloud/opc/westus01
             echo "CORS_ORIGINS=$CORS_ORIGINS" >> westus01.env
             echo "LOG_COLLECTOR_TOKEN=$LOG_COLLECTOR_TOKEN" >> westus01.env
-            echo "FIRESTORE_PROJECT_ID=$FIRESTORE_PROJECT_ID" >> westus01.env
-            echo "FIRESTORE_CLIENT_EMAIL=$FIRESTORE_CLIENT_EMAIL" >> westus01.env
-            echo "FIRESTORE_CLIENT_KEY=$FIRESTORE_CLIENT_KEY" >> westus01.env
+            echo "ASTRA_DB_KEYSPACE=$ASTRA_DB_KEYSPACE" >> westus01.env
+            echo "ASTRA_DB_USERNAME=$ASTRA_DB_USERNAME" >> westus01.env
+            echo "ASTRA_DB_PASSWORD=$ASTRA_DB_PASSWORD" >> westus01.env
             echo "MQ_ADDRESS=$MQ_ADDRESS" >> westus01.env
-            echo "MONGO_ADDRESS=$MONGO_ADDRESS" >> westus01.env
             docker-compose pull
             docker-compose -f docker-compose.yml -f prod.yml up -d
             docker image prune -f

@@ -8,7 +8,7 @@ export abstract class HotelRepository {
 
   abstract updateAll(hotels: Hotel[]): Promise<number>;
 
-  abstract findLastUpdatedGivenDaysAgo(now: Date, days: number): Promise<HotelIdentifier[]>;
+  abstract findLastUpdatedGivenMsAgo(now: Date, days: number): Promise<HotelIdentifier[]>;
 
   abstract deleteMany(hotelsIdentifiers: HotelIdentifier[]): Promise<number>;
 }

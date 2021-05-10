@@ -1,19 +1,20 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { logger } from '../src/logger';
-import { ConfigModule } from '@kb/config';
-import { getEnvironments } from '../src/config/environments';
-import { AppConfigService } from '../src/config/app-config.service';
-import { ScrapModule } from '../src/scrap/scrap.module';
-import { DataCollectorService } from '../src/core/abstract/data-collector.service';
-import { AppDataCollectorService } from '../src/app/app-data-collector.service';
-import { FileManager } from '@kb/util';
-import { HotelsCollector } from '../src/app/hotels.collector';
-import { DataCollectionNotificationSender } from '../src/core/abstract/data-collection-notification.sender';
-import { DataToProcessSender } from '../src/core/abstract/data-to-process.sender';
-import { RawSearchResultRepository } from '../src/core/abstract/raw-search-result.repository';
-import { DbModule } from '../src/db/db.module';
-import { CollectHotelsScenario } from '../src/core/interface/collect-hotels-scenario';
-import { FirestoreRawSearchResultRepository } from '../src/db/firestore-raw-search-result.repository';
+import { Test, TestingModule } from '@nestjs/testing'
+import { logger } from '../src/logger'
+import { ConfigModule } from '@kb/config'
+import { getEnvironments } from '../src/config/environments'
+import { AppConfigService } from '../src/config/app-config.service'
+import { ScrapModule } from '../src/scrap/scrap.module'
+import { DataCollectorService } from '../src/core/abstract/data-collector.service'
+import { AppDataCollectorService } from '../src/app/app-data-collector.service'
+import { CassandraRawSearchResultRepository } from '../src/db/cassandra-raw-search-result.repository'
+import { FileManager, TimeHelper } from '@kb/util'
+import { HotelsCollector } from '../src/app/hotels.collector'
+import { DataCollectionNotificationSender } from '../src/core/abstract/data-collection-notification.sender'
+import { DataToProcessSender } from '../src/core/abstract/data-to-process.sender'
+import { RawSearchResultRepository } from '../src/core/abstract/raw-search-result.repository'
+import { DbModule } from '../src/db/db.module'
+import { CollectHotelsScenario } from '../src/core/interface/collect-hotels-scenario'
+import { RawHotel } from '../src/core/model/RawHotel'
 
 class MockDataCollectionNotificationSender {
   notifyAboutHotelsCollectionCompleted() {
@@ -42,9 +43,9 @@ const notEmpty = (value: any) => {
 }
 
 describe('Data integration tests', () => {
-  let app;
-  let dataCollectorService: DataCollectorService;
-  let firestoreRawSearchResultRepository: FirestoreRawSearchResultRepository;
+  let app
+  let dataCollectorService: DataCollectorService
+  let rawSearchResultRepository: CassandraRawSearchResultRepository
 
   beforeEach(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
@@ -76,18 +77,19 @@ describe('Data integration tests', () => {
 
     app = moduleFixture.createNestApplication()
     dataCollectorService = moduleFixture.get(DataCollectorService)
-    firestoreRawSearchResultRepository = moduleFixture.get(RawSearchResultRepository)
+    rawSearchResultRepository = moduleFixture.get(RawSearchResultRepository)
     await app.init()
-  });
+  })
 
   beforeEach(async () => {
-    await firestoreRawSearchResultRepository.deleteOlderThanGivenHours(0);
+    await rawSearchResultRepository.deleteAll()
   })
 
   it('Scenario - 2 persons and 1 room', async (done) => {
     // given
     const mockSearchId = 'test1'
-    const day = 24 * 60 * 60 * 1000
+    const startTestDate = new Date()
+    const day = TimeHelper.DAY_IN_MS
     const checkInDate = new Date(Date.now() + (7 * day))
     const checkOutDate = new Date(Date.now() + (10 * day))
 
@@ -115,17 +117,13 @@ describe('Data integration tests', () => {
 
     // then
     const {
-      rawSearchResultDocuments,
-      linksDocuments
-    } = await firestoreRawSearchResultRepository.find(mockSearchId);
+      hotels,
+      searchPlaceIdentifier,
+    } = await rawSearchResultRepository.find(mockSearchId, startTestDate)
 
-    const { hotels, searchPlaceIdentifier } = rawSearchResultDocuments[0]
-    const { links } = linksDocuments[0]
-
-    logger.debug(`Collected following search place identifier: `, searchPlaceIdentifier)
     hotels.forEach((v) => {
       // DEBUG purposes
-      // logger.debug(`Collected [rawSearchResultDocument] with hotelId [${v.hotelId}] from db`, v)
+      logger.debug(`Collected [rawSearchResultDocument] with hotelId [${v.hotelId}] from db`, v)
     })
 
     notEmpty(searchPlaceIdentifier)
@@ -139,15 +137,17 @@ describe('Data integration tests', () => {
                       distanceFromCenter,
                       distanceFromCenterOrderIndex,
                       districtName,
-                      coords
-                    }) => {
+                      coords,
+                      hotelLink,
+                    }: RawHotel) => {
+      notEmpty(hotelId)
       notEmpty(name)
       notEmpty(price)
       notEmpty(distanceFromCenter)
       notEmpty(distanceFromCenterOrderIndex)
       notEmpty(districtName)
       notEmpty(coords)
-      expect(links[hotelId]).toBeDefined()
+      notEmpty(hotelLink)
     })
     expect(hotels.some(({ rate }) => !!rate)).toBeTruthy()
     expect(hotels.some(({ secondaryRateType }) => !!secondaryRateType)).toBeTruthy()
@@ -165,10 +165,10 @@ describe('Data integration tests', () => {
         return curr
       })
     done()
-  }, 120000);
+  }, 120000)
 
-  afterAll(async () => {
+  afterEach(async () => {
     await app.close()
-  });
-});
+  })
+})
 

@@ -1,6 +1,7 @@
 import { InconsistencyException } from '../exception/InconsistencyException'
 import { SearchRequestType } from './SearchRequestType'
 import { SearchPlaceIdentifier } from '../interface/search-place-identifier'
+import { TimeHelper } from '@kb/util'
 
 type SearchRequestValues = Omit<SearchRequest,
   'updateSearchPlaceIdentifier'
@@ -65,7 +66,7 @@ export class SearchRequest {
   }
 
   scheduleNextSearch(now: Date): SearchRequest {
-    const minutesToAdd = this.updateFrequencyMinutes * 60000;
+    const minutesToAdd = this.updateFrequencyMinutes * TimeHelper.MINUTE_IN_MS;
     this.nextSearchScheduledAt = new Date(now.valueOf() + minutesToAdd);
     return this;
   }

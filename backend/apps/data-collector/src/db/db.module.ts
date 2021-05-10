@@ -1,43 +1,55 @@
 import { Module } from '@nestjs/common'
 import { AppConfigService } from '../config/app-config.service'
 import { RawSearchResultRepository } from '../core/abstract/raw-search-result.repository'
-import { FirestoreClient, FirestoreModule } from '@kb/firestore'
-import { FirestoreRawSearchResultRepository } from './firestore-raw-search-result.repository'
-import { RawSearchResultMapper } from './raw-search-result/raw-search-result.mapper'
-import { MongoModule } from '@kb/mongo'
-import { ScrapActivitySchema, ScrapActivitySchemaKey } from './scrap-activity/scrap-activity.schema'
-import { Model } from 'mongoose'
-import { getModelToken } from '@nestjs/mongoose'
 import { ScrapActivityRepository } from '../core/abstract/scrap-activity.repository'
+import { CassandraScrapActivityRepository } from './cassandra-scrap-activity.repository'
+import { ScrapActivityMapper } from './scrap-activity/scrap-activity.mapper'
+import { CassandraRawSearchResultRepository } from './cassandra-raw-search-result.repository'
+import { CassandraModule, CassandraWrapper } from '@kb/cassandra'
+import { RawSearchResultMapper } from './raw-search-result/raw-search-result.mapper'
+import { RawHotelMapper } from './raw-search-result/raw-hotel.mapper'
+import { ScrapActivityModelName, ScrapActivityTableName } from './scrap-activity/scrap-activity.const'
+import { RawSearchResultModelName, RawSearchResultTableName } from './raw-search-result/raw-search-result.const'
 import { ScrapActivityDocument } from './scrap-activity/scrap-activity.document'
-import { MongoScrapActivityRepository } from './mongo-scrap-activity.repository'
-import { ScrapActivityDocumentMapper } from './scrap-activity/scrap-activity-document.mapper'
-import { LinksMapper } from './links/links.mapper'
+import { RawSearchResultDocument } from './raw-search-result/raw-search-result.document'
+import { logger } from '../logger'
 
 @Module({
   imports: [
-    FirestoreModule.register({ configClass: AppConfigService }),
-    MongoModule.register({ configClass: AppConfigService }, [
-      { name: ScrapActivitySchemaKey, schema: ScrapActivitySchema },
-    ]),
+    CassandraModule.register({
+      configClass: AppConfigService,
+      logger,
+      mapperOptions: [
+        { model: ScrapActivityModelName, table: ScrapActivityTableName },
+        { model: RawSearchResultModelName, table: RawSearchResultTableName },
+      ]
+    }),
   ],
   providers: [
     {
-      provide: RawSearchResultRepository,
-      useFactory: (firestoreClient: FirestoreClient) => {
-        const linksMapper = new LinksMapper()
-        const rawSearchResultMapper = new RawSearchResultMapper()
-        return new FirestoreRawSearchResultRepository(firestoreClient, linksMapper, rawSearchResultMapper)
+      provide: ScrapActivityRepository,
+      useFactory: (
+        config: AppConfigService,
+        cassandraWrapper: CassandraWrapper,
+      ) => {
+        const mapper = new ScrapActivityMapper()
+        const cassandraMapper = cassandraWrapper.get<ScrapActivityDocument>(ScrapActivityModelName)
+        return new CassandraScrapActivityRepository(cassandraMapper, config, mapper)
       },
-      inject: [FirestoreClient],
+      inject: [AppConfigService, CassandraWrapper],
     },
     {
-      provide: ScrapActivityRepository,
-      useFactory: (model: Model<ScrapActivityDocument>) => {
-        const mapper = new ScrapActivityDocumentMapper()
-        return new MongoScrapActivityRepository(mapper, model)
+      provide: RawSearchResultRepository,
+      useFactory: (
+        config: AppConfigService,
+        cassandraWrapper: CassandraWrapper,
+      ) => {
+        const hotelMapper = new RawHotelMapper()
+        const rawSearchResultMapper = new RawSearchResultMapper()
+        const cassandraMapper = cassandraWrapper.get<RawSearchResultDocument>(RawSearchResultModelName)
+        return new CassandraRawSearchResultRepository(cassandraWrapper.client, cassandraMapper, config, hotelMapper, rawSearchResultMapper)
       },
-      inject: [getModelToken(ScrapActivitySchemaKey)],
+      inject: [AppConfigService, CassandraWrapper],
     },
   ],
   exports: [
