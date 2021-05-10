@@ -5,7 +5,7 @@ import { CassandraConfig } from '@kb/cassandra'
 
 export interface AppConfig extends CommonConfig, CassandraConfig {
   readonly rawSearchResultRetentionHours: number
-  readonly scrapActivitiesWithoutUpdateRetentionDays: number
+  readonly scrapActivitiesWithoutUpdateRetentionHours: number
   readonly saveRawResultAsJson: boolean
   readonly takeScreenshotOnError: boolean
   readonly puppeteer: PuppeteerOptions

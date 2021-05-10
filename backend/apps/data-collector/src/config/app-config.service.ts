@@ -18,8 +18,8 @@ export class AppConfigService extends ConfigService<AppConfig> implements Cassan
     return this.config.rawSearchResultRetentionHours;
   }
 
-  get scrapActivitiesWithoutUpdateRetentionDays(): number {
-    return this.config.scrapActivitiesWithoutUpdateRetentionDays;
+  get scrapActivitiesWithoutUpdateRetentionHours(): number {
+    return this.config.scrapActivitiesWithoutUpdateRetentionHours;
   }
 
   get saveRawResultAsJson(): boolean {

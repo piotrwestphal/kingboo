@@ -9,7 +9,7 @@ import { cassandraValidationObjectSchema } from '@kb/cassandra'
 export const appConfigValidationSchemaMap: SchemaMap<AppConfig> = {
   takeScreenshotOnError: Joi.boolean().required(),
   rawSearchResultRetentionHours: Joi.number().required(),
-  scrapActivitiesWithoutUpdateRetentionDays: Joi.number().required(),
+  scrapActivitiesWithoutUpdateRetentionHours: Joi.number().required(),
   saveRawResultAsJson: Joi.boolean().required(),
   puppeteer: Joi.object<PuppeteerOptions>(puppeteerSchemaMap).required(),
   dataCollectionNotificationsMqClient: Joi.object<RabbitOptions>(rabbitValidationSchemaMap).required(),

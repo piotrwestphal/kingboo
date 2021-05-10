@@ -6,13 +6,14 @@ import { AppConfigService } from '../src/config/app-config.service';
 import { ScrapModule } from '../src/scrap/scrap.module';
 import { DataCollectorService } from '../src/core/abstract/data-collector.service';
 import { AppDataCollectorService } from '../src/app/app-data-collector.service';
-import { FileManager } from '@kb/util';
+import { FileManager, TimeHelper } from '@kb/util';
 import { HotelsCollector } from '../src/app/hotels.collector';
 import { DataCollectionNotificationSender } from '../src/core/abstract/data-collection-notification.sender';
 import { DataToProcessSender } from '../src/core/abstract/data-to-process.sender';
 import { RawSearchResultRepository } from '../src/core/abstract/raw-search-result.repository';
 import { DbModule } from '../src/db/db.module';
 import { CollectHotelsScenario } from '../src/core/interface/collect-hotels-scenario';
+import { RawHotel } from '../src/core/model/RawHotel'
 
 class MockDataCollectionNotificationSender {
   notifyAboutHotelsCollectionCompleted() {
@@ -83,13 +84,14 @@ describe('Data integration tests', () => {
     // TODO: create cassandra keyspace
     // TODO: create cassandra table
     // TODO: afterEach delete cassandra table
-    await rawSearchResultRepository.deleteOlderThanGivenHours(0);
+    await rawSearchResultRepository.deleteAll();
   })
 
   it('Scenario - 2 persons and 1 room', async (done) => {
     // given
     const mockSearchId = 'test1'
-    const day = 24 * 60 * 60 * 1000
+    const startTestDate = new Date()
+    const day = TimeHelper.DAY_IN_MS
     const checkInDate = new Date(Date.now() + (7 * day))
     const checkOutDate = new Date(Date.now() + (10 * day))
 
@@ -119,12 +121,11 @@ describe('Data integration tests', () => {
     const {
       hotels,
       searchPlaceIdentifier,
-    } = await rawSearchResultRepository.find(mockSearchId);
+    } = await rawSearchResultRepository.find(mockSearchId, startTestDate);
 
-    logger.debug(`Collected following search place identifier: `, searchPlaceIdentifier)
     hotels.forEach((v) => {
       // DEBUG purposes
-      // logger.debug(`Collected [rawSearchResultDocument] with hotelId [${v.hotelId}] from db`, v)
+      logger.debug(`Collected [rawSearchResultDocument] with hotelId [${v.hotelId}] from db`, v)
     })
 
     notEmpty(searchPlaceIdentifier)
@@ -139,15 +140,16 @@ describe('Data integration tests', () => {
                       distanceFromCenterOrderIndex,
                       districtName,
                       coords,
-                      hotelLink
-                    }) => {
+                      hotelLink,
+                    }: RawHotel) => {
+      notEmpty(hotelId)
       notEmpty(name)
       notEmpty(price)
       notEmpty(distanceFromCenter)
       notEmpty(distanceFromCenterOrderIndex)
       notEmpty(districtName)
       notEmpty(coords)
-      expect(hotelLink).toBeDefined()
+      notEmpty(hotelLink)
     })
     expect(hotels.some(({ rate }) => !!rate)).toBeTruthy()
     expect(hotels.some(({ secondaryRateType }) => !!secondaryRateType)).toBeTruthy()

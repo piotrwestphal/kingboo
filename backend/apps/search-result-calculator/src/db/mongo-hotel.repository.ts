@@ -7,8 +7,6 @@ import { HotelIdentifier } from '../core/interface/hotel-identifier'
 
 export class MongoHotelRepository extends HotelRepository {
 
-  private readonly DAY = 24 * 60 * 60 * 1000
-
   constructor(
     private readonly mapper: HotelDocumentMapper,
     private readonly model: Model<HotelDocument>,
@@ -33,8 +31,8 @@ export class MongoHotelRepository extends HotelRepository {
     return hotelIdByHotel
   }
 
-  async findLastUpdatedGivenDaysAgo(now: Date, days: number): Promise<HotelIdentifier[]> {
-    const offset = new Date(now.valueOf() - days * this.DAY) // x days ago
+  async findLastUpdatedGivenMsAgo(now: Date, msAgo: number): Promise<HotelIdentifier[]> {
+    const offset = new Date(now.valueOf() - msAgo) // x ms ago
     const found = await this.model.find({
       updatedAt: { $lte: offset },
     }).limit(1000).exec()

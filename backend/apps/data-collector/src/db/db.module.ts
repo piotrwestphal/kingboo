@@ -5,33 +5,51 @@ import { ScrapActivityRepository } from '../core/abstract/scrap-activity.reposit
 import { CassandraScrapActivityRepository } from './cassandra-scrap-activity.repository'
 import { ScrapActivityMapper } from './scrap-activity/scrap-activity.mapper'
 import { CassandraRawSearchResultRepository } from './cassandra-raw-search-result.repository'
-import { CassandraClient, CassandraModule } from '@kb/cassandra'
+import { CassandraModule, CassandraWrapper } from '@kb/cassandra'
 import { RawSearchResultMapper } from './raw-search-result/raw-search-result.mapper'
 import { RawHotelMapper } from './raw-search-result/raw-hotel.mapper'
+import { ScrapActivityModelName, ScrapActivityTableName } from './scrap-activity/scrap-activity.const'
+import { RawSearchResultModelName, RawSearchResultTableName } from './raw-search-result/raw-search-result.const'
+import { ScrapActivityDocument } from './scrap-activity/scrap-activity.document'
+import { RawSearchResultDocument } from './raw-search-result/raw-search-result.document'
 import { logger } from '../logger'
 
 @Module({
   imports: [
-    CassandraModule.register({ configClass: AppConfigService, logger }),
+    CassandraModule.register({
+      configClass: AppConfigService,
+      logger,
+      mapperOptions: [
+        { model: ScrapActivityModelName, table: ScrapActivityTableName },
+        { model: RawSearchResultModelName, table: RawSearchResultTableName },
+      ]
+    }),
   ],
   providers: [
     {
-      provide: RawSearchResultRepository,
-      useFactory: (cassandraClient: CassandraClient) => {
-        const hotelMapper = new RawHotelMapper()
-        const rawSearchResultMapper = new RawSearchResultMapper()
-        return new CassandraRawSearchResultRepository(cassandraClient, hotelMapper, rawSearchResultMapper)
+      provide: ScrapActivityRepository,
+      useFactory: (
+        config: AppConfigService,
+        cassandraWrapper: CassandraWrapper,
+      ) => {
+        const mapper = new ScrapActivityMapper()
+        const cassandraMapper = cassandraWrapper.get<ScrapActivityDocument>(ScrapActivityModelName)
+        return new CassandraScrapActivityRepository(cassandraMapper, config, mapper)
       },
-      inject: [CassandraClient],
+      inject: [AppConfigService, CassandraWrapper],
     },
     {
-      provide: ScrapActivityRepository,
-      useFactory: (cassandraClient: CassandraClient,
-                   config: AppConfigService) => {
-        const mapper = new ScrapActivityMapper()
-        return new CassandraScrapActivityRepository(cassandraClient, config, mapper)
+      provide: RawSearchResultRepository,
+      useFactory: (
+        config: AppConfigService,
+        cassandraWrapper: CassandraWrapper,
+      ) => {
+        const hotelMapper = new RawHotelMapper()
+        const rawSearchResultMapper = new RawSearchResultMapper()
+        const cassandraMapper = cassandraWrapper.get<RawSearchResultDocument>(RawSearchResultModelName)
+        return new CassandraRawSearchResultRepository(cassandraWrapper.client, cassandraMapper, config, hotelMapper, rawSearchResultMapper)
       },
-      inject: [CassandraClient, AppConfigService],
+      inject: [AppConfigService, CassandraWrapper],
     },
   ],
   exports: [

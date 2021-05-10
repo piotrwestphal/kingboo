@@ -9,10 +9,10 @@ import { DataCollectorService } from '../core/abstract/data-collector.service'
 import { AppDataCollectorService } from './app-data-collector.service'
 import { FileManager } from '@kb/util/file.manager'
 import { DbModule } from '../db/db.module'
-import { logger } from '../logger'
 import { ScheduleModule } from '@nestjs/schedule'
-import { ObsoleteResultsSearcher } from './scheduler/obsolete-results.searcher'
 import { HotelsCollector } from './hotels.collector'
+import { CollectingScenarioConsumer } from './collecting-scenario.consumer'
+import { logger } from '../logger'
 
 @Module({
   imports: [
@@ -23,7 +23,6 @@ import { HotelsCollector } from './hotels.collector'
     ScheduleModule.forRoot(),
   ],
   providers: [
-    ObsoleteResultsSearcher,
     {
       provide: FileManager,
       useFactory: () => new FileManager(logger),
@@ -36,7 +35,7 @@ import { HotelsCollector } from './hotels.collector'
   ],
   controllers: [
     AppController,
-    // CollectingScenarioConsumer,
+    CollectingScenarioConsumer,
   ],
 })
 export class AppModule {

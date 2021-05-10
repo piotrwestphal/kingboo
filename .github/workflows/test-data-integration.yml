@@ -17,10 +17,6 @@ jobs:
         image: cassandra:latest
         ports:
           - 9042:9042
-      mongo:
-        image: mongo
-        ports:
-          - 27017:27017
 
     steps:
       - uses: actions/checkout@v2

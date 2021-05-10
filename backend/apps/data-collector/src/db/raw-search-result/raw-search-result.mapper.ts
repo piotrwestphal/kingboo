@@ -1,4 +1,4 @@
-import { RawSearchResult } from '../../core/model/RawSearchResult'
+import { RawSearchResult, RawSearchResultValues } from '../../core/model/RawSearchResult'
 import { RawSearchResultDocument } from './raw-search-result.document'
 import { RawHotel } from '../../core/model/RawHotel'
 import { RawHotelDocument } from './raw-hotel.document'
@@ -9,7 +9,7 @@ export class RawSearchResultMapper {
           searchPlaceIdentifier,
           collectingTimeSec,
           hotelsCount,
-        }: RawSearchResult,
+        }: Omit<RawSearchResultValues, 'hotels'>,
         hotels: RawHotelDocument[]): RawSearchResultDocument {
     return {
       searchId,
@@ -26,7 +26,7 @@ export class RawSearchResultMapper {
             searchPlaceIdentifier,
             hotelsCount,
             collectingTimeSec,
-          }: RawSearchResultDocument,
+          }: Omit<RawSearchResultDocument, 'hotels'>,
           hotels: RawHotel[]) {
     return new RawSearchResult(
       searchId,

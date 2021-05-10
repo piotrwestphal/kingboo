@@ -7,6 +7,7 @@ import { HotelsCollector } from './hotels.collector'
 import { DataCollectionNotificationSender } from '../core/abstract/data-collection-notification.sender'
 import { DataToProcessSender } from '../core/abstract/data-to-process.sender'
 import { logger } from '../logger'
+import { TimeHelper } from '@kb/util'
 
 @Injectable()
 export class AppDataCollectorService extends DataCollectorService {
@@ -49,5 +50,5 @@ export class AppDataCollectorService extends DataCollectorService {
   private isMessageOld = (now: number,
                           updateFrequencyMinutes: number,
                           messageTimestamp: number): boolean =>
-    (messageTimestamp + (updateFrequencyMinutes * 1000 * 60)) < now
+    (messageTimestamp + (updateFrequencyMinutes * TimeHelper.MINUTE_IN_MS)) < now
 }

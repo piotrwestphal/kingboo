@@ -1,6 +1,8 @@
 import { RawHotel } from './RawHotel';
 import { SearchPlaceIdentifier } from '../interface/search-place-identifier'
 
+export type RawSearchResultValues = Omit<RawSearchResult, 'addHotelsAfterCollectingFinish' | 'setCollectingTime'>
+
 export class RawSearchResult {
 
   constructor(
