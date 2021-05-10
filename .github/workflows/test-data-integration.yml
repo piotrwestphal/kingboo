@@ -1,11 +1,9 @@
 name: e2e tests
 on:
-  push:
+  pull_request:
     branches:
       - main
-    paths:
-      - 'backend/**'
-      - '.github/workflows/test-data-integration.yml'
+
   schedule:
     - cron: '0 3,9,15,21 * * *' # run at 3.00, 9.00, 15.00 and 21.00
 

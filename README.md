@@ -1,6 +1,6 @@
 Tracks hotel prices for specific search places.
 
-#### Dev environment:
+#### Run on dev environment:
 `docker-compose build`
 
 `docker-compose up -d`
@@ -32,7 +32,7 @@ Logs and results can be found here -> `./compose-output`
 
 Access the web application at `http://localhost:30000`
 
-#### Prod environment:
+#### Run with prod services (queue and dbs):
 
 Rename `prod.env.example` -> `prod.env` and fill in missing values
 
