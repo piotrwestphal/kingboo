@@ -39,8 +39,8 @@ jobs:
       - name: Create cassandra tables
         working-directory: ./db/cassandra
         run: |
-          /cqlsh-6.8.5/bin/cqlsh --version
-          /cqlsh-6.8.5/bin/cqlsh -f ./01_init.cql
+          cqlsh-6.8.5/bin/cqlsh --version
+          cqlsh-6.8.5/bin/cqlsh -f ./01_init.cql
 
       - name: Use cache
         uses: actions/cache@v2
