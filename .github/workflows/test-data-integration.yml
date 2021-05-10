@@ -48,7 +48,7 @@ jobs:
         with:
           python-version: '2.7'
 
-        - name: Create cassandra tables
+      - name: Create cassandra tables
         working-directory: ./db/cassandra
         run: |
           pip install -U cqlsh
