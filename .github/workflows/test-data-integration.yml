@@ -58,7 +58,7 @@ jobs:
       - name: Create cassandra tables
         working-directory: ./db/cassandra
         run: |
-          cqlsh-6.8.5/bin/cqlsh -f ./01_init.cql
+          cqlsh/bin/cqlsh -f ./01_init.cql
 
       - name: Run data integration tests
         working-directory: ./backend
