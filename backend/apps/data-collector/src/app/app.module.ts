@@ -9,7 +9,6 @@ import { DataCollectorService } from '../core/abstract/data-collector.service'
 import { AppDataCollectorService } from './app-data-collector.service'
 import { FileManager } from '@kb/util/file.manager'
 import { DbModule } from '../db/db.module'
-import { ScheduleModule } from '@nestjs/schedule'
 import { HotelsCollector } from './hotels.collector'
 import { CollectingScenarioConsumer } from './collecting-scenario.consumer'
 import { logger } from '../logger'
@@ -20,7 +19,6 @@ import { logger } from '../logger'
     DbModule,
     MqModule,
     ScrapModule,
-    ScheduleModule.forRoot(),
   ],
   providers: [
     {
