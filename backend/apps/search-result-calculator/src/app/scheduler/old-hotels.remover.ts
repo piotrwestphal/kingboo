@@ -1,7 +1,7 @@
-import { Injectable } from '@nestjs/common';
-import { Cron, CronExpression } from '@nestjs/schedule';
-import { HotelRepository } from '../../core/abstract/hotel.repository';
-import { AppConfigService } from '../../config/app-config.service';
+import { Injectable } from '@nestjs/common'
+import { Cron, CronExpression } from '@nestjs/schedule'
+import { HotelRepository } from '../../core/abstract/hotel.repository'
+import { AppConfigService } from '../../config/app-config.service'
 import { logger } from '../../logger'
 import { TimeHelper } from '@kb/util'
 
@@ -18,15 +18,16 @@ export class OldHotelsRemover {
     name: 'remove-old-hotels',
   })
   async removeOldHotels() {
-    logger.debug(`Triggering job [remove-old-hotels]`);
-    const now = new Date();
-    const retentionDaysInMs = this.appConfigService.hotelsWithoutUpdateRetentionHours * TimeHelper.HOUR_IN_SEC;
-    const found = await this.hotelRepository.findLastUpdatedGivenMsAgo(now, retentionDaysInMs);
+    logger.debug(`Triggering job [remove-old-hotels]`)
+    const now = new Date()
+    const retentionHours = this.appConfigService.hotelsWithoutUpdateRetentionHours
+    const retentionHoursInMs = retentionHours * TimeHelper.HOUR_IN_MS
+    const found = await this.hotelRepository.findLastUpdatedGivenMsAgo(now, retentionHoursInMs)
     if (found.length) {
-      const deletedCount = await this.hotelRepository.deleteMany(found);
+      const deletedCount = await this.hotelRepository.deleteMany(found)
       logger.info(`[${deletedCount}] hotels were deleted due to lack of updates for ` +
-        `[${retentionDaysInMs}] days`);
-      logger.debug('Deleted hotels identifiers: ', found);
+        `[${retentionHours}] hours`)
+      logger.debug('Deleted hotels identifiers: ', found)
     }
   }
 }
