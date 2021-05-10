@@ -26,6 +26,19 @@ jobs:
         with:
           node-version: '14'
 
+      - uses: actions/setup-python@v2
+        with:
+          python-version: '2.7'
+
+      - name: Create cassandra tables
+        working-directory: ./db/cassandra
+        run: |
+          curl https://downloads.datastax.com/enterprise/cqlsh-6.8.tar.gz
+          tar -xzvf cqlsh-6.8.tar.gz
+          cqlsh --version
+          cqlsh --help
+          cqlsh -f ./01_init.cql
+
       - name: Use cache
         uses: actions/cache@v2
         with:
@@ -44,15 +57,7 @@ jobs:
         run: |
           npm run build:dc
 
-      - uses: actions/setup-python@v2
-        with:
-          python-version: '2.7'
 
-      - name: Create cassandra tables
-        working-directory: ./db/cassandra
-        run: |
-          pip install -U cqlsh
-          cqlsh --version
 
       - name: Run data integration tests
         working-directory: ./backend
