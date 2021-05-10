@@ -1,19 +1,19 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { logger } from '../src/logger';
-import { ConfigModule } from '@kb/config';
-import { getEnvironments } from '../src/config/environments';
-import { AppConfigService } from '../src/config/app-config.service';
-import { ScrapModule } from '../src/scrap/scrap.module';
-import { DataCollectorService } from '../src/core/abstract/data-collector.service';
-import { AppDataCollectorService } from '../src/app/app-data-collector.service';
+import { Test, TestingModule } from '@nestjs/testing'
+import { logger } from '../src/logger'
+import { ConfigModule } from '@kb/config'
+import { getEnvironments } from '../src/config/environments'
+import { AppConfigService } from '../src/config/app-config.service'
+import { ScrapModule } from '../src/scrap/scrap.module'
+import { DataCollectorService } from '../src/core/abstract/data-collector.service'
+import { AppDataCollectorService } from '../src/app/app-data-collector.service'
 import { CassandraRawSearchResultRepository } from '../src/db/cassandra-raw-search-result.repository'
-import { FileManager, TimeHelper } from '@kb/util';
-import { HotelsCollector } from '../src/app/hotels.collector';
-import { DataCollectionNotificationSender } from '../src/core/abstract/data-collection-notification.sender';
-import { DataToProcessSender } from '../src/core/abstract/data-to-process.sender';
-import { RawSearchResultRepository } from '../src/core/abstract/raw-search-result.repository';
-import { DbModule } from '../src/db/db.module';
-import { CollectHotelsScenario } from '../src/core/interface/collect-hotels-scenario';
+import { FileManager, TimeHelper } from '@kb/util'
+import { HotelsCollector } from '../src/app/hotels.collector'
+import { DataCollectionNotificationSender } from '../src/core/abstract/data-collection-notification.sender'
+import { DataToProcessSender } from '../src/core/abstract/data-to-process.sender'
+import { RawSearchResultRepository } from '../src/core/abstract/raw-search-result.repository'
+import { DbModule } from '../src/db/db.module'
+import { CollectHotelsScenario } from '../src/core/interface/collect-hotels-scenario'
 import { RawHotel } from '../src/core/model/RawHotel'
 
 class MockDataCollectionNotificationSender {
@@ -43,9 +43,9 @@ const notEmpty = (value: any) => {
 }
 
 describe('Data integration tests', () => {
-  let app;
-  let dataCollectorService: DataCollectorService;
-  let rawSearchResultRepository: CassandraRawSearchResultRepository;
+  let app
+  let dataCollectorService: DataCollectorService
+  let rawSearchResultRepository: CassandraRawSearchResultRepository
 
   beforeEach(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
@@ -79,7 +79,7 @@ describe('Data integration tests', () => {
     dataCollectorService = moduleFixture.get(DataCollectorService)
     rawSearchResultRepository = moduleFixture.get(RawSearchResultRepository)
     await app.init()
-  });
+  })
 
   beforeEach(async () => {
     await rawSearchResultRepository.deleteAll()
@@ -119,7 +119,7 @@ describe('Data integration tests', () => {
     const {
       hotels,
       searchPlaceIdentifier,
-    } = await rawSearchResultRepository.find(mockSearchId, startTestDate);
+    } = await rawSearchResultRepository.find(mockSearchId, startTestDate)
 
     hotels.forEach((v) => {
       // DEBUG purposes
@@ -165,10 +165,10 @@ describe('Data integration tests', () => {
         return curr
       })
     done()
-  }, 120000);
+  }, 120000)
 
   afterEach(async () => {
     await app.close()
-  });
-});
+  })
+})
 
