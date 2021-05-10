@@ -11,7 +11,7 @@ export class CassandraClient {
     return this.client.execute(`TRUNCATE ${tableName};`) // unable to parameterize table name via cassandra query
   }
 
-  async shutdown() {
+  shutdown() {
     return this.client.shutdown()
   }
 }

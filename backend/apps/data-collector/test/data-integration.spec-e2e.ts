@@ -6,6 +6,7 @@ import { AppConfigService } from '../src/config/app-config.service';
 import { ScrapModule } from '../src/scrap/scrap.module';
 import { DataCollectorService } from '../src/core/abstract/data-collector.service';
 import { AppDataCollectorService } from '../src/app/app-data-collector.service';
+import { CassandraRawSearchResultRepository } from '../src/db/cassandra-raw-search-result.repository'
 import { FileManager, TimeHelper } from '@kb/util';
 import { HotelsCollector } from '../src/app/hotels.collector';
 import { DataCollectionNotificationSender } from '../src/core/abstract/data-collection-notification.sender';
@@ -44,7 +45,7 @@ const notEmpty = (value: any) => {
 describe('Data integration tests', () => {
   let app;
   let dataCollectorService: DataCollectorService;
-  let rawSearchResultRepository: RawSearchResultRepository;
+  let rawSearchResultRepository: CassandraRawSearchResultRepository;
 
   beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
