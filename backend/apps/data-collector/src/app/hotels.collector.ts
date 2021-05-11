@@ -59,7 +59,7 @@ export class HotelsCollector {
     if (rawSearchResult) {
       rawSearchResult.setCollectingTime(collectingTimeSec);
       logger.debug(`Saving raw search result with id [${rawSearchResult.searchId}] to db.`);
-      await this.rawSearchResultRepository.create(rawSearchResult);
+      // await this.rawSearchResultRepository.create(rawSearchResult);
     } else {
       logger.warn('Raw search result was not saved to db due to incomplete data. Raw search result: ', rawSearchResult)
     }
