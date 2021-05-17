@@ -25,25 +25,29 @@ export class AppDataCollectorService extends DataCollectorService {
                     updateFrequencyMinutes: number,
                     collectHotelsScenario: CollectHotelsScenario,
                     messageTimestamp: number): Promise<void> {
-    const nowMs = Date.now()
-    const oldMessage = this.isMessageOld(nowMs, updateFrequencyMinutes, messageTimestamp)
-    if (oldMessage) {
-      logger.warn(`Scenario [${searchId}] could not be started due to time the message was sent. The message has expired. ` +
-        `Update frequency minutes [${updateFrequencyMinutes}], message sent time [${new Date(messageTimestamp).toISOString()}], ` +
-        `now [${new Date(nowMs).toISOString()}].`)
-    } else {
-      const scrapActivity = new ScrapActivity(searchId)
-      scrapActivity.start()
-      const saved = await this.scrapActivityRepository.update(searchId, scrapActivity)
-      const expectedNumberOfParts = await this.hotelsCollector.collectHotels(searchId, collectHotelsScenario)
-      saved.finish()
-      const { scrapingStartedAt, scrapingFinishedAt } = await this.scrapActivityRepository.update(searchId, saved)
-      this.dataCollectionNotificationSender.notifyAboutHotelsCollectionCompleted(searchId, scrapingStartedAt, scrapingFinishedAt)
-      logger.info(`Collecting data finish. Scrap started at [${scrapingStartedAt.toISOString()}], ` +
-        `scrap finished at [${scrapingFinishedAt.toISOString()}].`)
-      if (expectedNumberOfParts) {
-        this.dataToProcessSender.sendHotelsSummary(searchId, expectedNumberOfParts, scrapingStartedAt, scrapingFinishedAt)
+    try {
+      const nowMs = Date.now()
+      const oldMessage = this.isMessageOld(nowMs, updateFrequencyMinutes, messageTimestamp)
+      if (oldMessage) {
+        logger.warn(`Scenario [${searchId}] could not be started due to time the message was sent. The message has expired. ` +
+          `Update frequency minutes [${updateFrequencyMinutes}], message sent time [${new Date(messageTimestamp).toISOString()}], ` +
+          `now [${new Date(nowMs).toISOString()}].`)
+      } else {
+        const scrapActivity = new ScrapActivity(searchId)
+        scrapActivity.start()
+        const saved = await this.scrapActivityRepository.update(searchId, scrapActivity)
+        const expectedNumberOfParts = await this.hotelsCollector.collectHotels(searchId, collectHotelsScenario)
+        saved.finish()
+        const { scrapingStartedAt, scrapingFinishedAt } = await this.scrapActivityRepository.update(searchId, saved)
+        this.dataCollectionNotificationSender.notifyAboutHotelsCollectionCompleted(searchId, scrapingStartedAt, scrapingFinishedAt)
+        logger.info(`Collecting data finish. Scrap started at [${scrapingStartedAt.toISOString()}], ` +
+          `scrap finished at [${scrapingFinishedAt.toISOString()}].`)
+        if (expectedNumberOfParts) {
+          this.dataToProcessSender.sendHotelsSummary(searchId, expectedNumberOfParts, scrapingStartedAt, scrapingFinishedAt)
+        }
       }
+    } catch (err) {
+      logger.error(`Error when collecting data for searchId [${searchId}]`, err)
     }
   }
 
