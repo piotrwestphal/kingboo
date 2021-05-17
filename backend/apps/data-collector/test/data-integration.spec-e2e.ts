@@ -15,6 +15,7 @@ import { RawSearchResultRepository } from '../src/core/abstract/raw-search-resul
 import { DbModule } from '../src/db/db.module'
 import { CollectHotelsScenario } from '../src/core/interface/collect-hotels-scenario'
 import { RawHotel } from '../src/core/model/RawHotel'
+import { FirestoreRawSearchResultRepository } from '../src/db/firestore-raw-search-result.repository'
 
 class MockDataCollectionNotificationSender {
   notifyAboutHotelsCollectionCompleted() {
@@ -46,6 +47,7 @@ describe('Data integration tests', () => {
   let app
   let dataCollectorService: DataCollectorService
   let rawSearchResultRepository: CassandraRawSearchResultRepository
+  let firestore: FirestoreRawSearchResultRepository
 
   beforeEach(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
@@ -78,6 +80,7 @@ describe('Data integration tests', () => {
     app = moduleFixture.createNestApplication()
     dataCollectorService = moduleFixture.get(DataCollectorService)
     rawSearchResultRepository = moduleFixture.get(RawSearchResultRepository)
+    firestore = moduleFixture.get(FirestoreRawSearchResultRepository)
     await app.init()
   })
 

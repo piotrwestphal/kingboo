@@ -13,9 +13,12 @@ import { RawSearchResultModelName, RawSearchResultTableName } from './raw-search
 import { ScrapActivityDocument } from './scrap-activity/scrap-activity.document'
 import { RawSearchResultDocument } from './raw-search-result/raw-search-result.document'
 import { logger } from '../logger'
+import { FirestoreModule } from '@kb/firestore'
+import { FirestoreRawSearchResultRepository } from './firestore-raw-search-result.repository'
 
 @Module({
   imports: [
+    FirestoreModule.register({ configClass: null }),
     CassandraModule.register({
       configClass: AppConfigService,
       logger,
@@ -26,6 +29,7 @@ import { logger } from '../logger'
     }),
   ],
   providers: [
+    FirestoreRawSearchResultRepository,
     {
       provide: ScrapActivityRepository,
       useFactory: (
