@@ -110,6 +110,7 @@ export class HotelsCollector {
       const image = await this.scraperFacade.takeScreenshot() as string
       await this.fileRepository.save(image, 'missing-dest-id', 'screenshot', 'png')
     }
+
     this.dataCollectionNotificationSender.sendSearchPlaceIdentifier(searchId, collectedSearchPlaceIdentifier)
     return collectedSearchPlaceIdentifier
   }
