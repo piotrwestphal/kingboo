@@ -1,5 +1,4 @@
 import { Module } from '@nestjs/common'
-import { AppController } from './app.controller'
 import { MqModule } from '../mq/mq.module'
 import { ScrapModule } from '../scrap/scrap.module'
 import { ConfigModule } from '@kb/config'
@@ -7,24 +6,21 @@ import { getEnvironments } from '../config/environments'
 import { AppConfigService } from '../config/app-config.service'
 import { DataCollectorService } from '../core/abstract/data-collector.service'
 import { AppDataCollectorService } from './app-data-collector.service'
-import { FileManager } from '@kb/util/file.manager'
 import { DbModule } from '../db/db.module'
 import { HotelsCollector } from './hotels.collector'
 import { CollectingScenarioConsumer } from './collecting-scenario.consumer'
 import { logger } from '../logger'
+import { StorageModule } from '@kb/storage'
 
 @Module({
   imports: [
     ConfigModule.register(getEnvironments(), { configClass: AppConfigService, logger }),
+    StorageModule.register({ configClass: AppConfigService}),
     DbModule,
     MqModule,
     ScrapModule,
   ],
   providers: [
-    {
-      provide: FileManager,
-      useFactory: () => new FileManager(logger),
-    },
     {
       provide: DataCollectorService,
       useClass: AppDataCollectorService,
@@ -32,7 +28,6 @@ import { logger } from '../logger'
     HotelsCollector,
   ],
   controllers: [
-    AppController,
     CollectingScenarioConsumer,
   ],
 })

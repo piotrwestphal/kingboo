@@ -6,13 +6,11 @@ import { ScrapActivityMapper } from './scrap-activity/scrap-activity.mapper'
 import { CassandraModule, CassandraWrapper } from '@kb/cassandra'
 import { ScrapActivityModelName, ScrapActivityTableName } from './scrap-activity/scrap-activity.const'
 import { ScrapActivityDocument } from './scrap-activity/scrap-activity.document'
-import { logger } from '../logger'
 
 @Module({
   imports: [
     CassandraModule.register({
       configClass: AppConfigService,
-      logger,
       mapperOptions: [
         { model: ScrapActivityModelName, table: ScrapActivityTableName },
         // { model: RawSearchResultModelName, table: RawSearchResultTableName },

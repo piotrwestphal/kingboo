@@ -26,9 +26,6 @@ export class MainPage {
       logger.error(`Selector [${MainPageElement.PLACE_ID_LON_INPUT.description}] not found but proceeding`, e)
       return ""
     })
-    // DEBUG purposes
-    await this.browserService.click(MainPageElement.SUBMIT_BUTTON)
-    await this.browserService.wait(5000)
     return {
       destination,
       destId,

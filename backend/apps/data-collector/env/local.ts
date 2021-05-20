@@ -10,16 +10,18 @@ export const localConfig: AppConfig = {
   nodeEnv: 'local',
   port: 8080,
   corsOrigins: 'http://localhost:3000', // separate multiple origins by comma
-  saveRawResultAsJson: true,
-  rawSearchResultRetentionHours: 24,
   scrapActivitiesWithoutUpdateRetentionHours: 72,
-  takeScreenshotOnError: true,
   puppeteer: {
     headlessModeOff: true,
     enableStylesOnResultsPage: false,
     executablePath: './node_modules/puppeteer/.local-chromium/mac-856583/chrome-mac/Chromium.app/Contents/MacOS/Chromium',
     slowMoMs: 0,
     devtoolsTurnedOn: false,
+  },
+  storage: {
+    local: {
+      outputFolderPath: 'output'
+    }
   },
   cassandra: {
     keyspace: 'kingboo',

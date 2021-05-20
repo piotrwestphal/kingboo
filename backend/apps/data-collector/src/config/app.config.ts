@@ -2,12 +2,10 @@ import { CommonConfig } from '@kb/config'
 import { RabbitOptions } from '@kb/rabbit'
 import { PuppeteerOptions } from './puppeteer/puppeteer-options'
 import { CassandraConfig } from '@kb/cassandra'
+import { StorageConfig } from '@kb/storage'
 
-export interface AppConfig extends CommonConfig, CassandraConfig {
-  readonly rawSearchResultRetentionHours: number
+export interface AppConfig extends CommonConfig, CassandraConfig, StorageConfig {
   readonly scrapActivitiesWithoutUpdateRetentionHours: number
-  readonly saveRawResultAsJson: boolean
-  readonly takeScreenshotOnError: boolean
   readonly puppeteer: PuppeteerOptions
   readonly dataCollectionNotificationsMqClient: RabbitOptions
   readonly dataToProcessMqClient: RabbitOptions
