@@ -7,9 +7,7 @@ import { LocalStorageRepository } from '@kb/storage/local-storage.repository'
 
 export const createGcpRepository = ({ projectId, bucketName, clientEmail, rawClientKey }: StorageOptions['remote'],
                                     logger: CommonLoggerService) => {
-  const privateKey = parsePemKey(rawClientKey)
-  console.log({privateKey}) // TODO
-  const storage = createStorage(projectId, clientEmail, privateKey)
+  const storage = createStorage(projectId, clientEmail, rawClientKey)
   const bucket = storage.bucket(bucketName)
   return new GcpStorageRepository(bucket, logger)
 }
@@ -20,10 +18,10 @@ export const createFileRepository = ({ outputFolderPath }: StorageOptions['local
 
 const createStorage = (projectId: string,
                        client_email: string,
-                       private_key: string) => new Storage({
+                       rawClientKey: string) => new Storage({
   projectId,
   credentials: {
     client_email,
-    private_key,
+    private_key: parsePemKey(rawClientKey),
   }
 })

@@ -19,8 +19,6 @@ export class ConfigModule {
           provide: configClass,
           useFactory: (): K => {
             const configOptions = getConfigBasedOnEnv(process.env, envs)
-            console.log({configOptions}) // TODO
-            console.log('storage remote', (configOptions as any).storage)
             return new configClass(configOptions, logger)
           },
         },
