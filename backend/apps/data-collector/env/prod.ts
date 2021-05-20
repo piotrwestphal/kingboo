@@ -5,13 +5,18 @@ export const prodConfig = (env: NodeJS.ProcessEnv): AppConfig =>
     nodeEnv: env.NODE_ENV as 'prod',
     port: env.PORT ? parseInt(env.PORT, 10) : 8080,
     corsOrigins: env.CORS_ORIGINS,
-    rawSearchResultRetentionHours: parseInt(env.RAW_SEARCH_RESULT_RETENTION_HOURS, 10),
     scrapActivitiesWithoutUpdateRetentionHours: parseInt(env.SCRAP_ACTIVITY_WITHOUT_UPDATE_RETENTION_HOURS, 10),
-    saveRawResultAsJson: env.SAVE_RAW_SEARCH_RESULT_AS_JSON === 'true',
-    takeScreenshotOnError: env.TAKE_SCREENSHOT_ON_ERROR === 'true',
     puppeteer: {
       headlessModeOff: env.PUPPETEER_HEADLESS_MODE_OFF === 'true',
       enableStylesOnResultsPage: env.PUPPETEER_ENABLE_STYLES_ON_RESULTS_PAGE === 'true',
+    },
+    storage: {
+      remote: {
+        projectId: env.GCP_STORAGE_PROJECT_ID,
+        bucketName: env.GCP_STORAGE_BUCKET_NAME,
+        clientEmail: env.GCP_STORAGE_CLIENT_EMAIL,
+        rawClientKey: env.GCP_STORAGE_CLIENT_KEY,
+      }
     },
     cassandra: {
       keyspace: env.ASTRA_DB_KEYSPACE,

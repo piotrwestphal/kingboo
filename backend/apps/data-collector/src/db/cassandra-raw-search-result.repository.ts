@@ -25,7 +25,7 @@ export class CassandraRawSearchResultRepository extends RawSearchResultRepositor
   async create({ hotels, ...restRawSearchResultValues }: RawSearchResult): Promise<void> {
     const rawHotelDocs = hotels.map(rawHotel => this.rawHotelMapper.toDoc(rawHotel))
     const rawSearchResultDoc = this.rawSearchResultMapper.toDoc(restRawSearchResultValues, rawHotelDocs)
-    const retentionTimeSec = this.config.rawResultRetentionHours * TimeHelper.HOUR_IN_SEC
+    const retentionTimeSec = /*this.config.rawResultRetentionHours*/24 * TimeHelper.HOUR_IN_SEC // TODO
     await this.cassandraModel.insert(rawSearchResultDoc, { ttl: retentionTimeSec })
   }
 

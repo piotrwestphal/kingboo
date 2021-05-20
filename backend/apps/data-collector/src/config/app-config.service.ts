@@ -6,28 +6,17 @@ import { appConfigValidationSchemaMap } from './validation.schema';
 import { CommonLoggerService } from '@kb/logger';
 import { PuppeteerLaunchOptions } from './puppeteer/puppeteer-launch-options'
 import { CassandraConfigService } from '@kb/cassandra'
+import { StorageConfigService } from '@kb/storage'
 
-export class AppConfigService extends ConfigService<AppConfig> implements CassandraConfigService {
+export class AppConfigService extends ConfigService<AppConfig> implements CassandraConfigService, StorageConfigService {
 
   constructor(appConfig: AppConfig,
               logger: CommonLoggerService) {
     super(appConfig, appConfigValidationSchemaMap, logger);
   }
 
-  get rawResultRetentionHours(): number {
-    return this.config.rawSearchResultRetentionHours;
-  }
-
   get scrapActivitiesWithoutUpdateRetentionHours(): number {
     return this.config.scrapActivitiesWithoutUpdateRetentionHours;
-  }
-
-  get saveRawResultAsJson(): boolean {
-    return this.config.saveRawResultAsJson;
-  }
-
-  get takeScreenshotOnError(): boolean {
-    return this.config.takeScreenshotOnError;
   }
 
   get puppeteerLaunchOptions(): PuppeteerLaunchOptions {
@@ -47,6 +36,14 @@ export class AppConfigService extends ConfigService<AppConfig> implements Cassan
 
   get enableStylesOnResultsPage(): boolean {
     return this.config.puppeteer.enableStylesOnResultsPage;
+  }
+
+  get storageLocal() {
+    return this.config.storage.local
+  }
+
+  get storageRemote() {
+    return this.config.storage.remote
   }
 
   get cassandraKeyspace() {

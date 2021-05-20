@@ -45,19 +45,6 @@ export class BrowserService {
     })
   }
 
-  async enableDebugInterception(): Promise<void> {
-    await this.page.setRequestInterception(true)
-    this.page.on('request', (req: HTTPRequest) => {
-      if (req.resourceType() === 'document' && req.url().includes('searchresults')) {
-        // DEBUG purposes
-        logger.debug('Search results url: ', req.url())
-        req.continue()
-      } else {
-        req.continue()
-      }
-    })
-  }
-
   async getUserAgent(): Promise<string> {
     return this.browser
       ? this.page.evaluate(() => navigator.userAgent)
@@ -116,12 +103,11 @@ export class BrowserService {
     }
   }
 
-  async takeScreenshot(type: string, pathToScreenshotsFolder: string): Promise<void> {
-    const path = `${pathToScreenshotsFolder}/${new Date().toISOString().replace(/[^0-9]/g, '')}-${type}.png`
+  async takeScreenshot(): Promise<string | void | Buffer> {
     try {
-      await this.page.screenshot({ path })
+      return this.page.screenshot()
     } catch (e) {
-      logger.error(`Error when taking screen shot, path: ${path}.`, e)
+      logger.error(`Error when taking screen shot`, e)
     }
   }
 
