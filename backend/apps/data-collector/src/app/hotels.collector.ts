@@ -3,7 +3,6 @@ import { AppConfigService } from '../config/app-config.service'
 import { DataCollectionNotificationSender } from '../core/abstract/data-collection-notification.sender'
 import { DataToProcessSender } from '../core/abstract/data-to-process.sender'
 import { TimeHelper } from '@kb/util'
-import { RawSearchResultRepository } from '../core/abstract/raw-search-result.repository'
 import { ScraperFacade } from '../scrap/scraper.facade'
 import { CollectHotelsScenario } from '../core/interface/collect-hotels-scenario'
 import { logger } from '../logger'
@@ -26,7 +25,6 @@ export class HotelsCollector {
     private readonly dataCollectionNotificationSender: DataCollectionNotificationSender,
     private readonly dataToProcessSender: DataToProcessSender,
     private readonly fileRepository: FileRepository,
-    private readonly rawSearchResultRepository: RawSearchResultRepository,
     private readonly scraperFacade: ScraperFacade,
   ) {
   }

@@ -6,12 +6,10 @@ import { AppConfigService } from '../src/config/app-config.service'
 import { ScrapModule } from '../src/scrap/scrap.module'
 import { DataCollectorService } from '../src/core/abstract/data-collector.service'
 import { AppDataCollectorService } from '../src/app/app-data-collector.service'
-import { CassandraRawSearchResultRepository } from '../src/db/cassandra-raw-search-result.repository'
 import { TimeHelper } from '@kb/util'
 import { HotelsCollector } from '../src/app/hotels.collector'
 import { DataCollectionNotificationSender } from '../src/core/abstract/data-collection-notification.sender'
 import { DataToProcessSender } from '../src/core/abstract/data-to-process.sender'
-import { RawSearchResultRepository } from '../src/core/abstract/raw-search-result.repository'
 import { DbModule } from '../src/db/db.module'
 import { CollectHotelsScenario } from '../src/core/interface/collect-hotels-scenario'
 import { RawHotel } from '../src/core/model/RawHotel'
@@ -51,13 +49,12 @@ describe('Data integration tests', () => {
   let app
   let dataCollectorService: DataCollectorService
   let fileRepository: FileRepository
-  let rawSearchResultRepository: CassandraRawSearchResultRepository
 
   beforeEach(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [
         ConfigModule.register(getEnvironments(), { configClass: AppConfigService, logger }),
-        StorageModule.register({ configClass: AppConfigService}),
+        StorageModule.register({ configClass: AppConfigService }),
         DbModule,
         ScrapModule,
       ],
@@ -81,7 +78,6 @@ describe('Data integration tests', () => {
     app = moduleFixture.createNestApplication()
     dataCollectorService = moduleFixture.get(DataCollectorService)
     fileRepository = moduleFixture.get(FileRepository)
-    rawSearchResultRepository = moduleFixture.get(RawSearchResultRepository)
     await app.init()
   })
 
