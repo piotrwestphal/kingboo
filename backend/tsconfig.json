@@ -59,6 +59,12 @@
       ],
       "@kb/cassandra/*": [
         "libs/cassandra/src/*"
+      ],
+      "@kb/storage": [
+        "libs/storage/src"
+      ],
+      "@kb/storage/*": [
+        "libs/storage/src/*"
       ]
     }
   },

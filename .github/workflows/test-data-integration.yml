@@ -60,8 +60,12 @@ jobs:
       - name: Run data integration tests
         working-directory: ./backend
         env:
-          NODE_ENV: dev
+          NODE_ENV: ci
           CORS_ORIGINS: ''
+          GCP_STORAGE_PROJECT_ID: ${{ secrets.GCP_STORAGE_PROJECT_ID }}
+          GCP_STORAGE_BUCKET_NAME: ${{ secrets.GCP_STORAGE_DEV_BUCKET_NAME }} # dev bucket
+          GCP_STORAGE_CLIENT_EMAIL: ${{ secrets.GCP_STORAGE_CLIENT_EMAIL }}
+          GCP_STORAGE_CLIENT_KEY: ${{ secrets.GCP_STORAGE_CLIENT_KEY }}
           ASTRA_DB_KEYSPACE: kingboo
           ASTRA_CONTACT_POINT: localhost
           MQ_ADDRESS: mock

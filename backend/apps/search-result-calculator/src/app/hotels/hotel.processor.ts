@@ -1,7 +1,6 @@
 import { MessageProcessor } from '../../processing/message.processor'
 import { HotelRepository } from '../../core/abstract/hotel.repository'
 import { RawHotelDto } from '@kb/model'
-import { FileManager } from '@kb/util/file.manager'
 import { HotelFactory } from './hotel.factory'
 import { PriceCalculator } from './price.calculator'
 import { Hotel } from '../../core/model/Hotel'
@@ -10,12 +9,13 @@ import { AppConfigService } from '../../config/app-config.service'
 import { logger } from '../../logger'
 import { LatestValues } from '../../core/interface/latest-values'
 import { ProgressMeasuringService } from '../processing-progress/progress-measuring.service'
+import { FileRepository } from '@kb/storage'
 
 export class HotelProcessor {
 
   constructor(
     private readonly configService: AppConfigService,
-    private readonly fileManager: FileManager,
+    private readonly fileRepository: FileRepository,
     private readonly hotelFactory: HotelFactory,
     private readonly hotelRepository: HotelRepository,
     private readonly messageProcessor: MessageProcessor,
@@ -27,10 +27,8 @@ export class HotelProcessor {
   async processMessage(searchId: string, rawHotels: RawHotelDto[]): Promise<void> {
     const rawHotelsById = this.messageProcessor.processMessage(searchId, rawHotels)
     const rawHotelIds = Array.from(rawHotelsById.keys())
-    if (this.configService.saveResultAsJson) {
-      const pathToResult = await this.fileManager.saveDataAsJSON(Array.from(rawHotelsById.values()), `PROCESSED-${searchId}`)
-      logger.debug(`Processed data was saved locally to [${pathToResult}]`)
-    }
+    await this.fileRepository.save(JSON.stringify(Array.from(rawHotelsById.values())), searchId, 'raw-hotels')
+
     logger.debug(`Processed message with hotel ids`, rawHotelIds)
     const foundHotels = await this.hotelRepository.findAllBySearchIdAndHotelId(searchId, Array.from(rawHotelsById.keys()))
 

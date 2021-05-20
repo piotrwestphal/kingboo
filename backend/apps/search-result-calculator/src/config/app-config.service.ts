@@ -5,15 +5,20 @@ import { buildRmqOptions } from '@kb/rabbit';
 import { appConfigValidationSchemaMap } from './validation.schema';
 import { MongoConfigService } from '@kb/mongo';
 import { CommonLoggerService } from '@kb/logger';
+import { StorageConfigService } from '@kb/storage'
 
-export class AppConfigService extends ConfigService<AppConfig> implements MongoConfigService {
+export class AppConfigService extends ConfigService<AppConfig> implements MongoConfigService, StorageConfigService {
 
   constructor(appConfig: AppConfig, logger: CommonLoggerService) {
     super(appConfig, appConfigValidationSchemaMap, logger);
   }
 
-  get saveResultAsJson(): boolean {
-    return this.config.saveResultAsJson;
+  get storageLocal() {
+    return this.config.storage.local
+  }
+
+  get storageRemote() {
+    return this.config.storage.remote
   }
 
   get mongoAddress(): string {

@@ -6,7 +6,6 @@ import { ConfigModule } from '@kb/config';
 import { getEnvironments } from '../config/environments';
 import { AppConfigService } from '../config/app-config.service';
 import { ProcessingModule } from '../processing/processing.module';
-import { FileManager } from '@kb/util/file.manager';
 import { DataToProcessConsumer } from './data-to-process.consumer';
 import { PriceCalculator } from './hotels/price.calculator';
 import { HotelFactory } from './hotels/hotel.factory';
@@ -18,10 +17,12 @@ import { OldHotelsRemover } from './scheduler/old-hotels.remover';
 import { ProgressMeasuringService } from './processing-progress/progress-measuring.service';
 import { DataUpdateSender } from '../core/abstract/data-update.sender';
 import { ProcessingProgressRepository } from '../core/abstract/processing-progress.repository';
+import { FileRepository, StorageModule } from '@kb/storage'
 
 @Module({
   imports: [
     ConfigModule.register(getEnvironments(), { configClass: AppConfigService, logger }),
+    StorageModule.register({ configClass: AppConfigService}),
     DbModule,
     MqModule,
     ProcessingModule,
@@ -45,15 +46,15 @@ import { ProcessingProgressRepository } from '../core/abstract/processing-progre
     {
       provide: HotelProcessor,
       useFactory: (configService: AppConfigService,
+                   fileRepository: FileRepository,
                    hotelRepository: HotelRepository,
                    messageProcessor: MessageProcessor,
                    progressMeasuringService: ProgressMeasuringService) => {
-        const fileManager = new FileManager(logger);
         const hotelFactory = new HotelFactory();
         const priceCalculator = new PriceCalculator();
         return new HotelProcessor(
           configService,
-          fileManager,
+          fileRepository,
           hotelFactory,
           hotelRepository,
           messageProcessor,
@@ -61,7 +62,7 @@ import { ProcessingProgressRepository } from '../core/abstract/processing-progre
           progressMeasuringService,
         );
       },
-      inject: [AppConfigService, HotelRepository, MessageProcessor, ProgressMeasuringService],
+      inject: [AppConfigService, FileRepository, HotelRepository, MessageProcessor, ProgressMeasuringService],
     },
   ],
 })

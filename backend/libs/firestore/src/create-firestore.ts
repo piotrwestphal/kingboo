@@ -1,5 +1,5 @@
 import { Firestore } from '@google-cloud/firestore';
-import { parseFirestorePemKey } from './pem-key.parser'
+import { parsePemKey } from '@kb/util'
 
 export const createFirestore = (projectId: string,
                                 client_email: string,
@@ -7,8 +7,7 @@ export const createFirestore = (projectId: string,
   projectId,
   credentials: {
     client_email,
-    // fix for differences in setting env variable in app engine and github actions
-    private_key: parseFirestorePemKey(rawClientKey)
+    private_key: parsePemKey(rawClientKey)
   },
 });
 

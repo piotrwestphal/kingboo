@@ -11,13 +11,15 @@ export const devConfig = (env: NodeJS.ProcessEnv): AppConfig =>
     nodeEnv: env.NODE_ENV as 'dev',
     port: env.PORT ? parseInt(env.PORT, 10) : 8080,
     corsOrigins: env.CORS_ORIGINS,
-    rawSearchResultRetentionHours: 24,
     scrapActivitiesWithoutUpdateRetentionHours: 72,
-    saveRawResultAsJson: true,
-    takeScreenshotOnError: true,
     puppeteer: {
       headlessModeOff: false,
       enableStylesOnResultsPage: false,
+    },
+    storage: {
+      local: {
+        outputFolderPath: 'output'
+      }
     },
     cassandra: {
       keyspace: env.ASTRA_DB_KEYSPACE,

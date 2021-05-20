@@ -6,15 +6,15 @@ import { AppConfigService } from '../src/config/app-config.service'
 import { ScrapModule } from '../src/scrap/scrap.module'
 import { DataCollectorService } from '../src/core/abstract/data-collector.service'
 import { AppDataCollectorService } from '../src/app/app-data-collector.service'
-import { CassandraRawSearchResultRepository } from '../src/db/cassandra-raw-search-result.repository'
-import { FileManager, TimeHelper } from '@kb/util'
+import { TimeHelper } from '@kb/util'
 import { HotelsCollector } from '../src/app/hotels.collector'
 import { DataCollectionNotificationSender } from '../src/core/abstract/data-collection-notification.sender'
 import { DataToProcessSender } from '../src/core/abstract/data-to-process.sender'
-import { RawSearchResultRepository } from '../src/core/abstract/raw-search-result.repository'
 import { DbModule } from '../src/db/db.module'
 import { CollectHotelsScenario } from '../src/core/interface/collect-hotels-scenario'
 import { RawHotel } from '../src/core/model/RawHotel'
+import { FileRepository, StorageModule } from '@kb/storage'
+import { RawSearchResult } from '../src/core/model/RawSearchResult'
 
 class MockDataCollectionNotificationSender {
   notifyAboutHotelsCollectionCompleted() {
@@ -43,14 +43,18 @@ const notEmpty = (value: any) => {
 }
 
 describe('Data integration tests', () => {
+
+  const mockSearchId = 'test1'
+
   let app
   let dataCollectorService: DataCollectorService
-  let rawSearchResultRepository: CassandraRawSearchResultRepository
+  let fileRepository: FileRepository
 
   beforeEach(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [
         ConfigModule.register(getEnvironments(), { configClass: AppConfigService, logger }),
+        StorageModule.register({ configClass: AppConfigService }),
         DbModule,
         ScrapModule,
       ],
@@ -58,10 +62,6 @@ describe('Data integration tests', () => {
         {
           provide: DataCollectorService,
           useClass: AppDataCollectorService,
-        },
-        {
-          provide: FileManager,
-          useFactory: () => new FileManager(logger),
         },
         {
           provide: DataCollectionNotificationSender,
@@ -77,18 +77,12 @@ describe('Data integration tests', () => {
 
     app = moduleFixture.createNestApplication()
     dataCollectorService = moduleFixture.get(DataCollectorService)
-    rawSearchResultRepository = moduleFixture.get(RawSearchResultRepository)
+    fileRepository = moduleFixture.get(FileRepository)
     await app.init()
-  })
-
-  beforeEach(async () => {
-    await rawSearchResultRepository.deleteAll()
   })
 
   it('Scenario - 2 persons and 1 room', async (done) => {
     // given
-    const mockSearchId = 'test1'
-    const startTestDate = new Date()
     const day = TimeHelper.DAY_IN_MS
     const checkInDate = new Date(Date.now() + (7 * day))
     const checkOutDate = new Date(Date.now() + (10 * day))
@@ -116,15 +110,13 @@ describe('Data integration tests', () => {
     await dataCollectorService.collectData(mockSearchId, 1, collectHotelsScenario, Date.now())
 
     // then
+    const filePath = await fileRepository.findFilePath(mockSearchId, 'raw-search-result')
+    const data = await fileRepository.get(filePath)
+
     const {
       hotels,
       searchPlaceIdentifier,
-    } = await rawSearchResultRepository.find(mockSearchId, startTestDate)
-
-    hotels.forEach((v) => {
-      // DEBUG purposes
-      logger.debug(`Collected [rawSearchResultDocument] with hotelId [${v.hotelId}] from db`, v)
-    })
+    } = JSON.parse(data) as RawSearchResult
 
     notEmpty(searchPlaceIdentifier)
     expect(searchPlaceIdentifier.destination).toBe('New York, New York State, United States')
