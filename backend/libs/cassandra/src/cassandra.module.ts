@@ -34,7 +34,6 @@ export class CassandraModule implements OnModuleDestroy {
 
   static register<T extends CassandraConfigService>({
                                                       configClass,
-                                                      logger,
                                                       mapperOptions
                                                     }: CassandraModuleOptions<T>): DynamicModule {
     const cassandraWrapperProvider = {
@@ -43,7 +42,7 @@ export class CassandraModule implements OnModuleDestroy {
         const cassandra = configService.env === 'prod'
           ? createCassandra(configService.cassandraKeyspace, configService.cassandraCloud)
           : createCassandraForDevPurposes(configService.cassandraKeyspace, configService.cassandraLocal)
-        const connectedCassandra = await connectToCassandra(cassandra, logger)
+        const connectedCassandra = await connectToCassandra(cassandra, configService.logger)
         const cassandraBaseMapper = createBaseMapper(connectedCassandra, mapperOptions)
         const cassandraClient = new CassandraClient(connectedCassandra)
         return new CassandraWrapper(cassandraBaseMapper, cassandraClient)

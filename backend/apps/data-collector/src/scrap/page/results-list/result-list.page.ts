@@ -150,7 +150,7 @@ export class ResultListPage {
               newlyAdded: hotelNewlyAdded,
               bonuses: hotelBonuses.length ? hotelBonuses : null,
               rooms: rooms.length ? rooms : null,
-              // debug: 'will go straight to db',
+              // debug: 'will go straight to storage',
             })
             return acc;
           }

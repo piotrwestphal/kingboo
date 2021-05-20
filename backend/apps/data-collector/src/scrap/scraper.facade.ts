@@ -28,7 +28,6 @@ export class ScraperFacade {
   public async initializeBrowser(launchOptions: PuppeteerLaunchOptions): Promise<void> {
     logger.debug(`Initializing browser with options`, launchOptions)
     await this.browserService.initBrowserAndOpenBlankPage(launchOptions)
-    await this.browserService.enableDebugInterception() // TODO: remove
 
     logger.debug(`Set page size`, this.DEFAULT_RESOLUTION)
     await this.browserService.setPageSize(this.DEFAULT_RESOLUTION)
@@ -58,8 +57,8 @@ export class ScraperFacade {
     return this.hotelsScraper.collectHotelsFromCurrentPage()
   }
 
-  public takeScreenshot(type: string, resultFolderPath: string): Promise<void> {
-    return this.browserService.takeScreenshot(type, resultFolderPath)
+  public takeScreenshot(): Promise<string | Buffer | void> {
+    return this.browserService.takeScreenshot()
   }
 
   public async performCleaningAfterScraping(): Promise<void> {

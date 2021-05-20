@@ -12,13 +12,11 @@ import { ScrapActivityModelName, ScrapActivityTableName } from './scrap-activity
 import { RawSearchResultModelName, RawSearchResultTableName } from './raw-search-result/raw-search-result.const'
 import { ScrapActivityDocument } from './scrap-activity/scrap-activity.document'
 import { RawSearchResultDocument } from './raw-search-result/raw-search-result.document'
-import { logger } from '../logger'
 
 @Module({
   imports: [
     CassandraModule.register({
       configClass: AppConfigService,
-      logger,
       mapperOptions: [
         { model: ScrapActivityModelName, table: ScrapActivityTableName },
         { model: RawSearchResultModelName, table: RawSearchResultTableName },
@@ -53,7 +51,7 @@ import { logger } from '../logger'
     },
   ],
   exports: [
-    RawSearchResultRepository,
+    // RawSearchResultRepository,
     ScrapActivityRepository,
   ],
 })
