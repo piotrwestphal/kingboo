@@ -10,7 +10,6 @@ import { TimeHelper } from '@kb/util'
 import { HotelsCollector } from '../src/app/hotels.collector'
 import { DataCollectionNotificationSender } from '../src/core/abstract/data-collection-notification.sender'
 import { DataToProcessSender } from '../src/core/abstract/data-to-process.sender'
-import { DbModule } from '../src/db/db.module'
 import { CollectHotelsScenario } from '../src/core/interface/collect-hotels-scenario'
 import { RawHotel } from '../src/core/model/RawHotel'
 import { FileRepository, StorageModule } from '@kb/storage'
@@ -55,7 +54,6 @@ describe('Data integration tests', () => {
       imports: [
         ConfigModule.register(getEnvironments(), { configClass: AppConfigService, logger }),
         StorageModule.register({ configClass: AppConfigService }),
-        DbModule,
         ScrapModule,
       ],
       providers: [

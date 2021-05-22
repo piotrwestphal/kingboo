@@ -23,16 +23,16 @@ jobs:
         with:
           node-version: '14'
 
-      - uses: actions/setup-python@v2
-        with:
-          python-version: '2.7'
+#      - uses: actions/setup-python@v2
+#        with:
+#          python-version: '2.7'
 
-      - name: Install cqlsh
-        working-directory: ./db/cassandra
-        run: |
-          curl https://downloads.datastax.com/enterprise/cqlsh-6.8.5-bin.tar.gz --output cqlsh-bin.tar.gz
-          tar -xzvf cqlsh-bin.tar.gz
-          mv cqlsh-6.8.5/* cqlsh
+#      - name: Install cqlsh
+#        working-directory: ./db/cassandra
+#        run: |
+#          curl https://downloads.datastax.com/enterprise/cqlsh-6.8.5-bin.tar.gz --output cqlsh-bin.tar.gz
+#          tar -xzvf cqlsh-bin.tar.gz
+#          mv cqlsh-6.8.5/* cqlsh
 
       - name: Use cache
         uses: actions/cache@v2
@@ -52,10 +52,10 @@ jobs:
         run: |
           npm run build:dc
 
-      - name: Create cassandra tables
-        working-directory: ./db/cassandra
-        run: |
-          cqlsh/bin/cqlsh -f ./01_init.cql
+#      - name: Create cassandra tables
+#        working-directory: ./db/cassandra
+#        run: |
+#          cqlsh/bin/cqlsh -f ./01_init.cql
 
       - name: Run data integration tests
         working-directory: ./backend
@@ -66,8 +66,8 @@ jobs:
           GCP_STORAGE_BUCKET_NAME: ${{ secrets.GCP_STORAGE_DEV_BUCKET_NAME }} # dev bucket
           GCP_STORAGE_CLIENT_EMAIL: ${{ secrets.GCP_STORAGE_CLIENT_EMAIL }}
           GCP_STORAGE_CLIENT_KEY: ${{ secrets.GCP_STORAGE_CLIENT_KEY }}
-          ASTRA_DB_KEYSPACE: kingboo
-          ASTRA_CONTACT_POINT: localhost
+#          ASTRA_DB_KEYSPACE: kingboo
+#          ASTRA_CONTACT_POINT: localhost
           MQ_ADDRESS: mock
           MQ_COLLECTING_SCENARIO_QUEUE_NAME: mock
           MQ_DATA_COLLECTION_NOTIFICATIONS_QUEUE_NAME: mock

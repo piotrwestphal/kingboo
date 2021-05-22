@@ -5,7 +5,6 @@ export const prodConfig = (env: NodeJS.ProcessEnv): AppConfig =>
     nodeEnv: env.NODE_ENV as 'prod',
     port: env.PORT ? parseInt(env.PORT, 10) : 8080,
     corsOrigins: env.CORS_ORIGINS,
-    scrapActivitiesWithoutUpdateRetentionHours: parseInt(env.SCRAP_ACTIVITY_WITHOUT_UPDATE_RETENTION_HOURS, 10),
     puppeteer: {
       headlessModeOff: env.PUPPETEER_HEADLESS_MODE_OFF === 'true',
       enableStylesOnResultsPage: env.PUPPETEER_ENABLE_STYLES_ON_RESULTS_PAGE === 'true',
@@ -18,14 +17,14 @@ export const prodConfig = (env: NodeJS.ProcessEnv): AppConfig =>
         rawClientKey: env.GCP_STORAGE_CLIENT_KEY,
       }
     },
-    cassandra: {
+/*    cassandra: {
       keyspace: env.ASTRA_DB_KEYSPACE,
       cloud: {
         secureConnectBundlePath: './db/cassandra/secure-connect-kingboo.zip',
         username: env.ASTRA_DB_USERNAME,
         password: env.ASTRA_DB_PASSWORD,
       }
-    },
+    },*/
     mqConsumer: {
       address: env.MQ_ADDRESS,
       queueDefinition: {
