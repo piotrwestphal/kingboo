@@ -10,7 +10,6 @@ export const localConfig: AppConfig = {
   nodeEnv: 'local',
   port: 8080,
   corsOrigins: 'http://localhost:3000', // separate multiple origins by comma
-  scrapActivitiesWithoutUpdateRetentionHours: 72,
   puppeteer: {
     headlessModeOff: true,
     enableStylesOnResultsPage: false,
@@ -23,13 +22,13 @@ export const localConfig: AppConfig = {
       outputFolderPath: 'output'
     }
   },
-  cassandra: {
+/*  cassandra: { TODO: remove all definitions related to cassandra
     keyspace: 'kingboo',
     local: {
       contactPoint: 'localhost',
       localDataCenter: 'datacenter1',
     }
-  },
+  },*/
   mqConsumer: {
     address: mqAddress,
     queueDefinition: {

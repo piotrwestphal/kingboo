@@ -6,7 +6,6 @@ import { getEnvironments } from '../config/environments'
 import { AppConfigService } from '../config/app-config.service'
 import { DataCollectorService } from '../core/abstract/data-collector.service'
 import { AppDataCollectorService } from './app-data-collector.service'
-import { DbModule } from '../db/db.module'
 import { HotelsCollector } from './hotels.collector'
 import { CollectingScenarioConsumer } from './collecting-scenario.consumer'
 import { logger } from '../logger'
@@ -16,7 +15,6 @@ import { StorageModule } from '@kb/storage'
   imports: [
     ConfigModule.register(getEnvironments(), { configClass: AppConfigService, logger }),
     StorageModule.register({ configClass: AppConfigService}),
-    DbModule,
     MqModule,
     ScrapModule,
   ],

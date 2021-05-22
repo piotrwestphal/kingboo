@@ -25,11 +25,12 @@ export class HotelProcessor {
   }
 
   async processMessage(searchId: string, rawHotels: RawHotelDto[]): Promise<void> {
+    logger.debug(`Processing message with searchId [${searchId}]`)
     const rawHotelsById = this.messageProcessor.processMessage(searchId, rawHotels)
-    const rawHotelIds = Array.from(rawHotelsById.keys())
     await this.fileRepository.save(JSON.stringify(Array.from(rawHotelsById.values())), searchId, 'raw-hotels')
+    logger.debug(`Processing completed for message with searchId [${searchId}]`)
 
-    logger.debug(`Processed message with hotel ids`, rawHotelIds)
+    const rawHotelIds = Array.from(rawHotelsById.keys())
     const foundHotels = await this.hotelRepository.findAllBySearchIdAndHotelId(searchId, Array.from(rawHotelsById.keys()))
 
     const hotelsToCreate = rawHotelIds
@@ -38,7 +39,7 @@ export class HotelProcessor {
 
     if (hotelsToCreate.length) {
       const created = await this.hotelRepository.createAll(hotelsToCreate.map(h => this.hotelFactory.createNew(h)))
-      logger.debug(`Hotels were created for search id ${searchId}, hotel ids`, created.map(h => h.hotelId))
+      logger.debug(`Hotels [${created.length}] were created based on data in message with searchId [${searchId}]`)
     }
     const updatedHotelsWithRaw = Array.from(foundHotels.keys()).map(hotelId => {
       const hotel = foundHotels.get(hotelId)
@@ -48,7 +49,7 @@ export class HotelProcessor {
 
     if (updatedHotelsWithRaw.length) {
       await this.hotelRepository.updateAll(updatedHotelsWithRaw)
-      logger.debug(`Hotels were updated for search id ${searchId}, hotel ids`, updatedHotelsWithRaw.map(h => h.hotelId))
+      logger.debug(`Hotels [${updatedHotelsWithRaw.length}] were updated based on data in message with searchId [${searchId}]`)
     }
     this.progressMeasuringService.setProgress(searchId)
   }

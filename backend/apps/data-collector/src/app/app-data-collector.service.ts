@@ -1,8 +1,6 @@
 import { DataCollectorService } from '../core/abstract/data-collector.service'
 import { CollectHotelsScenario } from '../core/interface/collect-hotels-scenario'
 import { Injectable } from '@nestjs/common'
-import { ScrapActivityRepository } from '../core/abstract/scrap-activity.repository'
-import { ScrapActivity } from '../core/model/ScrapActivity'
 import { HotelsCollector } from './hotels.collector'
 import { DataCollectionNotificationSender } from '../core/abstract/data-collection-notification.sender'
 import { DataToProcessSender } from '../core/abstract/data-to-process.sender'
@@ -16,7 +14,6 @@ export class AppDataCollectorService extends DataCollectorService {
     private readonly dataCollectionNotificationSender: DataCollectionNotificationSender,
     private readonly dataToProcessSender: DataToProcessSender,
     private readonly hotelsCollector: HotelsCollector,
-    private readonly scrapActivityRepository: ScrapActivityRepository,
   ) {
     super()
   }
@@ -26,19 +23,15 @@ export class AppDataCollectorService extends DataCollectorService {
                     collectHotelsScenario: CollectHotelsScenario,
                     messageTimestamp: number): Promise<void> {
     try {
-      const nowMs = Date.now()
-      const oldMessage = this.isMessageOld(nowMs, updateFrequencyMinutes, messageTimestamp)
+      const scrapingStartedAt = new Date()
+      const oldMessage = this.isMessageOld(scrapingStartedAt, updateFrequencyMinutes, messageTimestamp)
       if (oldMessage) {
         logger.warn(`Scenario [${searchId}] could not be started due to time the message was sent. The message has expired. ` +
           `Update frequency minutes [${updateFrequencyMinutes}], message sent time [${new Date(messageTimestamp).toISOString()}], ` +
-          `now [${new Date(nowMs).toISOString()}].`)
+          `now [${scrapingStartedAt.toISOString()}].`)
       } else {
-        const scrapActivity = new ScrapActivity(searchId)
-        scrapActivity.start()
-        const saved = await this.scrapActivityRepository.update(searchId, scrapActivity)
         const expectedNumberOfParts = await this.hotelsCollector.collectHotels(searchId, collectHotelsScenario)
-        saved.finish()
-        const { scrapingStartedAt, scrapingFinishedAt } = await this.scrapActivityRepository.update(searchId, saved)
+        const scrapingFinishedAt = new Date()
         this.dataCollectionNotificationSender.notifyAboutHotelsCollectionCompleted(searchId, scrapingStartedAt, scrapingFinishedAt)
         logger.info(`Collecting data finish. Scrap started at [${scrapingStartedAt.toISOString()}], ` +
           `scrap finished at [${scrapingFinishedAt.toISOString()}].`)
@@ -51,8 +44,8 @@ export class AppDataCollectorService extends DataCollectorService {
     }
   }
 
-  private isMessageOld = (now: number,
+  private isMessageOld = (now: Date,
                           updateFrequencyMinutes: number,
                           messageTimestamp: number): boolean =>
-    (messageTimestamp + (updateFrequencyMinutes * TimeHelper.MINUTE_IN_MS)) < now
+    (messageTimestamp + (updateFrequencyMinutes * TimeHelper.MINUTE_IN_MS)) < now.getTime()
 }

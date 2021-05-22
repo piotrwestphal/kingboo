@@ -11,7 +11,6 @@ export const devConfig = (env: NodeJS.ProcessEnv): AppConfig =>
     nodeEnv: env.NODE_ENV as 'dev',
     port: env.PORT ? parseInt(env.PORT, 10) : 8080,
     corsOrigins: env.CORS_ORIGINS,
-    scrapActivitiesWithoutUpdateRetentionHours: 72,
     puppeteer: {
       headlessModeOff: false,
       enableStylesOnResultsPage: false,
@@ -21,13 +20,13 @@ export const devConfig = (env: NodeJS.ProcessEnv): AppConfig =>
         outputFolderPath: 'output'
       }
     },
-    cassandra: {
+/*    cassandra: {
       keyspace: env.ASTRA_DB_KEYSPACE,
       local: {
         contactPoint: env.ASTRA_CONTACT_POINT,
         localDataCenter: 'datacenter1',
       }
-    },
+    },*/
     mqConsumer: {
       address: mqAddress(env),
       queueDefinition: {

@@ -1,52 +1,35 @@
 import { Module } from '@nestjs/common'
 import { AppConfigService } from '../config/app-config.service'
-import { ScrapActivityRepository } from '../core/abstract/scrap-activity.repository'
 import { CassandraScrapActivityRepository } from './cassandra-scrap-activity.repository'
-import { ScrapActivityMapper } from './scrap-activity/scrap-activity.mapper'
 import { CassandraModule, CassandraWrapper } from '@kb/cassandra'
-import { ScrapActivityModelName, ScrapActivityTableName } from './scrap-activity/scrap-activity.const'
-import { ScrapActivityDocument } from './scrap-activity/scrap-activity.document'
 
+// TODO: remove
 @Module({
   imports: [
-    CassandraModule.register({
+    /*CassandraModule.register({
       configClass: AppConfigService,
       mapperOptions: [
-        { model: ScrapActivityModelName, table: ScrapActivityTableName },
-        // { model: RawSearchResultModelName, table: RawSearchResultTableName },
+        { model: RawSearchResultModelName, table: RawSearchResultTableName },
       ]
-    }),
+    }),*/
   ],
   providers: [
-    {
-      provide: ScrapActivityRepository,
+    /*{
+      provide: RawSearchResultRepository,
       useFactory: (
         config: AppConfigService,
         cassandraWrapper: CassandraWrapper,
       ) => {
-        const mapper = new ScrapActivityMapper()
-        const cassandraMapper = cassandraWrapper.get<ScrapActivityDocument>(ScrapActivityModelName)
-        return new CassandraScrapActivityRepository(cassandraMapper, config, mapper)
+        const hotelMapper = new RawHotelMapper()
+        const rawSearchResultMapper = new RawSearchResultMapper()
+        const cassandraMapper = cassandraWrapper.get<RawSearchResultDocument>(RawSearchResultModelName)
+        return new CassandraRawSearchResultRepository(cassandraWrapper.client, cassandraMapper, config, hotelMapper, rawSearchResultMapper)
       },
       inject: [AppConfigService, CassandraWrapper],
-    },
-    // {
-    //   provide: RawSearchResultRepository,
-    //   useFactory: (
-    //     config: AppConfigService,
-    //     cassandraWrapper: CassandraWrapper,
-    //   ) => {
-    //     const hotelMapper = new RawHotelMapper()
-    //     const rawSearchResultMapper = new RawSearchResultMapper()
-    //     const cassandraMapper = cassandraWrapper.get<RawSearchResultDocument>(RawSearchResultModelName)
-    //     return new CassandraRawSearchResultRepository(cassandraWrapper.client, cassandraMapper, config, hotelMapper, rawSearchResultMapper)
-    //   },
-    //   inject: [AppConfigService, CassandraWrapper],
-    // },
+    },*/
   ],
   exports: [
     // RawSearchResultRepository,
-    ScrapActivityRepository,
   ],
 })
 export class DbModule {
