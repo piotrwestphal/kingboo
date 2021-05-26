@@ -28,7 +28,6 @@ export class HotelProcessor {
     logger.debug(`Processing message with searchId [${searchId}]`)
     const rawHotelsById = this.messageProcessor.processMessage(searchId, rawHotels)
     await this.fileRepository.save(JSON.stringify(Array.from(rawHotelsById.values())), searchId, 'raw-hotels')
-    logger.debug(`Processing completed for message with searchId [${searchId}]`)
 
     const rawHotelIds = Array.from(rawHotelsById.keys())
     const foundHotels = await this.hotelRepository.findAllBySearchIdAndHotelId(searchId, Array.from(rawHotelsById.keys()))
@@ -51,6 +50,7 @@ export class HotelProcessor {
       await this.hotelRepository.updateAll(updatedHotelsWithRaw)
       logger.debug(`Hotels [${updatedHotelsWithRaw.length}] were updated based on data in message with searchId [${searchId}]`)
     }
+    logger.debug(`Processing completed for message with searchId [${searchId}]`)
     this.progressMeasuringService.setProgress(searchId)
   }
 
