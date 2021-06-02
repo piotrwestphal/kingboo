@@ -1,8 +1,9 @@
-import { CollectHotelsScenario } from '../../core/interface/collect-hotels-scenario';
-import { CollectHotelsScenarioDto } from '@kb/model';
+import { CollectingScenario } from '../../core/interface/collecting-scenario';
+import { CollectingScenarioDto } from '@kb/model';
 
-export class CollectHotelsScenarioMapper {
+export class CollectingScenarioMapper {
   static fromMessage({
+                       type,
                        resultsLimit,
                        searchPlace,
                        checkInDate,
@@ -11,8 +12,9 @@ export class CollectHotelsScenarioMapper {
                        numberOfAdults,
                        childrenAgeAtCheckout,
                        searchPlaceIdentifier,
-                     }: CollectHotelsScenarioDto): CollectHotelsScenario {
+                     }: CollectingScenarioDto): CollectingScenario {
     return {
+      type,
       resultsLimit,
       searchPlace,
       checkInDate,

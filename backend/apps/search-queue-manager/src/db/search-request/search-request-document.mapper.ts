@@ -4,11 +4,13 @@ import { SaveSearchRequest } from './save-search-request';
 import { SearchRequestType } from '../../core/model/SearchRequestType';
 import { SearchPlaceIdentifier } from '../../core/interface/search-place-identifier'
 import { SearchPlaceIdentifierDocument } from './search-place-identifier.document'
+import { CollectingScenarioType } from '@kb/model'
 
 export class SearchRequestDocumentMapper {
   toSearchRequest({
                     searchId,
                     type,
+                    scenarioType,
                     updateFrequencyMinutes,
                     resultsLimit,
                     searchPlace,
@@ -26,6 +28,8 @@ export class SearchRequestDocumentMapper {
     return SearchRequest.create({
       searchId,
       type: type as SearchRequestType,
+      // TODO: until every search request on prod has `scenarioType` value
+      scenarioType: scenarioType as CollectingScenarioType ?? CollectingScenarioType.COLLECT_HOTELS,
       updateFrequencyMinutes,
       resultsLimit,
       searchPlace,
@@ -64,6 +68,7 @@ export class SearchRequestDocumentMapper {
   prepareForSave({
                    searchId,
                    type,
+                   scenarioType,
                    updateFrequencyMinutes,
                    resultsLimit,
                    searchPlace,
@@ -81,6 +86,7 @@ export class SearchRequestDocumentMapper {
     return {
       searchId,
       type,
+      scenarioType,
       updateFrequencyMinutes,
       resultsLimit,
       searchPlace,

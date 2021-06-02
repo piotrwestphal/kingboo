@@ -1,9 +1,9 @@
 import { SaveSearchPlaceIdentifier } from './save-search-place-identifier'
 
 export interface SaveSearchRequest {
-
   readonly searchId: string
   readonly type: string
+  readonly scenarioType: string
   readonly updateFrequencyMinutes: number
   readonly resultsLimit: number
 

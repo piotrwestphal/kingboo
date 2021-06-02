@@ -5,7 +5,34 @@ import * as Joi from '@hapi/joi';
 import { SchemaMap } from '@hapi/joi';
 import { NotAcceptableException } from '@nestjs/common';
 import { SearchRequestType } from '../../core/model/SearchRequestType';
-import { createSearchRequestValidationSchemaMap } from './validation.schema';
+import {
+  collectingHotelsScenarioRequestValidationSchemaMap,
+  collectingPlaceScenarioRequestValidationSchemaMap
+} from './validation-schemas';
+import { SearchIdentifierComponents } from '../../core/interface/search-identifier-components'
+import { CollectingScenarioType } from '@kb/model'
+
+const withCollectHotelsScenarioType = (type: SearchRequestType, createSearchRequest: CreateSearchRequest): SearchIdentifierComponents => ({
+  ...createSearchRequest,
+  type,
+  resultsLimit: createSearchRequest.resultsLimit,
+})
+
+const withCollectPlaceScenarioType = (type: SearchRequestType, createSearchRequest: CreateSearchRequest): SearchIdentifierComponents => ({
+  ...createSearchRequest,
+  type,
+  resultsLimit: 1,
+})
+
+type ScenarioFactory = [
+  validation: SchemaMap<CreateSearchRequest>,
+  mapper: (type: SearchRequestType, createSearchRequest: CreateSearchRequest) => SearchIdentifierComponents,
+]
+
+export const scenarioFactories: { [key in CollectingScenarioType]: ScenarioFactory } = {
+  [CollectingScenarioType.COLLECT_HOTELS]: [collectingHotelsScenarioRequestValidationSchemaMap, withCollectHotelsScenarioType],
+  [CollectingScenarioType.COLLECT_PLACE]: [collectingPlaceScenarioRequestValidationSchemaMap, withCollectPlaceScenarioType]
+}
 
 export class SearchRequestFactory {
 
@@ -14,11 +41,15 @@ export class SearchRequestFactory {
   ) {
   }
 
-  createNew(type: SearchRequestType, createSearchRequest: CreateSearchRequest): SearchRequest {
-    const valid = this.validate(createSearchRequestValidationSchemaMap, createSearchRequest);
+  createNew(type: SearchRequestType,
+            createSearchRequest: CreateSearchRequest): SearchRequest {
+    const scenarioType = createSearchRequest.scenarioType
+    const [validationSchema, mapper] = scenarioFactories[scenarioType]
+    const valid = this.validate(validationSchema, createSearchRequest);
+    const searchIdentifierComponents = mapper(type, valid)
     return SearchRequest.create({
-      ...valid,
-      searchId: this.searchIdentifierBuilder.createIdentifier({ type, ...createSearchRequest }),
+      ...searchIdentifierComponents,
+      searchId: this.searchIdentifierBuilder.createIdentifier(searchIdentifierComponents),
       type,
       checkInDate: createSearchRequest.checkInDate,
       checkOutDate: createSearchRequest.checkOutDate,

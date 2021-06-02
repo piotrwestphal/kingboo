@@ -1,8 +1,10 @@
 import * as Joi from '@hapi/joi';
 import { SchemaMap } from '@hapi/joi';
 import { CreateCyclicSearch } from './create-cyclic-search';
+import { CollectingScenarioType } from '@kb/model'
 
 export const cyclicSearchValidationSchemaMap: SchemaMap<CreateCyclicSearch> = {
+  scenarioType: Joi.string().valid(...Object.values(CollectingScenarioType)),
   updateFrequencyMinutes: Joi.number().required(),
   resultsLimit: Joi.number().required(),
   searchPlace: Joi.string().required(),

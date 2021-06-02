@@ -7,9 +7,9 @@ export const SearchRequestSchemaKey = 'searchRequest';
 export const SearchRequestSchema = new Schema<SearchRequestDocument>({
     searchId: String,
     type: String,
+    scenarioType: String,
     updateFrequencyMinutes: Number,
     resultsLimit: Number,
-    // Scenario parameters
     searchPlace: String,
     checkInDate: Date,
     checkOutDate: Date,

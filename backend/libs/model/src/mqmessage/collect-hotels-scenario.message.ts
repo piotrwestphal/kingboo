@@ -1,7 +1,7 @@
-import { MqMessage } from '@kb/model/mqmessage/mq-message';
-import { CollectHotelsScenarioDto } from '@kb/model/collect-hotels-scenario.dto';
+import { MqMessage } from '@kb/model/mqmessage/mq-message'
+import { CollectingScenarioDto } from '@kb/model'
 
 export interface CollectHotelsScenarioMessage extends MqMessage {
   readonly updateFrequencyMinutes: number,
-  readonly scenario: CollectHotelsScenarioDto;
+  readonly scenario: CollectingScenarioDto
 }

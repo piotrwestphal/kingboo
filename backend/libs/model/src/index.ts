@@ -5,7 +5,8 @@ export { HotelsSummaryDto } from './mqmessage/data-to-process/hotels-summary.dto
 export {
   SearchPlaceCollectionCompletedDto
 } from './mqmessage/data-collection-notification/search-place-collection-completed.dto'
-export { CollectHotelsScenarioDto } from './collect-hotels-scenario.dto'
+export { CollectingScenarioDto } from './collecting-scenario.dto'
+export { CollectingScenarioType } from './collecting-scenario-type'
 export { RawHotelDto } from './raw-hotel/raw-hotel.dto'
 export { SimpleHotelDto } from './hotel/simple-hotel.dto'
 export { TopHotelsDto } from './hotel/top-hotels.dto'
