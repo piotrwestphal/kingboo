@@ -2,7 +2,7 @@ import { CollectingScenario } from '../../core/interface/collecting-scenario';
 import { CollectingScenarioDto } from '@kb/model';
 
 export class CollectingScenarioMapper {
-  static fromMessage({
+  fromMessage({
                        type,
                        resultsLimit,
                        searchPlace,
@@ -11,8 +11,7 @@ export class CollectingScenarioMapper {
                        numberOfRooms,
                        numberOfAdults,
                        childrenAgeAtCheckout,
-                       searchPlaceIdentifier,
-                     }: CollectingScenarioDto): CollectingScenario {
+                     }: Omit<CollectingScenarioDto, 'searchPlaceIdentifier'>): CollectingScenario {
     return {
       type,
       resultsLimit,
@@ -22,7 +21,6 @@ export class CollectingScenarioMapper {
       numberOfRooms,
       numberOfAdults,
       childrenAgeAtCheckout,
-      searchPlaceIdentifier,
     };
   }
 }

@@ -22,7 +22,7 @@ export class RawHotelMapper {
                                rooms,
                                debug,
                              }: ScrapedRawHotel,
-                             idx: number,
+                             orderIndex: number,
                              collectedAt: string): RawHotel {
     const hotelId = this.assignHotelId(name, coords)
     return new RawHotel(
@@ -31,7 +31,7 @@ export class RawHotelMapper {
       price,
       tax,
       distanceFromCenter,
-      idx,
+      orderIndex,
       districtName,
       coords,
       hotelLink,

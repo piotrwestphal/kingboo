@@ -7,7 +7,7 @@ export class ResultPage {
   constructor(private readonly browserService: BrowserService) {
   }
 
-  public async handleSecurityCheck(): Promise<void> {
+  async handleSecurityCheck(): Promise<void> {
     try {
       await this.browserService.waitForVisible(ResultPageElement.SECURITY_CHECK_OVERLAY, 3000, false);
       await this.browserService.click(ResultPageElement.SECURITY_CHECK_CONFIRM_CHECKBOX);
@@ -17,7 +17,7 @@ export class ResultPage {
     }
   }
 
-  public async extractCurrentSearchPlaceNameFromHeader(): Promise<{ full: string, short: string } | null> {
+  async extractCurrentSearchPlaceNameFromHeader(): Promise<{ full: string, short: string } | null> {
     const textFromHeader = await this.browserService.getText(ResultPageElement.TITLE);
     if (textFromHeader) {
       const splitTextFromHeader = textFromHeader.split(':');
@@ -32,7 +32,7 @@ export class ResultPage {
     };
   }
 
-  public async clickNextPageButtonIfAvailable(): Promise<boolean> {
+  async clickNextPageButtonIfAvailable(): Promise<boolean> {
     const nextPageButton = await this.browserService.$(ResultPageElement.NEXT_PAGE_BUTTON);
     if (nextPageButton) {
       await this.browserService.click(ResultPageElement.NEXT_PAGE_BUTTON);

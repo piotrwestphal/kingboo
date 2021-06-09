@@ -12,7 +12,7 @@ export class ProgressMeasuringService {
   ) {
   }
 
-  public async setProgress(searchId: string): Promise<void> {
+  async setProgress(searchId: string): Promise<void> {
     const created = await this.processingProgressRepository.create({
       searchId,
       type: ProcessingProgressType.PART
@@ -29,7 +29,7 @@ export class ProgressMeasuringService {
     }
   }
 
-  public async summarizeProgress(searchId: string, data: HotelsSummaryData): Promise<void> {
+  async summarizeProgress(searchId: string, data: HotelsSummaryData): Promise<void> {
     const created = await this.processingProgressRepository.create({
       searchId,
       type: ProcessingProgressType.SUMMARY,

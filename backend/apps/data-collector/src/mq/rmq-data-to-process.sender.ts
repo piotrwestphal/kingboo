@@ -1,9 +1,8 @@
 import { DataToProcessSender } from '../core/abstract/data-to-process.sender';
 import { DataToProcessMessagePattern } from '@kb/rabbit/message-pattern/DataToProcessMessagePattern';
 import { ClientProxy } from '@nestjs/microservices';
-import { RawHotel } from '../core/model/RawHotel';
-import { RawHotelMapper } from '../app/mapper/raw-hotel.mapper';
-import { HotelsPartDto, HotelsSummaryDto, MqMessage } from '@kb/model';
+import { HotelsPartDto, HotelsSummaryDto, MqMessage, RawHotelDto } from '@kb/model';
+import { PlaceSummaryDto } from '@kb/model/mqmessage/data-to-process/place-summary.dto'
 
 export class RmqDataToProcessSender extends DataToProcessSender {
 
@@ -14,12 +13,11 @@ export class RmqDataToProcessSender extends DataToProcessSender {
   }
 
   sendHotelsPart(searchId: string,
-                 rawHotels: RawHotel[]): void {
-    const rawHotelsDto = rawHotels.map(h => RawHotelMapper.toDto(h));
+                 rawHotelDtos: RawHotelDto[]): void {
     this.client.emit<void, MqMessage<HotelsPartDto>>(DataToProcessMessagePattern.HOTELS_PART, {
       searchId,
       timestamp: Date.now(),
-      data: { rawHotels: rawHotelsDto }
+      data: { rawHotels: rawHotelDtos }
     });
   }
 
@@ -32,6 +30,21 @@ export class RmqDataToProcessSender extends DataToProcessSender {
       timestamp: Date.now(),
       data: {
         expectedNumberOfParts,
+        collectingStartedAt: collectingStartedAt.toISOString(),
+        collectingFinishedAt: collectingFinishedAt.toISOString()
+      }
+    });
+  }
+
+  sendPlaceSummary(searchId: string,
+                   rawHotelDto: RawHotelDto,
+                   collectingStartedAt: Date,
+                   collectingFinishedAt: Date): void {
+    this.client.emit<void, MqMessage<PlaceSummaryDto>>(DataToProcessMessagePattern.PLACE_SUMMARY, {
+      searchId,
+      timestamp: Date.now(),
+      data: {
+        rawHotel: rawHotelDto,
         collectingStartedAt: collectingStartedAt.toISOString(),
         collectingFinishedAt: collectingFinishedAt.toISOString()
       }

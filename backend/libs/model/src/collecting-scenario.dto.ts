@@ -23,5 +23,5 @@ export interface CollectingScenarioDto {
     readonly destType: string
     readonly placeIdLat: string
     readonly placeIdLon: string
-  }
+  } | null
 }

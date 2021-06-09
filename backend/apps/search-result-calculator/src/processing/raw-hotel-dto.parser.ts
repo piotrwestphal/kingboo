@@ -5,7 +5,7 @@ import { Room } from '../core/interface/room';
 
 export class RawHotelDtoParser {
 
-  public parseRate(rate: string): number | null {
+  parseRate(rate: string): number | null {
     if (!rate) {
       return null;
     }
@@ -17,12 +17,12 @@ export class RawHotelDtoParser {
     return parseInt(rateWithoutDots, 10) || null;
   }
 
-  public parseNumberOfReviews = (numberOfReviews: string): number | null => parseInt(this.removeComma(numberOfReviews), 0) || null;
+  parseNumberOfReviews = (numberOfReviews: string): number | null => parseInt(this.removeComma(numberOfReviews), 0) || null;
 
   // "Eixample,Barcelona – Show on map"
   // "Upper West Side,New York City – Show on map"
   // "Śródmieście,Gdynia – Show on map"
-  public parseDistrictName(districtName: string): string | null {
+  parseDistrictName(districtName: string): string | null {
     if (!districtName) {
       return null;
     }
@@ -37,7 +37,7 @@ export class RawHotelDtoParser {
   // ORDER: lon, lat
   // "19.937436,50.059889"
   // "121.707012653278,31.1850818301733"
-  public parseCoords(coords: string): Coords | null {
+  parseCoords(coords: string): Coords | null {
     if (!coords) {
       return null;
     }
@@ -48,13 +48,13 @@ export class RawHotelDtoParser {
     };
   }
 
-  public parseBonuses(bonuses: string[]): Bonuses | null {
+  parseBonuses(bonuses: string[]): Bonuses | null {
     return bonuses?.length
       ? this.mapBonuses(bonuses)
       : null;
   }
 
-  public parseRooms(rooms: RawRoomDto[]): Room[] | null {
+  parseRooms(rooms: RawRoomDto[]): Room[] | null {
     return rooms?.length
       ? rooms.map(bonus => this.formatRoom(bonus))
       : null;
