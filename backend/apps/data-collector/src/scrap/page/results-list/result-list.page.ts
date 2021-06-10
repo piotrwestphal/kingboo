@@ -99,10 +99,15 @@ export class ResultListPage {
             const price = getPrice(searchResultContainer)
             const tax = getTextFromElement(searchResultContainer, 'prd-taxes-and-fees-under-price')
 
-            // Bonuses
+            // bonuses & rooms
             const groupRoomsContainer = getFirstElementByClass(searchResultContainer, 'sr_gr sr-group_recommendation')
             const hotelBonuses: string[] = []
             const rooms: ScrapedRawRoom[] = []
+
+            const room = groupRoomsContainer
+              ? null
+              : getTextFromHtmlElementIfDefined(searchResultContainer.querySelector('div.roomNameInner > div.room_link strong'))
+
             if (groupRoomsContainer) {
               // in case of the search request different than the standard search criteria
               const roomsContainers = searchResultContainer.getElementsByClassName('roomrow entire_row_clickable')
@@ -111,12 +116,12 @@ export class ResultListPage {
                 const bonusesElements = containerWithBonuses.getElementsByTagName('sup')
                 const bonuses = Array.from(bonusesElements).map(b => b.innerText)
                 const shortDescription = getTextFromElement(roomContainer, 'room_link')
-                const longDescription = getTextFromElement(roomContainer, 'c-unit-configuration')
+                const rawLongDescription = getTextFromElement(roomContainer, 'c-unit-configuration')
                 const personCount = getTextFromElement(roomContainer, 'maxPersonsLeft')
                 const beds = getTextFromElement(roomContainer, 'c-beds-configuration')
                 rooms.push({
                   shortDescription,
-                  longDescription,
+                  longDescription: rawLongDescription !== '' ? rawLongDescription : null,
                   personCount,
                   beds,
                   bonuses,
@@ -142,6 +147,7 @@ export class ResultListPage {
               districtName,
               coords,
               hotelLink,
+              room,
               rate,
               secondaryRateType,
               secondaryRate,

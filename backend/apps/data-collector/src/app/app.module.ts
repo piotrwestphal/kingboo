@@ -14,6 +14,7 @@ import { CollectingScenarioType } from '@kb/model'
 import { CollectingScenarioProcessor } from './collecting-scenario.processor'
 import { CollectingScenarioExecutor } from './collecting-scenario.executor'
 import { CollectingScenarioMapper } from './mapper/collecting-scenario.mapper'
+import { PlaceCollector } from './place.collector'
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { CollectingScenarioMapper } from './mapper/collecting-scenario.mapper'
     CollectHotelsScenario,
     CollectPlaceScenario,
     HotelsCollector,
+    PlaceCollector,
     {
       provide: CollectingScenarioProcessor,
       useFactory: (
