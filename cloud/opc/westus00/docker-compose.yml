@@ -6,5 +6,5 @@ services:
   search-result-calculator:
     image: piotrwest/kb-search-result-calculator:latest
 
-  top-hotels-aggregator:
-    image: piotrwest/kb-top-hotels-aggregator:latest
+  search-result-aggregator:
+    image: piotrwest/kb-search-result-aggregator:latest

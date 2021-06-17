@@ -5,4 +5,4 @@ RUN npm ci --silent
 COPY . .
 RUN npm run build:tha
 EXPOSE 8080
-CMD ["node", "dist/apps/top-hotels-aggregator/main"]
+CMD ["node", "dist/apps/search-result-aggregator/main"]

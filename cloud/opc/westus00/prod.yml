@@ -18,7 +18,7 @@ services:
     volumes:
       - ./../../../compose-output:/usr/src/app/output
 
-  top-hotels-aggregator:
+  search-result-aggregator:
     env_file:
       - westus00.env
       - ./../opc.env
