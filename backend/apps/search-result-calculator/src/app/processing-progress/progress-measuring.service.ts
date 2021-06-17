@@ -3,7 +3,9 @@ import { ProcessingProgressRepository } from '../../core/abstract/processing-pro
 import { ProcessingProgressType } from '../../core/processing-actvity.type'
 import { logger } from '../../logger'
 import { HotelsSummaryData } from '../../core/interface/hotels-summary-data'
+import { Injectable } from '@nestjs/common'
 
+@Injectable()
 export class ProgressMeasuringService {
 
   constructor(

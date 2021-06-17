@@ -6,6 +6,7 @@ import { SortedByOption } from '../core/interface/sorted-by-option'
 import { logger } from '../logger'
 import { UserNotificationSender } from '../core/abstract/user-notification.sender'
 import { TopHotelsDto } from '@kb/model'
+import { PlaceRepository } from '../core/abstract/place.repository'
 
 const sortBy = {
   bestPriceRate: [
@@ -25,31 +26,46 @@ const sortBy = {
 }
 
 @Injectable()
-export class TopHotelsService {
+export class HotelService {
   constructor(
     private readonly config: AppConfigService,
     private readonly hotelRepository: HotelRepository,
+    private readonly placeRepository: PlaceRepository,
     private readonly userNotificationSender: UserNotificationSender,
     private readonly topHotelsRepository: TopHotelsRepository,
   ) {
   }
 
-  async updateTopHotels(searchId: string, collectingStartedAt: string, collectingFinishedAt: string): Promise<void> {
+  async updateHotel(searchId: string, collectingStartedAt: string, collectingFinishedAt: string): Promise<void> {
     try {
-      const topHotels = await this.getTopHotels(searchId, collectingStartedAt, collectingFinishedAt)
-      await this.topHotelsRepository.create(searchId, collectingStartedAt, collectingFinishedAt, topHotels)
-      this.userNotificationSender.notifyAboutTopHotelsUpdate(searchId)
+      const simpleHotelDto = await this.hotelRepository.findHotel(searchId, collectingStartedAt, collectingFinishedAt)
+      await this.placeRepository.create(searchId, collectingStartedAt, collectingFinishedAt, simpleHotelDto)
+      this.userNotificationSender.notifyAboutPlaceUpdate(searchId)
     } catch (err) {
-      logger.error(`Error when updating [top-hotels] searchId [${searchId}] ` +
+      logger.error(`Error when updating [${this.placeRepository.COLLECTION_NAME}] searchId [${searchId}] ` +
         `collectingStartedAt [${collectingStartedAt}] collectingFinishedAt [${collectingFinishedAt}]`)
     }
   }
 
-  async deleteTopHotels(searchId: string): Promise<void> {
-    return this.topHotelsRepository.delete(searchId)
+  async updateTopHotels(searchId: string, collectingStartedAt: string, collectingFinishedAt: string): Promise<void> {
+    try {
+      const topHotels = await this.findTopHotels(searchId, collectingStartedAt, collectingFinishedAt)
+      await this.topHotelsRepository.create(searchId, collectingStartedAt, collectingFinishedAt, topHotels)
+      this.userNotificationSender.notifyAboutTopHotelsUpdate(searchId)
+    } catch (err) {
+      logger.error(`Error when updating [${this.topHotelsRepository.COLLECTION_NAME}] searchId [${searchId}] ` +
+        `collectingStartedAt [${collectingStartedAt}] collectingFinishedAt [${collectingFinishedAt}]`)
+    }
   }
 
-  private async getTopHotels(searchId: string, collectingStartedAt: string, collectingFinishedAt: string): Promise<TopHotelsDto> {
+  async deleteHotels(searchId: string): Promise<void> {
+    await Promise.all([
+      this.topHotelsRepository.delete(searchId),
+      this.placeRepository.delete(searchId),
+    ])
+  }
+
+  private async findTopHotels(searchId: string, collectingStartedAt: string, collectingFinishedAt: string): Promise<TopHotelsDto> {
     const limit = this.config.topHotelsSelectLimit
     const pendingResults = [
       sortBy.bestPriceRate,

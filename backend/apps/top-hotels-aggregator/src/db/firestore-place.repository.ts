@@ -1,15 +1,15 @@
-import { TopHotelsDocumentMapper } from './top-hotels/top-hotels-document.mapper'
-import { TopHotelsRepository } from '../core/abstract/top-hotels.repository'
 import { FirestoreClient } from '@kb/firestore'
+import { PlaceDocumentMapper } from './place/place-document.mapper'
+import { PlaceRepository } from '../core/abstract/place.repository'
+import { SimpleHotelDto } from '@kb/model'
 import { logger } from '../logger'
 import { TopHotelsDocument } from './top-hotels/top-hotels.document'
-import { TopHotelsDto } from '@kb/model'
 
-export class FirestoreTopHotelsRepository extends TopHotelsRepository {
+export class FirestorePlaceRepository extends PlaceRepository {
 
   constructor(
     private readonly firestoreClient: FirestoreClient,
-    private readonly mapper: TopHotelsDocumentMapper,
+    private readonly mapper: PlaceDocumentMapper,
   ) {
     super()
   }
@@ -17,22 +17,16 @@ export class FirestoreTopHotelsRepository extends TopHotelsRepository {
   async create(searchId: string,
                collectingStartedAt: string,
                collectingFinishedAt: string,
-               topHotels: TopHotelsDto): Promise<void> {
-    const topHotelsDoc = this.mapper.toDoc(searchId, collectingStartedAt, collectingFinishedAt, topHotels)
+               hotel: SimpleHotelDto): Promise<void> {
+    const placeDoc = this.mapper.toDoc(searchId, collectingStartedAt, collectingFinishedAt, hotel)
     try {
-      const savedTopHotels = await this.firestoreClient.addToCollection(this.COLLECTION_NAME, topHotelsDoc)
-      const { docId, bestLocation, bestPriceRate, bestRate, cheapest } = savedTopHotels.data()
+      const savedPlace = await this.firestoreClient.addToCollection(this.COLLECTION_NAME, placeDoc)
+      const { docId } = savedPlace.data()
       logger.info(`Created [${this.COLLECTION_NAME}] with doc id [${docId}]`)
       logger.debug(`Details of created [${this.COLLECTION_NAME}]`, {
         searchId,
         collectingStartedAt,
         collectingFinishedAt,
-        topHotelsCount: {
-          cheapest: cheapest.length,
-          bestPriceRate: bestPriceRate.length,
-          bestRate: bestRate.length,
-          bestLocation: bestLocation.length,
-        },
       })
     } catch (err) {
       logger.error(`Error when adding [${this.COLLECTION_NAME}] with searchId [${searchId}] to collection`, err)

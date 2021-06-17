@@ -15,4 +15,9 @@ export class RmqUserNotificationSender extends UserNotificationSender {
     this.client.emit<void, MqMessage>(UserNotificationsMessagePattern.TOP_HOTELS_UPDATED,
       { searchId, timestamp: Date.now() })
   }
+
+  notifyAboutPlaceUpdate(searchId: string): void {
+    this.client.emit<void, MqMessage>(UserNotificationsMessagePattern.PLACE_UPDATED,
+      { searchId, timestamp: Date.now() })
+  }
 }

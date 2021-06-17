@@ -92,10 +92,7 @@ describe('Data integration tests', () => {
     const mockFilePath = await fileRepository.findFilePath(mockSearchId, 'raw-search-result')
     const data = await fileRepository.get(mockFilePath)
 
-    const {
-      hotels,
-      searchPlaceIdentifier,
-    } = JSON.parse(data) as RawSearchResult
+    const { hotels, searchPlaceIdentifier } = JSON.parse(data) as RawSearchResult
 
     notEmpty(searchPlaceIdentifier)
     expect(searchPlaceIdentifier.destination).toBe('New York, New York State, United States')
@@ -147,10 +144,7 @@ describe('Data integration tests', () => {
     const mockFilePath = await fileRepository.findFilePath(mockSearchId, 'raw-search-result')
     const data = await fileRepository.get(mockFilePath)
 
-    const {
-      hotels,
-      searchPlaceIdentifier,
-    } = JSON.parse(data) as RawSearchResult
+    const { hotels, searchPlaceIdentifier } = JSON.parse(data) as RawSearchResult
 
     notEmpty(searchPlaceIdentifier)
     expect(searchPlaceIdentifier.destination).toBe('Berlin, Berlin Federal State, Germany')
@@ -202,10 +196,7 @@ describe('Data integration tests', () => {
     const mockFilePath = await fileRepository.findFilePath(mockSearchId, 'raw-search-result')
     const data = await fileRepository.get(mockFilePath)
 
-    const {
-      hotels,
-      searchPlaceIdentifier,
-    } = JSON.parse(data) as RawSearchResult
+    const { hotels, searchPlaceIdentifier } = JSON.parse(data) as RawSearchResult
 
     notEmpty(searchPlaceIdentifier)
     expect(searchPlaceIdentifier.destination).toBe('Maciejewka, Zahoczewie, Poland')
@@ -264,10 +255,7 @@ describe('Data integration tests', () => {
     const mockFilePath = await fileRepository.findFilePath(mockSearchId, 'raw-search-result')
     const data = await fileRepository.get(mockFilePath)
 
-    const {
-      hotels,
-      searchPlaceIdentifier,
-    } = JSON.parse(data) as RawSearchResult
+    const { hotels, searchPlaceIdentifier } = JSON.parse(data) as RawSearchResult
 
     notEmpty(searchPlaceIdentifier)
     expect(searchPlaceIdentifier.destination).toBe('PURO Warszawa Centrum, Warsaw, Masovia, Poland')

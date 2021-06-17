@@ -22,4 +22,17 @@ export class RmqDataUpdateSender extends DataUpdateSender {
       }
     })
   }
+
+  notifyAboutPlaceProcessingFinished(searchId: string,
+                                     collectingStartedAt: string,
+                                     collectingFinishedAt: string): void {
+    this.client.emit<void, MqMessage<CollectingTimesDto>>(DataUpdatesMessagePattern.PLACE_PROCESSING_COMPLETED, {
+      searchId,
+      timestamp: Date.now(),
+      data: {
+        collectingStartedAt,
+        collectingFinishedAt,
+      }
+    })
+  }
 }

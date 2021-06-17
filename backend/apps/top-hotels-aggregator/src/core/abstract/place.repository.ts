@@ -1,13 +1,13 @@
-import { TopHotelsDto } from '@kb/model'
+import { SimpleHotelDto } from '@kb/model'
 
-export abstract class TopHotelsRepository {
+export abstract class PlaceRepository {
 
-  COLLECTION_NAME = 'top-hotels'
+  COLLECTION_NAME = 'place'
 
   abstract create(searchId: string,
                   collectingStartedAt: string,
                   collectingFinishedAt: string,
-                  topHotels: TopHotelsDto): Promise<void>
+                  hotel: SimpleHotelDto): Promise<void>
 
   abstract delete(searchId: string): Promise<void>
 }

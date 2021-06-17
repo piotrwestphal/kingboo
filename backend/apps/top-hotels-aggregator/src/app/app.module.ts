@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common'
 import { DataUpdatesConsumer } from './data-updates.consumer'
-import { TopHotelsService } from './top-hotels.service'
+import { HotelService } from './hotel.service'
 import { AppConfigService } from '../config/app-config.service'
 import { ConfigModule } from '@kb/config'
 import { getEnvironments } from '../config/environments'
@@ -16,7 +16,7 @@ import { MqModule } from '../mq/mq.module'
   ],
   controllers: [DataUpdatesConsumer],
   providers: [
-    TopHotelsService,
+    HotelService,
   ],
 })
 export class AppModule {

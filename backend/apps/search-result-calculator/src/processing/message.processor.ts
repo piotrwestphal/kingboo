@@ -9,18 +9,11 @@ export class MessageProcessor {
   constructor(
     private readonly distanceParser: DistanceParser,
     private readonly priceParser: PriceParser,
-    private readonly rawSearchResultParser: RawHotelDtoParser,
+    private readonly rawHotelDtoParser: RawHotelDtoParser,
   ) {
   }
 
-  processMessage(searchId: string, rawHotelsDto: RawHotelDto[]): Map<string, RawHotel> {
-    return rawHotelsDto.reduce((map: Map<string, RawHotel>, dto) => {
-      const rawHotel = this.fromDto(searchId, dto);
-      return map.set(rawHotel.hotelId, rawHotel);
-    }, new Map<string, RawHotel>());
-  }
-
-  private fromDto(searchId: string, {
+  process(searchId: string, {
     hotelId,
     name,
     price,
@@ -47,17 +40,17 @@ export class MessageProcessor {
       price: this.priceParser.parse(price, tax),
       distanceFromCenterMeters: this.distanceParser.parseDistance(distanceFromCenter),
       distanceFromCenterOrderIndex,
-      districtName: this.rawSearchResultParser.parseDistrictName(districtName),
-      coords: this.rawSearchResultParser.parseCoords(coords),
+      districtName: this.rawHotelDtoParser.parseDistrictName(districtName),
+      coords: this.rawHotelDtoParser.parseCoords(coords),
       hotelLink,
-      rate: this.rawSearchResultParser.parseRate(rate),
-      secondaryRate: this.rawSearchResultParser.parseRate(secondaryRate),
+      rate: this.rawHotelDtoParser.parseRate(rate),
+      secondaryRate: this.rawHotelDtoParser.parseRate(secondaryRate),
       secondaryRateType: secondaryRateType ? secondaryRateType.trim() : null,
-      numberOfReviews: this.rawSearchResultParser.parseNumberOfReviews(numberOfReviews),
+      numberOfReviews: this.rawHotelDtoParser.parseNumberOfReviews(numberOfReviews),
       starRating,
       newlyAdded: !!newlyAdded,
-      bonuses: this.rawSearchResultParser.parseBonuses(bonuses),
-      rooms: this.rawSearchResultParser.parseRooms(rooms),
+      bonuses: this.rawHotelDtoParser.parseBonuses(bonuses),
+      rooms: this.rawHotelDtoParser.parseRooms(rooms),
       collectedAt,
     };
   }

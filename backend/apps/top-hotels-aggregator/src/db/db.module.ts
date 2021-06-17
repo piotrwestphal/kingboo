@@ -12,6 +12,9 @@ import { HotelSchema, HotelSchemaKey } from './hotel/hotel.schema'
 import { TopHotelsRepository } from '../core/abstract/top-hotels.repository'
 import { FirestoreTopHotelsRepository } from './firestore-top-hotels.repository'
 import { TopHotelsDocumentMapper } from './top-hotels/top-hotels-document.mapper'
+import { PlaceRepository } from '../core/abstract/place.repository'
+import { FirestorePlaceRepository } from './firestore-place.repository'
+import { PlaceDocumentMapper } from './place/place-document.mapper'
 
 @Module({
   imports: [
@@ -37,9 +40,18 @@ import { TopHotelsDocumentMapper } from './top-hotels/top-hotels-document.mapper
       },
       inject: [FirestoreClient],
     },
+    {
+      provide: PlaceRepository,
+      useFactory: (firestoreClient: FirestoreClient) => {
+        const mapper = new PlaceDocumentMapper()
+        return new FirestorePlaceRepository(firestoreClient, mapper)
+      },
+      inject: [FirestoreClient],
+    },
   ],
   exports: [
     HotelRepository,
+    PlaceRepository,
     TopHotelsRepository,
   ],
 })

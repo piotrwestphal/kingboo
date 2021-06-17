@@ -2,6 +2,7 @@ export { MqMessage } from './mqmessage/mq-message'
 export { CollectHotelsScenarioMessage } from './mqmessage/collect-hotels-scenario.message'
 export { HotelsPartDto } from './mqmessage/data-to-process/hotels-part.dto'
 export { HotelsSummaryDto } from './mqmessage/data-to-process/hotels-summary.dto'
+export { PlaceSummaryDto } from './mqmessage/data-to-process/place-summary.dto'
 export {
   SearchPlaceCollectionCompletedDto
 } from './mqmessage/data-collection-notification/search-place-collection-completed.dto'

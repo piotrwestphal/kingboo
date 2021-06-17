@@ -35,6 +35,19 @@ export class MongoHotelRepository extends HotelRepository {
     super()
   }
 
+  async findHotel(searchId: string,
+                  collectingStartedAt: string,
+                  collectingFinishedAt: string | null): Promise<SimpleHotelDto> {
+    const simpleHotel = await this.model.findOne({
+      searchId,
+      lastCollectedAt: dateRangeQuery(collectingStartedAt, collectingFinishedAt)
+    }).select({ ...selectSimpleHotel }) // for better performance
+      .exec() as SimpleHotelDocument
+    return simpleHotel
+      ? this.mapper.fromDoc(simpleHotel)
+      : null
+  }
+
   async findTopHotels(searchId: string,
                       collectingStartedAt: string,
                       collectingFinishedAt: string | null,

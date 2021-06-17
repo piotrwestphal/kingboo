@@ -2,7 +2,7 @@ import { DataToProcessSender } from '../core/abstract/data-to-process.sender';
 import { DataToProcessMessagePattern } from '@kb/rabbit/message-pattern/DataToProcessMessagePattern';
 import { ClientProxy } from '@nestjs/microservices';
 import { HotelsPartDto, HotelsSummaryDto, MqMessage, RawHotelDto } from '@kb/model';
-import { PlaceSummaryDto } from '@kb/model/mqmessage/data-to-process/place-summary.dto'
+import { PlaceSummaryDto } from '@kb/model'
 
 export class RmqDataToProcessSender extends DataToProcessSender {
 
@@ -44,7 +44,7 @@ export class RmqDataToProcessSender extends DataToProcessSender {
       searchId,
       timestamp: Date.now(),
       data: {
-        rawHotel: rawHotelDto,
+        rawHotelDto,
         collectingStartedAt: collectingStartedAt.toISOString(),
         collectingFinishedAt: collectingFinishedAt.toISOString()
       }
