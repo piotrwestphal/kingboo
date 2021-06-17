@@ -17,6 +17,7 @@ export class HotelUpdater {
                        distanceFromCenterMeters,
                        distanceFromCenterOrderIndex,
                        hotelLink,
+                       room,
                        rate,
                        secondaryRate,
                        secondaryRateType,

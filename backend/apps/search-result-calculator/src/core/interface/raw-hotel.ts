@@ -12,6 +12,7 @@ export interface RawHotel {
   readonly districtName: string
   readonly coords: Coords
   readonly hotelLink: string
+  readonly room: string | null
   readonly rate: number | null
   readonly secondaryRate: number | null
   readonly secondaryRateType: string | null
