@@ -9,7 +9,9 @@ import { FileRepository } from '@kb/storage'
 import { HotelUpdater } from './hotel.updater'
 import { PlaceSummaryData } from '../../core/interface/place-summary-data'
 import { DataUpdateSender } from '../../core/abstract/data-update.sender'
+import { Injectable } from '@nestjs/common'
 
+@Injectable()
 export class HotelService {
 
   constructor(
