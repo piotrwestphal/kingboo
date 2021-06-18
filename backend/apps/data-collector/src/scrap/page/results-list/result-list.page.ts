@@ -166,7 +166,6 @@ export class ResultListPage {
               bonuses: hotelBonuses.length ? hotelBonuses : null,
               rooms: rooms.length ? rooms : null,
               // debug: 'will go straight to storage',
-              debug: groupRoomsContainer ? groupRoomsContainer.innerHTML : null,
             })
             return acc
           }
