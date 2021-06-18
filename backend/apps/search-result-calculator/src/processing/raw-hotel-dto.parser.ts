@@ -1,6 +1,5 @@
 import { Bonuses } from '../core/interface/bonuses';
-import { RawRoomDto } from '@kb/model';
-import { Coords } from '@kb/model';
+import { Coords, RawRoomDto } from '@kb/model';
 import { Room } from '../core/interface/room';
 
 export class RawHotelDtoParser {
@@ -58,6 +57,20 @@ export class RawHotelDtoParser {
     return rooms?.length
       ? rooms.map(bonus => this.formatRoom(bonus))
       : null;
+  }
+
+  parseRoomName(roomName: string | null, rooms: RawRoomDto[]) {
+    const removeMultipliers = (value: string) => value.replace(/^\d+\s.\s/, '')
+    if (roomName) {
+      return removeMultipliers(roomName.trim())
+    }
+    const parsedRooms = this.parseRooms(rooms)
+    if (parsedRooms) {
+      return rooms.map(v => v.shortDescription)
+        .map(v => removeMultipliers(v))
+        .join(', ')
+    }
+    return null
   }
 
   private mapBonuses(rawBonuses: string[]): Bonuses | null {

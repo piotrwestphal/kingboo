@@ -44,7 +44,7 @@ export class MessageProcessor {
       districtName: this.rawHotelDtoParser.parseDistrictName(districtName),
       coords: this.rawHotelDtoParser.parseCoords(coords),
       hotelLink,
-      roomName: roomName ? roomName.trim() : null,
+      roomName: this.rawHotelDtoParser.parseRoomName(roomName, rooms),
       rate: this.rawHotelDtoParser.parseRate(rate),
       secondaryRate: this.rawHotelDtoParser.parseRate(secondaryRate),
       secondaryRateType: secondaryRateType ? secondaryRateType.trim() : null,

@@ -77,12 +77,13 @@ export class ResultListPage {
           : null
       }
 
-      const getRoomShorDescription = (container: Element): string => {
+      const getRoomShortDescription = (container: Element): string => {
         const elementWithSmallContent = container.querySelector('div.roomNameInner > div.room_link > span strong') as HTMLElement
         if (elementWithSmallContent) {
           return elementWithSmallContent.innerText
         }
-        return (container.querySelector('div.roomNameInner > div.room_link > span') as HTMLElement).innerText
+        const elementWithLargeContent = container.querySelector('div.roomNameInner > div.room_link > span') as HTMLElement
+        return elementWithLargeContent ? elementWithLargeContent.innerText : null
       }
 
       const searchResultsContainers = document.getElementsByClassName('sr_item sr_item_default')
@@ -114,7 +115,7 @@ export class ResultListPage {
 
             const room = groupRoomsContainer
               ? null
-              : getRoomShorDescription(groupRoomsContainer)
+              : getRoomShortDescription(searchResultContainer)
 
             if (groupRoomsContainer) {
               // in case of the search request different than the standard search criteria
@@ -123,7 +124,7 @@ export class ResultListPage {
                 const containerWithBonuses = getFirstElementByClass(roomContainer, 'roomNameInner')
                 const bonusesElements = containerWithBonuses.getElementsByTagName('sup')
                 const bonuses = Array.from(bonusesElements).map(b => b.innerText)
-                const shortDescription = getRoomShorDescription(roomContainer)
+                const shortDescription = getRoomShortDescription(roomContainer)
                 const rawLongDescription = getTextFromElement(roomContainer, 'c-unit-configuration')
                 const personCount = getTextFromElement(roomContainer, 'bui-u-sr-only')
                 const beds = getTextFromElement(roomContainer, 'c-beds-configuration')
@@ -155,7 +156,7 @@ export class ResultListPage {
               districtName,
               coords,
               hotelLink,
-              roomName: rooms.length ? rooms.map(v => v.shortDescription).join(', ') : room,
+              roomName: room,
               rate,
               secondaryRateType,
               secondaryRate,
@@ -164,7 +165,8 @@ export class ResultListPage {
               newlyAdded: hotelNewlyAdded,
               bonuses: hotelBonuses.length ? hotelBonuses : null,
               rooms: rooms.length ? rooms : null,
-              debug: groupRoomsContainer.innerHTML,
+              // debug: 'will go straight to storage',
+              debug: groupRoomsContainer ? groupRoomsContainer.innerHTML : null,
             })
             return acc
           }
