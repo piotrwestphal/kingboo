@@ -6,6 +6,7 @@ import { SchemaMap } from '@hapi/joi';
 import { NotAcceptableException } from '@nestjs/common';
 import { SearchRequestType } from '../../core/model/SearchRequestType';
 import {
+  baseValidationSchemaMap,
   collectingHotelsScenarioRequestValidationSchemaMap,
   collectingPlaceScenarioRequestValidationSchemaMap
 } from './validation-schemas';
@@ -43,13 +44,14 @@ export class SearchRequestFactory {
 
   createNew(type: SearchRequestType,
             createSearchRequest: CreateSearchRequest): SearchRequest {
+    this.preValidate(createSearchRequest)
     const scenarioType = createSearchRequest.scenarioType
-    const [validationSchema, mapper] = scenarioFactories[scenarioType]
-    const valid = this.validate(validationSchema, createSearchRequest);
-    const searchIdentifierComponents = mapper(type, valid)
+    const [validationSchema, searchIdComponentsMapper] = scenarioFactories[scenarioType]
+    this.validate(validationSchema, createSearchRequest);
+    const searchIdComponents = searchIdComponentsMapper(type, createSearchRequest)
     return SearchRequest.create({
-      ...searchIdentifierComponents,
-      searchId: this.searchIdentifierBuilder.createIdentifier(searchIdentifierComponents),
+      ...searchIdComponents,
+      searchId: this.searchIdentifierBuilder.createIdentifier(searchIdComponents),
       type,
       checkInDate: createSearchRequest.checkInDate,
       checkOutDate: createSearchRequest.checkOutDate,
@@ -61,12 +63,14 @@ export class SearchRequestFactory {
     });
   }
 
-  private validate(schemaMap: SchemaMap<CreateSearchRequest>, value: CreateSearchRequest): CreateSearchRequest {
-    const { error, value: validated } = Joi.object<CreateSearchRequest>(schemaMap).validate(value);
+  private preValidate(createSearchRequest: CreateSearchRequest): void {
+    this.validate(baseValidationSchemaMap, createSearchRequest, true)
+  }
+
+  private validate(schemaMap: SchemaMap<CreateSearchRequest>, value: CreateSearchRequest, allowUnknown = false): void {
+    const { error } = Joi.object<CreateSearchRequest>(schemaMap).validate(value, {allowUnknown});
     if (error) {
       throw new NotAcceptableException(`Search request validation error: ${error.message}`);
     }
-    return validated;
   }
-
 }

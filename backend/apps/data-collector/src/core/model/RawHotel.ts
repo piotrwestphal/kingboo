@@ -11,7 +11,7 @@ export class RawHotel {
     public readonly districtName: string,
     public readonly coords: string,
     public readonly hotelLink: string,
-    public readonly room: string | null,
+    public readonly roomName: string | null,
     public readonly rate: string | null,
     public readonly secondaryRate: string | null,
     public readonly secondaryRateType: string | null,

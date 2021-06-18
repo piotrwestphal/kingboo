@@ -8,7 +8,7 @@ export interface ScrapedRawHotel {
   readonly districtName: string
   readonly coords: string
   readonly hotelLink: string
-  readonly room: string | null
+  readonly roomName: string | null
   readonly rate: string | null
   readonly secondaryRate: string | null
   readonly secondaryRateType: string | null

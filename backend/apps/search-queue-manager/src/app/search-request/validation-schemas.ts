@@ -3,7 +3,7 @@ import { SchemaMap } from '@hapi/joi'
 import { CreateSearchRequest } from './create-search-request'
 import { CollectingScenarioType } from '@kb/model'
 
-const baseValidationSchemaMap: SchemaMap<CreateSearchRequest> = {
+export const baseValidationSchemaMap: SchemaMap<CreateSearchRequest> = {
   updateFrequencyMinutes: Joi.number().required(),
   searchPlace: Joi.string().required(),
   checkInDate: Joi.date().greater('now').required(),

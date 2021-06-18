@@ -1,5 +1,5 @@
 import { PriceCalculator } from './price.calculator';
-import { ValueChange } from '@kb/model'
+import { PriceChange } from '@kb/model'
 
 describe('PriceCalculator', () => {
 
@@ -36,19 +36,22 @@ describe('PriceCalculator', () => {
   it('should calculate correct values', () => {
     // given
     const currentPrice = 100
-    const priceChanges: ValueChange<number>[] = [
+    const priceChanges: PriceChange[] = [
       {
-        value: 200,
+        price: 200,
+        room: null,
         occurrenceCount: 5,
         changedAt: null,
       },
       {
-        value: 100,
+        price: 100,
+        room: null,
         occurrenceCount: 2,
         changedAt: null,
       },
       {
-        value: 150,
+        price: 150,
+        room: null,
         occurrenceCount: 3,
         changedAt: null,
       },

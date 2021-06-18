@@ -104,7 +104,6 @@ describe('Data integration tests', () => {
     verifyRequiredHotelsFields(hotels)
     verifyOptionalHotelsFields(hotels)
     expect(hotels.some(({ bonuses }) => !!bonuses)).toBeTruthy()
-    expect(hotels.some(({ room }) => !!room)).toBeTruthy()
 
     done()
   }, 120000)
@@ -294,6 +293,7 @@ const verifyRequiredHotelsFields = (hotels: RawHotel[]) => {
                     districtName,
                     coords,
                     hotelLink,
+                    roomName,
                   }: RawHotel) => {
     notEmpty(hotelId)
     notEmpty(name)
@@ -303,6 +303,7 @@ const verifyRequiredHotelsFields = (hotels: RawHotel[]) => {
     notEmpty(districtName)
     notEmpty(coords)
     notEmpty(hotelLink)
+    notEmpty(roomName)
   })
 
   // check if distance is ordered

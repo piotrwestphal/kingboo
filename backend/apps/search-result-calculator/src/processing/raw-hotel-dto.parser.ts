@@ -60,7 +60,7 @@ export class RawHotelDtoParser {
       : null;
   }
 
-  private mapBonuses(rawBonuses: string[]): Bonuses {
+  private mapBonuses(rawBonuses: string[]): Bonuses | null {
     const lowerCaseRawBonuses = rawBonuses.map(v => v.toLocaleLowerCase());
     const bonuses = {
       freeCancellation: lowerCaseRawBonuses.some((v) => v.includes('free cancellation')),

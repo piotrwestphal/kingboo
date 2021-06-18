@@ -1,11 +1,11 @@
-import { Coords, HotelCalculatedValuesDto, HotelLatestValuesDto, ValueChange } from '@kb/model'
+import { Coords, HotelCalculatedValuesDto, HotelLatestValuesDto, PriceChange } from '@kb/model'
 
 export interface SimpleHotelDto {
   readonly searchId: string
   readonly hotelId: string
   readonly name: string
   readonly coords: Coords
-  readonly priceChanges: ValueChange<number>[]
+  readonly priceChanges: PriceChange[]
   readonly latestValues: HotelLatestValuesDto
   readonly calculatedValues: HotelCalculatedValuesDto
   readonly lastCollectedAt: string

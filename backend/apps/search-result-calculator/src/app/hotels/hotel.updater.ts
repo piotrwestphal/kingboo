@@ -17,7 +17,7 @@ export class HotelUpdater {
                        distanceFromCenterMeters,
                        distanceFromCenterOrderIndex,
                        hotelLink,
-                       room,
+                       roomName,
                        rate,
                        secondaryRate,
                        secondaryRateType,
@@ -28,10 +28,11 @@ export class HotelUpdater {
                        rooms,
                        collectedAt,
                      }: RawHotel): Hotel {
-    const calculatedValues = this.priceCalculator.calculate(currentPrice, hotel.priceChanges)
-    const [lastPrice] = hotel.priceChanges.slice(-1)
+    const calculatedValues = this.calculateIfPriceAvailable(currentPrice, hotel)
+    const [lastPriceChange] = hotel.priceChanges.slice(-1)
     const latestValues: LatestValues = {
       price: currentPrice,
+      roomName,
       districtName,
       distanceFromCenterMeters,
       distanceFromCenterOrderIndex,
@@ -45,8 +46,16 @@ export class HotelUpdater {
       bonuses,
       rooms,
     }
-    return lastPrice && lastPrice.value === currentPrice
-      ? hotel.updateWhenPriceHasNotChanged(collectedAt, latestValues, calculatedValues)
-      : hotel.updateWithChangedPrice(currentPrice, collectedAt, latestValues, calculatedValues)
+    return lastPriceChange && lastPriceChange.price === currentPrice && lastPriceChange.room === roomName
+      ? hotel.updateWithNotChangedValues(collectedAt, latestValues, calculatedValues)
+      : hotel.updateWithChangedValues(currentPrice, collectedAt, latestValues, calculatedValues)
+  }
+
+  private calculateIfPriceAvailable(currentPrice: number, hotel: Hotel) {
+    if (currentPrice) {
+      const availablePriceChanges = hotel.priceChanges.filter(v => !!v.price)
+      return this.priceCalculator.calculate(currentPrice, availablePriceChanges)
+    }
+    return hotel.calculatedValues
   }
 }

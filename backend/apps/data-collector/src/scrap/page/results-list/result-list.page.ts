@@ -147,7 +147,7 @@ export class ResultListPage {
               districtName,
               coords,
               hotelLink,
-              room,
+              roomName: rooms.length ? rooms.map(v => v.shortDescription).join(', ') : room,
               rate,
               secondaryRateType,
               secondaryRate,
