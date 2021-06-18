@@ -70,11 +70,19 @@ export class ResultListPage {
         }
       }
 
-      const getHotelLink = (searchResultContainer: Element) => {
+      const getHotelLink = (searchResultContainer: Element): string => {
         const linkElement = getFirstElementByClass(searchResultContainer, 'hotel_name_link') as HTMLLinkElement
         return linkElement
           ? linkElement.href
           : null
+      }
+
+      const getRoomShorDescription = (container: Element): string => {
+        const elementWithSmallContent = container.querySelector('div.roomNameInner > div.room_link > span strong') as HTMLElement
+        if (elementWithSmallContent) {
+          return elementWithSmallContent.innerText
+        }
+        return (container.querySelector('div.roomNameInner > div.room_link > span') as HTMLElement).innerText
       }
 
       const searchResultsContainers = document.getElementsByClassName('sr_item sr_item_default')
@@ -106,7 +114,7 @@ export class ResultListPage {
 
             const room = groupRoomsContainer
               ? null
-              : getTextFromHtmlElementIfDefined(searchResultContainer.querySelector('div.roomNameInner > div.room_link strong'))
+              : getRoomShorDescription(groupRoomsContainer)
 
             if (groupRoomsContainer) {
               // in case of the search request different than the standard search criteria
@@ -115,9 +123,9 @@ export class ResultListPage {
                 const containerWithBonuses = getFirstElementByClass(roomContainer, 'roomNameInner')
                 const bonusesElements = containerWithBonuses.getElementsByTagName('sup')
                 const bonuses = Array.from(bonusesElements).map(b => b.innerText)
-                const shortDescription = getTextFromElement(roomContainer, 'room_link')
+                const shortDescription = getRoomShorDescription(roomContainer)
                 const rawLongDescription = getTextFromElement(roomContainer, 'c-unit-configuration')
-                const personCount = getTextFromElement(roomContainer, 'maxPersonsLeft')
+                const personCount = getTextFromElement(roomContainer, 'bui-u-sr-only')
                 const beds = getTextFromElement(roomContainer, 'c-beds-configuration')
                 rooms.push({
                   shortDescription,
@@ -156,7 +164,7 @@ export class ResultListPage {
               newlyAdded: hotelNewlyAdded,
               bonuses: hotelBonuses.length ? hotelBonuses : null,
               rooms: rooms.length ? rooms : null,
-              // debug: 'will go straight to storage',
+              debug: groupRoomsContainer.innerHTML,
             })
             return acc
           }
