@@ -16,7 +16,7 @@ export class SearchIdentifierBuilder {
                    }: SearchIdentifierComponents): string {
     return `${type}_${scenarioType}_${searchPlace.trim().toUpperCase().replace(/ /g, '_')}_` +
       `${this.shorten(checkInDate)}_${this.shorten(checkOutDate)}_` +
-      `${numberOfRooms}_${numberOfAdults}_${childrenAgeAtCheckout.length}_` +
+      `${numberOfRooms}_${numberOfAdults}_${childrenAgeAtCheckout.join('_')}_` +
       `${updateFrequencyMinutes}_${resultsLimit}`;
   }
 
