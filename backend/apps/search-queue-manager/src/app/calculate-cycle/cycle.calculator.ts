@@ -29,14 +29,20 @@ export class CycleCalculator {
     const { dayOfTheWeek, beginSearchDaysBefore } = cyclicSearch;
     const checkInDates = this.cycleStartFinder.findStartDaysOfWeekCycles(nowWithoutHours, cycleDaysInterval, dayOfTheWeek, beginSearchDaysBefore);
 
-    const currentSearchRequests = checkInDates.map(checkInDate => this.buildCyclicSearchRequest(cyclicSearch, checkInDate));
-    const currentSearchIds = currentSearchRequests.map(v => v.searchId);
+    const validCurrentSearchRequests = checkInDates
+      .map(checkInDate => this.buildCyclicSearchRequest(cyclicSearch, checkInDate))
+      .filter(Boolean)
+    const currentSearchIds = validCurrentSearchRequests.map(v => v.searchId);
     const existingSearchRequests = await this.searchRequestRepository.findAllWithSearchIds(currentSearchIds);
     const existingSearchIds = existingSearchRequests.map(v => v.searchId);
-    const { searchIdsToCreate, searchIdsToDelete, differencesFound } = this.differenceFinder.find(currentSearchIds, existingSearchIds);
+    const {
+      searchIdsToCreate,
+      searchIdsToDelete,
+      differencesFound
+    } = this.differenceFinder.find(currentSearchIds, existingSearchIds);
 
     if (differencesFound) {
-      await this.differenceResolver.resolveDifferences(currentSearchRequests, searchIdsToCreate, searchIdsToDelete);
+      await this.differenceResolver.resolveDifferences(validCurrentSearchRequests, searchIdsToCreate, searchIdsToDelete);
       const updated = cyclicSearch.updateCyclicSearchRequests(currentSearchIds);
       const saved = await this.cyclicSearchRepository.update(updated);
       logger.info(`Cyclic search with id [${saved.cyclicId}] was updated`);
@@ -47,6 +53,10 @@ export class CycleCalculator {
   private buildCyclicSearchRequest({ nightsOfStay, ...rest }: CyclicSearch, checkInDate: Date): SearchRequest {
     const checkOutDate = TimeHelper.addDays(checkInDate, nightsOfStay);
     const createSearchRequest = this.createSearchRequestMapper.fromCyclicSearch(rest, checkInDate, checkOutDate);
-    return this.searchRequestService.buildCyclicSearchRequest(createSearchRequest);
+    try {
+      return this.searchRequestService.buildCyclicSearchRequest(createSearchRequest);
+    } catch (e) {
+      logger.error(`Cannot create search request for following params [${createSearchRequest}]`)
+    }
   }
 }

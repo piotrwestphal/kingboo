@@ -3,7 +3,9 @@ import { ProcessingProgressRepository } from '../../core/abstract/processing-pro
 import { ProcessingProgressType } from '../../core/processing-actvity.type'
 import { logger } from '../../logger'
 import { HotelsSummaryData } from '../../core/interface/hotels-summary-data'
+import { Injectable } from '@nestjs/common'
 
+@Injectable()
 export class ProgressMeasuringService {
 
   constructor(
@@ -12,7 +14,7 @@ export class ProgressMeasuringService {
   ) {
   }
 
-  public async setProgress(searchId: string): Promise<void> {
+  async setProgress(searchId: string): Promise<void> {
     const created = await this.processingProgressRepository.create({
       searchId,
       type: ProcessingProgressType.PART
@@ -29,7 +31,7 @@ export class ProgressMeasuringService {
     }
   }
 
-  public async summarizeProgress(searchId: string, data: HotelsSummaryData): Promise<void> {
+  async summarizeProgress(searchId: string, data: HotelsSummaryData): Promise<void> {
     const created = await this.processingProgressRepository.create({
       searchId,
       type: ProcessingProgressType.SUMMARY,

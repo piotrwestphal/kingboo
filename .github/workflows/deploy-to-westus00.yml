@@ -43,7 +43,7 @@ jobs:
           workdir: backend
           dockerfile: kb-search-result-calculator.Dockerfile
 
-  publish_top-hotels-aggregator:
+  publish_search-result-aggregator:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -51,17 +51,17 @@ jobs:
       # takes branch name as a tag
       # in case of main takes 'latest'
       # in case of PR takes $GITHUB_SH
-      - name: Publish top-hotels-aggregator to registry
+      - name: Publish search-result-aggregator to registry
         uses: elgohr/Publish-Docker-Github-Action@master
         with:
-          name: piotrwest/kb-top-hotels-aggregator
+          name: piotrwest/kb-search-result-aggregator
           username: ${{ secrets.DOCKER_USER }}
           password: ${{ secrets.DOCKER_PASS }}
           workdir: backend
-          dockerfile: kb-top-hotels-aggregator.Dockerfile
+          dockerfile: kb-search-result-aggregator.Dockerfile
 
   deploy_all_services:
-    needs: [publish_search-queue-manager, publish_search-result-calculator, publish_top-hotels-aggregator]
+    needs: [publish_search-queue-manager, publish_search-result-calculator, publish_search-result-aggregator]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2

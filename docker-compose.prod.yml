@@ -36,7 +36,7 @@ services:
     volumes:
       - ./compose-output:/usr/src/app/output
 
-  top-hotels-aggregator:
+  search-result-aggregator:
     env_file:
       - prod.env
     volumes:

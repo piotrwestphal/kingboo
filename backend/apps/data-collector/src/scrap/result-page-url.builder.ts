@@ -1,5 +1,6 @@
 import { CheckDate } from '../core/interface/check-date'
 import { SearchPlaceIdentifier } from '../core/interface/search-place-identifier'
+import { ResultPageAdditionalParams } from './interface/result-page-additional-params'
 
 interface ScenarioParams {
   readonly checkOutDate: CheckDate
@@ -49,7 +50,8 @@ export class ResultPageUrlBuilder {
                                                numberOfAdults,
                                                numberOfRooms,
                                                childrenAgeAtCheckout,
-                                             }: ScenarioParams): string {
+                                             }: ScenarioParams,
+                                             resultPageAdditionalParams?: ResultPageAdditionalParams): string {
     const checkinDateParams = this.combineDate(this.CHECKIN_PREFIX_PARAM, checkInDate)
     const checkoutDateParams = this.combineDate(this.CHECKOUT_PREFIX_PARAM, checkOutDate)
     const numberOfAdultsParam = `${this.NUMBER_OF_ADULTS_KEY}${numberOfAdults}`
@@ -57,11 +59,16 @@ export class ResultPageUrlBuilder {
     const numberOfChildrenParam = `${this.NUMBER_OF_CHILDREN_KEY}${childrenAgeAtCheckout.length}`
     const childrenAgeParams = childrenAgeAtCheckout.map(v => `${this.CHILDREN_AGE_KEY}${v}`)
 
-    const destinationParam = `${this.DESTINATION_KEY}${encodeURIComponent(destination)}`
-    const destIdParam = `${this.DEST_ID_KEY}${destId}`
-    const destTypeParam = `${this.DEST_TYPE_KEY}${destType}`
-    const placeIdLatParam = `${this.PLACE_ID_LAT_KEY}${placeIdLat}`
-    const placeIdLonParam = `${this.PLACE_ID_LON_KEY}${placeIdLon}`
+    const searchPlaceIdentifierParams: string[] = []
+    destination && searchPlaceIdentifierParams.push(`${this.DESTINATION_KEY}${encodeURIComponent(destination)}`)
+    destId && searchPlaceIdentifierParams.push(`${this.DEST_ID_KEY}${destId}`)
+    destType && searchPlaceIdentifierParams.push(`${this.DEST_TYPE_KEY}${destType}`)
+    placeIdLat && searchPlaceIdentifierParams.push(`${this.PLACE_ID_LAT_KEY}${placeIdLat}`)
+    placeIdLon && searchPlaceIdentifierParams.push(`${this.PLACE_ID_LON_KEY}${placeIdLon}`)
+
+    const additionalParams: string[] = []
+    resultPageAdditionalParams?.showOnlyAvailableProperties && additionalParams.push(this.SHOW_ONLY_AVAILABLE_PROPERTIES_FILTER_PARAM)
+    resultPageAdditionalParams?.sortByDistance && additionalParams.push(this.SORT_BY_DISTANCE_PARAM)
 
     const queryParams: string = [
       ...checkinDateParams,
@@ -70,14 +77,9 @@ export class ResultPageUrlBuilder {
       numberOfRoomsParam,
       numberOfChildrenParam,
       ...childrenAgeParams,
-      destinationParam,
-      destIdParam,
-      destTypeParam,
-      placeIdLatParam,
-      placeIdLonParam,
+      ...searchPlaceIdentifierParams,
+      ...additionalParams,
       this.SELECTED_PLN_CURRENCY,
-      this.SORT_BY_DISTANCE_PARAM,
-      this.SHOW_ONLY_AVAILABLE_PROPERTIES_FILTER_PARAM,
     ].reduce((p, c) => `${p}${this.SEPARATE_PARAM_MARK}${c}`)
     return `${this.SEARCH_RESULTS_PAGE}${this.START_QUERY_MARK}${queryParams}`
   }

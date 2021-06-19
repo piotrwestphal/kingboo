@@ -1,4 +1,7 @@
+import { CollectingScenarioType } from '@kb/model'
+
 export interface CyclicIdentifierComponents {
+  readonly scenarioType: CollectingScenarioType
   readonly updateFrequencyMinutes: number
   readonly resultsLimit: number
   readonly searchPlace: string

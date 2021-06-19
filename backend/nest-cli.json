@@ -107,13 +107,13 @@
         "tsConfigPath": "libs/firestore/tsconfig.lib.json"
       }
     },
-    "top-hotels-aggregator": {
+    "search-result-aggregator": {
       "type": "application",
-      "root": "apps/top-hotels-aggregator",
+      "root": "apps/search-result-aggregator",
       "entryFile": "main",
-      "sourceRoot": "apps/top-hotels-aggregator/src",
+      "sourceRoot": "apps/search-result-aggregator/src",
       "compilerOptions": {
-        "tsConfigPath": "apps/top-hotels-aggregator/tsconfig.app.json"
+        "tsConfigPath": "apps/search-result-aggregator/tsconfig.app.json"
       }
     },
     "cassandra": {

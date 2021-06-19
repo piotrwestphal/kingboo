@@ -1,16 +1,15 @@
-import { Controller } from '@nestjs/common';
-import { Ctx, MessagePattern, Payload, RmqContext } from '@nestjs/microservices';
-import { CollectingScenarioMessagePattern } from '@kb/rabbit/message-pattern/CollectingScenarioMessagePattern';
-import { CollectHotelsScenarioMessage } from '@kb/model/mqmessage/collect-hotels-scenario.message';
-import { DataCollectorService } from '../core/abstract/data-collector.service';
-import { CollectHotelsScenarioMapper } from './mapper/collect-hotels-scenario.mapper';
-import { mqAck } from '@kb/rabbit';
+import { Controller } from '@nestjs/common'
+import { Ctx, MessagePattern, Payload, RmqContext } from '@nestjs/microservices'
+import { CollectingScenarioMessagePattern } from '@kb/rabbit/message-pattern/CollectingScenarioMessagePattern'
+import { CollectHotelsScenarioMessage } from '@kb/model/mqmessage/collect-hotels-scenario.message'
+import { mqAck } from '@kb/rabbit'
+import { CollectingScenarioProcessor } from './collecting-scenario.processor'
 
 @Controller()
 export class CollectingScenarioConsumer {
 
   constructor(
-    private readonly dataCollectorService: DataCollectorService,
+    private readonly collectingScenarioProcessor: CollectingScenarioProcessor,
   ) {
   }
 
@@ -22,8 +21,7 @@ export class CollectingScenarioConsumer {
                                           timestamp,
                                         }: CollectHotelsScenarioMessage,
                                         @Ctx() ctx: RmqContext): Promise<void> {
-    const collectHotelsScenario = CollectHotelsScenarioMapper.fromMessage(scenario);
-    await this.dataCollectorService.collectData(searchId, updateFrequencyMinutes, collectHotelsScenario, timestamp);
-    mqAck(ctx);
+    await this.collectingScenarioProcessor.process(searchId, updateFrequencyMinutes, scenario, timestamp)
+    mqAck(ctx)
   }
 }

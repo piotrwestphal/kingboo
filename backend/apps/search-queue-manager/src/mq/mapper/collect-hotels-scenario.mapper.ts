@@ -4,6 +4,7 @@ import { CollectHotelsScenarioMessage } from '@kb/model/mqmessage/collect-hotels
 export class CollectHotelsScenarioMapper {
   static fromSearchRequest({
                              searchId,
+                             scenarioType,
                              resultsLimit,
                              searchPlace,
                              checkInDate,
@@ -17,6 +18,7 @@ export class CollectHotelsScenarioMapper {
     return {
       searchId,
       scenario: {
+        type: scenarioType,
         resultsLimit,
         searchPlace,
         checkInDate: {

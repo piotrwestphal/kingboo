@@ -2,7 +2,7 @@ import { Coords } from '@kb/model/coords'
 import { LatestValues } from '../interface/latest-values'
 import { CalculatedValues } from '../interface/calculated-values'
 import { HotelIdentifier } from '../interface/hotel-identifier'
-import { ValueChange } from '@kb/model'
+import { PriceChange } from '@kb/model'
 
 export class Hotel implements HotelIdentifier {
   constructor(
@@ -10,7 +10,7 @@ export class Hotel implements HotelIdentifier {
     readonly hotelId: string,
     readonly name: string,
     readonly coords: Coords,
-    readonly priceChanges: ValueChange<number>[],
+    readonly priceChanges: PriceChange[],
     readonly collectedAt: string[],
     public latestValues: LatestValues,
     public calculatedValues: CalculatedValues,
@@ -19,19 +19,19 @@ export class Hotel implements HotelIdentifier {
   ) {
   }
 
-  updateWithChangedPrice(price: number,
-                         collectedAt: string,
-                         latestValues: LatestValues,
-                         calculatedValues: CalculatedValues): Hotel {
-    this.priceChanges.push({ value: price, occurrenceCount: 1, changedAt: collectedAt })
+  updateWithChangedValues(price: number,
+                          collectedAt: string,
+                          latestValues: LatestValues,
+                          calculatedValues: CalculatedValues): Hotel {
+    this.priceChanges.push({ price, room: latestValues.roomName, occurrenceCount: 1, changedAt: collectedAt })
     return this.update(collectedAt, latestValues, calculatedValues)
   }
 
-  updateWhenPriceHasNotChanged(collectedAt: string,
-                               latestValues: LatestValues,
-                               calculatedValues: CalculatedValues): Hotel {
-    const { value, changedAt, occurrenceCount } = this.priceChanges.pop()
-    this.priceChanges.push({ value, changedAt, occurrenceCount: occurrenceCount + 1 })
+  updateWithNotChangedValues(collectedAt: string,
+                             latestValues: LatestValues,
+                             calculatedValues: CalculatedValues): Hotel {
+    const { price, room, changedAt, occurrenceCount } = this.priceChanges.pop()
+    this.priceChanges.push({ price, room, changedAt, occurrenceCount: occurrenceCount + 1 })
     return this.update(collectedAt, latestValues, calculatedValues)
   }
 

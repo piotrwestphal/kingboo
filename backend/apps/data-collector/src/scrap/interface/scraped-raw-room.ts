@@ -1,7 +1,7 @@
 export interface ScrapedRawRoom {
-    shortDescription: string;
-    longDescription: string;
-    personCount: string;
-    beds: string | null;
-    bonuses: string[];
+    shortDescription: string
+    longDescription: string | null
+    personCount: string
+    beds: string
+    bonuses: string[] | null
 }

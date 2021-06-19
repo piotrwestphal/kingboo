@@ -1,6 +1,6 @@
 export interface SaveCyclicSearch {
-
   readonly cyclicId: string
+  readonly scenarioType: string
   readonly updateFrequencyMinutes: number
   readonly resultsLimit: number
 

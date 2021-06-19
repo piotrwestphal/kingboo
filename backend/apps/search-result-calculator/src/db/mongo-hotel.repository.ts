@@ -14,6 +14,13 @@ export class MongoHotelRepository extends HotelRepository {
     super()
   }
 
+  async findBySearchIdAndHotelId(searchId: string, hotelId: string): Promise<Hotel | null> {
+    const found = await this.model.findOne({ searchId, hotelId }).exec()
+    return found
+      ? this.fromDoc(found)
+      : null
+  }
+
   async findAllBySearchIdAndHotelId(searchId: string, hotelIds: string[]): Promise<Map<string, Hotel>> {
     const hotelsDocs = await this.model.find({
       searchId,
@@ -39,10 +46,25 @@ export class MongoHotelRepository extends HotelRepository {
     return found.map(({ searchId, hotelId }) => ({ searchId, hotelId }))
   }
 
+  async create(hotel: Hotel): Promise<Hotel> {
+    const saveHotel = this.mapper.prepareForSave(hotel)
+    const saved = await new this.model(saveHotel).save()
+    return this.fromDoc(saved)
+  }
+
   async createAll(hotels: Hotel[]): Promise<Hotel[]> {
     const hotelsToSave = hotels.map(h => this.mapper.prepareForSave(h))
     const created = await this.model.insertMany(hotelsToSave)
     return created.map(doc => this.fromDoc(doc))
+  }
+
+  async update(hotel: Hotel): Promise<Hotel> {
+    const saveHotel = this.mapper.prepareForSave(hotel)
+    const updated = await this.model.findOneAndUpdate(
+      { searchId: saveHotel.searchId, hotelId: saveHotel.hotelId },
+      saveHotel,
+      { new: true }).exec()
+    return this.fromDoc(updated)
   }
 
   async updateAll(hotels: Hotel[]): Promise<number> {
