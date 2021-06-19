@@ -82,6 +82,6 @@ jobs:
             echo "ASTRA_DB_PASSWORD=$ASTRA_DB_PASSWORD" >> westus01.env
             echo "MQ_ADDRESS=$MQ_ADDRESS" >> westus01.env
             docker-compose pull
-            docker-compose -f docker-compose.yml -f prod.yml up -d
+            docker-compose -f docker-compose.yml -f prod.yml up -dV
             docker image prune -f
           EOF

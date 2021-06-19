@@ -4,7 +4,7 @@ export interface ScrapedRawHotel {
   readonly name: string
   readonly price: string | null
   readonly tax: string | null
-  readonly distanceFromCenter: string
+  readonly distanceFromCenter: string | null
   readonly districtName: string
   readonly coords: string
   readonly hotelLink: string

@@ -6,7 +6,7 @@ export class RawHotel {
     public readonly name: string,
     public readonly price: string | null,
     public readonly tax: string | null,
-    public readonly distanceFromCenter: string,
+    public readonly distanceFromCenter: string | null,
     public readonly distanceFromCenterOrderIndex: number,
     public readonly districtName: string,
     public readonly coords: string,
