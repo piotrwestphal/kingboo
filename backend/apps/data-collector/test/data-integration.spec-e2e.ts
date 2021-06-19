@@ -103,7 +103,7 @@ describe('Data integration tests', () => {
 
     verifyRequiredHotelsFields(hotels)
     verifyOptionalHotelsFields(hotels)
-    expect(hotels.every(({ roomName }) => !!roomName)).toBeTruthy()
+    expect(hotels.some(({ roomName }) => !!roomName)).toBeTruthy()
     expect(hotels.some(({ bonuses }) => !!bonuses)).toBeTruthy()
 
     done()
