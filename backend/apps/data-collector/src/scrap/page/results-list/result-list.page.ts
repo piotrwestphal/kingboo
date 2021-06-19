@@ -3,7 +3,7 @@ import { ScrapedRawHotel } from '../../interface/scraped-raw-hotel'
 import { ScrapedRawRoom } from '../../interface/scraped-raw-room'
 
 interface AddressContainerData {
-  distanceFromCenter: string
+  distanceFromCenter: string | null
   districtName: string
   coords: string
 }

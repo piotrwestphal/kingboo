@@ -5,7 +5,7 @@ export interface RawHotelDocument {
   readonly name: string
   readonly price: string | null
   readonly tax: string | null
-  readonly distanceFromCenter: string
+  readonly distanceFromCenter: string | null
   readonly distanceFromCenterOrderIndex: number
   readonly districtName: string
   readonly coords: string
