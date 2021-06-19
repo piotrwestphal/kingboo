@@ -3,6 +3,7 @@ import { MongoConfigService } from '@kb/mongo/mongo-config.service'
 import { MongoConfigType } from '@kb/mongo/mongo-config.type'
 import { ModelDefinition, MongooseModule, MongooseModuleOptions } from '@nestjs/mongoose'
 
+// TODO: multiple connections https://stackoverflow.com/a/66801008
 @Module({})
 export class MongoModule {
   static register<T extends MongoConfigService>({ configClass }: { configClass: MongoConfigType<T> },

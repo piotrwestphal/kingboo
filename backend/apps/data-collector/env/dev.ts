@@ -13,7 +13,7 @@ export const devConfig = (env: NodeJS.ProcessEnv): AppConfig =>
     corsOrigins: env.CORS_ORIGINS,
     puppeteer: {
       headlessModeOff: false,
-      enableStylesOnResultsPage: false,
+      enableStylesOnResultsPage: true,
     },
     storage: {
       local: {

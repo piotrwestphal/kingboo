@@ -18,6 +18,7 @@ export class CreateSearchRequestMapper {
   }
 
   fromCyclicSearch({
+                     scenarioType,
                      updateFrequencyMinutes,
                      resultsLimit,
                      searchPlace,
@@ -28,6 +29,7 @@ export class CreateSearchRequestMapper {
                    checkInDate: Date,
                    checkOutDate: Date): CreateSearchRequest {
     return {
+      scenarioType,
       updateFrequencyMinutes,
       resultsLimit,
       searchPlace,

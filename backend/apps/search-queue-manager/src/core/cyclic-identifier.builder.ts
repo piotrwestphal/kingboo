@@ -3,8 +3,9 @@ import { CyclicIdentifierComponents } from './interface/cyclic-identifier-compon
 export class CyclicIdentifierBuilder {
   createIdentifier({
                      updateFrequencyMinutes,
-                     resultsLimit,
+                     scenarioType,
                      searchPlace,
+                     resultsLimit,
                      numberOfRooms,
                      numberOfAdults,
                      childrenAgeAtCheckout,
@@ -12,7 +13,7 @@ export class CyclicIdentifierBuilder {
                      nightsOfStay,
                      beginSearchDaysBefore,
                    }: CyclicIdentifierComponents): string {
-    return `${searchPlace.trim().toUpperCase().replace(/ /g, '_')}_` +
+    return `${scenarioType}_${searchPlace.trim().toUpperCase().replace(/ /g, '_')}_` +
       `${numberOfRooms}_${numberOfAdults}_${childrenAgeAtCheckout.length}_` +
       `${updateFrequencyMinutes}_${resultsLimit}_` +
       `${dayOfTheWeek}_${nightsOfStay}_${beginSearchDaysBefore}`;

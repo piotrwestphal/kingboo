@@ -1,11 +1,16 @@
-import { RawHotel } from '../model/RawHotel';
+import { RawHotelDto } from '@kb/model'
 
 export abstract class DataToProcessSender {
   abstract sendHotelsPart(searchId: string,
-                          rawHotels: RawHotel[]): void;
+                          rawHotelDtos: RawHotelDto[]): void
 
   abstract sendHotelsSummary(searchId: string,
                              expectedNumberOfParts: number,
                              collectingStartedAt: Date,
-                             collectingFinishedAt: Date): void;
+                             collectingFinishedAt: Date): void
+
+  abstract sendPlaceSummary(searchId: string,
+                            rawHotelDto: RawHotelDto,
+                            collectingStartedAt: Date,
+                            collectingFinishedAt: Date): void
 }

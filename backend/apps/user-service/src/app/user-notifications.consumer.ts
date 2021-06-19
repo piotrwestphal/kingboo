@@ -37,4 +37,12 @@ export class UserNotificationsConsumer {
     await this.userNotificationHandler.updateTopHotels(searchId)
     mqAck(ctx)
   }
+
+  @MessagePattern(UserNotificationsMessagePattern.PLACE_UPDATED)
+  async handlePlaceUpdated(@Payload() { searchId }: MqMessage,
+                               @Ctx() ctx: RmqContext): Promise<void> {
+    logger.debug(`Receive ${ctx.getPattern()} message with search id [${searchId}]`)
+    await this.userNotificationHandler.updatePlace(searchId)
+    mqAck(ctx)
+  }
 }

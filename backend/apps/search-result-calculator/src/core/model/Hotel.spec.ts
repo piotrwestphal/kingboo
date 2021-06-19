@@ -12,7 +12,8 @@ describe('Hotel', () => {
         lon: 0,
       },
       [{
-        value: 100,
+        price: 100,
+        room: 'simple',
         changedAt: 'mock1',
         occurrenceCount: 1,
       }],
@@ -23,6 +24,7 @@ describe('Hotel', () => {
         distanceFromCenterMeters: 100,
         distanceFromCenterOrderIndex: 0,
         hotelLink: 'link',
+        roomName: 'simple',
         rate: 0,
         secondaryRate: 0,
         secondaryRateType: 'mock',
@@ -45,7 +47,7 @@ describe('Hotel', () => {
     )
 
     // when
-    hotel.updateWhenPriceHasNotChanged(
+    hotel.updateWithNotChangedValues(
       'mock2',
       {
         price: 150,
@@ -53,6 +55,7 @@ describe('Hotel', () => {
         distanceFromCenterMeters: 100,
         distanceFromCenterOrderIndex: 1,
         hotelLink: 'link',
+        roomName: 'simple',
         rate: 0,
         secondaryRate: 0,
         secondaryRateType: 'mock',
@@ -74,7 +77,8 @@ describe('Hotel', () => {
 
     // then
     expect(hotel.priceChanges.length).toBe(1)
-    expect(hotel.priceChanges[0].value).toBe(100)
+    expect(hotel.priceChanges[0].price).toBe(100)
+    expect(hotel.priceChanges[0].room).toBe('simple')
     expect(hotel.priceChanges[0].occurrenceCount).toBe(2)
     expect(hotel.priceChanges[0].changedAt).toBe('mock1')
     expect(hotel.collectedAt.length).toBe(2)
@@ -96,17 +100,20 @@ describe('Hotel', () => {
       },
       [
         {
-          value: 100,
+          price: 100,
+          room: 'simple',
           changedAt: 'mock1',
           occurrenceCount: 2,
         },
         {
-          value: 200,
+          price: 200,
+          room: 'simple',
           changedAt: 'mock3',
           occurrenceCount: 1,
         },
         {
-          value: 150,
+          price: 150,
+          room: 'simple',
           changedAt: 'mock4',
           occurrenceCount: 2,
         }
@@ -114,6 +121,7 @@ describe('Hotel', () => {
       ['mock1', 'mock2', 'mock3', 'mock4', 'mock5'],
       {
         price: 150,
+        roomName: 'simple',
         districtName: 'mock',
         distanceFromCenterMeters: 100,
         distanceFromCenterOrderIndex: 0,
@@ -140,7 +148,7 @@ describe('Hotel', () => {
     )
 
     // when
-    hotel.updateWhenPriceHasNotChanged(
+    hotel.updateWithNotChangedValues(
       'mock6',
       {
         price: 150,
@@ -148,6 +156,7 @@ describe('Hotel', () => {
         distanceFromCenterMeters: 100,
         distanceFromCenterOrderIndex: 1,
         hotelLink: 'link',
+        roomName: 'simple',
         rate: 0,
         secondaryRate: 0,
         secondaryRateType: 'mock',
@@ -169,9 +178,10 @@ describe('Hotel', () => {
 
     // then
     expect(hotel.priceChanges.length).toBe(3)
-    expect(hotel.priceChanges[2].value).toBe(150)
+    expect(hotel.priceChanges[2].price).toBe(150)
     expect(hotel.priceChanges[2].occurrenceCount).toBe(3)
     expect(hotel.priceChanges[2].changedAt).toBe('mock4')
+    expect(hotel.priceChanges[2].room).toBe('simple')
     expect(hotel.collectedAt.length).toBe(6)
     expect(hotel.collectedAt[5]).toBe('mock6')
     expect(hotel.lastCollectedAt).toBe('mock6')

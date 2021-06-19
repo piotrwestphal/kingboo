@@ -1,5 +1,5 @@
 import { CalculatedValues } from '../../core/interface/calculated-values'
-import { ValueChange } from '@kb/model'
+import { PriceChange } from '@kb/model'
 
 interface RepeatedValue {
   readonly value: number
@@ -7,12 +7,14 @@ interface RepeatedValue {
 }
 
 export class PriceCalculator {
-  calculate(currentPrice: number, priceChanges: ValueChange<number>[]): CalculatedValues {
-    const pricesWithCurrentPrice: RepeatedValue[] = priceChanges.map(
-      v => ({
-        value: v.value,
+  calculate(currentPrice: number, priceChanges: PriceChange[]): CalculatedValues {
+    const pricesWithCurrentPrice: RepeatedValue[] = priceChanges
+      .filter(v => !!v.price)
+      .map(v => ({
+        value: v.price,
         occurrenceCount: v.occurrenceCount
-      })).concat({ value: currentPrice, occurrenceCount: 1 })
+      }))
+      .concat({ value: currentPrice, occurrenceCount: 1 })
     const { avg, min, max } = this.calcBasicPriceValues(pricesWithCurrentPrice)
     return {
       minPrice: min,

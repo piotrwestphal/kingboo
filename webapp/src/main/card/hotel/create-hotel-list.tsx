@@ -5,7 +5,7 @@ import HotelList from './HotelList'
 const priceRateValue = (h: SimpleHotelDto) => `${Math.round(h.calculatedValues.priceRate)}`
 const priceRateKey = 'Price rt'
 const priceRateTooltip = 'Price rate [%]'
-const priceValue = (h: SimpleHotelDto) => h.latestValues.price
+const priceValue = (h: SimpleHotelDto) => h.latestValues.price || 'N/A'
 const priceKey = 'Price'
 const priceTooltip = 'Price [zł]'
 const rateValue = (h: SimpleHotelDto) => h.latestValues.rate || 'N/A'

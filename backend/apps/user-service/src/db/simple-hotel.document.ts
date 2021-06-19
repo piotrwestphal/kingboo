@@ -7,7 +7,8 @@ export interface SimpleHotelDocument {
   readonly name: string
   readonly coords: Coords
   readonly priceChanges: Array<{
-    readonly value: number
+    readonly price: number | null
+    readonly room: string | null
     readonly occurrenceCount: number
     readonly changedAt: Timestamp
   }>

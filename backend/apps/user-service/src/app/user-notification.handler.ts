@@ -18,4 +18,9 @@ export class UserNotificationHandler {
     // TODO: implement
     return Promise.resolve(undefined);
   }
+
+  updatePlace(searchId: string): Promise<void> {
+    // TODO: implement
+    return Promise.resolve(undefined);
+  }
 }

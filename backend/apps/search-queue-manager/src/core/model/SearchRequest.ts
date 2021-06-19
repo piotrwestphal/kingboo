@@ -2,6 +2,7 @@ import { InconsistencyException } from '../exception/InconsistencyException'
 import { SearchRequestType } from './SearchRequestType'
 import { SearchPlaceIdentifier } from '../interface/search-place-identifier'
 import { TimeHelper } from '@kb/util'
+import { CollectingScenarioType } from '@kb/model'
 
 type SearchRequestValues = Omit<SearchRequest,
   'updateSearchPlaceIdentifier'
@@ -13,6 +14,7 @@ export class SearchRequest {
   private constructor(
     public readonly searchId: string,
     public readonly type: SearchRequestType,
+    public readonly scenarioType: CollectingScenarioType,
     public readonly updateFrequencyMinutes: number,
     public readonly resultsLimit: number,
     public readonly searchPlace: string,
@@ -32,6 +34,7 @@ export class SearchRequest {
   static create({
                   searchId,
                   type,
+                  scenarioType,
                   updateFrequencyMinutes,
                   resultsLimit,
                   searchPlace,
@@ -49,6 +52,7 @@ export class SearchRequest {
     return new SearchRequest(
       searchId,
       type,
+      scenarioType,
       updateFrequencyMinutes,
       resultsLimit,
       searchPlace,

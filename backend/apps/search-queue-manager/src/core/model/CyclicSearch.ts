@@ -1,9 +1,12 @@
+import { CollectingScenarioType } from '@kb/model'
+
 type CyclicSearchValues = Omit<CyclicSearch, 'updateCyclicSearchRequests'>
 
 export class CyclicSearch {
 
   private constructor(
     public readonly cyclicId: string,
+    public readonly scenarioType: CollectingScenarioType,
     public readonly updateFrequencyMinutes: number,
     public readonly resultsLimit: number,
     public readonly searchPlace: string,
@@ -19,6 +22,7 @@ export class CyclicSearch {
 
   static create({
                   cyclicId,
+                  scenarioType,
                   updateFrequencyMinutes,
                   resultsLimit,
                   searchPlace,
@@ -32,6 +36,7 @@ export class CyclicSearch {
                 }: CyclicSearchValues): CyclicSearch {
     return new CyclicSearch(
       cyclicId,
+      scenarioType,
       updateFrequencyMinutes,
       resultsLimit,
       searchPlace,

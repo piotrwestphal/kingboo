@@ -1,5 +1,5 @@
 import { Document } from 'mongoose'
-import { ValueChange } from '@kb/model'
+import { PriceChange } from '@kb/model'
 
-export interface PriceChangeDocument extends ValueChange<number>, Document {
+export interface PriceChangeDocument extends PriceChange, Document {
 }

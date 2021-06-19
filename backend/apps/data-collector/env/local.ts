@@ -12,7 +12,7 @@ export const localConfig: AppConfig = {
   corsOrigins: 'http://localhost:3000', // separate multiple origins by comma
   puppeteer: {
     headlessModeOff: true,
-    enableStylesOnResultsPage: false,
+    enableStylesOnResultsPage: true,
     executablePath: './node_modules/puppeteer/.local-chromium/mac-856583/chrome-mac/Chromium.app/Contents/MacOS/Chromium',
     slowMoMs: 0,
     devtoolsTurnedOn: false,

@@ -7,6 +7,7 @@ import { MainPage } from './page/main/main.page';
 import { ResultPageUrlBuilder } from './result-page-url.builder';
 import { HotelsScraper } from './hotels.scraper';
 import { SearchPlaceScraper } from './search-place.scraper';
+import { ResultListPreparer } from './result-list.preparer'
 
 @Module({
   imports: [],
@@ -20,10 +21,12 @@ import { SearchPlaceScraper } from './search-place.scraper';
         const resultPage = new ResultPage(browserService);
         const resultPageUrlBuilder = new ResultPageUrlBuilder();
         const hotelsScraper = new HotelsScraper(browserService, resultListPage, resultPage);
+        const resultListPreparer = new ResultListPreparer(browserService, resultListPage, resultPage);
         const searchPlaceScraper = new SearchPlaceScraper(browserService, mainPage);
         return new ScraperFacade(
           browserService,
           hotelsScraper,
+          resultListPreparer,
           resultPageUrlBuilder,
           searchPlaceScraper,
         );
