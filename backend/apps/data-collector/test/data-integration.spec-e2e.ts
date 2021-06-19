@@ -208,10 +208,10 @@ describe('Data integration tests', () => {
     const hotel = hotels[0]
     notEmpty(hotel)
 
-    const { hotelId, name, distanceFromCenter, distanceFromCenterOrderIndex, districtName, coords, hotelLink } = hotel
+    const { hotelId, name, distanceFromCenterOrderIndex, districtName, coords, hotelLink } = hotel
     expect(hotelId).toBe('TWFjaWVqZXdrYSAyMi4yNjA0NTE5MTI4Nzk5LDQ5LjM4MTEyNjkwMTA4NzU=')
     expect(name).toContain('Maciejewka')
-    expect(distanceFromCenter).toContain('0.5 km from')
+    // expect(distanceFromCenter).toContain('0.5 km from') on github it shows distance in miles
     expect(distanceFromCenterOrderIndex).toBe(0)
     expect(districtName).toContain('Zahoczewie')
     expect(coords).toBe('22.2604519128799,49.3811269010875')
@@ -270,7 +270,7 @@ describe('Data integration tests', () => {
     const { hotelId, name, distanceFromCenter, distanceFromCenterOrderIndex, districtName, coords, hotelLink } = hotel
     expect(hotelId).toBe('UFVSTyBXYXJzemF3YSBDZW50cnVtIDIxLjAxNTA0Myw1Mi4yMzEyMDM=')
     expect(name).toContain('PURO Warszawa Centrum')
-    expect(distanceFromCenter).toContain('0.5 km from centre')
+    expect(['0.5 km from centre', '0.3 miles from centre']).toContain(distanceFromCenter)
     expect(distanceFromCenterOrderIndex).toBe(0)
     expect(districtName).toContain('Sródmiescie, Warsaw')
     expect(coords).toBe('21.015043,52.231203')
