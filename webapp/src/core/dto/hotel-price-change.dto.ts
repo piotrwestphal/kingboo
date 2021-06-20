@@ -1,5 +1,6 @@
 export interface HotelPriceChangeDto {
-  readonly value: number;
-  readonly occurrenceCount: number;
-  readonly changedAt: string;
+  readonly price: number | null
+  readonly room: string | null
+  readonly occurrenceCount: number
+  readonly changedAt: string
 }

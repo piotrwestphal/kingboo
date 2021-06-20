@@ -77,7 +77,7 @@ export default function PricesContent({ hotel }: DialogContentProps) {
                       component='span'
                       variant='body2'
                       color='primary'>
-            {v.value}
+            {v.price}
           </Typography>
           <Typography className={classes.occurrence}
                       component='span'

@@ -11,7 +11,7 @@ const priceTooltip = 'Price [zł]'
 const rateValue = (h: SimpleHotelDto) => h.latestValues.rate || 'N/A'
 const rateKey = 'Rate'
 const rateTooltip = 'Rate [%]'
-const distanceValue = (h: SimpleHotelDto) => h.latestValues.distanceFromCenterMeters
+const distanceValue = (h: SimpleHotelDto) => h.latestValues.distanceFromCenterMeters || 'N/A'
 const distanceKey = 'Center'
 const distanceTooltip = 'Distance to the center [m]'
 

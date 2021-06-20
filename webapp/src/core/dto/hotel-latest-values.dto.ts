@@ -4,7 +4,7 @@ import { HotelRoomDto } from './hotel-room.dto'
 export interface HotelLatestValuesDto {
   readonly price: number | null
   readonly districtName: string | null
-  readonly distanceFromCenterMeters: number
+  readonly distanceFromCenterMeters: number | null
   readonly hotelLink: string
   readonly roomName: string | null
   readonly rate: number | null
