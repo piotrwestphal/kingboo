@@ -2,7 +2,7 @@ filebeat.inputs:
   - type: log
     enabled: true
     paths:
-      - /var/log/apps/DC-output.log
+      - /var/log/apps/output.log
     encoding: utf-8
     fields:
       app: DC

@@ -2,7 +2,7 @@ version: "3.7"
 services:
   search-queue-manager:
     volumes:
-      - ./../../../compose-output:/usr/src/app/output
+      - ./../../../compose-output/sqm:/usr/src/app/output
     env_file:
       - westus00.env
       - ./../opc.env
@@ -16,14 +16,14 @@ services:
     environment:
       LOG_LEVEL: info
     volumes:
-      - ./../../../compose-output:/usr/src/app/output
+      - ./../../../compose-output/src:/usr/src/app/output
 
   search-result-aggregator:
     env_file:
       - westus00.env
       - ./../opc.env
     volumes:
-      - ./../../../compose-output:/usr/src/app/output
+      - ./../../../compose-output/sra:/usr/src/app/output
 
   filebeat:
     image: docker.elastic.co/beats/filebeat-oss:7.12.0
@@ -33,4 +33,6 @@ services:
       - westus00.env
     volumes:
       - ./filebeat.yml:/usr/share/filebeat/filebeat.yml:ro
-      - ./../../../compose-output:/var/log/apps:ro
+      - ./../../../compose-output/sqm/output.log:/var/log/apps/sqm/output.log:ro
+      - ./../../../compose-output/src/output.log:/var/log/apps/src/output.log:ro
+      - ./../../../compose-output/sra/output.log:/var/log/apps/sra/output.log:ro

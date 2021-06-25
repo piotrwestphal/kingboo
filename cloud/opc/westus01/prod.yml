@@ -15,4 +15,4 @@ services:
       - westus01.env
     volumes:
       - ./filebeat.yml:/usr/share/filebeat/filebeat.yml:ro
-      - ./../../../compose-output:/var/log/apps:ro
+      - ./../../../compose-output/output.log:/var/log/apps/output.log:ro

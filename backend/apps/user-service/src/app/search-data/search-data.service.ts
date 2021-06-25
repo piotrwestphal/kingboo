@@ -7,7 +7,7 @@ import { SearchDataDto, SearchRequestDto } from '@kb/model'
 
 export class SearchDataService {
 
-  private readonly TOP_HOTELS_SELECTION_LIMIT = 10 // TODO: read from search request - just add that field to search request!!
+  private readonly TOP_HOTELS_SELECTION_LIMIT = 10 // TODO: read from search request
 
   constructor(
     private readonly searchDataMapper: SearchDataMapper,
@@ -22,6 +22,7 @@ export class SearchDataService {
     logger.debug(`Search requests fetched within [${Date.now() - now}] ms`)
     const [collected, notCollectedEvenOnce] = this.divideByCollectingState(searchRequests)
     const withTopHotels = await this.findAndCombine(collected)
+    // TODO: find by collect place scenario
     const withoutTopHotels = notCollectedEvenOnce.map(v => this.searchDataMapper.toDto(v, []))
     logger.debug(`Search data loaded within [${Date.now() - now}] ms`)
     return {
