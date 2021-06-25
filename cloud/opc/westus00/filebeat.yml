@@ -2,7 +2,7 @@ filebeat.inputs:
   - type: log
     enabled: true
     paths:
-      - /var/log/apps/SQM-output.log
+      - /var/log/apps/sqm/output.log
     encoding: utf-8
     fields:
       app: SQM
@@ -10,7 +10,7 @@ filebeat.inputs:
   - type: log
     enabled: true
     paths:
-      - /var/log/apps/SRC-output.log
+      - /var/log/apps/src/output.log
     encoding: utf-8
     fields:
       app: SRC
@@ -18,7 +18,7 @@ filebeat.inputs:
   - type: log
     enabled: true
     paths:
-      - /var/log/apps/SRA-output.log
+      - /var/log/apps/sra/output.log
     encoding: utf-8
     fields:
       app: SRA

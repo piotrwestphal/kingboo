@@ -1,7 +1,9 @@
+import { CollectingScenarioType } from '../collecting-scenario-type'
+
 export interface SearchRequestDto {
   readonly searchId: string
   readonly type: string
-  readonly scenarioType: string
+  readonly scenarioType: CollectingScenarioType
   readonly updateFrequencyMinutes: number
   readonly resultsLimit: number
   readonly searchPlace: string

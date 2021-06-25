@@ -5,12 +5,11 @@ import { FileTransportInstance } from 'winston/lib/winston/transports'
 
 export const createLogger = ({
                                logLevel,
-                               appLabel,
                                logOutputFolder,
                              }: LoggerConfig) => {
   const additionalTransports: FileTransportInstance[] = [];
   additionalTransports.push(new transports.File({
-    filename: `${logOutputFolder}/${appLabel}-output.log`,
+    filename: `${logOutputFolder}/output.log`,
     level: 'debug',
   }));
   return new CommonLoggerService({
