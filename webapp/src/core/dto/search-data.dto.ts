@@ -3,6 +3,7 @@ import { TopHotelsDto } from './top-hotels.dto'
 export interface SearchDataDto {
   readonly searchId: string
   readonly type: string
+  readonly scenarioType: string
   readonly searchPlace: string
   readonly destination: string | null
   readonly checkInDate: string

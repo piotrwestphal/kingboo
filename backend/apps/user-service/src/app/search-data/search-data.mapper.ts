@@ -1,35 +1,27 @@
-import { SearchDataDto, SearchRequestDto, TopHotelsDto } from '@kb/model'
+import { IndexedTopHotels, SearchDataDto, SearchRequestDto, TopHotelsDto } from '@kb/model'
 
 export class SearchDataMapper {
   toDto({
-          searchId,
-          type,
-          resultsLimit,
-          searchPlace,
-          destination,
-          checkInDate,
-          checkOutDate,
-          numberOfRooms,
-          numberOfAdults,
-          childrenAgeAtCheckout,
-          updateFrequencyMinutes,
-          collectingFinishedAt,
+          collectingStartedAt,
+          ...rest
         }: SearchRequestDto,
-        topHotels: TopHotelsDto | null): SearchDataDto {
+        indexedTopHotelsList: IndexedTopHotels[]): SearchDataDto {
     return {
-      searchId,
-      type,
-      resultsLimit,
-      searchPlace,
-      checkInDate,
-      checkOutDate,
-      numberOfRooms,
-      numberOfAdults,
-      childrenAgeAtCheckout,
-      updateFrequencyMinutes,
-      destination,
-      collectingFinishedAt,
-      topHotels,
+      ...rest,
+      topHotels: indexedTopHotelsList.length
+        ? this.toTopHotels(indexedTopHotelsList)
+        : null,
     }
+  }
+
+  private toTopHotels(indexedTopHotelsList: IndexedTopHotels[]): TopHotelsDto {
+    return (['cheapest', 'bestPriceRate', 'bestRate', 'bestLocation'] as Array<keyof TopHotelsDto>)
+      .reduce((dto, key) => {
+        const hotels = indexedTopHotelsList.map(indexedTopHotels => indexedTopHotels[key]).filter(v => !!v)
+        return {
+          ...dto,
+          [key]: hotels
+        }
+      }, {} as TopHotelsDto)
   }
 }

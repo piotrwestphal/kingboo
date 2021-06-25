@@ -26,7 +26,7 @@ export class ObsoleteRequestSearcher {
       const searchIds = found.map(v => v.searchId)
       const deletedCount = await this.searchRequestRepository.deleteMany(searchIds)
       searchIds.map(v => this.userNotificationSender.notifyAboutDeletedCyclicSearchRequest(v))
-      searchIds.map(v => this.dataUpdateSender.notifyAboutDeletedSearchRequest(v))
+      found.map(v => this.dataUpdateSender.notifyAboutDeletedSearchRequest(v.searchId, v.scenarioType))
       logger.info(`[${deletedCount}] cyclic search requests with ids [${searchIds}] were deleted due to obsolescence`)
     }
   }

@@ -5,8 +5,10 @@ import { AppConfigService } from '../config/app-config.service'
 import { SortedByOption } from '../core/interface/sorted-by-option'
 import { logger } from '../logger'
 import { UserNotificationSender } from '../core/abstract/user-notification.sender'
-import { TopHotelsDto } from '@kb/model'
 import { PlaceRepository } from '../core/abstract/place.repository'
+import { CollectingScenarioType } from '@kb/model'
+import { TopHotelsMapper } from './top-hotels.mapper'
+import { TopHotels } from '../core/interface/top-hotels'
 
 const sortBy = {
   bestPriceRate: [
@@ -32,6 +34,7 @@ export class HotelService {
     private readonly hotelRepository: HotelRepository,
     private readonly placeRepository: PlaceRepository,
     private readonly userNotificationSender: UserNotificationSender,
+    private readonly topHotelsMapper: TopHotelsMapper,
     private readonly topHotelsRepository: TopHotelsRepository,
   ) {
   }
@@ -50,7 +53,9 @@ export class HotelService {
   async updateTopHotels(searchId: string, collectingStartedAt: string, collectingFinishedAt: string): Promise<void> {
     try {
       const topHotels = await this.findTopHotels(searchId, collectingStartedAt, collectingFinishedAt)
-      await this.topHotelsRepository.create(searchId, collectingStartedAt, collectingFinishedAt, topHotels)
+      const indexedTopHotels = this.topHotelsMapper.toIndexedTopHotels(topHotels)
+      await this.topHotelsRepository.delete(searchId)
+      await this.topHotelsRepository.create(searchId, collectingStartedAt, collectingFinishedAt, indexedTopHotels)
       this.userNotificationSender.notifyAboutTopHotelsUpdate(searchId)
     } catch (err) {
       logger.error(`Error when updating [${this.topHotelsRepository.COLLECTION_NAME}] searchId [${searchId}] ` +
@@ -58,21 +63,27 @@ export class HotelService {
     }
   }
 
-  async deleteHotels(searchId: string): Promise<void> {
-    await Promise.all([
-      this.topHotelsRepository.delete(searchId),
-      this.placeRepository.delete(searchId),
-    ])
+  async deleteHotels(searchId: string, scenarioType: CollectingScenarioType): Promise<void> {
+    switch (scenarioType)  {
+      case CollectingScenarioType.COLLECT_PLACE: {
+        await this.placeRepository.delete(searchId)
+        break
+      }
+      case CollectingScenarioType.COLLECT_HOTELS: {
+        await this.topHotelsRepository.delete(searchId)
+        break
+      }
+    }
   }
 
-  private async findTopHotels(searchId: string, collectingStartedAt: string, collectingFinishedAt: string): Promise<TopHotelsDto> {
+  private async findTopHotels(searchId: string, collectingStartedAt: string, collectingFinishedAt: string): Promise<TopHotels> {
     const limit = this.config.topHotelsSelectLimit
     const pendingResults = [
       sortBy.bestPriceRate,
       sortBy.cheapest,
       sortBy.bestRate,
       sortBy.bestLocation
-    ].map((sortedBy) => this.hotelRepository.findTopHotels(searchId, collectingStartedAt, collectingFinishedAt, sortedBy, limit))
+    ].map((sortedBy) => this.hotelRepository.findHotels(searchId, collectingStartedAt, collectingFinishedAt, sortedBy, limit))
     try {
       const [
         bestPriceRate,

@@ -1,5 +1,5 @@
-import { TopHotelsDto } from '@kb/model'
+import { IndexedTopHotels } from '@kb/model'
 
 export abstract class TopHotelsRepository {
-  abstract findBySearchId(searchId: string): Promise<TopHotelsDto>
+  abstract findBySearchId(searchId: string, limit: number): Promise<IndexedTopHotels[]>
 }

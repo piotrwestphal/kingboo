@@ -6,9 +6,9 @@ export abstract class HotelRepository {
                      collectingStartedAt: string,
                      collectingFinishedAt: string | null): Promise<SimpleHotelDto>
 
-  abstract findTopHotels(searchId: string,
-                         collectingStartedAt: string,
-                         collectingFinishedAt: string | null,
-                         sortedBy: SortedByOption[],
-                         limit: number): Promise<SimpleHotelDto[]>
+  abstract findHotels(searchId: string,
+                      collectingStartedAt: string,
+                      collectingFinishedAt: string | null,
+                      sortedBy: SortedByOption[],
+                      limit: number): Promise<SimpleHotelDto[]>
 }

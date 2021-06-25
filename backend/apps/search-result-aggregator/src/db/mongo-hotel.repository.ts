@@ -48,11 +48,11 @@ export class MongoHotelRepository extends HotelRepository {
       : null
   }
 
-  async findTopHotels(searchId: string,
-                      collectingStartedAt: string,
-                      collectingFinishedAt: string | null,
-                      sortedBy: SortedByOption[],
-                      limit: number): Promise<SimpleHotelDto[]> {
+  async findHotels(searchId: string,
+                   collectingStartedAt: string,
+                   collectingFinishedAt: string | null,
+                   sortedBy: SortedByOption[],
+                   limit: number): Promise<SimpleHotelDto[]> {
     const sort = sortedBy.reduce((prev, { value, order }) => {
       return {
         ...prev,

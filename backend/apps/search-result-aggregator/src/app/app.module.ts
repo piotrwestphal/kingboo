@@ -7,6 +7,7 @@ import { getEnvironments } from '../config/environments'
 import { logger } from '../logger'
 import { DbModule } from '../db/db.module'
 import { MqModule } from '../mq/mq.module'
+import { TopHotelsMapper } from './top-hotels.mapper'
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { MqModule } from '../mq/mq.module'
   controllers: [DataUpdatesConsumer],
   providers: [
     HotelService,
+    TopHotelsMapper,
   ],
 })
 export class AppModule {

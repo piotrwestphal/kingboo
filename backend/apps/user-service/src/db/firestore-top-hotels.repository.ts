@@ -1,7 +1,7 @@
 import { FirestoreClient } from '@kb/firestore'
 import { TopHotelsRepository } from '../core/abstract/top-hotels.repository'
 import { TopHotelsDocumentMapper } from './top-hotels-document.mapper'
-import { TopHotelsDto } from '@kb/model'
+import { IndexedTopHotels } from '@kb/model'
 import { TopHotelsDocument } from './top-hotels.document'
 
 export class FirestoreTopHotelsRepository extends TopHotelsRepository {
@@ -15,11 +15,11 @@ export class FirestoreTopHotelsRepository extends TopHotelsRepository {
     super()
   }
 
-  async findBySearchId(searchId: string): Promise<TopHotelsDto | null> {
+  async findBySearchId(searchId: string, limit: number): Promise<IndexedTopHotels[]> {
     const collectionRef = this.firestoreClient.getCollection<TopHotelsDocument>(this.TOP_HOTELS_COLLECTION)
-    const snapshot = await collectionRef.doc(searchId).get()
-    return snapshot.exists
-      ? this.topHotelsDocumentMapper.fromDoc(snapshot.data())
-      : null
+    const result = await collectionRef.where('searchId', '==', searchId).limit(limit).get()
+    return result.docs
+      .map(snapshot => snapshot.data())
+      .map(doc => this.topHotelsDocumentMapper.fromDoc(doc))
   }
 }

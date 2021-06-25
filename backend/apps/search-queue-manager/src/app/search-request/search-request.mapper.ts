@@ -5,6 +5,7 @@ export class SearchRequestMapper {
   toDto({
           searchId,
           type,
+          scenarioType,
           updateFrequencyMinutes,
           resultsLimit,
           searchPlace,
@@ -20,6 +21,7 @@ export class SearchRequestMapper {
     return {
       searchId,
       type,
+      scenarioType,
       updateFrequencyMinutes,
       resultsLimit,
       searchPlace,
