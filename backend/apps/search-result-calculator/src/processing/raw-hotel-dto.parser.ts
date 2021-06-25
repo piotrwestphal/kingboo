@@ -94,10 +94,10 @@ export class RawHotelDtoParser {
                        bonuses,
                      }: RawRoomDto): Room {
     return {
-      shortDescription,
-      longDescription,
-      personCount,
-      beds,
+      shortDescription: shortDescription?.trim() || null,
+      longDescription: longDescription?.trim() || null,
+      personCount: personCount?.trim() || null,
+      beds: beds?.trim() || null,
       bonuses: this.parseBonuses(bonuses),
     };
   }

@@ -22,5 +22,5 @@ export class TimeHelper {
     return result
   }
 
-  private static twoDigitFormat = (value: number) => `0${value}`.slice(-2)
+  public static twoDigitFormat = (value: number) => `0${value}`.slice(-2)
 }

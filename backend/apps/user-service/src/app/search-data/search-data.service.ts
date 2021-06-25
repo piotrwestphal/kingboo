@@ -7,6 +7,8 @@ import { SearchDataDto, SearchRequestDto } from '@kb/model'
 
 export class SearchDataService {
 
+  private readonly TOP_HOTELS_SELECTION_LIMIT = 10 // TODO: read from search request
+
   constructor(
     private readonly searchDataMapper: SearchDataMapper,
     private readonly searchRequestsClient: SearchRequestsClient,
@@ -20,7 +22,7 @@ export class SearchDataService {
     logger.debug(`Search requests fetched within [${Date.now() - now}] ms`)
     const [collected, notCollectedEvenOnce] = this.divideByCollectingState(searchRequests)
     const withTopHotels = await this.findAndCombine(collected)
-    const withoutTopHotels = notCollectedEvenOnce.map(v => this.searchDataMapper.toDto(v, null))
+    const withoutTopHotels = notCollectedEvenOnce.map(v => this.searchDataMapper.toDto(v, []))
     logger.debug(`Search data loaded within [${Date.now() - now}] ms`)
     return {
       searchDataList: withTopHotels.concat(withoutTopHotels)
@@ -28,10 +30,9 @@ export class SearchDataService {
   }
 
   private async findAndCombine(searchRequests: SearchRequestDto[]): Promise<SearchDataDto[]> {
-    const searchIds = searchRequests.map(v => v.searchId)
-    const topHotelsListPending = searchIds.map(v => this.topHotelsRepository.findBySearchId(v))
-    const topHotels = await Promise.all(topHotelsListPending)
-    return searchRequests.map((v, i) => this.searchDataMapper.toDto(v, topHotels[i]))
+    const topHotelsListPending = searchRequests.map(v => this.topHotelsRepository.findBySearchId(v.searchId, this.TOP_HOTELS_SELECTION_LIMIT))
+    const resolvedIndexedTopHotels = await Promise.all(topHotelsListPending)
+    return searchRequests.map((v, i) => this.searchDataMapper.toDto(v, resolvedIndexedTopHotels[i]))
   }
 
   private divideByCollectingState(searchRequests: SearchRequestDto[]): [SearchRequestDto[], SearchRequestDto[]] {

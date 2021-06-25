@@ -1,7 +1,7 @@
 import { FirestoreDocument } from '@kb/firestore'
-import { TopHotelsDto } from '@kb/model'
+import { IndexedTopHotels } from '@kb/model'
 
-export interface TopHotelsDocument extends TopHotelsDto, FirestoreDocument {
+export interface TopHotelsDocument extends IndexedTopHotels, FirestoreDocument {
   readonly collectingStartedAt: string
   readonly collectingFinishedAt: string
 }

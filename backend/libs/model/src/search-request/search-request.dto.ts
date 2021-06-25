@@ -1,6 +1,7 @@
 export interface SearchRequestDto {
   readonly searchId: string
   readonly type: string
+  readonly scenarioType: string
   readonly updateFrequencyMinutes: number
   readonly resultsLimit: number
   readonly searchPlace: string

@@ -1,6 +1,7 @@
 import { TopHotelsDocument } from './top-hotels.document'
 import { Timestamp } from '@google-cloud/firestore'
-import { TopHotelsDto } from '@kb/model'
+import { IndexedTopHotels } from '@kb/model'
+import { TimeHelper } from '@kb/util'
 
 export class TopHotelsDocumentMapper {
 
@@ -9,16 +10,18 @@ export class TopHotelsDocumentMapper {
     collectingStartedAt: string,
     collectingFinishedAt: string,
     {
+      orderIndex,
       bestPriceRate,
       cheapest,
       bestRate,
       bestLocation,
-    }: TopHotelsDto): TopHotelsDocument {
+    }: IndexedTopHotels): TopHotelsDocument {
     return {
       searchId,
-      docId: searchId,
+      docId: `${searchId}_${TimeHelper.twoDigitFormat(orderIndex)}`,
       collectingStartedAt,
       collectingFinishedAt,
+      orderIndex,
       bestPriceRate,
       cheapest,
       bestRate,

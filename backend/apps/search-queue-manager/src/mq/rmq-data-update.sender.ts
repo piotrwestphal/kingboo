@@ -1,7 +1,8 @@
 import { ClientProxy } from '@nestjs/microservices'
-import { MqMessage } from '@kb/model'
+import { CollectingScenarioType, MqMessage } from '@kb/model'
 import { DataUpdateSender } from '../core/abstract/data-update.sender'
 import { DataUpdatesMessagePattern } from '@kb/rabbit'
+import { ScenarioDetailsDto } from '@kb/model'
 
 export class RmqDataUpdateSender extends DataUpdateSender {
 
@@ -11,8 +12,8 @@ export class RmqDataUpdateSender extends DataUpdateSender {
     super()
   }
 
-  notifyAboutDeletedSearchRequest(searchId: string): void {
-    this.client.emit<void, MqMessage>(DataUpdatesMessagePattern.SEARCH_REQUEST_DELETED,
-      { searchId, timestamp: Date.now() })
+  notifyAboutDeletedSearchRequest(searchId: string, scenarioType: CollectingScenarioType): void {
+    this.client.emit<void, MqMessage<ScenarioDetailsDto>>(DataUpdatesMessagePattern.SEARCH_REQUEST_DELETED,
+      { searchId, data: { scenarioType }, timestamp: Date.now() })
   }
 }

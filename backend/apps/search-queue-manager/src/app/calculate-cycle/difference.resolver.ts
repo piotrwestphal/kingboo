@@ -18,29 +18,26 @@ export class DifferenceResolver {
   ) {
   }
 
-  async resolveDifferences(currentSearchRequests: SearchRequest[],
-                           searchIdsToCreate: string[],
-                           searchIdsToDelete: string[]): Promise<void> {
-    const searchRequestsToCreate = currentSearchRequests.filter(v => searchIdsToCreate.includes(v.searchId))
+  async resolveDifferences(searchRequestsToCreate: SearchRequest[],
+                           searchRequestsToDelete: SearchRequest[]): Promise<void> {
     const dbOperations: Array<() => Promise<void>> = []
-
     if (searchRequestsToCreate.length) {
       dbOperations.push(() => this.create(searchRequestsToCreate))
     }
-    if (searchIdsToDelete.length) {
-      dbOperations.push(() => this.delete(searchIdsToDelete))
+    if (searchRequestsToDelete.length) {
+      dbOperations.push(() => this.delete(searchRequestsToDelete))
     }
-
     await Promise.all(dbOperations.map(v => v()))
   }
 
-  private async delete(searchIds: string[]): Promise<void> {
-    const deletedCount = await this.searchRequestRepository.deleteMany(searchIds)
+  private async delete(searchRequests: SearchRequest[]): Promise<void> {
+    const searchIdsToDelete = searchRequests.map(v => v.searchId)
+    const deletedCount = await this.searchRequestRepository.deleteMany(searchIdsToDelete)
     if (deletedCount) {
       logger.info(`[${deletedCount}] search requests were deleted`)
-      logger.debug(`Deleted requests search ids:`, searchIds)
-      searchIds.map(v => this.userNotificationSender.notifyAboutDeletedCyclicSearchRequest(v))
-      searchIds.map(v => this.dataUpdateSender.notifyAboutDeletedSearchRequest(v))
+      logger.debug(`Deleted requests search ids:`, searchIdsToDelete)
+      searchIdsToDelete.map(v => this.userNotificationSender.notifyAboutDeletedCyclicSearchRequest(v))
+      searchRequests.map(v => this.dataUpdateSender.notifyAboutDeletedSearchRequest(v.searchId, v.scenarioType))
     }
   }
 

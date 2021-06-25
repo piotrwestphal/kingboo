@@ -1,17 +1,19 @@
+import { SearchRequest } from '../../core/model/SearchRequest'
+
 interface FoundDifferences {
-  readonly searchIdsToCreate: string[]
-  readonly searchIdsToDelete: string[];
-  readonly differencesFound: boolean;
+  readonly searchReqsToCreate: SearchRequest[]
+  readonly searchReqsToDelete: SearchRequest[]
+  readonly differencesFound: boolean
 }
 
 export class DifferenceFinder {
-  find(current: string[], existing: string[]): FoundDifferences {
-    const searchIdsToCreate = current.filter(v => !existing.includes(v));
-    const searchIdsToDelete = existing.filter(v => !current.includes(v));
+  find(currentReqs: SearchRequest[], existingReqs: SearchRequest[]): FoundDifferences {
+    const searchReqsToCreate = currentReqs.filter(current => !existingReqs.map(v => v.searchId).includes(current.searchId))
+    const searchReqsToDelete = existingReqs.filter(existing => !currentReqs.map(v => v.searchId).includes(existing.searchId))
     return {
-      differencesFound: searchIdsToCreate.length !== 0 || searchIdsToDelete.length !== 0,
-      searchIdsToCreate,
-      searchIdsToDelete,
-    };
+      differencesFound: searchReqsToCreate.length !== 0 || searchReqsToDelete.length !== 0,
+      searchReqsToCreate,
+      searchReqsToDelete,
+    }
   }
 }

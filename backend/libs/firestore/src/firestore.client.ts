@@ -1,4 +1,4 @@
-import { Firestore } from '@google-cloud/firestore'
+import { Firestore, Query } from '@google-cloud/firestore'
 import { FirestoreDocument } from './firestore.document'
 import DocumentSnapshot = FirebaseFirestore.DocumentSnapshot
 import CollectionReference = FirebaseFirestore.CollectionReference
@@ -13,7 +13,7 @@ export class FirestoreClient {
 
   async addToCollection<T extends FirestoreDocument>(collection: string,
                                                      doc: T): Promise<DocumentSnapshot<T>> {
-    const docRef = await this.firestore.collection(collection).doc(doc.docId) as DocumentReference<T>
+    const docRef = this.firestore.collection(collection).doc(doc.docId) as DocumentReference<T>
     await docRef.set(doc);
     return docRef.get();
   }
@@ -28,5 +28,27 @@ export class FirestoreClient {
 
   getBatch(): WriteBatch {
     return this.firestore.batch();
+  }
+
+  async deleteInBatch(query: Query<FirestoreDocument>,
+                      batchSize: number,
+                      resolve: (docIds: string[]) => void,
+                      currentlyDeletedIds: string[]): Promise<string[]> {
+    const snapshot = await query.limit(batchSize).get()
+    if (snapshot.empty) {
+      resolve(currentlyDeletedIds)
+      return
+    }
+    const batch = this.firestore.batch()
+    snapshot.docs.forEach(doc => batch.delete(doc.ref))
+    await batch.commit()
+    const deletedIds = snapshot.docs
+      .map((v) => v.data().docId)
+      .concat(currentlyDeletedIds)
+    // Recurse on the next process tick, to avoid
+    // exploding the stack.
+    process.nextTick(() => {
+      this.deleteInBatch(query, batchSize, resolve, deletedIds)
+    })
   }
 }
