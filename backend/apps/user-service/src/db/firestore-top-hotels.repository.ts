@@ -18,6 +18,7 @@ export class FirestoreTopHotelsRepository extends TopHotelsRepository {
   async findBySearchId(searchId: string, limit: number): Promise<IndexedTopHotels[]> {
     const collectionRef = this.firestoreClient.getCollection<TopHotelsDocument>(this.TOP_HOTELS_COLLECTION)
     const result = await collectionRef.where('searchId', '==', searchId).limit(limit).get()
+
     return result.docs
       .map(snapshot => snapshot.data())
       .map(doc => this.topHotelsDocumentMapper.fromDoc(doc))
