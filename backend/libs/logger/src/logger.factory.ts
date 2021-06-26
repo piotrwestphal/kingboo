@@ -9,7 +9,8 @@ export const createLogger = ({
                              }: LoggerConfig) => {
   const additionalTransports: FileTransportInstance[] = [];
   additionalTransports.push(new transports.File({
-    filename: `${logOutputFolder}/output.log`,
+    dirname: `${logOutputFolder}/logs`,
+    filename: 'output.log',
     level: 'debug',
   }));
   return new CommonLoggerService({
