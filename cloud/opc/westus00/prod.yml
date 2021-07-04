@@ -13,8 +13,6 @@ services:
     env_file:
       - westus00.env
       - ./../opc.env
-    environment:
-      LOG_LEVEL: info
     volumes:
       - ./../../../compose-output/src:/usr/src/app/output
 
