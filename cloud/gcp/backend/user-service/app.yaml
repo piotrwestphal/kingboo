@@ -5,6 +5,7 @@ env_variables:
   NODE_ENV: prod
   PORT: 8080
   LOG_LEVEL: debug
+  LOG_OUTPUT_FOLDER: tmp # https://cloud.google.com/appengine/docs/standard/nodejs/using-temp-files
   CORS_ORIGINS: "__CORS_ORIGINS__"
   LOG_COLLECTOR_TOKEN: "__LOG_COLLECTOR_TOKEN__"
   FIRESTORE_PROJECT_ID: "__FIRESTORE_PROJECT_ID__"
