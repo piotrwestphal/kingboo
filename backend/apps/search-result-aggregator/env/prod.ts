@@ -12,7 +12,7 @@ export const prodConfig = (env: NodeJS.ProcessEnv): AppConfig =>
       rawClientKey: env.FIRESTORE_CLIENT_KEY,
     },
     mongo: {
-      primaryAddress: env.MONGO_PRIMARY_ADDRESS,
+      primaryAddress: env.MONGO_RO_PRIMARY_ADDRESS,
     },
     mqConsumer: {
       address: env.MQ_ADDRESS,

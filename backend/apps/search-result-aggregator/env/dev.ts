@@ -19,7 +19,7 @@ export const devConfig = (env: NodeJS.ProcessEnv): AppConfig =>
       },
     },
     mongo: {
-      primaryAddress: env.MONGO_PRIMARY_ADDRESS,
+      primaryAddress: env.MONGO_RO_PRIMARY_ADDRESS,
     },
     mqConsumer: {
       address: mqAddress(env),
