@@ -6,7 +6,7 @@ export const prodConfig = (env: NodeJS.ProcessEnv): AppConfig =>
     port: env.PORT ? parseInt(env.PORT, 10) : 8080,
     corsOrigins: env.CORS_ORIGINS,
     mongo: {
-      address: env.MONGO_ADDRESS,
+      primaryAddress: env.MONGO_PRIMARY_ADDRESS,
     },
     mqConsumer: {
       address: env.MQ_ADDRESS,

@@ -4,7 +4,7 @@ import { CreateCyclicSearch } from './create-cyclic-search';
 import { CollectingScenarioType } from '@kb/model'
 
 export const cyclicSearchValidationSchemaMap: SchemaMap<CreateCyclicSearch> = {
-  scenarioType: Joi.string().valid(...Object.values(CollectingScenarioType)),
+  scenarioType: Joi.string().valid(...Object.values(CollectingScenarioType)).required(),
   updateFrequencyMinutes: Joi.number().required(),
   resultsLimit: Joi.number().required(),
   searchPlace: Joi.string().required(),

@@ -1,31 +1,60 @@
-import { DynamicModule, Module } from '@nestjs/common'
+import { DynamicModule, Module, Provider } from '@nestjs/common'
 import { MongoConfigService } from '@kb/mongo/mongo-config.service'
 import { MongoConfigType } from '@kb/mongo/mongo-config.type'
-import { ModelDefinition, MongooseModule, MongooseModuleOptions } from '@nestjs/mongoose'
+import { getConnectionToken, getModelToken, ModelDefinition } from '@nestjs/mongoose'
+import * as mongoose from 'mongoose'
+import { Connection } from 'mongoose'
 
-// TODO: multiple connections https://stackoverflow.com/a/66801008
 @Module({})
 export class MongoModule {
-  static register<T extends MongoConfigService>({ configClass }: { configClass: MongoConfigType<T> },
-                                                modelDefinitions: ModelDefinition[]): DynamicModule {
 
-    const mongooseModels = MongooseModule.forFeature(modelDefinitions)
+  static registerPrimary<T extends MongoConfigService>({ configClass }: { configClass: MongoConfigType<T> },
+                                                       modelDefinitions: ModelDefinition[]): DynamicModule {
+    return this.register(
+      configClass,
+      modelDefinitions,
+      (config) => config.mongoPrimaryAddress,
+      'Primary')
+  }
+
+  static registerSecondary<T extends MongoConfigService>({ configClass }: { configClass: MongoConfigType<T> },
+                                                         modelDefinitions: ModelDefinition[]): DynamicModule {
+    return this.register(
+      configClass,
+      modelDefinitions,
+      (config) => config.mongoSecondaryAddress,
+      'Secondary')
+  }
+
+  private static register<T extends MongoConfigService>(configClass: MongoConfigType<T>,
+                                                        modelDefinitions: ModelDefinition[],
+                                                        uriProvider: (config: T) => string,
+                                                        connectionName: string): DynamicModule {
+    const modelProviders: Provider[] = modelDefinitions.map(modelDef => ({
+      provide: getModelToken(modelDef.name),
+      useFactory: (c: Connection) => c.model(modelDef.name, modelDef.schema, modelDef.collection),
+      inject: [getConnectionToken(connectionName)],
+    }))
+
     return {
       module: MongoModule,
-      imports: [
-        MongooseModule.forRootAsync({
-          useFactory: async (config: T) => ({
-            uri: config.mongoAddress,
-            useFindAndModify: false,
-            useNewUrlParser: true,
-            useUnifiedTopology: true,
-          } as MongooseModuleOptions),
-          inject: [configClass],
-        }),
-        mongooseModels,
+      providers: [
+        {
+          provide: getConnectionToken(connectionName),
+          useFactory: async (config: T): Promise<Connection> =>
+            mongoose.createConnection(
+              uriProvider(config),
+              {
+                useFindAndModify: false,
+                useNewUrlParser: true,
+                useUnifiedTopology: true,
+              }),
+          inject: [configClass]
+        },
+        ...modelProviders,
       ],
       exports: [
-        mongooseModels,
+        ...modelProviders,
       ],
     }
   }

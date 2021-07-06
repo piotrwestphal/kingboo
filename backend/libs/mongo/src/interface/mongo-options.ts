@@ -1,3 +1,4 @@
 export interface MongoOptions {
-  readonly address: string;
+  readonly primaryAddress: string
+  readonly secondaryAddress?: string
 }

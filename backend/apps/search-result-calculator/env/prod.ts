@@ -15,7 +15,7 @@ export const prodConfig = (env: NodeJS.ProcessEnv): AppConfig =>
       }
     },
     mongo: {
-      address: env.MONGO_ADDRESS
+      primaryAddress: env.MONGO_PRIMARY_ADDRESS
     },
     mqConsumer: {
       address: env.MQ_ADDRESS,

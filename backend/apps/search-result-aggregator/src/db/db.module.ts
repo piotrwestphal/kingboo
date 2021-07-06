@@ -19,7 +19,7 @@ import { PlaceDocumentMapper } from './place/place-document.mapper'
 @Module({
   imports: [
     FirestoreModule.register({ configClass: AppConfigService }),
-    MongoModule.register({ configClass: AppConfigService }, [
+    MongoModule.registerPrimary({ configClass: AppConfigService }, [
       { name: HotelSchemaKey, schema: HotelSchema },
     ]),
   ],
