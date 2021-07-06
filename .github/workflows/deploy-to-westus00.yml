@@ -100,8 +100,8 @@ jobs:
             echo "FIRESTORE_PROJECT_ID=$FIRESTORE_PROJECT_ID" >> westus00.env
             echo "FIRESTORE_CLIENT_EMAIL=$FIRESTORE_CLIENT_EMAIL" >> westus00.env
             echo "FIRESTORE_CLIENT_KEY=$FIRESTORE_CLIENT_KEY" >> westus00.env
-            echo "MONGO_PRIMARY_ADDRESS=MONGO_PRIMARY_ADDRESS" >> westus00.env
-            echo "MONGO_RO_PRIMARY_ADDRESS=MONGO_RO_PRIMARY_ADDRESS" >> westus00.env
+            echo "MONGO_PRIMARY_ADDRESS=$MONGO_PRIMARY_ADDRESS" >> westus00.env
+            echo "MONGO_RO_PRIMARY_ADDRESS=$MONGO_RO_PRIMARY_ADDRESS" >> westus00.env
             echo "MQ_ADDRESS=$MQ_ADDRESS" >> westus00.env
             docker-compose pull
             docker-compose -f docker-compose.yml -f prod.yml up -dV
