@@ -81,7 +81,8 @@ jobs:
           FIRESTORE_PROJECT_ID: ${{ secrets.FIRESTORE_PROJECT_ID }}
           FIRESTORE_CLIENT_EMAIL: ${{ secrets.FIRESTORE_CLIENT_EMAIL }}
           FIRESTORE_CLIENT_KEY: ${{ secrets.FIRESTORE_CLIENT_KEY }}
-          MONGO_ADDRESS: ${{ secrets.MONGO_ADDRESS }}
+          MONGO_PRIMARY_ADDRESS: ${{ secrets.AWS_MONGO_ADDRESS }}
+          MONGO_RO_PRIMARY_ADDRESS: ${{ secrets.AWS_MONGO_RO_ADDRESS }}
           MQ_ADDRESS: ${{ secrets.MQ_ADDRESS }}
         run: |
           ssh -T -o StrictHostKeyChecking=no -l ${{ secrets.WESTUS00_USER }} ${{ secrets.WESTUS00_HOST }} << EOF
@@ -99,8 +100,9 @@ jobs:
             echo "FIRESTORE_PROJECT_ID=$FIRESTORE_PROJECT_ID" >> westus00.env
             echo "FIRESTORE_CLIENT_EMAIL=$FIRESTORE_CLIENT_EMAIL" >> westus00.env
             echo "FIRESTORE_CLIENT_KEY=$FIRESTORE_CLIENT_KEY" >> westus00.env
+            echo "MONGO_PRIMARY_ADDRESS=MONGO_PRIMARY_ADDRESS" >> westus00.env
+            echo "MONGO_RO_PRIMARY_ADDRESS=MONGO_RO_PRIMARY_ADDRESS" >> westus00.env
             echo "MQ_ADDRESS=$MQ_ADDRESS" >> westus00.env
-            echo "MONGO_ADDRESS=$MONGO_ADDRESS" >> westus00.env
             docker-compose pull
             docker-compose -f docker-compose.yml -f prod.yml up -dV
             docker image prune -f

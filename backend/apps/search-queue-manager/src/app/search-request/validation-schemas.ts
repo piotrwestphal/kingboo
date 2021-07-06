@@ -16,11 +16,11 @@ export const baseValidationSchemaMap: SchemaMap<CreateSearchRequest> = {
 
 export const collectingHotelsScenarioRequestValidationSchemaMap: SchemaMap<CreateSearchRequest> = {
   ...baseValidationSchemaMap,
-  scenarioType: Joi.string().valid(CollectingScenarioType.COLLECT_HOTELS),
+  scenarioType: Joi.string().valid(CollectingScenarioType.COLLECT_HOTELS).required(),
   resultsLimit: Joi.number().required(),
 }
 
 export const collectingPlaceScenarioRequestValidationSchemaMap: SchemaMap<CreateSearchRequest> = {
   ...baseValidationSchemaMap,
-  scenarioType: Joi.string().valid(CollectingScenarioType.COLLECT_PLACE),
+  scenarioType: Joi.string().valid(CollectingScenarioType.COLLECT_PLACE).required(),
 }

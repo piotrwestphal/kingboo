@@ -1,3 +1,4 @@
 export interface MongoConfigService {
-  mongoAddress: string;
+  readonly mongoPrimaryAddress: string
+  readonly mongoSecondaryAddress?: string
 }

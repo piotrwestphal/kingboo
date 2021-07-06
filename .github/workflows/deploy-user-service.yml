@@ -58,11 +58,10 @@ jobs:
         working-directory: ./cloud/gcp/backend/user-service
         env:
           CORS_ORIGINS: ${{ secrets.CORS_ORIGINS }}
-          LOG_COLLECTOR_TOKEN: ${{ secrets.LOG_COLLECTOR_TOKEN }}
           FIRESTORE_PROJECT_ID: ${{ secrets.FIRESTORE_PROJECT_ID }}
           FIRESTORE_CLIENT_EMAIL: ${{ secrets.FIRESTORE_CLIENT_EMAIL }}
           FIRESTORE_CLIENT_KEY: ${{ secrets.FIRESTORE_CLIENT_KEY }}
-          MONGO_ADDRESS: ${{ secrets.MONGO_ADDRESS }}
+          LOG_COLLECTOR_TOKEN: ${{ secrets.LOG_COLLECTOR_TOKEN }}
           MQ_ADDRESS: ${{ secrets.MQ_ADDRESS }}
           SEARCH_REQUESTS_RESOURCE_ADDRESS: ${{ secrets.SEARCH_REQUESTS_RESOURCE_ADDRESS }}
         run: |

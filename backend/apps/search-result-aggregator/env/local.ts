@@ -18,7 +18,7 @@ export const localConfig: AppConfig = {
     },
   },
   mongo: {
-    address: 'mongodb://127.0.0.1:27017/dev',
+    primaryAddress: 'mongodb://127.0.0.1:27017/dev',
   },
   mqConsumer: {
     address: mqAddress,

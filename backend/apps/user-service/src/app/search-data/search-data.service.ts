@@ -16,6 +16,8 @@ export class SearchDataService {
   ) {
   }
 
+  // https://stackoverflow.com/questions/42775146/mongoose-how-to-sort-array-of-objects-returned-from-query
+  // https://www.tutorialspoint.com/how-do-you-limit-an-array-sub-element-in-mongodb
   async getSearchData(): Promise<SearchDataPayload> {
     const now = Date.now()
     const searchRequests = await this.searchRequestsClient.getSearchRequests()

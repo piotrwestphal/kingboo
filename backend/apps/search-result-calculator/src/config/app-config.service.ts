@@ -21,8 +21,8 @@ export class AppConfigService extends ConfigService<AppConfig> implements MongoC
     return this.config.storage.remote
   }
 
-  get mongoAddress(): string {
-    return this.config.mongo.address;
+  get mongoPrimaryAddress(): string {
+    return this.config.mongo.primaryAddress;
   }
 
   get hotelsWithoutUpdateRetentionHours(): number {

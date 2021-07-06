@@ -16,10 +16,8 @@ import { MongoCyclicSearchRepository } from './mongo-cyclic-search.repository'
 
 @Module({
   imports: [
-    MongoModule.register({ configClass: AppConfigService }, [
+    MongoModule.registerPrimary({ configClass: AppConfigService }, [
       { name: SearchRequestSchemaKey, schema: SearchRequestSchema },
-    ]),
-    MongoModule.register({ configClass: AppConfigService }, [
       { name: CyclicSearchSchemaKey, schema: CyclicSearchSchema },
     ]),
   ],

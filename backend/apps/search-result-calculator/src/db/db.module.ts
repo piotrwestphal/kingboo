@@ -19,10 +19,8 @@ import { MongoProcessingProgressRepository } from './mongo-processing-progress.r
 
 @Module({
   imports: [
-    MongoModule.register({ configClass: AppConfigService }, [
+    MongoModule.registerPrimary({ configClass: AppConfigService }, [
       { name: HotelSchemaKey, schema: HotelSchema },
-    ]),
-    MongoModule.register({ configClass: AppConfigService }, [
       { name: ProcessingProgressSchemaKey, schema: ProcessingProgressSchema },
     ]),
   ],

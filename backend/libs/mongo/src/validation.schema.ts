@@ -3,5 +3,6 @@ import { SchemaMap } from '@hapi/joi'
 import { MongoOptions } from '@kb/mongo/interface/mongo-options'
 
 export const mongoValidationSchemaMap: SchemaMap<MongoOptions> = {
-  address: Joi.string().required(),
+  primaryAddress: Joi.string().required(),
+  secondaryAddress: Joi.string().optional(),
 }

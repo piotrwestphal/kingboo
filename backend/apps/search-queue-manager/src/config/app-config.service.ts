@@ -12,8 +12,8 @@ export class AppConfigService extends ConfigService<AppConfig> implements MongoC
     super(appConfig, appConfigValidationSchemaMap, logger)
   }
 
-  get mongoAddress(): string {
-    return this.config.mongo.address;
+  get mongoPrimaryAddress(): string {
+    return this.config.mongo.primaryAddress;
   }
 
   get collectingScenarioMqClient(): RmqOptions {
