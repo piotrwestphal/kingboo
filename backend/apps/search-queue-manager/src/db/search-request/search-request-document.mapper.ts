@@ -28,8 +28,7 @@ export class SearchRequestDocumentMapper {
     return SearchRequest.create({
       searchId,
       type: type as SearchRequestType,
-      // TODO: until every search request on prod has `scenarioType` value
-      scenarioType: scenarioType as CollectingScenarioType ?? CollectingScenarioType.COLLECT_HOTELS,
+      scenarioType: scenarioType as CollectingScenarioType,
       updateFrequencyMinutes,
       resultsLimit,
       searchPlace,
