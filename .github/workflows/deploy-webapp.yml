@@ -29,7 +29,7 @@ jobs:
       - name: Install dependencies
         working-directory: ./webapp
         run: |
-          npm ci --silent
+          npm ci
 
       - name: Build package ready for gcp
         working-directory: ./webapp
