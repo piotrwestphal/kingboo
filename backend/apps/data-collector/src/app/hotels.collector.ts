@@ -36,6 +36,14 @@ export class HotelsCollector {
       searchPlaceIdentifier, collectHotelsScenario, { showOnlyAvailableProperties: true, sortByDistance: true })
     const enableStylesOnResultsPage = this.appConfigService.enableStylesOnResultsPage
     const totalPagesCount = await this.scraperFacade.prepareResultList(resultPageUri, enableStylesOnResultsPage)
+
+    // TODO: remove if not needed
+    if (!totalPagesCount) {
+      logger.error(`Probably there is something wrong with result page view`) // TODO: remove if not needed
+      const debugHtml = await this.scraperFacade.getInnerHtmlForDebugPurpose()
+      await this.fileRepository.save(debugHtml, 'missing-values', 'debug-html', 'html')
+    }
+
     const {
       pagesCollected,
       rawHotels

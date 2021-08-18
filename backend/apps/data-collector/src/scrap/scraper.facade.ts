@@ -65,6 +65,11 @@ export class ScraperFacade {
     return this.hotelsScraper.collectHotelsFromCurrentPage()
   }
 
+  // TODO: remove if not needed
+  getInnerHtmlForDebugPurpose(): Promise<string> {
+    return this.browserService.evaluate(() => document.getElementById('right').innerHTML)
+  }
+
   takeScreenshot(): Promise<string | Buffer | void> {
     return this.browserService.takeScreenshot()
   }

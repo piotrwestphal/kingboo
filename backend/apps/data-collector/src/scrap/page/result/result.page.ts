@@ -26,7 +26,6 @@ export class ResultPage {
         short: splitTextFromHeader[0],
       }
     }
-    logger.log('Inner html of element with `right` id', await this.browserService.evaluate(() => document.getElementById('right').innerHTML))
     return {
       full: 'There was no text - check what went wrong',
       short: 'There was no text - check what went wrong',
