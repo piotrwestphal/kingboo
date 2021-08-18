@@ -27,7 +27,15 @@ export class PlaceCollector {
 
     const resultPageUri = this.scraperFacade.buildResultPageUri(searchPlaceIdentifier, collectPlaceScenario)
     const enableStylesOnResultsPage = this.appConfigService.enableStylesOnResultsPage
-    await this.scraperFacade.prepareResultList(resultPageUri, enableStylesOnResultsPage)
+    const totalPagesCount = await this.scraperFacade.prepareResultList(resultPageUri, enableStylesOnResultsPage)
+
+    // TODO: remove if not needed
+    if (!totalPagesCount) {
+      logger.error(`Probably there is something wrong with result page view`)
+      const debugHtml = await this.scraperFacade.getInnerHtmlForDebugPurpose()
+      await this.fileRepository.save(debugHtml, 'missing-values', 'debug-html', 'html')
+    }
+
     const scrapedRawHotel = await this.scraperFacade.collectFirstHotelFromCurrentPage()
 
     const rawHotel = RawHotelMapper.fromScrapedRawHotel(scrapedRawHotel, 0, new Date().toISOString())
