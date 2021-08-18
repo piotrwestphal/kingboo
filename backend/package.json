@@ -47,7 +47,7 @@
     "amqplib": "0.7.1",
     "cassandra-driver": "4.6.1",
     "mongoose": "5.12.15",
-    "puppeteer": "8.0.0",
+    "puppeteer": "10.2.0",
     "reflect-metadata": "0.1.13",
     "rimraf": "3.0.2",
     "rxjs": "7.3.0",

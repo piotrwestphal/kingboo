@@ -13,7 +13,7 @@ export const localConfig: AppConfig = {
   puppeteer: {
     headlessModeOff: true,
     enableStylesOnResultsPage: true,
-    executablePath: './node_modules/puppeteer/.local-chromium/mac-856583/chrome-mac/Chromium.app/Contents/MacOS/Chromium',
+    executablePath: './node_modules/puppeteer/.local-chromium/mac-901912/chrome-mac/Chromium.app/Contents/MacOS/Chromium',
     slowMoMs: 0,
     devtoolsTurnedOn: false,
   },
