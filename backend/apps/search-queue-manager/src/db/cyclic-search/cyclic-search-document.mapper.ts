@@ -21,7 +21,6 @@ export class CyclicSearchDocumentMapper {
                  }: CyclicSearchDocument): CyclicSearch {
     return CyclicSearch.create({
       cyclicId,
-      // TODO: until every cyclic search on prod has `scenarioType` value
       scenarioType: scenarioType as CollectingScenarioType ?? CollectingScenarioType.COLLECT_HOTELS,
       updateFrequencyMinutes,
       resultsLimit,
@@ -52,7 +51,8 @@ export class CyclicSearchDocumentMapper {
                  }: CyclicSearch): SaveCyclicSearch {
     return {
       cyclicId,
-      scenarioType,
+      // TODO: until every cyclic search on prod has `scenarioType` value
+      scenarioType: scenarioType as CollectingScenarioType ?? CollectingScenarioType.COLLECT_HOTELS,
       updateFrequencyMinutes,
       resultsLimit,
       searchPlace,
