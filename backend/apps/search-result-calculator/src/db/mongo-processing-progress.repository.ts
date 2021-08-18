@@ -1,7 +1,7 @@
 import { ProcessingProgressRepository } from '../core/abstract/processing-progress.repository';
 import { ProcessingProgressType } from '../core/processing-actvity.type';
 import { ConditionalProcessingProgress } from '../core/interface/conditional-processing-progress';
-import { Model } from "mongoose";
+import { Model } from 'mongoose';
 import { ProcessingProgressDocument } from './processing-activity/processing-progress.document';
 import { ProcessingProgressMapper } from './processing-activity/processing-progress.mapper';
 import { ProcessingProgress } from '../core/interface/processing-progress';
