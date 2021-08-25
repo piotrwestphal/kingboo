@@ -20,3 +20,7 @@ npm-debug.log*
 !/compose-output/.gitkeep
 
 prod.env
+
+# Terraform
+.terraform*
+*.tfstate*
