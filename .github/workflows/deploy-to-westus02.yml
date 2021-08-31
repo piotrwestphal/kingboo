@@ -28,6 +28,9 @@ jobs:
 #          dockerfile: kb-search-result-calculator.Dockerfile
 
   prepare_env:
+    defaults:
+      run:
+        working-directory: ./cloud/gcp/westus02/terraform
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
