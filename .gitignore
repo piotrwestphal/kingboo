@@ -24,3 +24,4 @@ prod.env
 # Terraform
 .terraform*
 *.tfstate*
+*.tfvars*

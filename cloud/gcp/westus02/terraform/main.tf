@@ -1,7 +1,4 @@
-// https://www.middlewareinventory.com/blog/create-linux-vm-in-gcp-with-terraform-remote-exec/
 provider "google" {
-  //  credentials = "" TODO: https://registry.terraform.io/providers/hashicorp/google/latest/docs/guides/getting_started#adding-credentials
-  // TODO: but it could be fetched from github actions?
   project = var.project
   region = var.region
   zone = var.zone
@@ -51,13 +48,12 @@ resource "google_compute_instance" "vm-instance" {
   network_interface {
     network = google_compute_network.vpc-network.self_link
     access_config {
-      network_tier = "STANDARD"
+      network_tier = "STANDARD" # after tf update it changes to PREMIUM because it holds an static ip address ref
     }
   }
 
   service_account {
-
-    email = var.service_email
+    email = var.gservice_email
     scopes = [
       "compute-ro"
     ]
@@ -66,7 +62,6 @@ resource "google_compute_instance" "vm-instance" {
   metadata = {
     ssh-keys = join("\n", [
       "gcp-provisioner:${tls_private_key.provisioner_key.public_key_openssh}",
-      "${var.user_name}:${var.user_pub_key}",
       "${var.github-service_name}:${var.github-service_pub_key}",
     ])
   }
