@@ -6,10 +6,8 @@ on:
 
 jobs:
   validate_terraform:
-    defaults:
-      run:
-        working-directory: ./cloud/gcp/westus02/terraform
     env:
+      tf_actions_working_dir: ./cloud/gcp/westus02/terraform
       TF_VAR_project: ${{ secrets.GCLOUD_PROJECT }}
       TF_VAR_region: us-east1
       TF_VAR_zone: us-east1-b
@@ -17,6 +15,9 @@ jobs:
       TF_VAR_github-service_name: ${{ secrets.WESTUS02_USER }}
       TF_VAR_github-service_pub_key: ${{ secrets.WESTUS02_PUBLIC_KEY }}
       TF_VAR_gservice_email: ${{ secrets.GCP_SA_EMAIL }}
+    defaults:
+      run:
+        working-directory: ${{ env.tf_actions_working_dir }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
