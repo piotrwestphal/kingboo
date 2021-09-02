@@ -1,21 +1,21 @@
 provider "google" {
   project = var.project
-  region = var.region
-  zone = var.zone
+  region  = var.region
+  zone    = var.zone
 }
 
 resource "tls_private_key" "provisioner_key" {
   algorithm = "RSA"
-  rsa_bits = 4096
+  rsa_bits  = 4096
 }
 
 resource "google_compute_network" "vpc-network" {
-  name = "vm-kingboo-network"
+  name                    = "vm-kingboo-network"
   auto_create_subnetworks = true
 }
 
 resource "google_compute_firewall" "ssh-rule" {
-  name = "allow-ssh"
+  name    = "allow-ssh"
   network = google_compute_network.vpc-network.name
   allow {
     protocol = "tcp"
@@ -32,8 +32,8 @@ resource "google_compute_firewall" "ssh-rule" {
 }
 
 resource "google_compute_instance" "vm-instance" {
-  name = var.vm_name
-  machine_type = "e2-micro"
+  name                      = var.vm_name
+  machine_type              = "e2-micro"
   allow_stopping_for_update = true
   tags = [
     "externalssh"
@@ -69,9 +69,9 @@ resource "google_compute_instance" "vm-instance" {
   provisioner "remote-exec" {
 
     connection {
-      host = self.network_interface[0].access_config[0].nat_ip
-      type = "ssh"
-      user = "gcp-provisioner"
+      host        = self.network_interface[0].access_config[0].nat_ip
+      type        = "ssh"
+      user        = "gcp-provisioner"
       private_key = tls_private_key.provisioner_key.private_key_pem
     }
 
