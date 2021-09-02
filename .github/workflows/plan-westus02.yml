@@ -2,7 +2,7 @@ name: Plan infrastructure on westus02
 on:
   pull_request:
     branches:
-      - develop
+      - main
 
 jobs:
   validate_terraform:

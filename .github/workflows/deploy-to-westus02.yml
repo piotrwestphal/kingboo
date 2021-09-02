@@ -27,7 +27,8 @@ jobs:
 #          workdir: backend
 #          dockerfile: kb-search-result-calculator.Dockerfile
 
-  prepare_env:
+  apply_tf:
+    runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: ./cloud/gcp/westus02/terraform
@@ -39,7 +40,8 @@ jobs:
       TF_VAR_github-service_name: ${{ secrets.WESTUS02_USER }}
       TF_VAR_github-service_pub_key: ${{ secrets.WESTUS02_PUBLIC_KEY }}
       TF_VAR_gservice_email: ${{ secrets.GCP_SA_EMAIL }}
-    runs-on: ubuntu-latest
+#    outputs:
+#      tf_output: ${{steps.apply.}} # TODO!
     steps:
       - uses: actions/checkout@v2
 
@@ -52,15 +54,24 @@ jobs:
 
       - uses: hashicorp/setup-terraform@v1
 
-      - run: terraform init
+      - name: Terraform Init
+        id: init
+        run: terraform init
 
-      - id: plan
+      - name: Terraform Plan
+        id: plan
         run: terraform plan -no-color
 
-# TODO: https://github.com/hashicorp/setup-terraform
+      - name: Terraform Apply
+        id: apply
+        run: terraform apply -auto-approve
+
+      - name: Terraform Output
+        id: output
+        run: terraform output vm_external_ip
 
 #  deploy_search-result-calculator:
-#    needs: [prepare_env, publish_search-result-calculator]
+#    needs: [apply_tf, publish_search-result-calculator]
 #    runs-on: ubuntu-latest
 #    steps:
 #      - uses: actions/checkout@v2
@@ -80,7 +91,7 @@ jobs:
 #          MONGO_PRIMARY_ADDRESS: ${{ secrets.AWS_MONGO_ADDRESS }}
 #          MQ_ADDRESS: ${{ secrets.MQ_ADDRESS }}
 #        run: |
-#          ssh -T -o StrictHostKeyChecking=no -l ${{ secrets.WESTUS02_USER }} ${{ secrets.WESTUS02_HOST }} << EOF
+#          ssh -T -o StrictHostKeyChecking=no -l ${{ secrets.WESTUS02_USER }} ${{ needs.apply_tf.outputs.tf_output }} << EOF
 #            uptime
 #            cd ~/app
 #            git fetch
