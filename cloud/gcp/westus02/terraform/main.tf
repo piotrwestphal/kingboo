@@ -84,10 +84,11 @@ resource "google_compute_instance" "vm-instance" {
       "sudo yum install -y git",
       "sudo mkdir /home/${var.github-service_name}/app",
       "sudo git clone https://github.com/piotrwestphal/kingboo.git /home/${var.github-service_name}/app",
+      "sudo chown -R ${var.github-service_name} /home/${var.github-service_name}",
       // prepare and run docker
       "sudo chmod +x /usr/bin/docker-compose",
       "sudo usermod -aG docker ${var.github-service_name}",
-      "sudo systemctl start docker",
+      "sudo systemctl start docker"
     ]
   }
 
