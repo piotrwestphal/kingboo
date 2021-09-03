@@ -3,7 +3,7 @@ services:
   search-result-calculator:
     env_file:
       - westus02.env
-      - ./../opc.env
+      - ./../gcp.env
     volumes:
       - ./../../../compose-output/src:/usr/src/app/output
 
