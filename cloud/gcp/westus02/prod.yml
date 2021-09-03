@@ -1,0 +1,18 @@
+version: "3.7"
+services:
+  search-result-calculator:
+    env_file:
+      - westus02.env
+      - ./../gcp.env
+    volumes:
+      - ./../../../compose-output/src:/usr/src/app/output
+
+  filebeat:
+    image: docker.elastic.co/beats/filebeat-oss:7.12.0
+    # needs to override config file
+    command: filebeat -e -strict.perms=false
+    env_file:
+      - westus02.env
+    volumes:
+      - ./filebeat.yml:/usr/share/filebeat/filebeat.yml:ro
+      - ./../../../compose-output/src/logs:/var/log/apps/src:ro
