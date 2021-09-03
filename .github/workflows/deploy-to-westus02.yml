@@ -1,0 +1,110 @@
+name: Deploy to westus02
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'backend/**'
+      - 'cloud/gcp/westus02/**'
+      - '.github/workflows/deploy-to-westus02.yml'
+
+jobs:
+  publish_search-result-calculator:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      # takes branch name as a tag
+      # in case of main takes 'latest'
+      # in case of PR takes $GITHUB_SH
+      - name: Publish search-result-calculator to registry
+        uses: elgohr/Publish-Docker-Github-Action@master
+        with:
+          name: piotrwest/kb-search-result-calculator
+          username: ${{ secrets.DOCKER_USER }}
+          password: ${{ secrets.DOCKER_PASS }}
+          workdir: backend
+          dockerfile: kb-search-result-calculator.Dockerfile
+
+  apply_tf:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./cloud/gcp/westus02/terraform
+    env:
+      TF_VAR_project: ${{ secrets.GCLOUD_PROJECT }}
+      TF_VAR_region: us-east1
+      TF_VAR_zone: us-east1-b
+      TF_VAR_vm_name: vm-instance
+      TF_VAR_github-service_name: ${{ secrets.WESTUS02_USER }}
+      TF_VAR_github-service_pub_key: ${{ secrets.WESTUS02_PUBLIC_KEY }}
+      TF_VAR_gservice_email: ${{ secrets.GCP_SA_EMAIL }}
+    outputs:
+      vm_external_ip: ${{steps.tf_output.outputs.vm_external_ip}}
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: GCP authenticate as service account
+        uses: google-github-actions/setup-gcloud@master
+        with:
+          project_id: ${{ secrets.GCLOUD_PROJECT }}
+          service_account_key: ${{ secrets.GCP_SA_KEY }}
+          export_default_credentials: true
+
+      - uses: hashicorp/setup-terraform@v1
+
+      - name: Terraform Init
+        id: init
+        run: terraform init
+
+      - name: Terraform Plan
+        id: plan
+        run: terraform plan -no-color
+
+      - name: Terraform Apply
+        id: apply
+        run: terraform apply -auto-approve
+
+      - name: Terraform Output
+        id: tf_output
+        run: echo "::set-output name=vm_external_ip::$(terraform output vm_external_ip)"
+
+  deploy_search-result-calculator:
+    needs: [apply_tf, publish_search-result-calculator]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: webfactory/ssh-agent@master
+        with:
+          ssh-private-key: ${{ secrets.WESTUS02_KEY }}
+
+      - name: Deploy services to westus02
+        env:
+          CORS_ORIGINS: ${{ secrets.CORS_ORIGINS }}
+          LOG_COLLECTOR_TOKEN: ${{ secrets.LOG_COLLECTOR_TOKEN }}
+          GCP_STORAGE_PROJECT_ID: ${{ secrets.GCP_STORAGE_PROJECT_ID }}
+          GCP_STORAGE_BUCKET_NAME: ${{ secrets.GCP_STORAGE_BUCKET_NAME }}
+          GCP_STORAGE_CLIENT_EMAIL: ${{ secrets.GCP_STORAGE_CLIENT_EMAIL }}
+          GCP_STORAGE_CLIENT_KEY: ${{ secrets.GCP_STORAGE_CLIENT_KEY }}
+          MONGO_PRIMARY_ADDRESS: ${{ secrets.AWS_MONGO_ADDRESS }}
+          MQ_ADDRESS: ${{ secrets.MQ_ADDRESS }}
+        run: |
+          ssh -T -o StrictHostKeyChecking=no -l ${{ secrets.WESTUS02_USER }} ${{ needs.apply_tf.outputs.vm_external_ip }} << EOF
+            uptime
+            cd ~/app
+            git fetch
+            git reset --hard origin/main
+            cd cloud/gcp/westus02
+            echo "CORS_ORIGINS=$CORS_ORIGINS" >> westus02.env
+            echo "LOG_COLLECTOR_TOKEN=$LOG_COLLECTOR_TOKEN" >> westus02.env
+            echo "GCP_STORAGE_PROJECT_ID=$GCP_STORAGE_PROJECT_ID" >> westus02.env
+            echo "GCP_STORAGE_BUCKET_NAME=$GCP_STORAGE_BUCKET_NAME" >> westus02.env
+            echo "GCP_STORAGE_CLIENT_EMAIL=$GCP_STORAGE_CLIENT_EMAIL" >> westus02.env
+            echo "GCP_STORAGE_CLIENT_KEY=$GCP_STORAGE_CLIENT_KEY" >> westus02.env
+            echo "MONGO_PRIMARY_ADDRESS=$MONGO_PRIMARY_ADDRESS" >> westus02.env
+            echo "MQ_ADDRESS=$MQ_ADDRESS" >> westus02.env
+            docker-compose pull
+            docker-compose -f docker-compose.yml -f prod.yml up -dV
+            docker image prune -f
+          EOF

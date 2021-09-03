@@ -1,0 +1,43 @@
+filebeat.inputs:
+  - type: log
+    enabled: true
+    paths:
+      - /var/log/apps/src/*.log
+    encoding: utf-8
+    fields:
+      app: SRC
+      type: kingboo
+
+setup.template.settings:
+  index.number_of_shards: 1
+
+output:
+  elasticsearch:
+    hosts: ["https://cloud.humio.com:443/api/v1/ingest/elastic-bulk"]
+    username: westus
+    password: ${LOG_COLLECTOR_TOKEN}
+    compression_level: 5
+    bulk_max_size: 200
+    worker: 1
+    setup.template.enabled: false
+
+queue.mem:
+  events: 1000
+  flush.min_events: 100
+  flush.timeout: 5s
+
+processors:
+  - add_host_metadata:
+      when.not.contains.tags: forwarded
+  - add_cloud_metadata: ~
+  - add_docker_metadata: ~
+  - add_kubernetes_metadata: ~
+
+logging:
+  level: info
+  to_files: true
+  to_syslog: false
+  files:
+    path: /var/log/filebeat
+    name: filebeat.log
+    keepfiles: 3
