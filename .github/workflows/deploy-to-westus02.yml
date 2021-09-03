@@ -28,9 +28,11 @@ jobs:
 
   apply_tf:
     runs-on: ubuntu-latest
+
     defaults:
       run:
         working-directory: ./cloud/gcp/westus02/terraform
+
     env:
       TF_VAR_project: ${{ secrets.GCLOUD_PROJECT }}
       TF_VAR_region: us-east1
@@ -39,8 +41,10 @@ jobs:
       TF_VAR_github-service_name: ${{ secrets.WESTUS02_USER }}
       TF_VAR_github-service_pub_key: ${{ secrets.WESTUS02_PUBLIC_KEY }}
       TF_VAR_gservice_email: ${{ secrets.GCP_SA_EMAIL }}
+
     outputs:
       vm_external_ip: ${{steps.tf_output.outputs.vm_external_ip}}
+
     steps:
       - uses: actions/checkout@v2
 
@@ -52,17 +56,16 @@ jobs:
           export_default_credentials: true
 
       - uses: hashicorp/setup-terraform@v1
+        with:
+          terraform_wrapper: false
 
       - name: Terraform Init
-        id: init
         run: terraform init
 
       - name: Terraform Plan
-        id: plan
         run: terraform plan -no-color
 
       - name: Terraform Apply
-        id: apply
         run: terraform apply -auto-approve
 
       - name: Terraform Output
@@ -70,7 +73,7 @@ jobs:
         run: echo "::set-output name=vm_external_ip::$(terraform output vm_external_ip)"
 
   deploy_search-result-calculator:
-    needs: [apply_tf, publish_search-result-calculator]
+    needs: [publish_search-result-calculator, apply_tf]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
