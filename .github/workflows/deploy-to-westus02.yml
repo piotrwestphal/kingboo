@@ -41,7 +41,7 @@ jobs:
       TF_VAR_github-service_pub_key: ${{ secrets.WESTUS02_PUBLIC_KEY }}
       TF_VAR_gservice_email: ${{ secrets.GCP_SA_EMAIL }}
     outputs:
-      tf_output: ${{steps.output}} # TODO!
+      tf_output: ${{steps.output}}
     steps:
       - uses: actions/checkout@v2
 
@@ -71,7 +71,7 @@ jobs:
         run: echo $(terraform output vm_external_ip)
 
   deploy_search-result-calculator:
-    needs: [apply_tf, publish_search-result-calculator]
+    needs: [apply_tf]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
