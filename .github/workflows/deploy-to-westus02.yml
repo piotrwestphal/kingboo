@@ -41,7 +41,7 @@ jobs:
       TF_VAR_github-service_pub_key: ${{ secrets.WESTUS02_PUBLIC_KEY }}
       TF_VAR_gservice_email: ${{ secrets.GCP_SA_EMAIL }}
     outputs:
-      tf_output: ${{steps.output}}
+      tf_output: ${{steps.tf_output.outputs.vm_external_ip}}
     steps:
       - uses: actions/checkout@v2
 
@@ -67,8 +67,8 @@ jobs:
         run: terraform apply -auto-approve
 
       - name: Terraform Output
-        id: output
-        run: echo $(terraform output vm_external_ip)
+        id: tf_output
+        run: echo "::set-output name=vm_external_ip::$(terraform output vm_external_ip)"
 
   deploy_search-result-calculator:
     needs: [apply_tf]
