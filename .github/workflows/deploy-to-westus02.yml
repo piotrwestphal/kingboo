@@ -40,8 +40,8 @@ jobs:
       TF_VAR_github-service_name: ${{ secrets.WESTUS02_USER }}
       TF_VAR_github-service_pub_key: ${{ secrets.WESTUS02_PUBLIC_KEY }}
       TF_VAR_gservice_email: ${{ secrets.GCP_SA_EMAIL }}
-#    outputs:
-#      tf_output: ${{steps.apply.}} # TODO!
+    outputs:
+      tf_output: ${{steps.output}} # TODO!
     steps:
       - uses: actions/checkout@v2
 
@@ -68,14 +68,17 @@ jobs:
 
       - name: Terraform Output
         id: output
-        run: terraform output vm_external_ip
+        run: echo $(terraform output vm_external_ip)
 
-#  deploy_search-result-calculator:
-#    needs: [apply_tf, publish_search-result-calculator]
-#    runs-on: ubuntu-latest
-#    steps:
-#      - uses: actions/checkout@v2
-#
+  deploy_search-result-calculator:
+    needs: [apply_tf, publish_search-result-calculator]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Test
+        run: echo ${{ needs.apply_tf.outputs.tf_output }}
+
 #      - uses: webfactory/ssh-agent@master
 #        with:
 #          ssh-private-key: ${{ secrets.WESTUS02_KEY }}
