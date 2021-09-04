@@ -91,6 +91,6 @@ jobs:
             ${{env.tf_actions_working_dir}}/.terraform
           if-no-files-found: error
 
-      - name: Fail if tf plan failure
+      - name: Fail when tf plan failure
         if: ${{ steps.plan.outcome == 'failure' }}
         run: exit 1
