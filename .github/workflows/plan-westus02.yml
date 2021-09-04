@@ -15,10 +15,13 @@ jobs:
       TF_VAR_github-service_name: ${{ secrets.WESTUS02_USER }}
       TF_VAR_github-service_pub_key: ${{ secrets.WESTUS02_PUBLIC_KEY }}
       TF_VAR_gservice_email: ${{ secrets.GCP_SA_EMAIL }}
+
     defaults:
       run:
         working-directory: ${{ env.tf_actions_working_dir }}
+
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v2
 
@@ -49,16 +52,6 @@ jobs:
         run: terraform plan -no-color -input=false -out=westus02.tfplan
         continue-on-error: true
 
-      - name: Archive terraform plan
-        if: ${{ steps.plan.outcome == 'success' }}
-        uses: actions/upload-artifact@v2
-        with:
-          name: westus02-tf
-          path: |
-            ${{env.tf_actions_working_dir}}/westus02.tfplan
-            ${{env.tf_actions_working_dir}}/.terraform
-          if-no-files-found: error
-
       - name: Attach comment with tf result to PR
         uses: actions/github-script@0.9.0
         env:
@@ -87,3 +80,17 @@ jobs:
               repo: context.repo.repo,
               body: output
             })
+
+      - name: Archive terraform plan
+        if: ${{ steps.plan.outcome == 'success' }}
+        uses: actions/upload-artifact@v2
+        with:
+          name: westus02-tf
+          path: |
+            ${{env.tf_actions_working_dir}}/westus02.tfplan
+            ${{env.tf_actions_working_dir}}/.terraform
+          if-no-files-found: error
+
+      - name: Fail when tf plan failure
+        if: ${{ steps.plan.outcome == 'failure' }}
+        run: exit 1
