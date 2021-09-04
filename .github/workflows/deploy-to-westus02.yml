@@ -27,20 +27,14 @@ jobs:
           dockerfile: kb-search-result-calculator.Dockerfile
 
   apply_tf:
-    runs-on: ubuntu-latest
+    env:
+      tf_actions_working_dir: ./cloud/gcp/westus02/terraform
 
     defaults:
       run:
-        working-directory: ./cloud/gcp/westus02/terraform
+        working-directory: ${{ env.tf_actions_working_dir }}
 
-    env:
-      TF_VAR_project: ${{ secrets.GCLOUD_PROJECT }}
-      TF_VAR_region: us-east1
-      TF_VAR_zone: us-east1-b
-      TF_VAR_vm_name: vm-instance
-      TF_VAR_github-service_name: ${{ secrets.WESTUS02_USER }}
-      TF_VAR_github-service_pub_key: ${{ secrets.WESTUS02_PUBLIC_KEY }}
-      TF_VAR_gservice_email: ${{ secrets.GCP_SA_EMAIL }}
+    runs-on: ubuntu-latest
 
     outputs:
       vm_external_ip: ${{steps.tf_output.outputs.vm_external_ip}}
@@ -64,10 +58,11 @@ jobs:
         with:
           workflow: plan-westus02.yml
           name: westus02-tf
+          path: ${{ env.tf_actions_working_dir }}
 
       - run: |
           ls -a
-          cd ~
+          cd ~/work
           ls -a
 
       - name: Terraform Apply
