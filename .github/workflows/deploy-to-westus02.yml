@@ -59,11 +59,19 @@ jobs:
         with:
           terraform_wrapper: false
 
-      - name: Terraform Init
-        run: terraform init -input=false
+      - name: Download a terraform artifacts
+        uses: dawidd6/action-download-artifact@v2
+        with:
+          workflow: plan-westus02.yml
+          name: westus02-tf
+
+      - run: |
+          ls -a
+          cd ~
+          ls -a
 
       - name: Terraform Apply
-        run: terraform apply -input=false -auto-approve
+        run: terraform apply -input=false westus02.tfplan
 
       - name: Terraform Output
         id: tf_output
