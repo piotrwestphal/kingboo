@@ -60,10 +60,8 @@ jobs:
           name: westus02-tf
           path: ${{ env.tf_actions_working_dir }}
 
-      - run: |
-          ls -a
-          cd ~/work
-          ls -a
+      - name: Terraform Init
+        run: terraform init -input=false
 
       - name: Terraform Apply
         run: terraform apply -input=false westus02.tfplan
