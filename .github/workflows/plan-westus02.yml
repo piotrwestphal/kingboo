@@ -49,12 +49,14 @@ jobs:
         run: terraform plan -no-color -input=false -out=westus02.tfplan
         continue-on-error: true
 
+      - run: ls -a
+
       - name: Archive terraform plan
         if: ${{ steps.plan.outcome == 'success' }}
         uses: actions/upload-artifact@v2
         with:
           name: westus02-tfplan
-          path: westus02.tfplan
+          path: ./westus02.tfplan
 
       - name: Attach comment with tf result to PR
         uses: actions/github-script@0.9.0
