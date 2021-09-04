@@ -56,7 +56,8 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: westus02-tfplan
-          path: ./westus02.tfplan
+          path: ${{env.tf_actions_working_dir}}/westus02.tfplan
+          if-no-files-found: error
 
       - name: Attach comment with tf result to PR
         uses: actions/github-script@0.9.0
