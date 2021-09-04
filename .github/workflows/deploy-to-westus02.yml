@@ -62,13 +62,8 @@ jobs:
       - name: Terraform Init
         run: terraform init -input=false
 
-      - name: Download a terraform plan
-        uses: actions/download-artifact@v2
-        with:
-          name: westus02-tfplan
-
       - name: Terraform Apply
-        run: terraform apply -input=false westus02.tfplan
+        run: terraform apply -input=false -auto-approve
 
       - name: Terraform Output
         id: tf_output
