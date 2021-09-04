@@ -51,7 +51,7 @@ jobs:
 
 
       - name: Archive terraform plan
-        if: ${{ steps.plan.outcome == "success" }}
+        if: ${{ steps.plan.outcome == 'success' }}
         uses: actions/upload-artifact@v2
         with:
           name: westus02-tfplan
