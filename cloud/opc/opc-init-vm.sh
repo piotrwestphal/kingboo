@@ -6,7 +6,7 @@ yum-config-manager \
     https://download.docker.com/linux/centos/docker-ce.repo
 
 yum install -y docker-ce docker-ce-cli containerd.io
-systemctl start docker
+systemctl enable --now docker
 curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/bin/docker-compose
 chmod +x /usr/bin/docker-compose
 yum install -y git

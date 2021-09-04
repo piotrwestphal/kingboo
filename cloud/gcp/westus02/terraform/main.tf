@@ -75,11 +75,12 @@ resource "google_compute_instance" "vm-instance" {
       private_key = tls_private_key.provisioner_key.private_key_pem
     }
 
+    // TODO: https://computingforgeeks.com/how-to-install-latest-docker-compose-on-linux/
     inline = [
       "sudo yum install -y yum-utils",
       "sudo yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo",
       "sudo yum install -y docker-ce docker-ce-cli containerd.io",
-      "sudo systemctl start docker",
+      "sudo systemctl enable --now docker",
       "sudo curl -L 'https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)' -o /usr/bin/docker-compose",
       "sudo chmod +x /usr/bin/docker-compose",
       "sudo yum install -y git",
