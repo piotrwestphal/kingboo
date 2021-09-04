@@ -76,23 +76,20 @@ resource "google_compute_instance" "vm-instance" {
     }
 
     inline = [
-      // install dependencies
       "sudo yum install -y yum-utils",
       "sudo yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo",
       "sudo yum install -y docker-ce docker-ce-cli containerd.io",
+      "sudo systemctl start docker",
       "sudo curl -L 'https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)' -o /usr/bin/docker-compose",
+      "sudo chmod +x /usr/bin/docker-compose",
       "sudo yum install -y git",
+      "sudo usermod -aG docker ${var.github-service_name}",
       "sudo mkdir /home/${var.github-service_name}/app",
       "sudo git clone https://github.com/piotrwestphal/kingboo.git /home/${var.github-service_name}/app",
-      "sudo chown -R ${var.github-service_name} /home/${var.github-service_name}",
-      // prepare and run docker
-      "sudo chmod +x /usr/bin/docker-compose",
-      "sudo usermod -aG docker ${var.github-service_name}",
-      "sudo systemctl start docker"
+      "sudo chown -R ${var.github-service_name} /home/${var.github-service_name}"
     ]
   }
 
-  // allow ssh https://stackoverflow.com/questions/62231372/allow-ssh-access-to-gcp-vm-instances-provisioned-with-terraform
   depends_on = [
     google_compute_firewall.ssh-rule,
     tls_private_key.provisioner_key

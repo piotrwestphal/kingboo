@@ -62,11 +62,13 @@ jobs:
       - name: Terraform Init
         run: terraform init
 
-      - name: Terraform Plan
-        run: terraform plan -no-color
+      - name: Download a terraform plan
+        uses: actions/download-artifact@v2
+        with:
+          name: westus02-tfplan
 
       - name: Terraform Apply
-        run: terraform apply -auto-approve
+        run: terraform apply westus02.tfplan
 
       - name: Terraform Output
         id: tf_output
