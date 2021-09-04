@@ -46,9 +46,8 @@ jobs:
 
       - name: Terraform Plan
         id: plan
-        run: terraform plan -no-color  input=false -out=westus02.tfplan
+        run: terraform plan -no-color -input=false -out=westus02.tfplan
         continue-on-error: true
-
 
       - name: Archive terraform plan
         if: ${{ steps.plan.outcome == 'success' }}
