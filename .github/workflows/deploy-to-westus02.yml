@@ -60,7 +60,7 @@ jobs:
           terraform_wrapper: false
 
       - name: Terraform Init
-        run: terraform init
+        run: terraform init -input=false
 
       - name: Download a terraform plan
         uses: actions/download-artifact@v2
@@ -68,7 +68,7 @@ jobs:
           name: westus02-tfplan
 
       - name: Terraform Apply
-        run: terraform apply westus02.tfplan
+        run: terraform apply -input=false westus02.tfplan
 
       - name: Terraform Output
         id: tf_output
