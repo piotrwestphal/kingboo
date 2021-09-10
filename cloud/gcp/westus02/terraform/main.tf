@@ -33,7 +33,9 @@ resource "google_compute_firewall" "ssh-rule" {
 
 resource "google_compute_instance" "vm-instance" {
   name                      = var.vm_name
+  labels                    = {}
   machine_type              = "e2-micro"
+  resource_policies         = []
   allow_stopping_for_update = true
   tags = [
     "externalssh"

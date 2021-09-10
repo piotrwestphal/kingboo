@@ -76,7 +76,7 @@ describe('RawHotelDtoParser: ', () => {
   describe('parseRoomName():', () => {
     it('should parse room name [1]', () => {
       // Prepare
-      const hotels: RawRoomDto[] = [
+      const rawRooms: RawRoomDto[] = [
         {
           shortDescription: '1 × Basic Double Room',
         } as RawRoomDto,
@@ -86,7 +86,7 @@ describe('RawHotelDtoParser: ', () => {
       ]
 
       // Verify
-      expect(parser.parseRoomName(null, hotels))
+      expect(parser.parseRoomName(null, rawRooms))
         .toEqual('Basic Double Room, Standard Quadruple Room')
     })
 
