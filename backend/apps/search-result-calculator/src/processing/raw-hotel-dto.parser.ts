@@ -67,6 +67,7 @@ export class RawHotelDtoParser {
     const parsedRooms = this.parseRooms(rooms)
     if (parsedRooms) {
       return rooms.map(v => v.shortDescription)
+        .filter(Boolean)
         .map(v => removeMultipliers(v))
         .join(', ')
     }
