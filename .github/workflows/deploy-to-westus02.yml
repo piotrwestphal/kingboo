@@ -6,6 +6,7 @@ on:
     paths:
       - 'backend/**'
       - 'cloud/gcp/westus02/**'
+      - 'cloud/gcp/gcp.env'
       - '.github/workflows/deploy-to-westus02.yml'
 
 jobs:
