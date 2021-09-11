@@ -6,6 +6,7 @@ on:
     paths:
       - 'backend/**'
       - 'cloud/opc/westus00/**'
+      - 'cloud/opc/opc.env'
       - '.github/workflows/deploy-to-westus00.yml'
 
 jobs:
