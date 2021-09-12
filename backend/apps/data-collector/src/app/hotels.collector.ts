@@ -39,7 +39,7 @@ export class HotelsCollector {
 
     // TODO: remove if not needed
     if (!totalPagesCount) {
-      logger.error(`Probably there is something wrong with result page view`) // TODO: remove if not needed
+      logger.error(`Probably there is something wrong with result page view [collect-hotels]`) // TODO: remove if not needed
       const debugHtml = await this.scraperFacade.getInnerHtmlForDebugPurpose()
       await this.fileRepository.save(debugHtml, 'missing-values', 'debug-html', 'html')
     }

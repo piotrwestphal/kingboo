@@ -31,7 +31,7 @@ export class PlaceCollector {
 
     // TODO: remove if not needed
     if (!totalPagesCount) {
-      logger.error(`Probably there is something wrong with result page view`)
+      logger.error(`Probably there is something wrong with result page view [collect-place]`)
       const debugHtml = await this.scraperFacade.getInnerHtmlForDebugPurpose()
       await this.fileRepository.save(debugHtml, 'missing-values', 'debug-html', 'html')
     }
